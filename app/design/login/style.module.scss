@@ -1,0 +1,147 @@
+/* Form Header */
+
+.formCard {
+  border: 1px solid #3a3948;
+  background-color: #1b1a25;
+  max-width: 515px;
+  margin: 0 auto;
+  border-radius: 24px;
+  padding: 32px 25px;
+}
+
+.formLogo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.formLogo img {
+  display: block;
+  object-fit: cover;
+  width: 289.125px;
+  height: auto;
+}
+
+.formHeader {
+  margin-bottom: 32px;
+}
+
+.formHeader .formTitle {
+  font-size: 32px;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.formHeader .formSubtitle {
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #b2b1b9;
+}
+
+/* Google Login */
+.googleLogin {
+  margin-top: 36px;
+  background-color: #252431;
+  border: 1px solid #3a3948;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.googleLogin p {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0%;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+/* Already Login */
+.alreadyLogin {
+  max-width: 515px;
+  padding: 24px;
+  margin: 48px auto 0 auto;
+  background: linear-gradient(
+    90deg,
+    #2a1ad8 0%,
+    #4e26e2 25%,
+    #7231ec 50%,
+    #953df5 75%,
+    #b948ff 100%
+  ) !important;
+  border-radius: 24px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.loginGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loginGroup h4 {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.loginGroup p {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  color: #ffffff !important;
+  margin-bottom: 0;
+}
+
+/* Google Button Icon */
+.googleBtnIcon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: cover;
+  margin-right: 5px;
+}
+
+/* Login Section */
+.authSection {
+  padding: 80px 0;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.authContainer {
+  position: relative;
+  z-index: 999;
+}
+
+/* Background Effects */
+.before,
+.after {
+  content: '';
+  position: fixed;
+  z-index: 99;
+  opacity: 0.08;
+}
+
+.before {
+  left: -74px;
+  top: -100px;
+  width: 460px;
+  height: 148px;
+}
+
+.after {
+  right: -210px;
+  bottom: 0px;
+  width: 947px;
+  height: 306px;
+  left: auto;
+}
