@@ -75,7 +75,6 @@
     #b948ff 100%
   ) !important;
   border-radius: 24px;
-  width: 100%;
   display: flex;
   align-items: center;
 }
@@ -144,4 +143,21 @@
   width: 947px;
   height: 306px;
   left: auto;
+}
+
+@media (max-width: 767px) {
+  .formCard {
+    margin: 0 10px;
+  }
+
+  .alreadyLogin {
+    margin-left: 10px;
+    margin-right: 10px;
+    flex-direction: column;
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+    }
+  }
 }
