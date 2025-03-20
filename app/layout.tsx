@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
+import ToastProvider from './shared/toast/ToastProvider'
+import { ReduxProvider } from './provider'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -26,33 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <ReduxProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </ReduxProvider>
       </body>
     </html>
   )
 }
-
-// import { ReactNode } from 'react'
-// import { Provider } from 'react-redux'
-// import { PersistGate } from 'redux-persist/integration/react'
-// import { store, persistor } from './redux/store'
-
-// interface LayoutProps {
-//   children: ReactNode
-// }
-
-// const RootLayout = ({ children }: LayoutProps) => {
-//   return (
-//     <html lang="en">
-//       <body>
-//         <Provider store={store}>
-//           <PersistGate loading={null} persistor={persistor}>
-//             {children}
-//           </PersistGate>
-//         </Provider>
-//       </body>
-//     </html>
-//   )
-// }
-
-// export default RootLayout
