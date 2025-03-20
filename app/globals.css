@@ -8,7 +8,7 @@ body {
 }
 
 body {
-  background-color: #02010d;
+  background-color: #11101B;
   color: #b2b1b9;
 }
 
@@ -85,11 +85,11 @@ a {
 /* colors */
 
 .bg-primary {
-  background-color: #1B1A25;
+  background-color: #11101B;
 }
 
 .bg-secondary {
-  background-color: #252431;
+  background-color: #1B1A25;
 }
 
 .text-primary {
