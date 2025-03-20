@@ -1,7 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
-import createWebStorage from 'redux-persist/es/storage/createWebStorage';
-import { combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit'
+import { persistStore, persistReducer } from 'redux-persist'
+import createWebStorage from 'redux-persist/es/storage/createWebStorage'
+import { combineReducers } from 'redux'
 
 const createNoopStorage = () => {
   return {
@@ -49,6 +49,7 @@ export const store = configureStore({
         ],
       },
     }),
+  devTools: process.env.NODE_ENV !== 'production', // Enable Redux DevTools in development
 })
 
 export const persistor = persistStore(store)

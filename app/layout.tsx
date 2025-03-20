@@ -31,3 +31,28 @@ export default function RootLayout({
     </html>
   )
 }
+
+// import { ReactNode } from 'react'
+// import { Provider } from 'react-redux'
+// import { PersistGate } from 'redux-persist/integration/react'
+// import { store, persistor } from './redux/store'
+
+// interface LayoutProps {
+//   children: ReactNode
+// }
+
+// const RootLayout = ({ children }: LayoutProps) => {
+//   return (
+//     <html lang="en">
+//       <body>
+//         <Provider store={store}>
+//           <PersistGate loading={null} persistor={persistor}>
+//             {children}
+//           </PersistGate>
+//         </Provider>
+//       </body>
+//     </html>
+//   )
+// }
+
+// export default RootLayout
