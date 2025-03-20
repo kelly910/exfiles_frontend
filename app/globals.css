@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap');
+
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  font-family: "Fustat", sans-serif !important;
 }
 
 body {
@@ -47,6 +50,10 @@ body h6 {
   font-size: 14px !important;
 }
 
+body p {
+  font-size: 16px !important;
+  /* 30% reduction */
+}
 
 h1,
 h2,
@@ -72,6 +79,7 @@ select {
 
 a {
   text-decoration: none;
+  font-size: 16px;
 }
 
 /* colors */
@@ -184,6 +192,114 @@ a {
 }
 
 
+@media (max-width: 768px) {
+
+  /* Reduce font size */
+  body h1 {
+    font-size: 25.2px !important;
+    /* 30% reduction */
+  }
+
+  body h2,
+  .h2 {
+    font-size: 22.4px !important;
+    /* 30% reduction */
+  }
+
+  body h3 {
+    font-size: 16.8px !important;
+    /* 30% reduction */
+  }
+
+  body h4 {
+    font-size: 14px !important;
+    /* 30% reduction */
+  }
+
+  body h5 {
+    font-size: 14px !important;
+    /* 30% reduction */
+  }
+
+  body h6 {
+    font-size: 14px !important;
+    /* 30% reduction */
+  }
+
+  body p {
+    font-size: 14px !important;
+    /* 30% reduction */
+  }
+
+  body a {
+    font-size: 14px !important;
+    /* 30% reduction */
+  }
+
+  /* Buttons: Reduce padding, font size, and border-radius */
+  .btn {
+    font-size: 11.2px !important;
+    /* 30% reduction */
+    padding: 9.1px 16.8px !important;
+    /* 30% reduction */
+    border-radius: 8.4px !important;
+    /* 30% reduction */
+  }
+
+  .btn-group {
+    display: flex;
+    justify-content: end;
+  }
+
+  .btn.btn-primary {
+    font-size: 11.2px !important;
+    /* 30% reduction */
+    padding: 9.1px 16.8px !important;
+    /* 30% reduction */
+    border-radius: 8.4px !important;
+    /* 30% reduction */
+  }
+
+  .btn.btn-primary:hover,
+  .btn.btn-primary:active,
+  .btn.btn-primary:focus {
+    background: linear-gradient(90deg, #953DF5 100%, #B948FF 75%, #7231EC 50%, #4E26E2 25%, #7231EC 0%) !important;
+    transition: all 0.2s linear;
+  }
+
+  .btn.btn-tertiary {
+    font-size: 11.2px !important;
+    /* 30% reduction */
+    padding: 8.4px 16.8px !important;
+    /* 30% reduction */
+    border-radius: 8.4px !important;
+    /* 30% reduction */
+  }
+
+  .btn.btn-secondary {
+    font-size: 11.2px !important;
+    /* 30% reduction */
+    padding: 8.4px 16.8px !important;
+    /* 30% reduction */
+    border-radius: 8.4px !important;
+    /* 30% reduction */
+  }
+
+  .btn.btn-secondary:hover,
+  .btn.btn-secondary:active,
+  .btn.btn-secondary:focus {
+    background: white !important;
+    transition: all 0.2s linear;
+    border: 1px solid #fff !important;
+    color: #1B1A25 !important;
+  }
+
+  /* Link adjustments */
+  .link-primary {
+    font-size: 14px !important;
+    /* 30% reduction */
+  }
+}
 
 
 /* auth form ======================= */
@@ -276,3 +392,9 @@ select:-webkit-autofill:focus {
 }
 
 /* google login  ========================== */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
