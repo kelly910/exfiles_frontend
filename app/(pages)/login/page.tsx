@@ -1,6 +1,6 @@
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
-const DynamicLoginComponent = dynamic(() => import('@components/Login/Login'))
+const DynamicLoginComponent = dynamic(() => import('@components/Login/Login'));
 
 export default function Page() {
   return (
@@ -8,5 +8,5 @@ export default function Page() {
       <h1>Login page</h1>
       <DynamicLoginComponent />
     </main>
-  )
+  );
 }
