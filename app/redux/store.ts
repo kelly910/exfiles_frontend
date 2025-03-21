@@ -1,38 +1,38 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { persistStore, persistReducer } from 'redux-persist'
-import createWebStorage from 'redux-persist/es/storage/createWebStorage'
-import { combineReducers } from 'redux'
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import createWebStorage from 'redux-persist/es/storage/createWebStorage';
+import { combineReducers } from 'redux';
 
 const createNoopStorage = () => {
   return {
     getItem(): Promise<null> {
-      return Promise.resolve(null)
+      return Promise.resolve(null);
     },
     setItem(_key: string, value: any): Promise<any> {
-      return Promise.resolve(value)
+      return Promise.resolve(value);
     },
     removeItem(_key: string): Promise<void> {
-      return Promise.resolve()
+      return Promise.resolve();
     },
-  }
-}
+  };
+};
 
 const storage =
   typeof window !== 'undefined'
     ? createWebStorage('local')
-    : createNoopStorage()
+    : createNoopStorage();
 
 const persistConfig = {
   key: 'root',
   storage,
   // whitelist: ["auth"], // specify reducers to persist
-}
+};
 
 const rootReducer = combineReducers({
   // auth: authReducer,
-})
+});
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -50,9 +50,9 @@ export const store = configureStore({
       },
     }),
   devTools: process.env.NODE_ENV !== 'production', // Enable Redux DevTools in development
-})
+});
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 
-export type RootState = ReturnType<typeof rootReducer>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = typeof store.dispatch;

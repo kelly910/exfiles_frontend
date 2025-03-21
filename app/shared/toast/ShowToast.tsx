@@ -1,4 +1,4 @@
-import { toast, ToastContent, ToastOptions, Slide, Id } from 'react-toastify'
+import { toast, ToastContent, ToastOptions, Slide, Id } from 'react-toastify';
 
 export const defaultToastOptions: ToastOptions = {
   position: 'top-right',
@@ -10,9 +10,9 @@ export const defaultToastOptions: ToastOptions = {
   progress: undefined,
   theme: 'colored',
   transition: Slide,
-}
+};
 
-type ToastType = 'success' | 'error' | 'info' | 'warning' | 'default'
+type ToastType = 'success' | 'error' | 'info' | 'warning' | 'default';
 
 /**
  * Display toast
@@ -28,19 +28,19 @@ export const showToast = (
   content: ToastContent,
   options: Partial<ToastOptions> = {}
 ): Id => {
-  const optionsToApply = { ...defaultToastOptions, ...options }
+  const optionsToApply = { ...defaultToastOptions, ...options };
 
   switch (type) {
     case 'success':
-      return toast.success(content, optionsToApply)
+      return toast.success(content, optionsToApply);
     case 'error':
-      return toast.error(content, optionsToApply)
+      return toast.error(content, optionsToApply);
     case 'info':
-      return toast.info(content, optionsToApply)
+      return toast.info(content, optionsToApply);
     case 'warning':
-      return toast.warn(content, optionsToApply)
+      return toast.warn(content, optionsToApply);
     case 'default':
     default:
-      return toast(content, optionsToApply)
+      return toast(content, optionsToApply);
   }
-}
+};
