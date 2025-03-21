@@ -1,7 +1,5 @@
-'use client'
-
-import { Box, Container, Grid, Typography } from '@mui/material'
+'use client';
 
 export default function Login() {
-  return <></>
+  return <></>;
 }

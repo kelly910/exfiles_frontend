@@ -1,14 +1,11 @@
-'use client'
-import dynamic from 'next/dynamic'
-import { Box, Container, Grid, Link, Typography } from '@mui/material'
-import { Button } from '@mui/material'
-import { useState } from 'react'
-import CustomTextField from '@/app/components/design/customField'
-import styles from './style.module.scss'
+'use client';
+import { Box, Container, Typography } from '@mui/material';
+import { Button } from '@mui/material';
+import CustomTextField from '@/app/components/design/customField';
+import styles from './style.module.scss';
+import Image from 'next/image';
 
 export default function Page() {
-  const [countryCode, setCountryCode] = useState('+1')
-
   return (
     <main>
       <div className={styles.authSection}>
@@ -16,7 +13,12 @@ export default function Page() {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <img src="/images/logo.svg" alt="logo" />
+                <Image
+                  src="/images/logo.svg"
+                  alt="logo"
+                  width={290}
+                  height={63}
+                />
               </div>
             </Box>
 
@@ -76,13 +78,13 @@ export default function Page() {
         </div>
 
         <div className={styles.before}>
-          <img src="/images/before.svg" height={500} width={500} />
+          <Image src="/images/before.svg" alt="-" height={500} width={500} />
         </div>
 
         <div className={styles.after}>
-          <img src="/images/after.svg" height={306} width={947} />
+          <Image src="/images/after.svg" alt="-" height={306} width={947} />
         </div>
       </div>
     </main>
-  )
+  );
 }

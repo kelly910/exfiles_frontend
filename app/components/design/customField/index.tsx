@@ -65,10 +65,10 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         InputLabelProps={{ style: { color: '#b0b0b0' } }}
         sx={{
           marginTop: '5px',
-          padding: '0px 0 15px 0',
+          padding: '0px 0 10px 0',
           '& .MuiOutlinedInput-root': {
             borderRadius: '12px',
-            backgroundColor: '#2C2C38', // Input background
+            // backgroundColor: '#2C2C38',
             color: '#fff',
             marginTop0: '0px',
             '& .MuiOutlinedInput-input': {
