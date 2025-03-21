@@ -3,16 +3,12 @@ import localFont from 'next/font/local';
 import './globals.css';
 import ToastProvider from './shared/toast/ToastProvider';
 import { ReduxProvider } from './provider';
+import ThemeRegistry from './providers/ThemeRegistry';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
+const fustatFont = localFont({
+  src: './fonts/Fustat-VariableFont_wght.woff',
+  variable: '--font-fustat',
+  weight: '400',
 });
 
 export const metadata: Metadata = {
@@ -27,10 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={fustatFont.className}>
+      <body className={fustatFont.variable}>
         <ReduxProvider>
-          <ToastProvider>{children}</ToastProvider>
+          <ThemeRegistry>
+            <ToastProvider>{children}</ToastProvider>
+          </ThemeRegistry>
         </ReduxProvider>
       </body>
     </html>

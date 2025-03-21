@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import createWebStorage from 'redux-persist/es/storage/createWebStorage';
@@ -5,10 +6,10 @@ import { combineReducers } from 'redux';
 
 const createNoopStorage = () => {
   return {
-    getItem(): Promise<null> {
+    getItem<T>(): Promise<T | null> {
       return Promise.resolve(null);
     },
-    setItem(_key: string, value: any): Promise<any> {
+    setItem<T>(_key: string, value: T): Promise<T> {
       return Promise.resolve(value);
     },
     removeItem(_key: string): Promise<void> {
