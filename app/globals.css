@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap');
 
+:root {
+  --font-fustat: 'Fustat', sans-serif;
+}
+
 html,
 body {
   max-width: 100vw;
