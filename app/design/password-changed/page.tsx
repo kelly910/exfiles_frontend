@@ -30,7 +30,7 @@ export default function Page() {
                 >
                   <div>
                     <Image
-                      src="/images/logo.svg"
+                      src="/images/success.svg"
                       height={148}
                       width={117}
                       alt="logo"
