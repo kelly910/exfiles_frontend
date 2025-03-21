@@ -415,3 +415,11 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.select-new {
+  border: 0 !important;
+}
+
+.select-new.MuiOutlinedInput-root fieldset {
+  border: 0 !important;
+}

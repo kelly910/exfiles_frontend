@@ -1,19 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   TextField,
   InputAdornment,
   IconButton,
   Typography,
-} from '@mui/material'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+  Select,
+  MenuItem,
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 interface CustomTextFieldProps {
-  name: string
-  label: string
-  placeholder: string
-  type?: 'text' | 'password' | 'email'
-  autoComplete?: string
-  error?: string
+  name: string;
+  label: string;
+  placeholder: string;
+  type?: 'text' | 'password' | 'email' | 'number';
+  id?: string;
+  autoComplete?: string;
+  error?: string;
+  isMobile?: boolean; // Enable mobile input with country code
 }
 
 const CustomTextField: React.FC<CustomTextFieldProps> = ({
@@ -22,82 +26,125 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   placeholder,
   type = 'text',
   autoComplete,
+  id,
   error,
+  isMobile = false,
 }) => {
-  const [showPassword, setShowPassword] = useState(false)
-  const isPasswordField = type === 'password'
+  const [showPassword, setShowPassword] = useState(false);
+  const [countryCode, setCountryCode] = useState('+91');
 
   return (
     <div>
+      {/* Label */}
       <Typography
         variant="body2"
         component="label"
+        htmlFor={id || name}
         sx={{
           display: 'block',
           marginBottom: '4px',
           fontSize: '16px',
-          color: error ? '#ff0000' : '#676972',
+          color: error ? '#ff4d4d' : '#676972',
+          fontWeight: 500,
         }}
       >
         {label}
       </Typography>
 
+      {/* Input Field */}
       <TextField
         fullWidth
+        id={id || name}
         name={name}
         placeholder={placeholder}
-        type={isPasswordField && !showPassword ? 'password' : 'text'}
+        type={type === 'password' && !showPassword ? 'password' : type}
         variant="outlined"
         autoComplete={autoComplete}
         error={!!error}
-        helperText={error}
+        helperText={error || ''}
         InputLabelProps={{ style: { color: '#b0b0b0' } }}
         sx={{
           marginTop: '5px',
-          padding: '5px 0 8px 0',
+          padding: '0px 0 20px 0',
           '& .MuiOutlinedInput-root': {
-            // backgroundColor: '#252431',
-            color: '#ffffff',
-            // border: '1px solid #3A3948',
             borderRadius: '12px',
-
+            backgroundColor: '#2C2C38', // Input background
+            color: '#fff',
+            marginTop0: '0px',
             '& .MuiOutlinedInput-input': {
               fontSize: '16px',
               color: '#fff',
-              padding: '15px 18px',
-              fontWeight: '600',
-
-              '&::placeholder': {
-                color: '#4F525A',
-                fontWeight: '400',
-              },
+              padding: '14px 16px',
+              fontWeight: 500,
+              '&::placeholder': { color: '#888', fontWeight: 400 },
             },
-            '& fieldset': {
-              border: '1px solid #3A3948',
-            },
-            '&:hover fieldset': {
-              borderColor: '#ffffff',
-            },
+            '& fieldset': { borderColor: '#3A3948' },
+            '&:hover fieldset': { borderColor: '#fff' },
             '&.Mui-focused fieldset': {
-              borderColor: '#fff', // Blue focus border
+              borderColor: '#fff',
               borderWidth: '1px',
             },
           },
           '& .MuiFormHelperText-root': {
-            color: error ? '#ff0000' : '#b0b0b0',
+            color: error ? '#ff4d4d' : '#b0b0b0',
           },
         }}
         InputProps={{
-          endAdornment: isPasswordField && (
+          // Mobile Input with Country Code
+          startAdornment: isMobile && (
+            <InputAdornment
+              position="start"
+              style={{
+                border: 'none',
+                outline: 'none',
+              }}
+            >
+              <Select
+                value={countryCode}
+                onChange={(e) => setCountryCode(e.target.value)}
+                style={{
+                  position: 'relative',
+                  left: '-12px',
+                  border: 'none',
+                  outline: 'none',
+                  padding: '0px',
+                }}
+                className="select-new"
+                sx={{
+                  padding: '0px',
+                  color: '#b0b0b0',
+                  fontWeight: 'bold',
+                  width: '60px',
+                  border: 'none',
+                  background: 'transparent',
+                  outline: 'none',
+                  bxShadow: 'none',
+                  '& .MuiSelect-icon': {
+                    color: '#fff',
+                    position: 'absolute',
+                    right: '-5px',
+                  },
+                }}
+              >
+                <MenuItem value="+91">+91</MenuItem>
+                <MenuItem value="+1">+1</MenuItem>
+                <MenuItem value="+44">+44</MenuItem>
+                <MenuItem value="+61">+61</MenuItem>
+              </Select>
+            </InputAdornment>
+          ),
+
+          // Password Toggle Visibility
+          endAdornment: type === 'password' && (
             <InputAdornment position="end">
               <IconButton
                 onClick={() => setShowPassword(!showPassword)}
                 edge="end"
               >
                 {showPassword ? (
-                  <VisibilityOff style={{ color: '#b0b0b0' }} />
+                  <VisibilityOff sx={{ color: '#b0b0b0' }} />
                 ) : (
-                  <Visibility style={{ color: '#b0b0b0' }} />
+                  <Visibility sx={{ color: '#b0b0b0' }} />
                 )}
               </IconButton>
             </InputAdornment>
@@ -106,7 +153,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         margin="normal"
       />
     </div>
-  )
-}
+  );
+};
 
-export default CustomTextField
+export default CustomTextField;

@@ -254,14 +254,14 @@
     padding-right: 10px;
   }
 }
-// @media (min-width: 1921px) {
-//   .alreadyLogin {
-//     position: fixed;
-//     left: 0;
-//     right: 0;
-//     bottom: 100px;
-//   }
-// }
+@media (min-width: 1921px) {
+  // .alreadyLogin {
+  //   position: fixed;
+  //   left: 0;
+  //   right: 0;
+  //   bottom: 100px;
+  // }
+}
 
 @media (max-width: 767px) {
   .before {

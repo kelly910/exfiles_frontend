@@ -27,17 +27,42 @@ export default function Page() {
                     Welcome to Exfiles
                   </Typography>
                   <Typography variant="body1" className={styles.formSubtitle}>
-                    Please login to continue using Exfiles.
+                    Please Signup to continue using Exfiles.
                   </Typography>
                 </div>
 
                 <Box component="form" className={styles.authForm}>
                   <CustomTextField
+                    name="First Name"
+                    label="First Name"
+                    placeholder="Enter First Name here"
+                    type="text"
+                    error=""
+                  />
+
+                  <CustomTextField
+                    name="Last Name"
+                    label="Last Name"
+                    placeholder="Enter Last Name here"
+                    type="text"
+                    error=""
+                  />
+
+                  <CustomTextField
+                    name="mobileNumber"
+                    label="Mobile Number"
+                    placeholder="Enter Mobile Number"
+                    type="number"
+                    isMobile={true} // Enable country code
+                    error=""
+                  />
+
+                  <CustomTextField
                     name="email"
                     label="Email Address"
                     placeholder="Enter Email address here"
                     type="email"
-                    autoComplete="email"
+                    // autoComplete="email"
                     error=""
                   />
 
@@ -46,7 +71,14 @@ export default function Page() {
                     label="Password"
                     placeholder="Enter Password"
                     type="password"
-                    autoComplete="current-password"
+                    error=""
+                  />
+
+                  <CustomTextField
+                    name="Confirm Password"
+                    label="Confirm Password"
+                    placeholder="Repeat your password"
+                    type="password"
                     error=""
                   />
 
@@ -68,7 +100,7 @@ export default function Page() {
                       color="primary"
                       fullWidth
                     >
-                      Login
+                      Signup
                     </Button>
                   </Box>
 
