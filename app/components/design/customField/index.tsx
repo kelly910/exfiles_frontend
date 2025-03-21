@@ -57,7 +57,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         id={id || name}
         name={name}
         placeholder={placeholder}
-        type={type === 'password' && !showPassword ? 'password' : type}
+        type={type === 'password' ? (showPassword ? 'text' : 'password') : type} // Fixed password toggle
         variant="outlined"
         autoComplete={autoComplete}
         error={!!error}
@@ -65,24 +65,34 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         InputLabelProps={{ style: { color: '#b0b0b0' } }}
         sx={{
           marginTop: '5px',
-          padding: '0px 0 10px 0',
+          padding: '0px 0 15px 0',
           '& .MuiOutlinedInput-root': {
             borderRadius: '12px',
-            // backgroundColor: '#2C2C38',
+            borderWidth: '0px',
             color: '#fff',
-            marginTop0: '0px',
+            backgroundColor: '#252431',
             '& .MuiOutlinedInput-input': {
               fontSize: '16px',
               color: '#fff',
               padding: '14px 16px',
               fontWeight: 500,
-              '&::placeholder': { color: '#888', fontWeight: 400 },
+              borderRadius: '12px',
+              // backgroundColor: '#252431',
+              '&::placeholder': {
+                color: '#888',
+                fontWeight: 400,
+              },
             },
-            '& fieldset': { borderColor: '#3A3948' },
-            '&:hover fieldset': { borderColor: '#fff' },
+            '& fieldset': {
+              borderColor: '#3A3948',
+            },
+            '&:hover fieldset': {
+              borderColor: '#fff',
+            },
             '&.Mui-focused fieldset': {
               borderColor: '#fff',
               borderWidth: '1px',
+              color: '#fff',
             },
           },
           '& .MuiFormHelperText-root': {
@@ -92,24 +102,11 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         InputProps={{
           // Mobile Input with Country Code
           startAdornment: isMobile && (
-            <InputAdornment
-              position="start"
-              style={{
-                border: 'none',
-                outline: 'none',
-              }}
-            >
+            <InputAdornment position="start">
               <Select
                 value={countryCode}
-                onChange={(e) => setCountryCode(e.target.value)}
-                style={{
-                  position: 'relative',
-                  left: '-12px',
-                  border: 'none',
-                  outline: 'none',
-                  padding: '0px',
-                }}
                 className="select-new"
+                onChange={(e) => setCountryCode(e.target.value)}
                 sx={{
                   padding: '0px',
                   color: '#b0b0b0',
@@ -119,7 +116,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
                   '& .MuiSelect-icon': {
                     color: '#fff',
                     position: 'absolute',
-                    right: '-5px',
+                    right: '-10px',
                   },
                 }}
               >
@@ -135,7 +132,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
           endAdornment: type === 'password' && (
             <InputAdornment position="end">
               <IconButton
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() => setShowPassword((prev) => !prev)}
                 edge="end"
               >
                 {showPassword ? (
