@@ -416,9 +416,9 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.select-new {
+/* .select-new {
   border: 0 !important;
-}
+} */
 
 .select-new.MuiOutlinedInput-root fieldset {
   border: 0 !important;
