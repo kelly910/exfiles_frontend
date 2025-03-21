@@ -24,26 +24,27 @@ export default function Page() {
               <div className={styles.formCard}>
                 <div className={styles.formHeader}>
                   <Typography variant="h2" className={styles.formTitle}>
-                    Welcome to Exfiles
+                    Set a New Password
                   </Typography>
                   <Typography variant="body1" className={styles.formSubtitle}>
-                    Please Signup to continue using Exfiles.
+                    Password must be at least 8 characters long and must contain
+                    1 special character, 1 capital letter, and 1 number
                   </Typography>
                 </div>
 
                 <Box component="form" className={styles.authForm}>
                   <CustomTextField
-                    name="email"
-                    label="Email Address"
-                    placeholder="Enter Email address here"
-                    type="email"
-                    autoComplete="email"
+                    name="password"
+                    label="Password"
+                    placeholder="Choose a strong Password"
+                    type="password"
+                    autoComplete="current-password"
                     error=""
                   />
 
                   <CustomTextField
                     name="password"
-                    label="Password"
+                    label="Confirm Password"
                     placeholder="Enter Password"
                     type="password"
                     autoComplete="current-password"
@@ -55,12 +56,9 @@ export default function Page() {
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
+                      justifyContent: 'flex-end',
                     }}
                   >
-                    <Link href="#" className="link-primary">
-                      Need Help Logging In?
-                    </Link>
                     <Button
                       type="submit"
                       variant="contained"
@@ -68,57 +66,11 @@ export default function Page() {
                       color="primary"
                       fullWidth
                     >
-                      Login
-                    </Button>
-                  </Box>
-
-                  <Box className={styles.googleLogin}>
-                    <Typography
-                      variant="body2"
-                      className={styles.textSecondary}
-                    >
-                      You Can also Continue with
-                    </Typography>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      className={`btn btn-tertiary ${styles.googleBtn}`}
-                      startIcon={
-                        <img
-                          src="/images/google-icon.svg"
-                          alt="google-icon"
-                          className={styles.googleBtnIcon}
-                        />
-                      }
-                      fullWidth
-                    >
-                      Google
+                      Continue
                     </Button>
                   </Box>
                 </Box>
               </div>
-            </Box>
-
-            <Box
-              component="section"
-              className={styles.alreadyLogin}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div className="">
-                <Typography variant="h4" gutterBottom>
-                  Already a Member?
-                </Typography>
-                <Typography variant="body1" component="p" gutterBottom>
-                  Lorem Ipsum dolor sit amet
-                </Typography>
-              </div>
-              <Button variant="contained" className={`btn btn-secondary `}>
-                Click Here to Login
-              </Button>
             </Box>
           </Container>
         </div>

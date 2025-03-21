@@ -35,8 +35,8 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         sx={{
           display: 'block',
           marginBottom: '4px',
-          fontSize: '14px',
-          color: error ? '#d32f2f' : '#ffffff',
+          fontSize: '16px',
+          color: error ? '#ff0000' : '#676972',
         }}
       >
         {label}
@@ -56,23 +56,35 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
           marginTop: '5px',
           padding: '5px 0 8px 0',
           '& .MuiOutlinedInput-root': {
-            backgroundColor: 'transparent',
+            // backgroundColor: '#252431',
             color: '#ffffff',
-            borderRadius: '8px',
-            borderColor: '#3A3948',
+            // border: '1px solid #3A3948',
+            borderRadius: '12px',
+
+            '& .MuiOutlinedInput-input': {
+              fontSize: '16px',
+              color: '#fff',
+              padding: '15px 18px',
+              fontWeight: '600',
+
+              '&::placeholder': {
+                color: '#4F525A',
+                fontWeight: '400',
+              },
+            },
             '& fieldset': {
-              borderColor: '#3A3948',
+              border: '1px solid #3A3948',
             },
             '&:hover fieldset': {
               borderColor: '#ffffff',
             },
             '&.Mui-focused fieldset': {
               borderColor: '#fff', // Blue focus border
-              borderWidth: '2px',
+              borderWidth: '1px',
             },
           },
           '& .MuiFormHelperText-root': {
-            color: error ? '#d32f2f' : '#b0b0b0',
+            color: error ? '#ff0000' : '#b0b0b0',
           },
         }}
         InputProps={{

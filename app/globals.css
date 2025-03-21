@@ -104,10 +104,11 @@ a {
 
 .btn {
   flex: initial !important;
-  border-radius: 12px;
-  font-size: 16px;
-  letter-spacing: -1%;
-  text-align: center;
+  border-radius: 12px !important;
+  font-size: 16px !important;
+  letter-spacing: -1% !important;
+  text-align: center !important;
+  text-transform: capitalize !important;
 
 }
 
@@ -128,14 +129,22 @@ a {
   font-weight: 700;
   min-width: 168px;
   width: max-content;
-  padding: 13px 24px;
+  padding: 10px 24px;
   border-radius: 12px !important;
 }
 
 .btn.btn-primary:hover,
 .btn.btn-primary:active,
 .btn.btn-primary:focus {
-  background: linear-gradient(90deg, #953DF5 100%, #B948FF 75%, #7231EC 50%, #4E26E2 25%, #7231EC 0%) !important;
+  background:
+    linear-gradient(0deg, #d9d9d9, #d9d9d9),
+    linear-gradient(90deg,
+      #2a1ad8 0%,
+      #4e26e2 25%,
+      #7231ec 50%,
+      #953df5 75%,
+      #b948ff 100%) !important;
+  background-blend-mode: overlay !important;
   transition: all 0.2s linear;
 }
 
@@ -144,7 +153,7 @@ a {
 .btn.btn-tertiary {
   min-width: 163px;
   font-weight: 400;
-  padding: 12px 24px;
+  padding: 10px 24px;
   color: #000000 !important;
   display: flex;
   align-items: center;
@@ -160,7 +169,7 @@ a {
 
 .btn.btn-secondary {
   min-width: 185px;
-  padding: 18px 24px;
+  padding: 10px 24px;
   border: 1px solid #fff !important;
   background-color: transparent !important;
   text-decoration: none;
@@ -186,11 +195,15 @@ a {
   font-weight: 600 !important;
   font-size: 16px !important;
   letter-spacing: 0% !important;
-  color: #B2B1B9 !important;
+  color: #4F525A !important;
   text-decoration: underline;
   font-weight: 600 !important;
+  text-decoration-color: #4F525A !important;
 }
 
+.link-primary:hover {
+  color: #fff !important;
+}
 
 @media (max-width: 768px) {
 

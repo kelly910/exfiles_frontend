@@ -57,7 +57,7 @@
   font-weight: 600;
   font-size: 16px;
   letter-spacing: 0%;
-  color: #fff;
+  color: #dadae1;
   margin-bottom: 0;
 }
 
@@ -66,17 +66,28 @@
   max-width: 515px;
   padding: 24px;
   margin: 48px auto 0 auto;
-  background: linear-gradient(
-    90deg,
-    #2a1ad8 0%,
-    #4e26e2 25%,
-    #7231ec 50%,
-    #953df5 75%,
-    #b948ff 100%
-  ) !important;
+  background:
+    linear-gradient(0deg, #d9d9d9, #d9d9d9),
+    linear-gradient(
+      90deg,
+      #2a1ad8 0%,
+      #4e26e2 25%,
+      #7231ec 50%,
+      #953df5 75%,
+      #b948ff 100%
+    );
+  background-blend-mode: overlay;
+
   border-radius: 24px;
   display: flex;
   align-items: center;
+
+  p {
+    color: #ffffff45;
+    font-family: Fustat;
+    font-weight: 500;
+    font-size: 14px !important;
+  }
 }
 
 .loginGroup {
@@ -143,6 +154,10 @@
   width: 947px;
   height: 306px;
   left: auto;
+}
+
+.btnGroup {
+  margin-top: 25px;
 }
 
 /* Form Header */
