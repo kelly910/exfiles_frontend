@@ -423,3 +423,9 @@ input::-webkit-inner-spin-button {
 .select-new.MuiOutlinedInput-root fieldset {
   border: 0 !important;
 }
+
+.error-input-field {
+  margin-top: 5px !important;
+  color: #ff4d4d !important;
+  font-size: 15px !important;
+}
