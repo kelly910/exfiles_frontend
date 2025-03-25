@@ -18,6 +18,10 @@ const confirmPasswordSchema: Yup.StringSchema = Yup.string()
   .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
   .required('Password confirmation is required');
 
+const confirmNewPasswordSchema: Yup.StringSchema = Yup.string()
+  .oneOf([Yup.ref('new_password'), undefined], 'Passwords must match')
+  .required('Password confirmation is required');
+
 const emailSchema: Yup.StringSchema = Yup.string()
   .email('Invalid email address')
   .matches(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, 'Invalid email address')
@@ -38,4 +42,5 @@ export {
   confirmPasswordSchema,
   contactNumberSchema,
   otpSchema,
+  confirmNewPasswordSchema,
 };
