@@ -22,6 +22,8 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { showToast } from '@/app/shared/toast/ShowToast';
+import { useGoogleLogin } from '@react-oauth/google';
+import { socialGoogleLogin } from '@/app/redux/slices/login';
 
 export interface RegisterFormValues {
   first_name: string;
@@ -82,6 +84,23 @@ const Page = () => {
       setLoadingSignup(false);
     }
   };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse: { access_token: string }) => {
+      try {
+        const response = await dispatch(
+          socialGoogleLogin({ access_token: tokenResponse.access_token })
+        ).unwrap();
+        localStorage.setItem('loggedInUser', JSON.stringify(response));
+        router.push('/dashboard');
+      } catch (error) {
+        handleError(error as ErrorResponse);
+      }
+    },
+    onError: (error) => {
+      handleError(error as ErrorResponse);
+    },
+  });
 
   return (
     <main>
@@ -667,6 +686,7 @@ const Page = () => {
                     <Button
                       variant="outlined"
                       color="secondary"
+                      onClick={() => googleLogin()}
                       className={`btn btn-tertiary ${styles.googleBtn}`}
                       startIcon={
                         <Image
