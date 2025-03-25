@@ -4,6 +4,7 @@ import './globals.css';
 import ToastProvider from './shared/toast/ToastProvider';
 import { ReduxProvider } from './provider';
 import ThemeRegistry from './providers/ThemeRegistry';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const fustatFont = localFont({
   src: './fonts/Fustat-VariableFont_wght.woff',
@@ -25,11 +26,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={fustatFont.className}>
       <body className={fustatFont.variable}>
-        <ReduxProvider>
-          <ThemeRegistry>
-            <ToastProvider>{children}</ToastProvider>
-          </ThemeRegistry>
-        </ReduxProvider>
+        <GoogleOAuthProvider
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}
+        >
+          <ReduxProvider>
+            <ThemeRegistry>
+              <ToastProvider>{children}</ToastProvider>
+            </ThemeRegistry>
+          </ReduxProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

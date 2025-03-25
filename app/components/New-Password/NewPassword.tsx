@@ -1,81 +1,72 @@
 'use client';
-
 import {
   Box,
-  CircularProgress,
   Container,
   IconButton,
   InputAdornment,
-  Link,
   TextField,
   Typography,
+  Link,
+  CircularProgress,
 } from '@mui/material';
 import { Button } from '@mui/material';
-import styles from './login.module.scss';
+import styles from './newPassword.module.scss';
 import Image from 'next/image';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { changePasswordValidationSchema } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { loginValidationSchema } from '@/app/utils/validationSchema/formValidationSchemas';
-import { useRouter } from 'next/navigation';
-import { useGoogleLogin } from '@react-oauth/google';
-import { loginUser, socialGoogleLogin } from '@/app/redux/slices/login';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
-export interface LoginFormValues {
+import { resetPassword } from '@/app/redux/slices/login';
+
+export interface NewPasswordFormValues {
   email: string;
-  password: string;
+  new_password: string;
+  confirm_password: string;
+  otp: string;
+  otp_type: string;
 }
 
 const Page = () => {
+  const searchParams = useSearchParams();
+  const email = searchParams.get('email');
+  const otpValue = searchParams.get('otp');
   const [showPassword, setShowPassword] = useState(false);
-  const [loadingLogin, setLoadingLogin] = useState(false);
-  const [loadingRegister, setLoadingRegister] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const initialValues: LoginFormValues = {
-    email: '',
-    password: '',
-  };
   const dispatch = useAppDispatch();
+  const initialValues: NewPasswordFormValues = {
+    email: email as string,
+    otp: otpValue as string,
+    otp_type: 'forgot_password',
+    new_password: '',
+    confirm_password: '',
+  };
 
-  const loginUserClick = async (values: LoginFormValues): Promise<void> => {
+  const newPasswordChangeClick = async (
+    values: NewPasswordFormValues
+  ): Promise<void> => {
+    setLoading(true);
     try {
-      setLoadingLogin(true);
-      setTimeout(async () => {
-        try {
-          const response = await dispatch(loginUser(values)).unwrap();
-          if (response.token) {
-            localStorage.setItem('loggedInUser', JSON.stringify(response));
-            router.push('/dashboard');
-          }
-        } catch (error) {
-          handleError(error as ErrorResponse);
-        } finally {
-          setLoadingLogin(false);
+      const response = await dispatch(resetPassword(values)).unwrap();
+      setTimeout(() => {
+        if (response?.messages?.length) {
+          showToast('success', response.messages[0]);
+          router.push('/password-successfull');
         }
+        setLoading(false);
       }, 1000);
     } catch (error) {
-      handleError(error as ErrorResponse);
-      setLoadingLogin(false);
+      setTimeout(() => {
+        handleError(error as ErrorResponse);
+        setLoading(false);
+      }, 1000);
     }
   };
-
-  const googleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse: { access_token: string }) => {
-      try {
-        const response = await dispatch(
-          socialGoogleLogin({ access_token: tokenResponse.access_token })
-        ).unwrap();
-        localStorage.setItem('loggedInUser', JSON.stringify(response));
-        router.push('/dashboard');
-      } catch (error) {
-        handleError(error as ErrorResponse);
-      }
-    },
-    onError: (error) => {
-      handleError(error as ErrorResponse);
-    },
-  });
 
   return (
     <main>
@@ -97,10 +88,11 @@ const Page = () => {
               <div className={styles.formCard}>
                 <div className={styles.formHeader}>
                   <Typography variant="h2" className={styles.formTitle}>
-                    Welcome to Exfiles
+                    Set a New Password
                   </Typography>
                   <Typography variant="body1" className={styles.formSubtitle}>
-                    Please login to continue using Exfiles.
+                    Password must be at least 8 characters long and must contain
+                    1 special character, 1 capital letter, and 1 number
                   </Typography>
                 </div>
 
@@ -108,109 +100,38 @@ const Page = () => {
                   <Formik
                     initialValues={initialValues}
                     enableReinitialize={true}
-                    validationSchema={loginValidationSchema}
-                    onSubmit={loginUserClick}
+                    validationSchema={changePasswordValidationSchema}
+                    onSubmit={newPasswordChangeClick}
                   >
                     {({ errors, touched, handleSubmit }) => (
                       <Form onSubmit={handleSubmit}>
                         <Typography
                           variant="body2"
                           component="label"
-                          htmlFor="email"
+                          htmlFor="new_password"
                           sx={{
                             display: 'block',
                             fontSize: '16px',
                             color:
-                              errors.email && touched.email
+                              errors.new_password && touched.new_password
                                 ? '#ff4d4d'
                                 : '#676972',
                             fontWeight: 500,
                           }}
                         >
-                          Email Address
-                        </Typography>
-                        <div style={{ marginBottom: '24px' }}>
-                          <Field
-                            as={TextField}
-                            fullWidth
-                            type="text"
-                            id="email"
-                            name="email"
-                            placeholder="Enter Email Address here"
-                            error={Boolean(errors.email && touched.email)}
-                            sx={{
-                              marginTop: '5px',
-                              '& .MuiOutlinedInput-root': {
-                                borderRadius: '12px',
-                                borderWidth: '0px',
-                                color: '#fff',
-                                backgroundColor: '#252431',
-                                '& .MuiOutlinedInput-notchedOutline': {
-                                  top: '-10px !important',
-                                },
-                                '& .MuiOutlinedInput-input': {
-                                  fontSize: '16px',
-                                  color: '#fff',
-                                  padding: '14px 16px',
-                                  fontWeight: 500,
-                                  borderRadius: '12px',
-                                  '&::placeholder': {
-                                    color: '#888',
-                                    fontWeight: 400,
-                                  },
-                                },
-                                '& fieldset': {
-                                  borderColor: '#3A3948',
-                                },
-                                '&:hover fieldset': {
-                                  borderColor: '#fff',
-                                },
-                                '&.Mui-focused fieldset': {
-                                  borderColor: '#fff',
-                                  borderWidth: '1px',
-                                  color: '#fff',
-                                },
-                              },
-                              '& .MuiFormHelperText-root': {
-                                color:
-                                  errors.email && touched.email
-                                    ? '#ff4d4d'
-                                    : '#b0b0b0',
-                              },
-                            }}
-                          />
-                          <ErrorMessage
-                            name="email"
-                            component="div"
-                            className="error-input-field"
-                          />
-                        </div>
-
-                        <Typography
-                          variant="body2"
-                          component="label"
-                          htmlFor="password"
-                          sx={{
-                            display: 'block',
-                            fontSize: '16px',
-                            color:
-                              errors.password && touched.password
-                                ? '#ff4d4d'
-                                : '#676972',
-                            fontWeight: 500,
-                          }}
-                        >
-                          Password
+                          New Password
                         </Typography>
                         <div style={{ marginBottom: '24px' }}>
                           <Field
                             as={TextField}
                             fullWidth
                             type={showPassword ? 'text' : 'password'}
-                            id="password"
-                            name="password"
+                            id="new_password"
+                            name="new_password"
                             placeholder="Choose a strong Password"
-                            error={Boolean(errors.password && touched.password)}
+                            error={Boolean(
+                              errors.new_password && touched.new_password
+                            )}
                             sx={{
                               marginTop: '5px',
                               '& .MuiOutlinedInput-root': {
@@ -246,7 +167,7 @@ const Page = () => {
                               },
                               '& .MuiFormHelperText-root': {
                                 color:
-                                  errors.password && touched.password
+                                  errors.new_password && touched.new_password
                                     ? '#ff4d4d'
                                     : '#b0b0b0',
                               },
@@ -273,7 +194,105 @@ const Page = () => {
                             }}
                           />
                           <ErrorMessage
-                            name="password"
+                            name="new_password"
+                            component="div"
+                            className="error-input-field"
+                          />
+                        </div>
+
+                        <Typography
+                          variant="body2"
+                          component="label"
+                          htmlFor="confirm_password"
+                          sx={{
+                            display: 'block',
+                            fontSize: '16px',
+                            color:
+                              errors.confirm_password &&
+                              touched.confirm_password
+                                ? '#ff4d4d'
+                                : '#676972',
+                            fontWeight: 500,
+                          }}
+                        >
+                          Confirm Password
+                        </Typography>
+                        <div style={{ marginBottom: '24px' }}>
+                          <Field
+                            as={TextField}
+                            fullWidth
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="Repeat your password"
+                            error={Boolean(
+                              errors.confirm_password &&
+                                touched.confirm_password
+                            )}
+                            sx={{
+                              marginTop: '5px',
+                              '& .MuiOutlinedInput-root': {
+                                borderRadius: '12px',
+                                borderWidth: '0px',
+                                color: '#fff',
+                                backgroundColor: '#252431',
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                  top: '-10px !important',
+                                },
+                                '& .MuiOutlinedInput-input': {
+                                  fontSize: '16px',
+                                  color: '#fff',
+                                  padding: '14px 16px',
+                                  fontWeight: 500,
+                                  borderRadius: '12px',
+                                  '&::placeholder': {
+                                    color: '#888',
+                                    fontWeight: 400,
+                                  },
+                                },
+                                '& fieldset': {
+                                  borderColor: '#3A3948',
+                                },
+                                '&:hover fieldset': {
+                                  borderColor: '#fff',
+                                },
+                                '&.Mui-focused fieldset': {
+                                  borderColor: '#fff',
+                                  borderWidth: '1px',
+                                  color: '#fff',
+                                },
+                              },
+                              '& .MuiFormHelperText-root': {
+                                color:
+                                  errors.confirm_password &&
+                                  touched.confirm_password
+                                    ? '#ff4d4d'
+                                    : '#b0b0b0',
+                              },
+                            }}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    onClick={() =>
+                                      setShowConfirmPassword((prev) => !prev)
+                                    }
+                                    edge="end"
+                                  >
+                                    {showConfirmPassword ? (
+                                      <Visibility sx={{ color: '#b0b0b0' }} />
+                                    ) : (
+                                      <VisibilityOff
+                                        sx={{ color: '#b0b0b0' }}
+                                      />
+                                    )}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                          <ErrorMessage
+                            name="confirm_password"
                             component="div"
                             className="error-input-field"
                           />
@@ -292,7 +311,7 @@ const Page = () => {
                             className="link-primary"
                             onClick={() => router.push('/forgot-password')}
                           >
-                            Need Help Logging In?
+                            Back
                           </Link>
                           <Button
                             type="submit"
@@ -300,86 +319,24 @@ const Page = () => {
                             className={`btn btn-primary`}
                             color="primary"
                             fullWidth
-                            disabled={loadingLogin}
+                            disabled={loading}
                           >
-                            {loadingLogin ? (
+                            {loading ? (
                               <CircularProgress size={24} color="inherit" />
                             ) : (
-                              'Login'
+                              'Continue'
                             )}
                           </Button>
                         </Box>
                       </Form>
                     )}
                   </Formik>
-
-                  <Box className={styles.googleLogin}>
-                    <Typography
-                      variant="body2"
-                      className={styles.textSecondary}
-                    >
-                      You Can also Continue with
-                    </Typography>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={() => googleLogin()}
-                      className={`btn btn-tertiary ${styles.googleBtn}`}
-                      startIcon={
-                        <Image
-                          src="/images/google-icon.svg"
-                          alt="google-icon"
-                          width={24}
-                          height={24}
-                          className={styles.googleBtnIcon}
-                        />
-                      }
-                      fullWidth
-                    >
-                      Google
-                    </Button>
-                  </Box>
                 </Box>
               </div>
             </Box>
-
-            <Box
-              component="section"
-              className={styles.alreadyLogin}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div className="">
-                <Typography variant="h4" gutterBottom>
-                  Not a Member yet?
-                </Typography>
-                <Typography variant="body1" component="p" gutterBottom>
-                  Lorem Ipsum dolor sit amet
-                </Typography>
-              </div>
-              <Button
-                variant="contained"
-                className={`btn btn-secondary `}
-                onClick={() => {
-                  setLoadingRegister(true);
-                  setTimeout(() => {
-                    router.push('/signup');
-                  }, 1000);
-                }}
-                disabled={loadingRegister}
-              >
-                {loadingRegister ? (
-                  <CircularProgress size={24} color="inherit" />
-                ) : (
-                  'Click Here to Join'
-                )}
-              </Button>
-            </Box>
           </Container>
         </div>
+
         <div className={styles.before}>
           <Image src="/images/before.svg" alt="-" height={500} width={500} />
         </div>

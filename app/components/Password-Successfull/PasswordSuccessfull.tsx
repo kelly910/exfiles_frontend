@@ -1,12 +1,14 @@
 'use client';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Typography, CircularProgress } from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './passwordSuccess.module.scss';
 import Image from 'next/image';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   return (
     <main>
       <div className={styles.authSection}>
@@ -66,9 +68,21 @@ const Page = () => {
                       className={`btn btn-primary`}
                       color="primary"
                       fullWidth
-                      onClick={() => router.push('/login')}
+                      onClick={() => {
+                        setLoading(true);
+                        setTimeout(() => {
+                          router.push('/login');
+                        }, 1000);
+                        
+                      }}
+                      disabled={loading}
                     >
-                      Go Back to Login
+                       {loading ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : (
+                        ' Go Back to Login'
+                      )}
+                      
                     </Button>
                   </Box>
                 </Box>

@@ -4,6 +4,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import createWebStorage from 'redux-persist/es/storage/createWebStorage';
 import { combineReducers } from 'redux';
 import registerSlice from './slices/register';
+import loginSlice from './slices/login';
 
 const createNoopStorage = () => {
   return {
@@ -32,6 +33,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   register: registerSlice,
+  login: loginSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Button } from '@mui/material';
-import styles from './quickVerification.module.scss';
+import styles from './forgotPasswordVerification.module.scss';
 import Image from 'next/image';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -53,7 +53,7 @@ const Page = () => {
     await dispatch(
       sendOtp({
         email: email as string,
-        otp_type: 'user_register',
+        otp_type: 'forgot_password',
       })
     );
     showToast('success', 'OTP sent successfully.');
@@ -106,7 +106,7 @@ const Page = () => {
       const payload: OtpVerificationFormValues = {
         otp: otpValue,
         email: email as string,
-        otp_type: 'user_register',
+        otp_type: 'forgot_password',
       };
 
       try {
@@ -118,7 +118,7 @@ const Page = () => {
         setTimeout(() => {
           if (otpVerified) {
             showToast('success', 'OTP verified successfully!');
-            router.push('/account-created');
+            router.push(`/new-password?email=${payload.email}&otp=${otpValue}`);
           } else {
             showToast('error', 'OTP verification failed. Please try again.');
           }
@@ -153,11 +153,11 @@ const Page = () => {
               <div className={styles.formCard}>
                 <div className={styles.formHeader}>
                   <Typography variant="h2" className={styles.formTitle}>
-                    A Quick Verification
+                    Check Your Mail Inbox
                   </Typography>
                   <Typography variant="body1" className={styles.formSubtitle}>
-                    We have sent you a One Time Password (OTP) on registered
-                    Email Address. Enter that OTP here and we are good to go
+                    We have sent you a One Time Password (OTP) on the mentioned
+                    Email Address. Enter that OTP here to recover your account
                   </Typography>
                 </div>
 
@@ -166,7 +166,7 @@ const Page = () => {
                     initialValues={{
                       otp: ['', '', '', ''],
                       email: email,
-                      otp_type: 'user_register',
+                      otp_type: 'forgot_password',
                     }}
                     enableReinitialize={true}
                     onSubmit={otpVerificationClick}
