@@ -1,0 +1,320 @@
+// .docsPageMain {
+//   height: calc(100vh - 65px);
+//   overflow-y: auto;
+// }
+
+.docsMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.docsListing {
+  position: relative;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+
+  .searchBoard {
+    width: 100%;
+    padding: 24px 33px 12px 33px;
+    background-color: #11101b;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    .docBoard {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+
+      .searchInput {
+        border: 1px solid #3a3948;
+        border-radius: 10px;
+        padding: 4px 4px 4px 12px;
+        width: 100%;
+        color: #898b94;
+
+        &::after {
+          content: none !important;
+        }
+
+        input {
+          color: #dadae1;
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  .searchIcon {
+    cursor: pointer;
+
+    .search {
+      background-image: url('/images/search.svg');
+      width: 28px;
+      height: 28px;
+      aspect-ratio: 1 / 1;
+      display: block;
+      position: relative;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 14px;
+      border: 0.72px solid #3a3948;
+      background-color: #2c2a38;
+      padding: 7px;
+      border-radius: 8px;
+    }
+  }
+
+  .docBoxMain {
+    width: 100%;
+    padding: 12px 33px 24px 33px;
+
+    .docGridBox {
+      background-color: #1b1a25;
+      padding: 8px;
+      border-radius: 10px;
+
+      .docBox {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 8px;
+
+        .pdfImg {
+          width: 34px;
+          height: 34px;
+          background-color: #2c2a38;
+          border-radius: 4px;
+          padding: 7px;
+          flex: 0 0 auto;
+        }
+
+        .docTitle {
+          font-weight: 700;
+          font-size: 14px !important;
+          line-height: 19px;
+          color: #dadae1;
+          width: 100%;
+        }
+
+        .moreImg {
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+        }
+      }
+
+      .docDateBox {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+
+        .docTagBox {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+
+          .docTag {
+            font-weight: 400;
+            font-size: 12px !important;
+            line-height: 16px;
+            color: #898b94;
+            padding: 4px 8px;
+            border: 0.5px solid #3a3948;
+            border-radius: 500px;
+          }
+        }
+
+        p {
+          font-weight: 400;
+          font-size: 12px !important;
+          line-height: 140%;
+          text-align: right;
+          text-transform: capitalize;
+          color: #898b94;
+          min-width: 100px;
+        }
+      }
+    }
+  }
+}
+
+.categories {
+  position: relative;
+  min-width: 300px;
+  width: 300px;
+  flex: 0 0 auto;
+  border-right: 1px solid #3a3948;
+  padding-bottom: 24px;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+
+  .categoryBox {
+    padding: 21px 16px 16px 16px;
+    background-color: #11101b;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    .categoriesTitle {
+      font-weight: 700;
+      font-size: 16px !important;
+      line-height: 140%;
+      letter-spacing: -2%;
+      color: #dadae1;
+    }
+  }
+
+  .docsFolder {
+    background-color: #11101b;
+    padding: 8px;
+    border-radius: 10px;
+    margin: 0 16px;
+    margin-bottom: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &.active {
+      background-color: #2c2a38;
+    }
+
+    &:hover {
+      background-color: #2c2a38;
+    }
+
+    .folderBox {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 4px;
+
+      .arrowRightImg {
+        width: 16px;
+        flex: 0 0 auto;
+      }
+
+      .folderImg {
+        width: 18px;
+        flex: 0 0 auto;
+      }
+
+      .folderTitleBox {
+        width: 100%;
+
+        .folderTitle {
+          font-weight: 700;
+          font-size: 14px !important;
+          line-height: 140%;
+          letter-spacing: 0%;
+          color: #dadae1;
+        }
+
+        .folderNo {
+          font-weight: 500;
+          font-size: 12px !important;
+          line-height: 140%;
+          letter-spacing: 0%;
+          color: #898b94;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+}
+
+.docsBoard {
+  min-width: 500px;
+  width: 500px;
+  border-left: 1px solid #3a3948;
+  position: relative;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+
+  .docsBoardHeader {
+    background-color: #1b1a25;
+    padding: 12px 24px;
+    border-bottom: 1px solid #3a3948;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    .docsInner {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 10px;
+
+      .docsTitle {
+        font-weight: 600;
+        font-size: 16px !important;
+        line-height: 140%;
+        letter-spacing: 0%;
+        color: #dadae1;
+      }
+
+      .docsDate {
+        font-weight: 400;
+        font-size: 12px !important;
+        line-height: 140%;
+        letter-spacing: -2%;
+        color: #898b94;
+      }
+    }
+    .docsInnerTag {
+      display: flex;
+      justify-content: start;
+      align-items: stretch;
+      gap: 8px;
+      margin-top: 4px;
+
+      span {
+        background: #2c2a38;
+        border: 0.5px solid #3a3948;
+        padding: 4px 8px;
+        border-radius: 500px;
+        font-weight: 600;
+        font-size: 10px !important;
+        line-height: 140%;
+        text-transform: capitalize;
+      }
+    }
+  }
+  .docsBoardBody {
+    padding: 16px 24px 24px 24px;
+
+    .docsBodyTitle {
+      font-weight: 500;
+      font-size: 14px !important;
+      line-height: 140%;
+      letter-spacing: 0%;
+      color: #898b94;
+    }
+    .docsBodyText {
+      padding: 12px 11px;
+      background-color: #1b1a25;
+      border-radius: 12px;
+      margin-top: 12px;
+      margin-bottom: 24px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      p {
+        font-weight: 500;
+        font-size: 16px !important;
+        line-height: 140%;
+        letter-spacing: 0%;
+        color: #dadae1;
+      }
+    }
+  }
+}
