@@ -102,7 +102,6 @@ const Page = () => {
 
       try {
         const response = await dispatch(verifyOtp(payload)).unwrap();
-        console.log(response, 'response');
         const otpVerified = response?.messages?.length
           ? response.messages[0].otp_verified
           : false;
@@ -179,11 +178,6 @@ const Page = () => {
                                 variant="outlined"
                                 type="text"
                                 value={digit}
-                                // onChange={(e: any) => handleChange(index, e)}
-                                // onKeyDown={(e: any) => handleKeyDown(index, e)}
-                                // inputRef={(el: any) =>
-                                //   (inputRefs.current[index] = el)
-                                // }
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
                                 ) => handleChange(index, e)}

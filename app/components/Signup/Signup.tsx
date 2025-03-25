@@ -67,7 +67,6 @@ const Page = () => {
         return;
       }
     } catch (error) {
-      console.error('error', error);
       handleError(error as ErrorResponse);
     }
   };
