@@ -7,6 +7,7 @@ import {
   emailSchema,
   contactNumberSchema,
   otpSchema,
+  confirmNewPasswordSchema,
 } from './validationSchemas';
 
 // Register Validation Schema
@@ -36,6 +37,6 @@ export const forgotPasswordValidationSchema = Yup.object({
 
 // Change Password Validation Schema
 export const changePasswordValidationSchema = Yup.object({
-  password: passwordSchema,
-  confirm_password: confirmPasswordSchema,
+  new_password: passwordSchema,
+  confirm_password: confirmNewPasswordSchema,
 });
