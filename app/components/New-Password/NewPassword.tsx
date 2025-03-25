@@ -7,6 +7,7 @@ import {
   TextField,
   Typography,
   Link,
+  CircularProgress,
 } from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './newPassword.module.scss';
@@ -35,6 +36,7 @@ const Page = () => {
   const otpValue = searchParams.get('otp');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const initialValues: NewPasswordFormValues = {
@@ -48,14 +50,21 @@ const Page = () => {
   const newPasswordChangeClick = async (
     values: NewPasswordFormValues
   ): Promise<void> => {
+    setLoading(true);
     try {
       const response = await dispatch(resetPassword(values)).unwrap();
-      if (response?.messages?.length) {
-        showToast('success', response.messages[0]);
-        router.push('/password-successfull');
-      }
+      setTimeout(() => {
+        if (response?.messages?.length) {
+          showToast('success', response.messages[0]);
+          router.push('/password-successfull');
+        }
+        setLoading(false);
+      }, 1000);
     } catch (error) {
-      handleError(error as ErrorResponse);
+      setTimeout(() => {
+        handleError(error as ErrorResponse);
+        setLoading(false);
+      }, 1000);
     }
   };
 
@@ -310,8 +319,13 @@ const Page = () => {
                             className={`btn btn-primary`}
                             color="primary"
                             fullWidth
+                            disabled={loading}
                           >
-                            Continue
+                            {loading ? (
+                              <CircularProgress size={24} color="inherit" />
+                            ) : (
+                              'Continue'
+                            )}
                           </Button>
                         </Box>
                       </Form>

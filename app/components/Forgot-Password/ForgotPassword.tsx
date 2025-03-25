@@ -1,10 +1,18 @@
 'use client';
 
-import { Box, Container, Link, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  Link,
+  TextField,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './forgotPassword.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { forgotPasswordValidationSchema } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useAppDispatch } from '@/app/redux/hooks';
@@ -19,6 +27,7 @@ export interface ForgotPasswordFormValues {
 
 const Page = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const initialValues: ForgotPasswordFormValues = {
     email: '',
     otp_type: 'forgot_password',
@@ -28,14 +37,21 @@ const Page = () => {
   const forgotPasswordClick = async (
     values: ForgotPasswordFormValues
   ): Promise<void> => {
+    setLoading(true);
     try {
       const response = await dispatch(forgotPassword(values)).unwrap();
-      if (response?.messages?.length) {
-        showToast('success', response.messages[0]);
-        router.push(`/forgot-password-verification?email=${values.email}`);
-      }
+      setTimeout(() => {
+        if (response?.messages?.length) {
+          showToast('success', response.messages[0]);
+          router.push(`/forgot-password-verification?email=${values.email}`);
+        }
+        setLoading(false);
+      }, 1000);
     } catch (error) {
-      handleError(error as ErrorResponse);
+      setTimeout(() => {
+        handleError(error as ErrorResponse);
+        setLoading(false);
+      }, 1000);
     }
   };
 
@@ -171,8 +187,13 @@ const Page = () => {
                             className={`btn btn-primary`}
                             color="primary"
                             fullWidth
+                            disabled={loading}
                           >
-                            Continue
+                            {loading ? (
+                              <CircularProgress size={24} color="inherit" />
+                            ) : (
+                              'Continue'
+                            )}
                           </Button>
                         </Box>
                       </Form>

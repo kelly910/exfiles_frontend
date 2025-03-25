@@ -8,6 +8,7 @@ import {
   Select,
   TextField,
   Typography,
+  CircularProgress,
 } from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './register.module.scss';
@@ -35,6 +36,8 @@ const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [countryCode, setCountryCode] = useState('+91');
+  const [loadingSignup, setLoadingSignup] = useState(false);
+  const [loadingLogin, setLoadingLogin] = useState(false);
   const router = useRouter();
   const initialValues: RegisterFormValues = {
     first_name: '',
@@ -50,24 +53,33 @@ const Page = () => {
     values: RegisterFormValues
   ): Promise<void> => {
     try {
+      setLoadingSignup(true);
       const payload = {
         ...values,
         contact_number: countryCode + values.contact_number,
       };
-      const response = await dispatch(registerUser(payload)).unwrap();
-      if (response?.id && response?.is_email_verified === false) {
-        showToast('success', 'User register successfull.');
-        await dispatch(
-          sendOtp({
-            email: values.email,
-            otp_type: 'user_register',
-          })
-        );
-        router.push(`/quick-verification?email=${values.email}`);
-        return;
-      }
+      setTimeout(async () => {
+        try {
+          const response = await dispatch(registerUser(payload)).unwrap();
+          if (response?.id && response?.is_email_verified === false) {
+            showToast('success', 'User register successful.');
+            await dispatch(
+              sendOtp({
+                email: values.email,
+                otp_type: 'user_register',
+              })
+            );
+            router.push(`/quick-verification?email=${values.email}`);
+          }
+        } catch (error) {
+          handleError(error as ErrorResponse);
+        } finally {
+          setLoadingSignup(false);
+        }
+      }, 1000);
     } catch (error) {
       handleError(error as ErrorResponse);
+      setLoadingSignup(false);
     }
   };
 
@@ -632,8 +644,13 @@ const Page = () => {
                             className={`btn btn-primary`}
                             color="primary"
                             fullWidth
+                            disabled={loadingSignup}
                           >
-                            Signup
+                            {loadingSignup ? (
+                              <CircularProgress size={24} color="inherit" />
+                            ) : (
+                              'Signup'
+                            )}
                           </Button>
                         </Box>
                       </Form>
@@ -689,9 +706,19 @@ const Page = () => {
               <Button
                 variant="contained"
                 className={`btn btn-secondary `}
-                onClick={() => router.push('/login')}
+                onClick={() => {
+                  setLoadingLogin(true);
+                  setTimeout(() => {
+                    router.push('/login');
+                  }, 1000);
+                }}
+                disabled={loadingLogin}
               >
-                Click Here to Login
+                {loadingLogin ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  'Click Here to Login'
+                )}
               </Button>
             </Box>
             {/* </form> */}
