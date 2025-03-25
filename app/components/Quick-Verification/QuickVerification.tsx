@@ -1,5 +1,12 @@
 'use client';
-import { Box, Container, Link, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  Link,
+  TextField,
+  CircularProgress,
+  Typography,
+} from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './quickVerification.module.scss';
 import Image from 'next/image';
@@ -29,6 +36,7 @@ const Page = () => {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [timer, setTimer] = useState(RESEND_TIME);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (timer > 0) {
@@ -92,6 +100,7 @@ const Page = () => {
   };
 
   const otpVerificationClick = async () => {
+    setLoading(true);
     if (otpVerificationValue) {
       const otpValue = Number(otp.join(''));
       const payload: OtpVerificationFormValues = {
@@ -106,14 +115,20 @@ const Page = () => {
           ? response.messages[0].otp_verified
           : false;
 
-        if (otpVerified) {
-          showToast('success', 'OTP verified successfully!');
-          router.push('/account-created');
-        } else {
-          showToast('error', 'OTP verification failed. Please try again.');
-        }
+        setTimeout(() => {
+          if (otpVerified) {
+            showToast('success', 'OTP verified successfully!');
+            router.push('/account-created');
+          } else {
+            showToast('error', 'OTP verification failed. Please try again.');
+          }
+          setLoading(false);
+        }, 1000);
       } catch (error) {
-        handleError(error as ErrorResponse);
+        setTimeout(() => {
+          handleError(error as ErrorResponse);
+          setLoading(false);
+        }, 1000);
       }
     }
   };
@@ -247,8 +262,13 @@ const Page = () => {
                               className={`btn btn-primary`}
                               color="primary"
                               fullWidth
+                              disabled={loading}
                             >
-                              Continue
+                              {loading ? (
+                                <CircularProgress size={24} color="inherit" />
+                              ) : (
+                                'Continue'
+                              )}
                             </Button>
                           </Box>
                         </Form>
