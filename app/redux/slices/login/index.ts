@@ -3,6 +3,7 @@ import api from '../../../utils/axiosConfig';
 import urlMapper from '@/app/utils/apiEndPoints/urlMapper';
 import { NewPasswordFormValues } from '@/app/components/New-Password/NewPassword';
 import { ForgotPasswordFormValues } from '@/app/components/Forgot-Password/ForgotPassword';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 interface ForgotPasswordState {
   forgotPasswordEmailSent: boolean;
@@ -27,16 +28,18 @@ const initialState: ForgotPasswordState = {
 interface SocialGoogleLoginPayload {
   access_token: string;
 }
-
-interface SocialGoogleLoginResponse {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  contact_number: string;
-  user_type: string;
-  is_email_verified: boolean;
-  token: string;
+export interface SocialGoogleLoginResponse {
+  messages: string[];
+  data: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    contact_number: string;
+    user_type: string;
+    is_email_verified: boolean;
+    token: string;
+  };
 }
 
 interface LoginPayload {
@@ -45,14 +48,17 @@ interface LoginPayload {
 }
 
 interface LoginResponse {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  contact_number: string;
-  user_type: string;
-  is_email_verified: boolean;
-  token: string;
+  messages: string[];
+  data: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    contact_number: string;
+    user_type: string;
+    is_email_verified: boolean;
+    token: string;
+  };
 }
 
 export const loginUser = createAsyncThunk<
@@ -62,6 +68,7 @@ export const loginUser = createAsyncThunk<
 >('login/loginUser', async (payload, { rejectWithValue }) => {
   try {
     const response = await api.post<LoginResponse>(urlMapper.login, payload);
+    showToast('success', 'Login is successfully.');
     return response.data;
   } catch (error: unknown) {
     if (typeof error === 'object' && error !== null && 'response' in error) {
@@ -84,6 +91,7 @@ export const socialGoogleLogin = createAsyncThunk<
       urlMapper.googleLogin,
       payload
     );
+    showToast('success', 'Google Login is successfully.');
     return response.data;
   } catch (error: unknown) {
     if (typeof error === 'object' && error !== null && 'response' in error) {
@@ -142,7 +150,10 @@ const loginSlice = createSlice({
     builder.addCase(
       socialGoogleLogin.fulfilled,
       (state, action: PayloadAction<SocialGoogleLoginResponse>) => {
-        state.loggedInUser = action.payload;
+        state.loggedInUser = {
+          messages: action.payload.messages,
+          data: action.payload.data,
+        };
       }
     );
     builder.addCase(

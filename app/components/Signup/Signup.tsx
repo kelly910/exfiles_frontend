@@ -92,7 +92,11 @@ const Page = () => {
           socialGoogleLogin({ access_token: tokenResponse.access_token })
         ).unwrap();
         localStorage.setItem('loggedInUser', JSON.stringify(response));
-        router.push('/dashboard');
+        const token: string | null = response?.data?.token || null;
+        if (token) {
+          document.cookie = `accessToken=${token}; path=/; max-age=3600`;
+          router.push('/dashboard');
+        }
       } catch (error) {
         handleError(error as ErrorResponse);
       }

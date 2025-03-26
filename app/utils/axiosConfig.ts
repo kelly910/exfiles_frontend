@@ -8,10 +8,21 @@ const api = axios.create({
   },
 });
 
+const getStoredToken = (): string | null => {
+  if (typeof window !== 'undefined') {
+    const storedUser = window.localStorage.getItem('loggedInUser');
+    return storedUser;
+  }
+  return null;
+};
+
+const getLoggedInUser = getStoredToken();
+const parsedUser = getLoggedInUser ? JSON.parse(getLoggedInUser) : null;
+const token: string | null = parsedUser?.data?.token || null;
+
 // Request Interceptor
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token'); // Get token from storage
     if (token) {
       config.headers.Authorization = `Bearer ${token}`; // Attach token to headers
     }
@@ -49,6 +60,7 @@ api.interceptors.response.use(
         console.error('Token refresh failed', refreshError);
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
+        document.cookie = `accessToken=; path=/; max-age=0`;
         window.location.href = '/login';
       }
     }
