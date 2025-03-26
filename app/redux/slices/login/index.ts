@@ -27,16 +27,18 @@ const initialState: ForgotPasswordState = {
 interface SocialGoogleLoginPayload {
   access_token: string;
 }
-
-interface SocialGoogleLoginResponse {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  contact_number: string;
-  user_type: string;
-  is_email_verified: boolean;
-  token: string;
+export interface SocialGoogleLoginResponse {
+  messages: string[];
+  data: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    contact_number: string;
+    user_type: string;
+    is_email_verified: boolean;
+    token: string;
+  };
 }
 
 interface LoginPayload {
@@ -45,14 +47,17 @@ interface LoginPayload {
 }
 
 interface LoginResponse {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  contact_number: string;
-  user_type: string;
-  is_email_verified: boolean;
-  token: string;
+  messages: string[];
+  data: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    contact_number: string;
+    user_type: string;
+    is_email_verified: boolean;
+    token: string;
+  };
 }
 
 export const loginUser = createAsyncThunk<
@@ -142,7 +147,10 @@ const loginSlice = createSlice({
     builder.addCase(
       socialGoogleLogin.fulfilled,
       (state, action: PayloadAction<SocialGoogleLoginResponse>) => {
-        state.loggedInUser = action.payload;
+        state.loggedInUser = {
+          messages: action.payload.messages,
+          data: action.payload.data,
+        };
       }
     );
     builder.addCase(

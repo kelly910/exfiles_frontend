@@ -44,9 +44,13 @@ const Page = () => {
       setTimeout(async () => {
         try {
           const response = await dispatch(loginUser(values)).unwrap();
-          if (response.token) {
+          if (response && response.data && response.data.token) {
             localStorage.setItem('loggedInUser', JSON.stringify(response));
-            router.push('/dashboard');
+            const token: string | null = response?.data?.token || null;
+            if (token) {
+              document.cookie = `accessToken=${token}; path=/; max-age=3600`;
+              router.push('/dashboard');
+            }
           }
         } catch (error) {
           handleError(error as ErrorResponse);
@@ -67,7 +71,11 @@ const Page = () => {
           socialGoogleLogin({ access_token: tokenResponse.access_token })
         ).unwrap();
         localStorage.setItem('loggedInUser', JSON.stringify(response));
-        router.push('/dashboard');
+        const token: string | null = response?.data?.token || null;
+        if (token) {
+          document.cookie = `accessToken=${token}; path=/; max-age=3600`;
+          router.push('/dashboard');
+        }
       } catch (error) {
         handleError(error as ErrorResponse);
       }
