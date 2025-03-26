@@ -5,16 +5,14 @@ import {
   Grid,
   Input,
   InputAdornment,
-  Link,
   Typography,
 } from '@mui/material';
-// import Grid from '@mui/material/Grid2';
 import { Button } from '@mui/material';
-import CustomTextField from '@/app/components/design/customField';
 import styles from './style.module.scss';
 import Image from 'next/image';
-import { AccountCircle } from '@mui/icons-material';
-import Header from '@/app/components/header/Header';
+import Header from '@/app/components/Header/Header';
+import ChatWindows from '@/app/components/Chat-Windows/ChatWindows';
+import DialogBox from '@/app/components/Dialog-Box/DialogBox';
 
 export default function Page() {
   return (
@@ -121,7 +119,6 @@ export default function Page() {
                   </Grid>
                 </Box>
               </Box>
-
               <Box component="section" className={styles.chatHeading}>
                 <div className={styles.chatHeader}>
                   <Typography
@@ -167,6 +164,8 @@ export default function Page() {
                 </Box>
               </Box>
             </div>
+            <ChatWindows />
+            <DialogBox />
           </Container>
         </div>
       </main>

@@ -94,7 +94,7 @@
 
         .docTitle {
           font-weight: 700;
-          font-size: 14px !important;
+          font-size: 14px;
           line-height: 19px;
           color: #dadae1;
           width: 100%;
@@ -122,7 +122,7 @@
 
           .docTag {
             font-weight: 400;
-            font-size: 12px !important;
+            font-size: 12px;
             line-height: 16px;
             color: #898b94;
             padding: 4px 8px;
@@ -133,7 +133,7 @@
 
         p {
           font-weight: 400;
-          font-size: 12px !important;
+          font-size: 12px;
           line-height: 140%;
           text-align: right;
           text-transform: capitalize;
@@ -164,7 +164,7 @@
 
     .categoriesTitle {
       font-weight: 700;
-      font-size: 16px !important;
+      font-size: 16px;
       line-height: 140%;
       letter-spacing: -2%;
       color: #dadae1;
@@ -211,7 +211,7 @@
 
         .folderTitle {
           font-weight: 700;
-          font-size: 14px !important;
+          font-size: 14px;
           line-height: 140%;
           letter-spacing: 0%;
           color: #dadae1;
@@ -219,7 +219,7 @@
 
         .folderNo {
           font-weight: 500;
-          font-size: 12px !important;
+          font-size: 12px;
           line-height: 140%;
           letter-spacing: 0%;
           color: #898b94;
@@ -254,20 +254,19 @@
 
       .docsTitle {
         font-weight: 600;
-        font-size: 16px !important;
+        font-size: 16px;
         line-height: 140%;
-        letter-spacing: 0%;
         color: #dadae1;
       }
 
       .docsDate {
         font-weight: 400;
-        font-size: 12px !important;
+        font-size: 12px;
         line-height: 140%;
-        letter-spacing: -2%;
         color: #898b94;
       }
     }
+
     .docsInnerTag {
       display: flex;
       justify-content: start;
@@ -281,22 +280,23 @@
         padding: 4px 8px;
         border-radius: 500px;
         font-weight: 600;
-        font-size: 10px !important;
+        font-size: 10px;
         line-height: 140%;
         text-transform: capitalize;
       }
     }
   }
+
   .docsBoardBody {
     padding: 16px 24px 24px 24px;
 
     .docsBodyTitle {
       font-weight: 500;
-      font-size: 14px !important;
+      font-size: 14px;
       line-height: 140%;
-      letter-spacing: 0%;
       color: #898b94;
     }
+
     .docsBodyText {
       padding: 12px 11px;
       background-color: #1b1a25;
@@ -310,11 +310,40 @@
 
       p {
         font-weight: 500;
-        font-size: 16px !important;
+        font-size: 16px;
         line-height: 140%;
-        letter-spacing: 0%;
         color: #dadae1;
       }
+    }
+  }
+  .docsButtonBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background-color: #1b1a25;
+    border-radius: 12px;
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 24px;
+    margin-bottom: 56px;
+
+    span.docsDas {
+      border: 1px solid #dadae1;
+      height: 15px;
+    }
+
+    .docsButton {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 140%;
+      color: #dadae1;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 8px;
+      text-transform: capitalize;
+      padding: 12px 8px;
     }
   }
 }

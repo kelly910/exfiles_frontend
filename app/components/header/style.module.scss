@@ -1,14 +1,20 @@
 header {
-    .documentTitle{
-        font-weight: 700;
-        font-size: 18px;
-        line-height: 140%;
-    }
-    .documentNo {
-        padding-left: 28px;
-        font-weight: 500;
-        font-size: 12px !important;
-        line-height: 140%;
-        color: #898B94;
-    }
+  .documentTitle {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 140%;
+  }
+  .documentNo {
+    padding-left: 28px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 140%;
+    color: #898b94;
+  }
+  .messageButton {
+    padding: 8px;
+    border: 0.82px solid #3a3948;
+    background-color: #2c2a38;
+    min-width: unset;
+  }
 }

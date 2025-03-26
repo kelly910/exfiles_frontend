@@ -131,8 +131,8 @@ const Page = () => {
                             color:
                               errors.email && touched.email
                                 ? '#ff4d4d'
-                                : '#676972',
-                            fontWeight: 500,
+                                : '#898B94',
+                            fontWeight: 400,
                           }}
                         >
                           Email Address
@@ -204,13 +204,13 @@ const Page = () => {
                             color:
                               errors.password && touched.password
                                 ? '#ff4d4d'
-                                : '#676972',
+                                : '#898B94',
                             fontWeight: 500,
                           }}
                         >
                           Password
                         </Typography>
-                        <div style={{ marginBottom: '24px' }}>
+                        <div style={{ marginBottom: '32px' }}>
                           <Field
                             as={TextField}
                             fullWidth
@@ -220,7 +220,7 @@ const Page = () => {
                             placeholder="Choose a strong Password"
                             error={Boolean(errors.password && touched.password)}
                             sx={{
-                              marginTop: '5px',
+                              marginTop: '8px',
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: '12px',
                                 borderWidth: '0px',

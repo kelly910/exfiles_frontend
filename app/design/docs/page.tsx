@@ -1,21 +1,16 @@
 'use client';
 import {
   Box,
-  Container,
+  Button,
   Grid,
   Input,
   InputAdornment,
-  Link,
   Typography,
 } from '@mui/material';
-// import Grid from '@mui/material/Grid2';
-import { Button } from '@mui/material';
-import CustomTextField from '@/app/components/design/customField';
 import styles from './style.module.scss';
 import Image from 'next/image';
-import { AccountCircle } from '@mui/icons-material';
-import Header from '@/app/components/header/Header';
-import Sidebar from '@/app/components/sidebar/Sidebar';
+import Header from '@/app/components/Header/Header';
+import Sidebar from '@/app/components/Sidebar/Sidebar';
 
 export default function Page() {
   return (
@@ -206,23 +201,46 @@ export default function Page() {
                   within the paragraph provide supporting details, examples, or
                   explanations to bolster the main idea. This structural
                   arrangement enhances coherence and allows readers to follow
-                  the author's train of thought effortlessly. A well-structured
-                  paragraph helps to ensure that ideas are presented in a
-                  logical and sequential manner. By focusing on a single main
-                  idea, the writer can provide a clear and concise argument or
-                  explanation. The opening sentence of a paragraph serves as a
-                  guidepost, introducing the central theme and setting the stage
-                  for the supporting sentences that follow. These supporting
-                  sentences provide evidence, examples, or explanations that
-                  expand upon the main idea, lending credibility and depth to
-                  the writer's argument.One of the primary functions of
-                  paragraphs is to create a logical flow in writing. Each
-                  paragraph should be organized around a single main idea or
-                  topic, which is typically introduced in the opening sentence.
+                  the author&apos;s train of thought effortlessly. A
+                  well-structured paragraph helps to ensure that ideas are
+                  presented in a logical and sequential manner. By focusing on a
+                  single main idea, the writer can provide a clear and concise
+                  argument or explanation. The opening sentence of a paragraph
+                  serves as a guidepost, introducing the central theme and
+                  setting the stage for the supporting sentences that follow.
+                  These supporting sentences provide evidence, examples, or
+                  explanations that expand upon the main idea, lending
+                  credibility and depth to the writer&apos;s argument.One of the
+                  primary functions of paragraphs is to create a logical flow in
+                  writing. Each paragraph should be organized around a single
+                  main idea or topic, which is typically introduced in the
+                  opening sentence.
                 </Typography>
               </div>
             </div>
+            <Box component={'div'} className={styles.docsButtonBox}>
+              <Button className={styles.docsButton}>
+                <Image
+                  src="/images/copy.svg"
+                  alt="Download"
+                  width={24}
+                  height={24}
+                />
+                Copy
+              </Button>
+              <span className={styles.docsDas}></span>
+              <Button className={styles.docsButton}>
+                <Image
+                  src="/images/edit.svg"
+                  alt="Download"
+                  width={24}
+                  height={24}
+                />
+                Edit Summary
+              </Button>
+            </Box>
           </Box>
+
           {/* ==== */}
         </div>
       </main>

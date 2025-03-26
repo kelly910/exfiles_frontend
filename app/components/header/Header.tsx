@@ -1,3 +1,5 @@
+'use client';
+
 import {
   AppBar,
   Avatar,
@@ -47,7 +49,10 @@ export default function Header() {
         sx={{ backgroundColor: 'transparent' }}
       >
         <Container maxWidth={false}>
-          <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
+          <Toolbar
+            disableGutters
+            sx={{ justifyContent: 'space-between', gap: '16px' }}
+          >
             <Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Image
@@ -102,7 +107,13 @@ export default function Header() {
               </Box>
             </Box>
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <Box
+              sx={{
+                flexGrow: 1,
+                width: '100%',
+                display: { xs: 'flex', md: 'none' },
+              }}
+            >
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -154,7 +165,14 @@ export default function Header() {
                         >
                             LOGO
                         </Typography> */}
-
+            <Button sx={{ p: 0 }} className={styles.messageButton}>
+              <Image
+                src="/images/message-question.svg"
+                alt="search"
+                width={24}
+                height={24}
+              />
+            </Button>
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
