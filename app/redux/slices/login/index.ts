@@ -3,6 +3,7 @@ import api from '../../../utils/axiosConfig';
 import urlMapper from '@/app/utils/apiEndPoints/urlMapper';
 import { NewPasswordFormValues } from '@/app/components/New-Password/NewPassword';
 import { ForgotPasswordFormValues } from '@/app/components/Forgot-Password/ForgotPassword';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 interface ForgotPasswordState {
   forgotPasswordEmailSent: boolean;
@@ -67,6 +68,7 @@ export const loginUser = createAsyncThunk<
 >('login/loginUser', async (payload, { rejectWithValue }) => {
   try {
     const response = await api.post<LoginResponse>(urlMapper.login, payload);
+    showToast('success', 'Login is successfully.');
     return response.data;
   } catch (error: unknown) {
     if (typeof error === 'object' && error !== null && 'response' in error) {
@@ -89,6 +91,7 @@ export const socialGoogleLogin = createAsyncThunk<
       urlMapper.googleLogin,
       payload
     );
+    showToast('success', 'Google Login is successfully.');
     return response.data;
   } catch (error: unknown) {
     if (typeof error === 'object' && error !== null && 'response' in error) {
