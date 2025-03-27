@@ -14,7 +14,7 @@ import { Button } from '@mui/material';
 import styles from './register.module.scss';
 import Image from 'next/image';
 import { registrationValidationSchema } from '@/app/utils/validationSchema/formValidationSchemas';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { registerUser, sendOtp } from '../../redux/slices/register';
@@ -50,6 +50,17 @@ const Page = () => {
     confirm_password: '',
   };
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const getCookie = (name: string): string | null => {
+      const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
+      return match ? match[2] : null;
+    };
+    const token = getCookie('accessToken');
+    if (token) {
+      router.push('/dashboard');
+    }
+  }, []);
 
   const registerUserClick = async (
     values: RegisterFormValues

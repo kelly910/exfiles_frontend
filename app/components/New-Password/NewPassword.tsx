@@ -15,7 +15,7 @@ import Image from 'next/image';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { changePasswordValidationSchema } from '@/app/utils/validationSchema/formValidationSchemas';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { showToast } from '@/app/shared/toast/ShowToast';
@@ -46,6 +46,17 @@ const Page = () => {
     new_password: '',
     confirm_password: '',
   };
+
+  useEffect(() => {
+    const getCookie = (name: string): string | null => {
+      const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
+      return match ? match[2] : null;
+    };
+    const token = getCookie('accessToken');
+    if (token) {
+      router.push('/dashboard');
+    }
+  }, []);
 
   const newPasswordChangeClick = async (
     values: NewPasswordFormValues
