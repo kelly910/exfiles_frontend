@@ -3,12 +3,24 @@ import { Box, Container, Typography, CircularProgress } from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './passwordSuccess.module.scss';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const getCookie = (name: string): string | null => {
+      const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
+      return match ? match[2] : null;
+    };
+    const token = getCookie('accessToken');
+    if (token) {
+      router.push('/dashboard');
+    }
+  }, []);
+
   return (
     <main>
       <div className={styles.authSection}>
@@ -73,16 +85,14 @@ const Page = () => {
                         setTimeout(() => {
                           router.push('/login');
                         }, 1000);
-                        
                       }}
                       disabled={loading}
                     >
-                       {loading ? (
+                      {loading ? (
                         <CircularProgress size={24} color="inherit" />
                       ) : (
                         ' Go Back to Login'
                       )}
-                      
                     </Button>
                   </Box>
                 </Box>

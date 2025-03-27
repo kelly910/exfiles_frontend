@@ -12,7 +12,7 @@ import { Button } from '@mui/material';
 import styles from './forgotPassword.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { forgotPasswordValidationSchema } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useAppDispatch } from '@/app/redux/hooks';
@@ -33,6 +33,17 @@ const Page = () => {
     otp_type: 'forgot_password',
   };
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const getCookie = (name: string): string | null => {
+      const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
+      return match ? match[2] : null;
+    };
+    const token = getCookie('accessToken');
+    if (token) {
+      router.push('/dashboard');
+    }
+  }, []);
 
   const forgotPasswordClick = async (
     values: ForgotPasswordFormValues
