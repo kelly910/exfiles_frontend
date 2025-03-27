@@ -76,7 +76,7 @@ export default function DialogBox() {
               })}
             >
               <Image
-                src="/images/dialog-close.svg"
+                src="/images/close.svg"
                 alt="close-icon"
                 width={24}
                 height={24}

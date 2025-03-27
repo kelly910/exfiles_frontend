@@ -16,10 +16,14 @@ import {
 import Image from 'next/image';
 import styles from './style.module.scss';
 import React from 'react';
+import HeaderDialog from '../HeaderDialog/HeaderDialog';
 
 export default function Header() {
   const pages = ['Products', 'Pricing', 'Blog'];
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  const settings = [
+    { title: 'Settings', img: '/images/setting.svg' },
+    { title: 'Log out', img: '/images/logout.svg' },
+  ];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -53,7 +57,7 @@ export default function Header() {
             disableGutters
             sx={{ justifyContent: 'space-between', gap: '16px' }}
           >
-            <Box>
+            <Box sx={{ width: '100%' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Image
                   src="/images/document-text.svg"
@@ -191,7 +195,6 @@ export default function Header() {
                 </IconButton>
               </Tooltip>
               <Menu
-                sx={{ mt: '45px' }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
@@ -205,16 +208,38 @@ export default function Header() {
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
+                className={styles.mainDropdown}
+                sx={{
+                  '& .MuiPaper-root': {
+                    backgroundColor: '#11101b',
+                    top: '69px !important',
+                  },
+                }}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography sx={{ textAlign: 'center' }}>
-                      {setting}
-                    </Typography>
+                {settings.map((setting, index) => (
+                  <MenuItem
+                    key={index}
+                    onClick={handleCloseUserMenu}
+                    className={styles.menuDropdown}
+                  >
+                    <Image
+                      src={setting.img}
+                      alt={setting.title}
+                      width={18}
+                      height={18}
+                    />
+                    <Typography>{setting.title}</Typography>
+                    <Image
+                      src="/images/arrow-down-right.svg"
+                      alt="user"
+                      width={16}
+                      height={16}
+                    />
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
+            <HeaderDialog />
           </Toolbar>
         </Container>
       </AppBar>

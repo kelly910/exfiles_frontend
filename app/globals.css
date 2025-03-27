@@ -212,10 +212,10 @@ a {
 
 .btn-arrow {
   background: linear-gradient(90deg, #2A1AD8 0%, #4E26E2 25%, #7231EC 50%, #953DF5 75%, #B948FF 100%);
-  padding: 9px;
+  padding: 9px !important;
   width: fit-content;
   max-width: fit-content;
-  min-width: unset;
+  min-width: unset !important;
 }
 
 .btn.btn-primary:hover,

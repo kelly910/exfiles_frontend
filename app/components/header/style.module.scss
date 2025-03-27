@@ -18,3 +18,36 @@ header {
     min-width: unset;
   }
 }
+
+.mainDropdown {
+  ul {
+    border-radius: 12px;
+    padding: 0;
+    background-color: #1b1a25;
+    color: #dadae1;
+    padding: 4px;
+    box-shadow: -5px 8px 21px 0px #00000026;
+  }
+  .menuDropdown {
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    min-width: 180px;
+
+    &:hover {
+      background-color: #2c2a38;
+    }
+
+    p {
+      font-weight: 500;
+      font-size: 13px;
+      line-height: 140%;
+      letter-spacing: -2%;
+      color: #dadae1;
+      width: 100%;
+    }
+  }
+}
