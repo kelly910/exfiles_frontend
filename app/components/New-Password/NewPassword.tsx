@@ -21,6 +21,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { resetPassword } from '@/app/redux/slices/login';
+import { setLoader } from '@/app/redux/slices/loader';
 
 export interface NewPasswordFormValues {
   email: string;
@@ -62,6 +63,7 @@ const Page = () => {
     values: NewPasswordFormValues
   ): Promise<void> => {
     setLoading(true);
+    dispatch(setLoader(true));
     try {
       const response = await dispatch(resetPassword(values)).unwrap();
       setTimeout(() => {
@@ -70,11 +72,13 @@ const Page = () => {
           router.push('/password-successfull');
         }
         setLoading(false);
+        dispatch(setLoader(false));
       }, 1000);
     } catch (error) {
       setTimeout(() => {
         handleError(error as ErrorResponse);
         setLoading(false);
+        dispatch(setLoader(false));
       }, 1000);
     }
   };

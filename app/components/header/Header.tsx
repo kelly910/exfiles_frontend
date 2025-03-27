@@ -17,6 +17,7 @@ import Image from 'next/image';
 import styles from './style.module.scss';
 import React from 'react';
 import HeaderDialog from '../HeaderDialog/HeaderDialog';
+import LogoutDialog from '../LogoutDialog/LogoutDialog';
 
 export default function Header() {
   const pages = ['Products', 'Pricing', 'Blog'];
@@ -240,6 +241,7 @@ export default function Header() {
               </Menu>
             </Box>
             <HeaderDialog />
+            <LogoutDialog />
           </Toolbar>
         </Container>
       </AppBar>

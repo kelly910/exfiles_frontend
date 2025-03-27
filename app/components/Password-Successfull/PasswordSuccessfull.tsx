@@ -5,9 +5,12 @@ import styles from './passwordSuccess.module.scss';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { setLoader } from '@/app/redux/slices/loader';
+import { useAppDispatch } from '@/app/redux/hooks';
 
 const Page = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -82,8 +85,10 @@ const Page = () => {
                       fullWidth
                       onClick={() => {
                         setLoading(true);
+                        dispatch(setLoader(true));
                         setTimeout(() => {
                           router.push('/login');
+                          dispatch(setLoader(false));
                         }, 1000);
                       }}
                       disabled={loading}

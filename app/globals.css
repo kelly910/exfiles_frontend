@@ -529,3 +529,22 @@ input::-webkit-inner-spin-button {
   color: #ff4d4d;
   font-size: 15px;
 }
+
+.fullscreen-loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.loader-image {
+  width: 8rem;
+  height: 8rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
