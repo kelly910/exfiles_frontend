@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import { useGoogleLogin } from '@react-oauth/google';
 import { loginUser, socialGoogleLogin } from '@/app/redux/slices/login';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { setLoader } from '@/app/redux/slices/loader';
 export interface LoginFormValues {
   email: string;
   password: string;
@@ -53,6 +54,7 @@ const Page = () => {
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {
       setLoadingLogin(true);
+      dispatch(setLoader(true));
       setTimeout(async () => {
         try {
           const response = await dispatch(loginUser(values)).unwrap();
@@ -68,17 +70,20 @@ const Page = () => {
           handleError(error as ErrorResponse);
         } finally {
           setLoadingLogin(false);
+          dispatch(setLoader(false));
         }
       }, 1000);
     } catch (error) {
       handleError(error as ErrorResponse);
       setLoadingLogin(false);
+      dispatch(setLoader(false));
     }
   };
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse: { access_token: string }) => {
       try {
+        await dispatch(setLoader(true));
         const response = await dispatch(
           socialGoogleLogin({ access_token: tokenResponse.access_token })
         ).unwrap();
@@ -87,13 +92,16 @@ const Page = () => {
         if (token) {
           document.cookie = `accessToken=${token}; path=/; max-age=3600`;
           router.push('/dashboard');
+          await dispatch(setLoader(false));
         }
       } catch (error) {
         handleError(error as ErrorResponse);
+        dispatch(setLoader(false));
       }
     },
     onError: (error) => {
       handleError(error as ErrorResponse);
+      dispatch(setLoader(false));
     },
   });
 
@@ -385,8 +393,10 @@ const Page = () => {
                 className={`btn btn-secondary `}
                 onClick={() => {
                   setLoadingRegister(true);
+                  dispatch(setLoader(true));
                   setTimeout(() => {
                     router.push('/signup');
+                    dispatch(setLoader(false));
                   }, 1000);
                 }}
                 disabled={loadingRegister}

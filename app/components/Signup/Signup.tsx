@@ -24,6 +24,7 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { useGoogleLogin } from '@react-oauth/google';
 import { socialGoogleLogin } from '@/app/redux/slices/login';
+import { setLoader } from '@/app/redux/slices/loader';
 
 export interface RegisterFormValues {
   first_name: string;
@@ -67,6 +68,7 @@ const Page = () => {
   ): Promise<void> => {
     try {
       setLoadingSignup(true);
+      dispatch(setLoader(true));
       const payload = {
         ...values,
         contact_number: countryCode + values.contact_number,
@@ -86,13 +88,16 @@ const Page = () => {
           }
         } catch (error) {
           handleError(error as ErrorResponse);
+          dispatch(setLoader(false));
         } finally {
           setLoadingSignup(false);
+          dispatch(setLoader(false));
         }
       }, 1000);
     } catch (error) {
       handleError(error as ErrorResponse);
       setLoadingSignup(false);
+      dispatch(setLoader(false));
     }
   };
 
@@ -743,8 +748,10 @@ const Page = () => {
                 className={`btn btn-secondary `}
                 onClick={() => {
                   setLoadingLogin(true);
+                  dispatch(setLoader(true));
                   setTimeout(() => {
                     router.push('/login');
+                    dispatch(setLoader(false));
                   }, 1000);
                 }}
                 disabled={loadingLogin}

@@ -429,3 +429,22 @@ input::-webkit-inner-spin-button {
   color: #ff4d4d !important;
   font-size: 15px !important;
 }
+
+.fullscreen-loader {
+  position: fixed !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  z-index: 9999 !important;
+}
+
+.loader-image {
+  width: 8rem !important;
+  height: 8rem !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}

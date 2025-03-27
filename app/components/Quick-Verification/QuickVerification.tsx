@@ -17,6 +17,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { Field, Form, Formik } from 'formik';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { setLoader } from '@/app/redux/slices/loader';
 
 export interface OtpVerificationFormValues {
   otp: number;
@@ -112,6 +113,7 @@ const Page = () => {
 
   const otpVerificationClick = async () => {
     setLoading(true);
+    dispatch(setLoader(true));
     if (otpVerificationValue) {
       const otpValue = Number(otp.join(''));
       const payload: OtpVerificationFormValues = {
@@ -134,11 +136,13 @@ const Page = () => {
             showToast('error', 'OTP verification failed. Please try again.');
           }
           setLoading(false);
+          dispatch(setLoader(false));
         }, 1000);
       } catch (error) {
         setTimeout(() => {
           handleError(error as ErrorResponse);
           setLoading(false);
+          dispatch(setLoader(false));
         }, 1000);
       }
     }
