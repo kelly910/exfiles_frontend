@@ -19,6 +19,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { forgotPassword } from '@/app/redux/slices/login';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { setLoader } from '@/app/redux/slices/loader';
 
 export interface ForgotPasswordFormValues {
   email: string;
@@ -49,6 +50,7 @@ const Page = () => {
     values: ForgotPasswordFormValues
   ): Promise<void> => {
     setLoading(true);
+    dispatch(setLoader(true));
     try {
       const response = await dispatch(forgotPassword(values)).unwrap();
       setTimeout(() => {
@@ -57,11 +59,13 @@ const Page = () => {
           router.push(`/forgot-password-verification?email=${values.email}`);
         }
         setLoading(false);
+        dispatch(setLoader(false));
       }, 1000);
     } catch (error) {
       setTimeout(() => {
         handleError(error as ErrorResponse);
         setLoading(false);
+        dispatch(setLoader(false));
       }, 1000);
     }
   };

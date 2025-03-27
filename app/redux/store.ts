@@ -5,6 +5,7 @@ import createWebStorage from 'redux-persist/es/storage/createWebStorage';
 import { combineReducers } from 'redux';
 import registerSlice from './slices/register';
 import loginSlice from './slices/login';
+import loaderSlice from './slices/loader';
 
 const createNoopStorage = () => {
   return {
@@ -28,12 +29,14 @@ const storage =
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['loader'],
   // whitelist: ["auth"], // specify reducers to persist
 };
 
 const rootReducer = combineReducers({
   register: registerSlice,
   login: loginSlice,
+  loader: loaderSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

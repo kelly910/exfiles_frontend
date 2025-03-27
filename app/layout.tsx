@@ -5,6 +5,7 @@ import ToastProvider from './shared/toast/ToastProvider';
 import { ReduxProvider } from './provider';
 import ThemeRegistry from './providers/ThemeRegistry';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import FullPageLoader from './components/Full-Page-Loader/FullPageLoader';
 
 const fustatFont = localFont({
   src: './fonts/Fustat-VariableFont_wght.woff',
@@ -31,7 +32,10 @@ export default function RootLayout({
         >
           <ReduxProvider>
             <ThemeRegistry>
-              <ToastProvider>{children}</ToastProvider>
+              <ToastProvider>
+                <FullPageLoader />
+                {children}
+              </ToastProvider>
             </ThemeRegistry>
           </ReduxProvider>
         </GoogleOAuthProvider>
