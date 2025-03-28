@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import styles from './header.module.scss';
+import styles from './Header.module.scss';
 import React, { useState } from 'react';
 import SettingDialog from '../SettingDialog/SettingDialog';
 import LogoutDialog from '../LogoutDialog/LogoutDialog';
@@ -22,7 +22,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import FeedbackDialog from '../FeedBackDialog/FeedBackDialog';
 
-export default function Header() {
+export default function PageHeader() {
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
@@ -73,7 +73,7 @@ export default function Header() {
       <AppBar
         position="static"
         className="nav-open header"
-        sx={{ backgroundColor: '#11101BE5', position: "sticky", top: "0" }}
+        sx={{ backgroundColor: '#11101BE5', position: 'sticky', top: '0' }}
       >
         <Container maxWidth={false}>
           <Toolbar
@@ -81,7 +81,7 @@ export default function Header() {
             sx={{ justifyContent: 'space-between', gap: '16px' }}
           >
             <Box sx={{ width: '100%' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Image
                   src="/images/document-text.svg"
                   alt="menu"
@@ -100,7 +100,7 @@ export default function Header() {
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
-                  // onClick={handleOpenNavMenu}
+                  onClick={handleOpenNavMenu}
                   color="inherit"
                 >
                   <Image
@@ -130,7 +130,7 @@ export default function Header() {
                 <Typography variant="body1" className={styles.documentNo}>
                   No. of Documents : <span>2500</span>
                 </Typography>
-              </Box>
+              </Box> */}
             </Box>
 
             <Box

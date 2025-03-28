@@ -44,17 +44,11 @@ function ChatAl() {
       <Box component="div" className={styles.chatAlImg}>
         <Tooltip title="Open settings">
           <IconButton sx={{ p: 0 }}>
-            <Avatar
-              alt="A S"
-              src="/static/images/avatar/2.jpg"
-              sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
-                padding: '9px 10px',
-                lineHeight: '140%',
-              }}
+            <Image
+              alt="Logo"
+              width={40}
+              height={40}
+              src="/images/close-sidebar-logo.svg"
             />
           </IconButton>
         </Tooltip>
