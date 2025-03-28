@@ -14,13 +14,19 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import styles from './style.module.scss';
-import React from 'react';
-import HeaderDialog from '../HeaderDialog/HeaderDialog';
+import styles from './header.module.scss';
+import React, { useState } from 'react';
+import SettingDialog from '../SettingDialog/SettingDialog';
 import LogoutDialog from '../LogoutDialog/LogoutDialog';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
+import FeedbackDialog from '../FeedBackDialog/FeedBackDialog';
 
 export default function Header() {
   const pages = ['Products', 'Pricing', 'Blog'];
+  const [openSettingDialog, setOpenSettingDialog] = useState(false);
+  const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
+  const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
   const settings = [
     { title: 'Settings', img: '/images/setting.svg' },
     { title: 'Log out', img: '/images/logout.svg' },
@@ -43,9 +49,25 @@ export default function Header() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (settingTitle: string) => {
     setAnchorElUser(null);
+    if (settingTitle === 'Settings') {
+      setOpenSettingDialog(true);
+    } else {
+      setOpenLogoutDialog(true);
+    }
   };
+
+  const handleOpenFeedback = () => {
+    setOpenFeedbackDialog(true);
+  };
+
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
+  const firstName = loggedInUser?.data?.first_name;
+  const lastName = loggedInUser?.data?.last_name;
+
   return (
     <>
       <AppBar
@@ -94,7 +116,6 @@ export default function Header() {
                   keepMounted
                   open={Boolean(anchorElNav)}
                   onClose={handleCloseNavMenu}
-                  // sx={{ display: { xs: 'block', md: 'none' } }}
                 >
                   {pages.map((page) => (
                     <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -152,25 +173,11 @@ export default function Header() {
                 ))}
               </Menu>
             </Box>
-            {/* <Typography
-                            variant="h5"
-                            noWrap
-                            component="a"
-                            href="#app-bar-with-responsive-menu"
-                            sx={{
-                                mr: 2,
-                                display: { xs: 'flex', md: 'none' },
-                                flexGrow: 1,
-                                fontFamily: 'monospace',
-                                fontWeight: 700,
-                                letterSpacing: '.3rem',
-                                color: 'inherit',
-                                textDecoration: 'none',
-                            }}
-                        >
-                            LOGO
-                        </Typography> */}
-            <Button sx={{ p: 0 }} className={styles.messageButton}>
+            <Button
+              sx={{ p: 0 }}
+              className={styles.messageButton}
+              onClick={handleOpenFeedback}
+            >
               <Image
                 src="/images/message-question.svg"
                 alt="search"
@@ -179,11 +186,10 @@ export default function Header() {
               />
             </Button>
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
+              <Tooltip title="">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
-                    alt="Pravin Lagariya"
-                    src="/static/images/avatar/2.jpg"
+                    alt="abbreviaton"
                     sx={{
                       backgroundColor: '#DADAE1',
                       color: '#1B1A25',
@@ -192,7 +198,10 @@ export default function Header() {
                       padding: '9px 10px',
                       lineHeight: '140%',
                     }}
-                  />
+                  >
+                    {firstName?.[0]}
+                    {lastName?.[0]}
+                  </Avatar>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -220,7 +229,7 @@ export default function Header() {
                 {settings.map((setting, index) => (
                   <MenuItem
                     key={index}
-                    onClick={handleCloseUserMenu}
+                    onClick={() => handleCloseUserMenu(setting.title)}
                     className={styles.menuDropdown}
                   >
                     <Image
@@ -240,11 +249,21 @@ export default function Header() {
                 ))}
               </Menu>
             </Box>
-            <HeaderDialog />
-            <LogoutDialog />
           </Toolbar>
         </Container>
       </AppBar>
+      <SettingDialog
+        openSettingDialogProps={openSettingDialog}
+        onClose={() => setOpenSettingDialog(false)}
+      />
+      <LogoutDialog
+        openLogoutDialogProps={openLogoutDialog}
+        onClose={() => setOpenLogoutDialog(false)}
+      />
+      <FeedbackDialog
+        openFeedbackDialogProps={openFeedbackDialog}
+        onClose={() => setOpenFeedbackDialog(false)}
+      />
     </>
   );
 }

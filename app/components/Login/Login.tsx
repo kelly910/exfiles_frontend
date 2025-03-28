@@ -49,7 +49,7 @@ const Page = () => {
     if (token) {
       router.push('/dashboard');
     }
-  }, []);
+  }, [router]);
 
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {

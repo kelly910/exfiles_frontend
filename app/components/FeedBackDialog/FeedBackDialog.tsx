@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import styles from './logout.module.scss';
+import styles from './feedBack.module.scss';
 import {
   Box,
   Button,
@@ -10,6 +10,7 @@ import {
   DialogTitle,
   IconButton,
   styled,
+  TextField,
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
@@ -20,11 +21,11 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     margin: '0px',
     border: '1px solid #3a3948',
     borderRadius: '16px',
-    minWidth: '450px',
+    minWidth: '650px',
     maxWidth: '90vw',
     // Responsive styles
     [theme.breakpoints.down('md')]: {
-      minWidth: '450px',
+      minWidth: '550px',
     },
     [theme.breakpoints.down('sm')]: {
       minWidth: '70vw',
@@ -32,21 +33,21 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-interface LogoutDialogProps {
-  openLogoutDialogProps: boolean;
+interface FeedbackDialogProps {
+  openFeedbackDialogProps: boolean;
   onClose: () => void;
 }
 
-export default function LogoutDialog({
-  openLogoutDialogProps,
+export default function FeedbackDialog({
+  openFeedbackDialogProps,
   onClose,
-}: LogoutDialogProps) {
+}: FeedbackDialogProps) {
   return (
     <React.Fragment>
       <BootstrapDialog
         onClose={onClose}
         aria-labelledby="customized-dialog-title"
-        open={openLogoutDialogProps}
+        open={openFeedbackDialogProps}
         className={styles.headerDialogBox}
         sx={{
           background: 'rgb(17 16 27 / 0%)',
@@ -61,18 +62,18 @@ export default function LogoutDialog({
           >
             <Box component="div" className={styles.dialogIcon}>
               <Image
-                src="/images/logout.svg"
-                alt="logout"
+                src="/images/message-question.svg"
+                alt="feedback"
                 width={28}
                 height={28}
               />
             </Box>
             <Box>
               <Typography variant="h6" className={styles.dialogTitle}>
-                Log out
+                Give Feedback
               </Typography>
               <Typography variant="body1" className={styles.dialogSemiTitle}>
-                Are you sure you want to log out?
+                Your thoughts are valuable in helping improve our products.
               </Typography>
             </Box>
           </DialogTitle>
@@ -95,11 +96,57 @@ export default function LogoutDialog({
           </IconButton>
         </Box>
         <DialogContent dividers className={styles.dialogBody}>
+          <Box component="div" className={styles.dialogFormBox}>
+            <TextField
+              fullWidth
+              id="first_name"
+              name="first_name"
+              placeholder="samsepiol@ecorp.com"
+              multiline
+              minRows={4}
+              sx={{
+                marginTop: '0px',
+                padding: '0',
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '12px',
+                  borderWidth: '0px',
+                  color: '#DADAE1',
+                  backgroundColor: '#252431',
+                  padding: '14px 16px',
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    top: '-10px !important',
+                  },
+                  '& .MuiOutlinedInput-input': {
+                    fontSize: '14px',
+                    color: '#DADAE1',
+                    // padding: '14px 16px',
+                    fontWeight: 500,
+                    borderRadius: '12px',
+                    '&::placeholder': {
+                      color: '#888',
+                      fontWeight: 400,
+                    },
+                  },
+                  '& fieldset': {
+                    borderColor: '#3A3948',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#fff',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#fff',
+                    borderWidth: '1px',
+                    color: '#fff',
+                  },
+                },
+              }}
+            />
+          </Box>
           <Box component="div" className={styles.dialogFormButtonBox}>
             <Button className={styles.formCancelBtn} onClick={onClose}>
               Cancel
             </Button>
-            <Button className={styles.formSaveBtn}>Logout</Button>
+            <Button className={styles.formSaveBtn}>Submit</Button>
           </Box>
         </DialogContent>
       </BootstrapDialog>

@@ -9,8 +9,7 @@ import {
 } from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './style.module.scss';
-import Image from 'next/image';
-import Header from '@/app/components/Header/Header';
+import Header from '@/app/components/header/Header';
 import ChatWindows from '@/app/components/Chat-Windows/ChatWindows';
 import DialogBox from '@/app/components/Dialog-Box/DialogBox';
 
@@ -173,38 +172,38 @@ export default function Page() {
   );
 }
 
-function DocCard() {
-  return (
-    <Grid item xs={12} sm={12} md={4} className={styles.docBoxInner}>
-      <div className={styles.docGridBox}>
-        <div className={styles.docBox}>
-          <Image
-            src="/images/pdf.svg"
-            alt="pdf"
-            width={19}
-            height={24}
-            className={styles.pdfImg}
-          />
-          <Typography variant="body1" className={styles.docTitle}>
-            Neon Insights
-          </Typography>
-          <Image
-            src="/images/more.svg"
-            alt="more"
-            width={16}
-            height={16}
-            className={styles.moreImg}
-          />
-        </div>
-        <div className={styles.docDateBox}>
-          <div className={styles.docTagBox}>
-            <span className={styles.docTag}>Biotech</span>
-            <span className={styles.docTag}>Biotech</span>
-            <span className={styles.docTag}>+2</span>
-          </div>
-          <Typography variant="body1">12-03-2025</Typography>
-        </div>
-      </div>
-    </Grid>
-  );
-}
+// function DocCard() {
+//   return (
+//     <Grid item xs={12} sm={12} md={4} className={styles.docBoxInner}>
+//       <div className={styles.docGridBox}>
+//         <div className={styles.docBox}>
+//           <Image
+//             src="/images/pdf.svg"
+//             alt="pdf"
+//             width={19}
+//             height={24}
+//             className={styles.pdfImg}
+//           />
+//           <Typography variant="body1" className={styles.docTitle}>
+//             Neon Insights
+//           </Typography>
+//           <Image
+//             src="/images/more.svg"
+//             alt="more"
+//             width={16}
+//             height={16}
+//             className={styles.moreImg}
+//           />
+//         </div>
+//         <div className={styles.docDateBox}>
+//           <div className={styles.docTagBox}>
+//             <span className={styles.docTag}>Biotech</span>
+//             <span className={styles.docTag}>Biotech</span>
+//             <span className={styles.docTag}>+2</span>
+//           </div>
+//           <Typography variant="body1">12-03-2025</Typography>
+//         </div>
+//       </div>
+//     </Grid>
+//   );
+// }

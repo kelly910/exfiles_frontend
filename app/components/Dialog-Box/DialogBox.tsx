@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
     backgroundColor: '#11101b',
     margin: '0px',

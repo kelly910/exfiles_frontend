@@ -22,7 +22,7 @@ const Page = () => {
     if (token) {
       router.push('/dashboard');
     }
-  }, []);
+  }, [router]);
 
   return (
     <main>

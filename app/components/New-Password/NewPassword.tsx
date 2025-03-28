@@ -57,7 +57,7 @@ const Page = () => {
     if (token) {
       router.push('/dashboard');
     }
-  }, []);
+  }, [router]);
 
   const newPasswordChangeClick = async (
     values: NewPasswordFormValues
