@@ -35,10 +35,23 @@ export const deleteAccount = createAsyncThunk<string, { otp: number }>(
   }
 );
 
-export const logout = createAsyncThunk<void, void>(
+export const logout = createAsyncThunk<void, string>(
   'profileSetting/logout',
-  async () => {
-    await api.post(urlMapper.logout);
+  async (token, { rejectWithValue }) => {
+    try {
+      await api.post(
+        urlMapper.logout,
+        {},
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error('Logout failed', error);
+      return rejectWithValue('Logout failed. Please try again.');
+    }
   }
 );
 
@@ -56,6 +69,9 @@ const profileSettingSlice = createSlice({
       )
       .addCase(logout.fulfilled, (state) => {
         state.isLoggedOut = true;
+      })
+      .addCase(logout.rejected, (state) => {
+        state.isLoggedOut = false;
       });
   },
 });

@@ -11,6 +11,7 @@ const urlMapper = {
   deleteAccount: `${BASE_URL}delete-account/`,
   logout: `${BASE_URL}logout/`,
   updateUser: `${BASE_URL}users/`,
+  changePassword: `${BASE_URL}change-password/`,
 };
 
 export default urlMapper;

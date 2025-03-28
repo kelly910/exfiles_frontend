@@ -33,6 +33,7 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
   const [timer, setTimer] = useState(RESEND_TIME);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [loadingContinue, setLoadingContinue] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -43,14 +44,18 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
 
   const handleContinueClick = async () => {
     if (inputValue === 'DELETE') {
-      dispatch(
-        sendOtp({
-          email: loggedInUserEmail as string,
-          otp_type: 'delete_account',
-        })
-      );
-      showToast('success', 'OTP sent successfully.');
-      await setShowNextSlide(true);
+      setLoadingContinue(true);
+      setTimeout(async () => {
+        await dispatch(
+          sendOtp({
+            email: loggedInUserEmail as string,
+            otp_type: 'delete_account',
+          })
+        );
+        await showToast('success', 'OTP sent successfully.');
+        setLoadingContinue(false);
+        await setShowNextSlide(true);
+      }, 1000);
     }
   };
 
@@ -159,7 +164,7 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
   return (
     <>
       {!showNextSlide ? (
-        <>
+        <form className={styles.dialogFormBox}>
           <Box component="div" className={styles.dialogFormContent}>
             <Box>
               <Typography className={styles.accountDeletTitle}>
@@ -171,7 +176,7 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                 to continue please type “DELETE” in the text box below.
               </Typography>
             </Box>
-            <form className={styles.dialogFormInner}>
+            <div className={styles.dialogFormInner}>
               <div
                 className={`${styles.dialogFormGroup} ${styles.dialogFormFull}`}
               >
@@ -220,19 +225,24 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                   }}
                 />
               </div>
-            </form>
+            </div>
           </Box>
           {inputValue === 'DELETE' && (
             <Box component="div" className={styles.dialogFormButtonBox}>
               <Button
                 onClick={handleContinueClick}
                 className={styles.formSaveBtn}
+                disabled={loadingContinue}
               >
-                Continue
+                {loadingContinue ? (
+                  <CircularProgress size={16} color="inherit" />
+                ) : (
+                  'Continue'
+                )}
               </Button>
             </Box>
           )}
-        </>
+        </form>
       ) : (
         <Formik
           initialValues={{
@@ -243,7 +253,7 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
         >
           {({ handleSubmit }) => {
             return (
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit} className={styles.dialogFormBox}>
                 <Box component="div" className={styles.dialogFormContent}>
                   <Box>
                     <Typography className={styles.accountDeletTitle}>
@@ -343,7 +353,7 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                     type="submit"
                   >
                     {loading ? (
-                      <CircularProgress size={24} color="inherit" />
+                      <CircularProgress size={16} color="inherit" />
                     ) : (
                       'Delete Account'
                     )}

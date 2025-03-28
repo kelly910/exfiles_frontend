@@ -35,6 +35,30 @@ const otpSchema: Yup.StringSchema = Yup.string()
   .matches(/^\d{4}$/, 'OTP must be exactly 4 digits')
   .required('OTP is required');
 
+const currentPasswordSchema: Yup.StringSchema = Yup.string()
+  .required('Current Password is required')
+  .min(8, 'Current Password must be at least 8 characters long')
+  .matches(/[A-Z]/, 'Current Password must contain at least one capital letter')
+  .matches(/[0-9]/, 'Current Password must contain at least one number')
+  .matches(
+    /[!@#$%^&*(),.?":{}|<>]/,
+    'Current Password must contain at least one special character'
+  );
+
+const newPassword1Schema: Yup.StringSchema = Yup.string()
+  .required('New Password is required')
+  .min(8, 'New Password must be at least 8 characters long')
+  .matches(/[A-Z]/, 'New Password must contain at least one capital letter')
+  .matches(/[0-9]/, 'New Password must contain at least one number')
+  .matches(
+    /[!@#$%^&*(),.?":{}|<>]/,
+    'New Password must contain at least one special character'
+  );
+
+const newPassword2Schema: Yup.StringSchema = Yup.string()
+  .oneOf([Yup.ref('new_password1'), undefined], 'Passwords must match')
+  .required('Password confirmation is required');
+
 export {
   firstNameSchema,
   passwordSchema,
@@ -43,4 +67,7 @@ export {
   contactNumberSchema,
   otpSchema,
   confirmNewPasswordSchema,
+  currentPasswordSchema,
+  newPassword1Schema,
+  newPassword2Schema,
 };
