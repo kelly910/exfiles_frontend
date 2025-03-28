@@ -1,0 +1,227 @@
+.headerDialogBox {
+  background-color: #1b1a25;
+
+  .dialogHeader {
+    border-bottom: 1px solid #3a3948;
+    padding: 15px 24px;
+
+    h2 {
+      padding: 0;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 140%;
+      color: #ffffff;
+    }
+  }
+
+  .dialogBody {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+
+    .dialogSidebar {
+      border-right: 1px solid #3a3948;
+      padding: 12px 16px;
+      width: 250px;
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      flex-direction: column;
+      gap: 50px;
+
+      .dialogSidebarHeader {
+        width: 100%;
+
+        .dialogSemiTitle {
+          font-weight: 400;
+          font-size: 10px;
+          line-height: 140%;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          color: #898b94;
+        }
+
+        .dialogSidebarContent {
+          margin-top: 8px;
+
+          button {
+            width: 100%;
+            padding: 8px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            text-transform: capitalize;
+
+            &:first-child {
+              margin-top: 0;
+            }
+
+            &.active,
+            &:hover {
+              background-color: #2c2a38;
+            }
+
+            img {
+              flex: 0 0 auto;
+            }
+
+            p {
+              text-align: start;
+              width: 100%;
+              font-weight: 600;
+              font-size: 13px;
+              line-height: 140%;
+              color: #dadae1;
+            }
+          }
+        }
+      }
+    }
+
+    .dialogFormBox {
+      width: 100%;
+      padding: 30px 24px 24px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 80px;
+      flex-direction: column;
+
+      .dialogFormContent {
+        width: 100%;
+
+        .dialogFormInner {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px 16px;
+
+          &.dialogFormOpt {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 24px;
+            margin-top: 24px;
+          }
+
+          .dialogFormGroup {
+            .formLabel {
+              font-weight: 500;
+              font-size: 14px;
+              line-height: 140%;
+              color: #898b94;
+            }
+          }
+
+          .dialogFormFull {
+            grid-column: span 2;
+            margin-top: 24px;
+          }
+        }
+
+        .accountDeletTitle {
+          font-weight: 700;
+          font-size: 18px;
+          line-height: 140%;
+          color: #e72240;
+        }
+
+        .accountFormDetails {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 22.65px;
+          color: #dadae1;
+          margin-top: 12px;
+        }
+      }
+    }
+
+    .dialogInnerHide {
+      display: none;
+    }
+
+    .dialogFormButtonBox {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 32px;
+
+      .formCancelBtn {
+        text-transform: capitalize;
+        padding: 0;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 140%;
+        text-align: center;
+        color: #898b94;
+        transition: all 0.2s;
+
+        &:hover {
+          color: #dadae1;
+        }
+      }
+
+      .formSaveBtn {
+        text-transform: capitalize;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 10px;
+        letter-spacing: 0px;
+        min-width: 140px;
+        background: linear-gradient(90deg,
+            #2a1ad8 0%,
+            #4e26e2 25%,
+            #7231ec 50%,
+            #953df5 75%,
+            #b948ff 100%);
+        color: #ffffff;
+        border-radius: 12px;
+        padding: 15px 24px;
+        transition: all 0.2s;
+
+        &:hover {
+          background:
+            linear-gradient(0deg, #d9d9d9, #d9d9d9),
+            linear-gradient(90deg,
+              #2a1ad8 0%,
+              #4e26e2 25%,
+              #7231ec 50%,
+              #953df5 75%,
+              #b948ff 100%);
+          background-blend-mode: overlay;
+        }
+
+        &.formDeletBtn {
+          background: #e72240;
+        }
+      }
+
+      .formBackBtn {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 4px;
+        text-transform: capitalize;
+        padding: 0;
+        font-weight: 500;
+        font-size: 16px;
+        text-align: center;
+        color: #898b94;
+        transition: all 0.2s;
+
+        &:hover {
+          color: #dadae1;
+        }
+      }
+
+      &.dialogDeletButtonBox {
+        justify-content: space-between;
+      }
+    }
+  }
+}

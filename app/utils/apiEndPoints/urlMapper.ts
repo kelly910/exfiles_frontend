@@ -8,6 +8,9 @@ const urlMapper = {
   forgotPassword: `${BASE_URL}forget-password/`,
   resetPassword: `${BASE_URL}reset-password/`,
   googleLogin: `${BASE_URL}social-login/google/`,
+  deleteAccount: `${BASE_URL}delete-account/`,
+  logout: `${BASE_URL}logout/`,
+  updateUser: `${BASE_URL}users/`,
 };
 
 export default urlMapper;

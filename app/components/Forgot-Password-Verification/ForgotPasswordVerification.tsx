@@ -48,7 +48,7 @@ const Page = () => {
     if (token) {
       router.push('/dashboard');
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (timer > 0) {

@@ -61,7 +61,7 @@ const Page = () => {
     if (token) {
       router.push('/dashboard');
     }
-  }, []);
+  }, [router]);
 
   const registerUserClick = async (
     values: RegisterFormValues

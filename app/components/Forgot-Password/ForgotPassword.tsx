@@ -44,7 +44,7 @@ const Page = () => {
     if (token) {
       router.push('/dashboard');
     }
-  }, []);
+  }, [router]);
 
   const forgotPasswordClick = async (
     values: ForgotPasswordFormValues

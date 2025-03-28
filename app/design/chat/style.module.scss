@@ -1,0 +1,161 @@
+.chatHeading {
+  width: 100%;
+  padding: 0 30px;
+
+  .gridBox {
+    margin-top: 28px;
+
+    .gridBoxInner {
+      .chatBox {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        p {
+          color: #dadae1cc;
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 140%;
+          letter-spacing: -2%;
+        }
+      }
+
+      .gridBoxButton {
+        margin-top: 23px;
+      }
+    }
+  }
+}
+
+.chatHeader {
+  .chatTitle {
+    color: #dadae1;
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 140%;
+    letter-spacing: -2%;
+  }
+
+  .chatSubtitle {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: -2%;
+    text-align: center;
+    color: #898b94;
+    margin: 0 auto;
+  }
+}
+
+.chatGridBox {
+  border: 1px solid #3a3948;
+  background-color: #1b1a25;
+  width: 100%;
+  border-radius: 12px;
+  padding: 24px 16px;
+  height: 100%;
+}
+
+.chatBoarbMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 100px;
+  min-height: 100vh;
+  padding: 100px 0;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.fileInput {
+  padding: 9px 16px;
+  background-color: #1b1a25;
+  width: 100%;
+  border-radius: 10px;
+  color: #898b94;
+
+  &::after {
+    content: none !important;
+  }
+
+  input {
+    color: #dadae1;
+  }
+}
+
+.chatBoard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #3a3948;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.fileIcon {
+  cursor: pointer;
+  // border: 0.72px solid #3A3948;
+
+  .clip {
+    background-image: url('/images/paperclip.svg');
+    width: 20px;
+    height: 20px;
+    aspect-ratio: 1 / 1;
+    display: block;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+
+@media (max-width: 900px) {
+  .chatGridBox {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .chatHeading {
+    .gridBox {
+      .gridBoxInner {
+        .chatBox {
+          align-items: center;
+          flex-direction: row;
+        }
+
+        .gridBoxButton {
+          margin-top: 0;
+          flex: 0 0 auto;
+        }
+      }
+    }
+  }
+
+  .chatBoarbMain {
+    max-width: 800px;
+  }
+}
+
+@media (max-width: 500px) {
+  .chatHeading {
+    .gridBox {
+      .gridBoxInner {
+        .chatBox {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .gridBoxButton {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,129 @@
+.headerDialogBox {
+  background-color: #1b1a25;
+
+  .dialogHeader {
+    border-bottom: 1px solid #3a3948;
+    padding: 16px;
+
+    .dialogHeaderInner {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 12px;
+
+      .dialogIcon {
+        background-color: #2c2a38;
+        border-radius: 8px;
+        border: 0.82px solid #3a3948;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dialogTitle {
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 140%;
+        letter-spacing: -2%;
+        color: #ffffff;
+      }
+
+      .dialogSemiTitle {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 140%;
+        letter-spacing: -2%;
+        color: #898b94;
+      }
+    }
+  }
+
+  .dialogBody {
+    padding: 0;
+
+    .dialogFormBox {
+      padding: 24px;
+      padding-bottom: 0;
+
+      .dialogFormBox {
+        background-color: #252431;
+
+        .dialogTextArea {
+          width: 100%;
+        }
+      }
+    }
+
+    .dialogFormButtonBox {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 32px;
+      padding: 24px;
+
+      .formCancelBtn {
+        text-transform: capitalize;
+        padding: 0;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 140%;
+        text-align: center;
+        color: #898b94;
+        transition: all 0.2s;
+
+        &:hover {
+          color: #dadae1;
+        }
+      }
+
+      .formSaveBtn {
+        text-transform: capitalize;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 10px;
+        letter-spacing: 0px;
+        min-width: 140px;
+        background: linear-gradient(90deg,
+            #2a1ad8 0%,
+            #4e26e2 25%,
+            #7231ec 50%,
+            #953df5 75%,
+            #b948ff 100%);
+        color: #ffffff;
+        border-radius: 12px;
+        padding: 15px 24px;
+        transition: all 0.2s;
+
+        &:hover {
+          background:
+            linear-gradient(0deg, #d9d9d9, #d9d9d9),
+            linear-gradient(90deg,
+              #2a1ad8 0%,
+              #4e26e2 25%,
+              #7231ec 50%,
+              #953df5 75%,
+              #b948ff 100%);
+          background-blend-mode: overlay;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .headerDialogBox .dialogHeader {
+    border-bottom: 1px solid #3a3948;
+    padding: 10px;
+  }
+
+  .headerDialogBox .dialogBody .dialogFormBox {
+    padding: 10px;
+  }
+
+  .headerDialogBox .dialogBody .dialogFormButtonBox {
+    padding: 10px;
+    gap: 20px;
+  }
+}
