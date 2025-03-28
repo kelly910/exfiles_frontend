@@ -19,6 +19,10 @@
     transform: translateY(-50%);
   }
 
+  &:first-child{
+    margin-top: 24px;
+  }
+
   span {
     border: 0.5px solid #3a3948;
     display: block;
