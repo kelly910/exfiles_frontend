@@ -143,13 +143,13 @@ export default function HeaderDialog({
             </Box>
           </Box>
 
-          <Box component="div" className={styles.dialogFormBox}>
+          <>
             {activeTab === 'setting' && <MyProfile closeDialog={onClose} />}
             {activeTab === 'password' && (
               <ChangeUserPassword closeDialog={onClose} />
             )}
             {activeTab === 'delete' && <DeleteAccount closeDialog={onClose} />}
-          </Box>
+          </>
         </DialogContent>
       </BootstrapDialog>
     </React.Fragment>

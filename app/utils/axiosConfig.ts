@@ -10,21 +10,21 @@ const api = axios.create({
 
 const getStoredToken = (): string | null => {
   if (typeof window !== 'undefined') {
-    const storedUser = window.localStorage.getItem('loggedInUser');
+    const storedUser = localStorage.getItem('loggedInUser');
     return storedUser;
   }
   return null;
 };
 
-const getLoggedInUser = getStoredToken();
-const parsedUser = getLoggedInUser ? JSON.parse(getLoggedInUser) : null;
-const token: string | null = parsedUser?.data?.token || null;
-
 // Request Interceptor
 api.interceptors.request.use(
   (config) => {
+    const getLoggedInUser = getStoredToken();
+    const parsedUser = getLoggedInUser ? JSON.parse(getLoggedInUser) : null;
+    const token: string | null = parsedUser?.data?.token || null;
+
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`; // Attach token to headers
+      config.headers.Authorization = `Token ${token}`; // Attach token to headers
     }
     return config;
   },
@@ -52,7 +52,7 @@ api.interceptors.response.use(
 
           const newToken = response.data.token;
           localStorage.setItem('token', newToken);
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          originalRequest.headers.Authorization = `Token ${newToken}`;
 
           return api(originalRequest); // Retry original request with new token
         }
