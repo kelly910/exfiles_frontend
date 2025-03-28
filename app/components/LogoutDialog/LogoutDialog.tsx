@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './logout.module.scss';
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -13,6 +14,12 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { logout } from '@/app/redux/slices/profileSetting';
+import { setLoader } from '@/app/redux/slices/loader';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
@@ -41,6 +48,28 @@ export default function LogoutDialog({
   openLogoutDialogProps,
   onClose,
 }: LogoutDialogProps) {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
+
+  const loggedInUserToken = loggedInUser?.data?.token ?? '';
+
+  const logoutUser = async () => {
+    setLoading(true);
+    await dispatch(setLoader(true));
+    setTimeout(async () => {
+      await dispatch(logout(loggedInUserToken));
+      setLoading(false);
+      dispatch(setLoader(false));
+      localStorage.removeItem('loggedInUser');
+      document.cookie = `accessToken=; path=/; max-age=0`;
+      router.push('/login');
+    }, 1000);
+  };
+
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -99,7 +128,17 @@ export default function LogoutDialog({
             <Button className={styles.formCancelBtn} onClick={onClose}>
               Cancel
             </Button>
-            <Button className={styles.formSaveBtn}>Logout</Button>
+            <Button
+              className={styles.formSaveBtn}
+              onClick={logoutUser}
+              disabled={loading}
+            >
+              {loading ? (
+                <CircularProgress size={16} color="inherit" />
+              ) : (
+                'Logout'
+              )}
+            </Button>
           </Box>
         </DialogContent>
       </BootstrapDialog>

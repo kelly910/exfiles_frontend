@@ -8,6 +8,9 @@ import {
   contactNumberSchema,
   otpSchema,
   confirmNewPasswordSchema,
+  currentPasswordSchema,
+  newPassword1Schema,
+  newPassword2Schema,
 } from './validationSchemas';
 
 // Register Validation Schema
@@ -39,4 +42,17 @@ export const forgotPasswordValidationSchema = Yup.object({
 export const changePasswordValidationSchema = Yup.object({
   new_password: passwordSchema,
   confirm_password: confirmNewPasswordSchema,
+});
+
+// Change Password Validation Schema If User Is Login
+export const changePasswordUserLoginValidationSchema = Yup.object({
+  old_password: currentPasswordSchema,
+  new_password1: newPassword1Schema,
+  new_password2: newPassword2Schema,
+});
+
+// Update User Validation Schema
+export const updateUserValidationSchema = Yup.object({
+  contact_number: contactNumberSchema,
+  first_name: firstNameSchema,
 });

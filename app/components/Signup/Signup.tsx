@@ -736,7 +736,11 @@ const Page = () => {
               }}
             >
               <div className="">
-                <Typography variant="h4" gutterBottom>
+                <Typography
+                  variant="h4"
+                  gutterBottom
+                  className={styles.signupMember}
+                >
                   Already a Member?
                 </Typography>
                 <Typography variant="body1" component="p" gutterBottom>
