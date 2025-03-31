@@ -16,6 +16,20 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
     backgroundColor: '#11101b',
     margin: '0px',
+    minWidth: '650px',
+    minHeight: '550px',
+    // maxWidth: '90vw',
+    // Responsive styles
+    [theme.breakpoints.down('md')]: {
+      maxWidth: '90vw',
+      minWidth: '580px',
+      minHeight: '450px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '90vw',
+      minWidth: '80vw',
+      minHeight: 'auto',
+    },
   },
 }));
 

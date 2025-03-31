@@ -28,6 +28,18 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     borderRadius: '16px',
     minWidth: '850px',
     minHeight: '550px',
+    // maxWidth: '90vw',
+    // Responsive styles
+    [theme.breakpoints.down('md')]: {
+      maxWidth: '90vw',
+      minWidth: '580px',
+      minHeight: '450px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '90vw',
+      minWidth: '80vw',
+      minHeight: 'auto',
+    },
   },
 }));
 
@@ -63,7 +75,7 @@ export default function HeaderDialog() {
   return (
     <React.Fragment>
       <Button variant="outlined" onClick={handleClickOpen}>
-        A S
+        Settings
       </Button>
       <BootstrapDialog
         onClose={handleClose}
@@ -113,6 +125,7 @@ export default function HeaderDialog() {
                     alt="setting.svg"
                     width={18}
                     height={18}
+                    style={{ marginRight: '4px' }}
                   />
                   <Typography>My Profile</Typography>
                   <Image
@@ -131,6 +144,7 @@ export default function HeaderDialog() {
                     alt="setting.svg"
                     width={18}
                     height={18}
+                    style={{ marginRight: '4px' }}
                   />
                   <Typography>Change Password</Typography>
                   <Image
@@ -156,6 +170,7 @@ export default function HeaderDialog() {
                     alt="setting.svg"
                     width={18}
                     height={18}
+                    style={{ marginRight: '4px' }}
                   />
                   <Typography>Delete Account</Typography>
                   <Image
@@ -1068,6 +1083,7 @@ export default function HeaderDialog() {
                           alt="left arrow"
                           width={16}
                           height={16}
+                          style={{ marginRight: '4px' }}
                         />{' '}
                         Back
                       </Button>

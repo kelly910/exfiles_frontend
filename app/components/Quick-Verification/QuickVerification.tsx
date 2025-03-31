@@ -264,7 +264,6 @@ const Page = () => {
                                   ? 'none'
                                   : 'auto',
                                 color: isResendDisabled ? '#888' : '#007bff',
-                                textDecoration: 'none',
                               }}
                             >
                               {isResendDisabled

@@ -18,6 +18,7 @@ import styles from './style.module.scss';
 import React from 'react';
 import HeaderDialog from '../HeaderDialog/HeaderDialog';
 import LogoutDialog from '../LogoutDialog/LogoutDialog';
+import FeedbackDialog from '../FeedbackDialog/FeedbackDialog';
 
 export default function Header() {
   const pages = ['Products', 'Pricing', 'Blog'];
@@ -182,17 +183,19 @@ export default function Header() {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
-                    alt="Pravin Lagariya"
-                    src="/static/images/avatar/2.jpg"
                     sx={{
                       backgroundColor: '#DADAE1',
                       color: '#1B1A25',
                       fontSize: '16px',
                       fontWeight: 600,
                       padding: '9px 10px',
-                      lineHeight: '140%',
+                      lineHeight: '1.4',
+                      display: 'flex',
+                      alignItems: 'center',
                     }}
-                  />
+                  >
+                    AS
+                  </Avatar>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -242,6 +245,7 @@ export default function Header() {
             </Box>
             <HeaderDialog />
             <LogoutDialog />
+            <FeedbackDialog />
           </Toolbar>
         </Container>
       </AppBar>

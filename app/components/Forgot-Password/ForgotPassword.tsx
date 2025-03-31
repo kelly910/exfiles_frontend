@@ -117,7 +117,7 @@ const Page = () => {
                             color:
                               errors.email && touched.email
                                 ? '#ff4d4d'
-                                : '#676972',
+                                : '#898B94',
                             fontWeight: 500,
                           }}
                         >
@@ -193,6 +193,7 @@ const Page = () => {
                             href="#"
                             className="link-primary"
                             onClick={() => router.push('/login')}
+                            sx={{ textDecoration: 'none' }}
                           >
                             Back to Login
                           </Link>

@@ -262,6 +262,7 @@ function DocCard() {
           />
           <Typography variant="body1" className={styles.docTitle}>
             Neon Insights
+            <span>general log memory usage</span>
           </Typography>
           <Image
             src="/images/more.svg"

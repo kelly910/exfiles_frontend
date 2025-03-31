@@ -168,7 +168,7 @@ const Page = () => {
                             color:
                               errors.first_name && touched.first_name
                                 ? '#ff4d4d'
-                                : '#676972',
+                                : '#898B94',
                             fontWeight: 500,
                           }}
                         >
@@ -203,7 +203,7 @@ const Page = () => {
                                   fontWeight: 500,
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#888',
+                                    color: '#898B94',
                                     fontWeight: 400,
                                   },
                                 },
@@ -244,7 +244,7 @@ const Page = () => {
                             color:
                               errors.last_name && touched.last_name
                                 ? '#ff4d4d'
-                                : '#676972',
+                                : '#898B94',
                             fontWeight: 500,
                           }}
                         >
@@ -275,7 +275,7 @@ const Page = () => {
                                   fontWeight: 500,
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#888',
+                                    color: '#898B94',
                                     fontWeight: 400,
                                   },
                                 },
@@ -308,7 +308,7 @@ const Page = () => {
                             color:
                               errors.email && touched.email
                                 ? '#ff4d4d'
-                                : '#676972',
+                                : '#898B94',
                             fontWeight: 500,
                           }}
                         >
@@ -340,7 +340,7 @@ const Page = () => {
                                   fontWeight: 500,
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#888',
+                                    color: '#898B94',
                                     fontWeight: 400,
                                   },
                                 },
@@ -381,7 +381,7 @@ const Page = () => {
                             color:
                               errors.contact_number && touched.contact_number
                                 ? '#ff4d4d'
-                                : '#676972',
+                                : '#898B94',
                             fontWeight: 500,
                           }}
                         >
@@ -415,7 +415,7 @@ const Page = () => {
                                   fontWeight: 500,
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#888',
+                                    color: '#898B94',
                                     fontWeight: 400,
                                   },
                                 },
@@ -488,7 +488,7 @@ const Page = () => {
                             color:
                               errors.password && touched.password
                                 ? '#ff4d4d'
-                                : '#676972',
+                                : '#898B94',
                             fontWeight: 500,
                           }}
                         >
@@ -520,7 +520,7 @@ const Page = () => {
                                   fontWeight: 500,
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#888',
+                                    color: '#898B94',
                                     fontWeight: 400,
                                   },
                                 },
@@ -582,7 +582,7 @@ const Page = () => {
                               errors.confirm_password &&
                               touched.confirm_password
                                 ? '#ff4d4d'
-                                : '#676972',
+                                : '#898B94',
                             fontWeight: 500,
                           }}
                         >
@@ -617,7 +617,7 @@ const Page = () => {
                                   fontWeight: 500,
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#888',
+                                    color: '#898B94',
                                     fontWeight: 400,
                                   },
                                 },
@@ -736,7 +736,11 @@ const Page = () => {
               }}
             >
               <div className="">
-                <Typography variant="h4" gutterBottom>
+                <Typography
+                  variant="h4"
+                  gutterBottom
+                  className={styles.signupMember}
+                >
                   Already a Member?
                 </Typography>
                 <Typography variant="body1" component="p" gutterBottom>

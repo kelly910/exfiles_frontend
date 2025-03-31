@@ -13,24 +13,26 @@ import Image from 'next/image';
 import Header from '@/app/components/Header/Header';
 import ChatWindows from '@/app/components/Chat-Windows/ChatWindows';
 import DialogBox from '@/app/components/Dialog-Box/DialogBox';
+import Sidebar from '@/app/components/Sidebar/Sidebar';
 
 export default function Page() {
   return (
     <>
+      <Sidebar />
       <Header />
       <main>
         <div>
           <Container maxWidth="lg" disableGutters>
-            <div className={styles.chatBoarbMain}>
+            <Box component="section" className={styles.chatBoarbMain}>
               <Box component="section" className={styles.chatHeading}>
-                <div className={styles.chatHeader}>
+                <Box component="div" className={styles.chatHeader}>
                   <Typography variant="h2" className={styles.chatTitle}>
                     Wondering What is ExFiles?
                   </Typography>
                   <Typography variant="body1" className={styles.chatSubtitle}>
                     Try clicking on below examples to get things going
                   </Typography>
-                </div>
+                </Box>
 
                 <Box className={styles.gridBox} component="div">
                   <Grid
@@ -121,11 +123,7 @@ export default function Page() {
               </Box>
               <Box component="section" className={styles.chatHeading}>
                 <div className={styles.chatHeader}>
-                  <Typography
-                    variant="h2"
-                    className={styles.chatTitle}
-                    sx={{ opacity: 0.8 }}
-                  >
+                  <Typography variant="h2" className={styles.chatTitle}>
                     How can I help you with?
                   </Typography>
                   <Typography
@@ -163,7 +161,7 @@ export default function Page() {
                   </Button>
                 </Box>
               </Box>
-            </div>
+            </Box>
             <ChatWindows />
             <DialogBox />
           </Container>
@@ -173,38 +171,38 @@ export default function Page() {
   );
 }
 
-function DocCard() {
-  return (
-    <Grid item xs={12} sm={12} md={4} className={styles.docBoxInner}>
-      <div className={styles.docGridBox}>
-        <div className={styles.docBox}>
-          <Image
-            src="/images/pdf.svg"
-            alt="pdf"
-            width={19}
-            height={24}
-            className={styles.pdfImg}
-          />
-          <Typography variant="body1" className={styles.docTitle}>
-            Neon Insights
-          </Typography>
-          <Image
-            src="/images/more.svg"
-            alt="more"
-            width={16}
-            height={16}
-            className={styles.moreImg}
-          />
-        </div>
-        <div className={styles.docDateBox}>
-          <div className={styles.docTagBox}>
-            <span className={styles.docTag}>Biotech</span>
-            <span className={styles.docTag}>Biotech</span>
-            <span className={styles.docTag}>+2</span>
-          </div>
-          <Typography variant="body1">12-03-2025</Typography>
-        </div>
-      </div>
-    </Grid>
-  );
-}
+// function DocCard() {
+//   return (
+//     <Grid item xs={12} sm={12} md={4} className={styles.docBoxInner}>
+//       <div className={styles.docGridBox}>
+//         <div className={styles.docBox}>
+//           <Image
+//             src="/images/pdf.svg"
+//             alt="pdf"
+//             width={19}
+//             height={24}
+//             className={styles.pdfImg}
+//           />
+//           <Typography variant="body1" className={styles.docTitle}>
+//             Neon Insights
+//           </Typography>
+//           <Image
+//             src="/images/more.svg"
+//             alt="more"
+//             width={16}
+//             height={16}
+//             className={styles.moreImg}
+//           />
+//         </div>
+//         <div className={styles.docDateBox}>
+//           <div className={styles.docTagBox}>
+//             <span className={styles.docTag}>Biotech</span>
+//             <span className={styles.docTag}>Biotech</span>
+//             <span className={styles.docTag}>+2</span>
+//           </div>
+//           <Typography variant="body1">12-03-2025</Typography>
+//         </div>
+//       </div>
+//     </Grid>
+//   );
+// }
