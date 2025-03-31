@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styles from './logincident.module.scss';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 

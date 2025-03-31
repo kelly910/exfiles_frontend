@@ -1,24 +1,16 @@
 import React, { useState } from 'react';
 import styles from './style.module.scss';
 import {
-  Avatar,
   Box,
   Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
-  InputAdornment,
-  MenuItem,
-  Select,
   styled,
-  TextField,
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import Link from 'next/link';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {

@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './style.module.scss';
-import Image from 'next/image';
 import Header from '@/app/components/Header/Header';
 import ChatWindows from '@/app/components/Chat-Windows/ChatWindows';
 import DialogBox from '@/app/components/Dialog-Box/DialogBox';
