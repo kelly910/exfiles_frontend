@@ -18,6 +18,7 @@ export default function Page() {
                   alt="logo"
                   width={290}
                   height={63}
+            
                 />
               </div>
             </Box>

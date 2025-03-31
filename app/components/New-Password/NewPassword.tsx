@@ -55,7 +55,7 @@ const Page = () => {
     };
     const token = getCookie('accessToken');
     if (token) {
-      router.push('/dashboard');
+      router.push('/ai-chats');
     }
   }, [router]);
 
@@ -90,12 +90,14 @@ const Page = () => {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <Image
-                  src="/images/logo.svg"
-                  alt="logo"
-                  width={290}
-                  height={63}
-                />
+                <Link href=" https://exfiles.trooinbounddevs.com/">
+                  <Image
+                    src="/images/logo.svg"
+                    alt="logo"
+                    width={290}
+                    height={63}
+                  />
+                </Link>
               </div>
             </Box>
 

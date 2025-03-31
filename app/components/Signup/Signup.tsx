@@ -8,6 +8,7 @@ import {
   Select,
   TextField,
   Typography,
+  Link,
   CircularProgress,
 } from '@mui/material';
 import { Button } from '@mui/material';
@@ -17,7 +18,7 @@ import { registrationValidationSchema } from '@/app/utils/validationSchema/formV
 import { useEffect, useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { registerUser, sendOtp } from '../../redux/slices/register';
+import { registerUser } from '../../redux/slices/register';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
@@ -59,7 +60,7 @@ const Page = () => {
     };
     const token = getCookie('accessToken');
     if (token) {
-      router.push('/dashboard');
+      router.push('/ai-chats');
     }
   }, [router]);
 
@@ -78,12 +79,12 @@ const Page = () => {
           const response = await dispatch(registerUser(payload)).unwrap();
           if (response?.id && response?.is_email_verified === false) {
             showToast('success', 'User register successful.');
-            await dispatch(
-              sendOtp({
-                email: values.email,
-                otp_type: 'user_register',
-              })
-            );
+            // await dispatch(
+            //   sendOtp({
+            //     email: values.email,
+            //     otp_type: 'user_register',
+            //   })
+            // );
             router.push(`/quick-verification?email=${values.email}`);
           }
         } catch (error) {
@@ -111,7 +112,7 @@ const Page = () => {
         const token: string | null = response?.data?.token || null;
         if (token) {
           document.cookie = `accessToken=${token}; path=/; max-age=3600`;
-          router.push('/dashboard');
+          router.push('/ai-chats');
         }
       } catch (error) {
         handleError(error as ErrorResponse);
@@ -129,12 +130,14 @@ const Page = () => {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <Image
-                  src="/images/logo.svg"
-                  alt="logo"
-                  width={290}
-                  height={63}
-                />
+                <Link href=" https://exfiles.trooinbounddevs.com/">
+                  <Image
+                    src="/images/logo.svg"
+                    alt="logo"
+                    width={290}
+                    height={63}
+                  />
+                </Link>
               </div>
             </Box>
 
