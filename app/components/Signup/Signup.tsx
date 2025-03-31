@@ -18,7 +18,7 @@ import { registrationValidationSchema } from '@/app/utils/validationSchema/formV
 import { useEffect, useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { registerUser, sendOtp } from '../../redux/slices/register';
+import { registerUser } from '../../redux/slices/register';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
