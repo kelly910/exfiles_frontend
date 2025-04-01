@@ -59,6 +59,10 @@ const newPassword2Schema: Yup.StringSchema = Yup.string()
   .oneOf([Yup.ref('new_password1'), undefined], 'Passwords must match')
   .required('Password confirmation is required');
 
+const feedbackBodySchema: Yup.StringSchema = Yup.string()
+  .max(200, 'Feedback must be at most 200 characters')
+  .required('Please write your feedback here');
+
 export {
   firstNameSchema,
   passwordSchema,
@@ -70,4 +74,5 @@ export {
   currentPasswordSchema,
   newPassword1Schema,
   newPassword2Schema,
+  feedbackBodySchema,
 };

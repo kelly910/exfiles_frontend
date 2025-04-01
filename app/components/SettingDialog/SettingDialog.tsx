@@ -31,7 +31,7 @@ interface SettingDialogProps {
   onClose: () => void;
 }
 
-export default function HeaderDialog({
+export default function SettingDialog({
   openSettingDialogProps,
   onClose,
 }: SettingDialogProps) {

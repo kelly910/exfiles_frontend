@@ -8,6 +8,7 @@ import loginSlice from './slices/login';
 import loaderSlice from './slices/loader';
 import profileSettingSlice from './slices/profileSetting';
 import changePasswordSlice from './slices/changePassword';
+import userFeedbackSlice from './slices/feedback';
 
 const createNoopStorage = () => {
   return {
@@ -31,7 +32,7 @@ const storage =
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['loader', 'changePassword', 'profileSetting'],
+  blacklist: ['loader', 'changePassword', 'profileSetting', 'userFeedback'],
   // whitelist: ["auth"], // specify reducers to persist
 };
 
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   loader: loaderSlice,
   profileSetting: profileSettingSlice,
   changePassword: changePasswordSlice,
+  userFeedback: userFeedbackSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
