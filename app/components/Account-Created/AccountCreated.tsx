@@ -7,7 +7,7 @@ import {
   Link,
 } from '@mui/material';
 import { Button } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './accounCreated.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -18,17 +18,6 @@ const Page = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const getCookie = (name: string): string | null => {
-      const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
-      return match ? match[2] : null;
-    };
-    const token = getCookie('accessToken');
-    if (token) {
-      router.push('/ai-chats');
-    }
-  }, [router]);
 
   return (
     <main>

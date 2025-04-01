@@ -40,17 +40,6 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const getCookie = (name: string): string | null => {
-      const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
-      return match ? match[2] : null;
-    };
-    const token = getCookie('accessToken');
-    if (token) {
-      router.push('/ai-chats');
-    }
-  }, [router]);
-
-  useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => {
         setTimer((prev) => prev - 1);
@@ -76,6 +65,21 @@ const Page = () => {
   };
 
   const otpVerificationValue = useMemo(() => otp, [otp]);
+
+  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const pasteData = event.clipboardData.getData('text').replace(/\D/g, '');
+    if (!pasteData) return;
+    const newOtp = [...otp];
+    for (let i = 0; i < pasteData.length; i++) {
+      if (i < otpLength) {
+        newOtp[i] = pasteData[i];
+      }
+    }
+    setOtp(newOtp);
+    const lastFilledIndex = Math.min(pasteData.length, otpLength) - 1;
+    inputRefs.current[lastFilledIndex]?.focus();
+  };
 
   const handleChange = (
     index: number,
@@ -242,6 +246,7 @@ const Page = () => {
                                 inputProps={{
                                   maxLength: 1,
                                   style: { textAlign: 'center' },
+                                  onPaste: handlePaste,
                                 }}
                               />
                             ))}

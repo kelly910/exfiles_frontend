@@ -83,8 +83,8 @@ export default function SettingDialog({
                   className={` ${activeTab === 'setting' ? styles.active : ''}`}
                 >
                   <Image
-                    src="/images/setting.svg"
-                    alt="setting.svg"
+                    src="/images/profile.svg"
+                    alt="profile.svg"
                     width={18}
                     height={18}
                   />
@@ -101,8 +101,8 @@ export default function SettingDialog({
                   className={` ${activeTab === 'password' ? styles.active : ''}`}
                 >
                   <Image
-                    src="/images/setting.svg"
-                    alt="setting.svg"
+                    src="/images/password-change.svg"
+                    alt="password-change.svg"
                     width={18}
                     height={18}
                   />
@@ -126,8 +126,8 @@ export default function SettingDialog({
                   className={` ${activeTab === 'delete' ? styles.active : ''}`}
                 >
                   <Image
-                    src="/images/setting.svg"
-                    alt="setting.svg"
+                    src="/images/trash-white.svg"
+                    alt="trash-white.svg"
                     width={18}
                     height={18}
                   />
