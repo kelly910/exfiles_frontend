@@ -179,36 +179,15 @@
         line-height: 10px;
         letter-spacing: 0px;
         min-width: 140px;
-<<<<<<< HEAD:app/components/HeaderDialog/style.module.scss
         background: var(--Main-Gradient);
 
         color: var(--Txt-On-Gradient);
-=======
-        background: linear-gradient(90deg,
-            #2a1ad8 0%,
-            #4e26e2 25%,
-            #7231ec 50%,
-            #953df5 75%,
-            #b948ff 100%);
-        color: #ffffff;
->>>>>>> 89523b249fb62143c67207cf4b46776bac9429c3:app/components/SettingDialog/setting.module.scss
         border-radius: 12px;
         padding: 15px 24px;
         transition: all 0.2s;
 
         &:hover {
-<<<<<<< HEAD:app/components/HeaderDialog/style.module.scss
           background: var(--Main-Gradient);
-=======
-          background:
-            linear-gradient(0deg, #d9d9d9, #d9d9d9),
-            linear-gradient(90deg,
-              #2a1ad8 0%,
-              #4e26e2 25%,
-              #7231ec 50%,
-              #953df5 75%,
-              #b948ff 100%);
->>>>>>> 89523b249fb62143c67207cf4b46776bac9429c3:app/components/SettingDialog/setting.module.scss
           background-blend-mode: overlay;
         }
 
@@ -244,7 +223,6 @@
       }
     }
   }
-<<<<<<< HEAD:app/components/HeaderDialog/style.module.scss
 }
 
 @media (max-width: 900px) {
@@ -301,6 +279,3 @@
     }
   }
 }
-=======
-}
->>>>>>> 89523b249fb62143c67207cf4b46776bac9429c3:app/components/SettingDialog/setting.module.scss
