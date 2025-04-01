@@ -20,7 +20,7 @@ import SettingDialog from '../SettingDialog/SettingDialog';
 import LogoutDialog from '../LogoutDialog/LogoutDialog';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
-import FeedbackDialog from '@components/FeedbackDialog/FeedbackDialog';
+import FeedbackDialog from '@components/FeedBackDialog/FeedBackDialog';
 
 export default function PageHeader() {
   const pages = ['Products', 'Pricing', 'Blog'];

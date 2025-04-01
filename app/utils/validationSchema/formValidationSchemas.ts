@@ -11,6 +11,7 @@ import {
   currentPasswordSchema,
   newPassword1Schema,
   newPassword2Schema,
+  feedbackBodySchema,
 } from './validationSchemas';
 
 // Register Validation Schema
@@ -55,4 +56,9 @@ export const changePasswordUserLoginValidationSchema = Yup.object({
 export const updateUserValidationSchema = Yup.object({
   contact_number: contactNumberSchema,
   first_name: firstNameSchema,
+});
+
+// Feedback Validation Schema
+export const feedbackValidation = Yup.object({
+  body: feedbackBodySchema,
 });

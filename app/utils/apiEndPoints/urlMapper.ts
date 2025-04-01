@@ -12,6 +12,7 @@ const urlMapper = {
   logout: `${BASE_URL}logout/`,
   updateUser: `${BASE_URL}users/`,
   changePassword: `${BASE_URL}change-password/`,
+  feedback: `${BASE_URL}feedback/`,
 };
 
 export default urlMapper;

@@ -303,6 +303,10 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                           color: '#fff',
                         },
                       },
+                      '& .Mui-disabled': {
+                        color: '#DADAE1',
+                        WebkitTextFillColor: '#DADAE1',
+                      },
                     }}
                   />
                 </div>
