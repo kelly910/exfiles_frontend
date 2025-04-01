@@ -6,6 +6,7 @@ import { ReduxProvider } from './provider';
 import ThemeRegistry from './providers/ThemeRegistry';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import FullPageLoader from './components/Full-Page-Loader/FullPageLoader';
+import ClientAuthCheck from './components/ClientAuthCheck';
 
 const fustatFont = localFont({
   src: './fonts/Fustat-VariableFont_wght.woff',
@@ -27,18 +28,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={fustatFont.className}>
       <body className={fustatFont.variable}>
-        <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}
-        >
-          <ReduxProvider>
-            <ThemeRegistry>
-              <ToastProvider>
-                <FullPageLoader />
-                {children}
-              </ToastProvider>
-            </ThemeRegistry>
-          </ReduxProvider>
-        </GoogleOAuthProvider>
+        <ClientAuthCheck>
+          <GoogleOAuthProvider
+            clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}
+          >
+            <ReduxProvider>
+              <ThemeRegistry>
+                <ToastProvider>
+                  <FullPageLoader />
+                  {children}
+                </ToastProvider>
+              </ThemeRegistry>
+            </ReduxProvider>
+          </GoogleOAuthProvider>
+        </ClientAuthCheck>
       </body>
     </html>
   );

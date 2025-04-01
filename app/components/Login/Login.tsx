@@ -13,7 +13,7 @@ import {
 import { Button } from '@mui/material';
 import styles from './login.module.scss';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -38,18 +38,6 @@ const Page = () => {
     password: '',
   };
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const getCookie = (name: string): string | null => {
-      const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
-      return match ? match[2] : null;
-    };
-
-    const token = getCookie('accessToken');
-    if (token) {
-      router.push('/ai-chats');
-    }
-  }, [router]);
 
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {

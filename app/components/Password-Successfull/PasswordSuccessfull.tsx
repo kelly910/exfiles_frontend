@@ -9,7 +9,7 @@ import {
 import { Button } from '@mui/material';
 import styles from './passwordSuccess.module.scss';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { setLoader } from '@/app/redux/slices/loader';
 import { useAppDispatch } from '@/app/redux/hooks';
@@ -18,17 +18,6 @@ const Page = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const getCookie = (name: string): string | null => {
-      const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
-      return match ? match[2] : null;
-    };
-    const token = getCookie('accessToken');
-    if (token) {
-      router.push('/ai-chats');
-    }
-  }, [router]);
 
   return (
     <main>

@@ -217,7 +217,7 @@ export default function PageHeader() {
                   horizontal: 'right',
                 }}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+                onClose={() => setAnchorElUser(null)}
                 className={styles.mainDropdown}
                 sx={{
                   '& .MuiPaper-root': {
