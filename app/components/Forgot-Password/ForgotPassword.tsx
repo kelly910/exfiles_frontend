@@ -104,17 +104,17 @@ const Page = () => {
                           htmlFor="email"
                           sx={{
                             display: 'block',
-                            fontSize: '16px',
+                            fontSize: 'var(--SubTitle-2)',
                             color:
                               errors.email && touched.email
                                 ? '#ff4d4d'
-                                : '#898B94',
-                            fontWeight: 500,
+                                : 'var(--Primary-Text-Color)',
+                            fontWeight: 'var(--Medium)',
                           }}
                         >
                           Email Address
                         </Typography>
-                        <div style={{ marginBottom: '24px' }}>
+                        <div style={{ marginBottom: '32px' }}>
                           <Field
                             as={TextField}
                             fullWidth
@@ -128,32 +128,32 @@ const Page = () => {
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: '12px',
                                 borderWidth: '0px',
-                                color: '#fff',
-                                backgroundColor: '#252431',
+                                color: 'var(--Primary-Text-Color)',
+                                backgroundColor: 'var(--Input-Box-Colors)',
                                 '& .MuiOutlinedInput-notchedOutline': {
                                   top: '-10px !important',
                                 },
                                 '& .MuiOutlinedInput-input': {
-                                  fontSize: '16px',
-                                  color: '#fff',
+                                  fontSize: 'var(--SubTitle-2)',
+                                  color: 'var(--Primary-Text-Color)',
                                   padding: '14px 16px',
-                                  fontWeight: 500,
+                                  fontWeight: 'var(--Medium)',
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#888',
-                                    fontWeight: 400,
+                                    color: 'var(Placeholder-Text)',
+                                    fontWeight: 'var(--Regular)',
                                   },
                                 },
                                 '& fieldset': {
-                                  borderColor: '#3A3948',
+                                  borderColor: 'var(--Stroke-Color)',
                                 },
                                 '&:hover fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                   borderWidth: '1px',
-                                  color: '#fff',
+                                  color: 'var(--Primary-Text-Color)',
                                 },
                               },
                               '& .MuiFormHelperText-root': {

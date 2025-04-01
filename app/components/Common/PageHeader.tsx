@@ -197,6 +197,7 @@ export default function PageHeader() {
                       fontWeight: 600,
                       padding: '9px 10px',
                       lineHeight: '140%',
+                      textTransform: 'capitalize',
                     }}
                   >
                     {firstName?.[0]}

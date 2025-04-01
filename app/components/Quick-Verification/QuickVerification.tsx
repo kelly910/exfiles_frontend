@@ -203,7 +203,7 @@ const Page = () => {
                               justifyContent: 'center',
                               flexDirection: 'row',
                               maxWidth: '300px',
-                              margin: '0 auto 30px auto',
+                              margin: '0 auto 40px auto',
                               gap: '24px',
                             }}
                           >
@@ -233,7 +233,10 @@ const Page = () => {
                                     color: '#ffffff',
                                     borderRadius: '8px',
                                     textAlign: 'center',
-                                    '& fieldset': { borderColor: '#3A3948' },
+                                    '& fieldset': {
+                                      borderColor: '#3A3948',
+                                      top: '0',
+                                    },
                                     '&:hover fieldset': {
                                       borderColor: '#ffffff',
                                     },

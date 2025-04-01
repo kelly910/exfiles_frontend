@@ -30,18 +30,20 @@ export default function AIChatComponent() {
 
   return (
     <>
-      <Sidebar
-        isOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        handleThreadClick={handleThreadClick}
-      />
-      <section className="main-body">
-        <PageHeader />
+      <main className="chat-body">
+        <Sidebar
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          handleThreadClick={handleThreadClick}
+        />
+        <section className="main-body">
+          <PageHeader />
 
-        <Container maxWidth="lg" disableGutters>
-          {!threadId ? <DynamicChatHomeScreen /> : <ChatWindows />}
-        </Container>
-      </section>
+          <Container maxWidth="lg" disableGutters>
+            {!threadId ? <DynamicChatHomeScreen /> : <ChatWindows />}
+          </Container>
+        </section>
+      </main>
     </>
   );
 }

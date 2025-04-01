@@ -72,7 +72,7 @@
 }
 
 /* Internet Explorer & Edge (Legacy) */
-body {
+main.chat-body {
   -ms-overflow-style: none;
   /* Hide default scrollbar */
   display: flex;
@@ -451,7 +451,7 @@ header {
 
   /* Link adjustments */
   .link-primary {
-    font-size: 14px !important;
+    font-size: var(--SubTitle-3) !important;
     /* 30% reduction */
   }
 }

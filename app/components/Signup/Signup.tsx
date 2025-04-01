@@ -166,7 +166,7 @@ const Page = () => {
                         >
                           First Name
                         </Typography>
-                        <div style={{ marginBottom: '24px' }}>
+                        <div style={{ marginBottom: '32px' }}>
                           <Field
                             as={TextField}
                             fullWidth
@@ -179,36 +179,35 @@ const Page = () => {
                             )}
                             sx={{
                               marginTop: '5px',
-                              padding: '0',
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: '12px',
                                 borderWidth: '0px',
-                                color: '#fff',
-                                backgroundColor: '#252431',
+                                color: 'var(--Primary-Text-Color)',
+                                backgroundColor: 'var(--Input-Box-Colors)',
                                 '& .MuiOutlinedInput-notchedOutline': {
                                   top: '-10px !important',
                                 },
                                 '& .MuiOutlinedInput-input': {
-                                  fontSize: '16px',
-                                  color: '#fff',
+                                  fontSize: 'var(--SubTitle-2)',
+                                  color: 'var(--Primary-Text-Color)',
                                   padding: '14px 16px',
-                                  fontWeight: 500,
+                                  fontWeight: 'var(--Medium)',
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#898B94',
-                                    fontWeight: 400,
+                                    color: 'var(Placeholder-Text)',
+                                    fontWeight: 'var(--Regular)',
                                   },
                                 },
                                 '& fieldset': {
-                                  borderColor: '#3A3948',
+                                  borderColor: 'var(--Stroke-Color)',
                                 },
                                 '&:hover fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                   borderWidth: '1px',
-                                  color: '#fff',
+                                  color: 'var(--Primary-Text-Color)',
                                 },
                               },
                               '& .MuiFormHelperText-root': {
@@ -255,32 +254,32 @@ const Page = () => {
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: '12px',
                                 borderWidth: '0px',
-                                color: '#fff',
-                                backgroundColor: '#252431',
+                                color: 'var(--Primary-Text-Color)',
+                                backgroundColor: 'var(--Input-Box-Colors)',
                                 '& .MuiOutlinedInput-notchedOutline': {
                                   top: '-10px !important',
                                 },
                                 '& .MuiOutlinedInput-input': {
-                                  fontSize: '16px',
-                                  color: '#fff',
+                                  fontSize: 'var(--SubTitle-2)',
+                                  color: 'var(--Primary-Text-Color)',
                                   padding: '14px 16px',
-                                  fontWeight: 500,
+                                  fontWeight: 'var(--Medium)',
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#898B94',
-                                    fontWeight: 400,
+                                    color: 'var(Placeholder-Text)',
+                                    fontWeight: 'var(--Regular)',
                                   },
                                 },
                                 '& fieldset': {
-                                  borderColor: '#3A3948',
+                                  borderColor: 'var(--Stroke-Color)',
                                 },
                                 '&:hover fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                   borderWidth: '1px',
-                                  color: '#fff',
+                                  color: 'var(--Primary-Text-Color)',
                                 },
                               },
                               '& .MuiFormHelperText-root': {
@@ -320,32 +319,32 @@ const Page = () => {
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: '12px',
                                 borderWidth: '0px',
-                                color: '#fff',
-                                backgroundColor: '#252431',
+                                color: 'var(--Primary-Text-Color)',
+                                backgroundColor: 'var(--Input-Box-Colors)',
                                 '& .MuiOutlinedInput-notchedOutline': {
                                   top: '-10px !important',
                                 },
                                 '& .MuiOutlinedInput-input': {
-                                  fontSize: '16px',
-                                  color: '#fff',
+                                  fontSize: 'var(--SubTitle-2)',
+                                  color: 'var(--Primary-Text-Color)',
                                   padding: '14px 16px',
-                                  fontWeight: 500,
+                                  fontWeight: 'var(--Medium)',
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#898B94',
-                                    fontWeight: 400,
+                                    color: 'var(Placeholder-Text)',
+                                    fontWeight: 'var(--Regular)',
                                   },
                                 },
                                 '& fieldset': {
-                                  borderColor: '#3A3948',
+                                  borderColor: 'var(--Stroke-Color)',
                                 },
                                 '&:hover fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                   borderWidth: '1px',
-                                  color: '#fff',
+                                  color: 'var(--Primary-Text-Color)',
                                 },
                               },
                               '& .MuiFormHelperText-root': {
@@ -379,7 +378,10 @@ const Page = () => {
                         >
                           Mobile Number
                         </Typography>
-                        <div style={{ marginBottom: '24px' }}>
+                        <div
+                          style={{ marginBottom: '24px' }}
+                          className={styles.mobileInputBox}
+                        >
                           <Field
                             as={TextField}
                             fullWidth
@@ -387,40 +389,51 @@ const Page = () => {
                             id="contact_number"
                             name="contact_number"
                             placeholder="Enter Mobile Number here"
+                            className={styles.mobileInput}
                             error={Boolean(
                               errors.contact_number && touched.contact_number
                             )}
                             sx={{
                               marginTop: '5px',
+                              '& .MuiSelect-select': {
+                                padding: 0,
+                              },
+                              '& .MuiInputBase-input': {
+                                padding: '14px 15px !important',
+                                whiteSpace: 'unset !important',
+                                overflow: 'hidden !important',
+                                textOverflow: 'unset !important',
+                              },
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: '12px',
                                 borderWidth: '0px',
-                                color: '#fff',
-                                backgroundColor: '#252431',
+                                color: 'var(--Primary-Text-Color)',
+                                backgroundColor: 'var(--Input-Box-Colors)',
+                                paddingLeft: '5px',
                                 '& .MuiOutlinedInput-notchedOutline': {
                                   top: '-10px !important',
                                 },
                                 '& .MuiOutlinedInput-input': {
-                                  fontSize: '16px',
-                                  color: '#fff',
+                                  fontSize: 'var(--SubTitle-2)',
+                                  color: 'var(--Primary-Text-Color)',
                                   padding: '14px 16px',
-                                  fontWeight: 500,
+                                  fontWeight: 'var(--Medium)',
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#898B94',
-                                    fontWeight: 400,
+                                    color: 'var(Placeholder-Text)',
+                                    fontWeight: 'var(--Regular)',
                                   },
                                 },
                                 '& fieldset': {
-                                  borderColor: '#3A3948',
+                                  borderColor: 'var(--Stroke-Color)',
                                 },
                                 '&:hover fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                   borderWidth: '1px',
-                                  color: '#fff',
+                                  color: 'var(--Primary-Text-Color)',
                                 },
                               },
                               '& .MuiFormHelperText-root': {
@@ -436,7 +449,7 @@ const Page = () => {
                                 <InputAdornment position="start">
                                   <Select
                                     value={countryCode}
-                                    className="select-new"
+                                    className={styles.selectNew}
                                     onChange={(e) =>
                                       setCountryCode(e.target.value)
                                     }
@@ -450,7 +463,7 @@ const Page = () => {
                                       '& .MuiSelect-icon': {
                                         color: '#fff',
                                         position: 'absolute',
-                                        right: '-10px',
+                                        right: '0px',
                                       },
                                     }}
                                   >
@@ -500,32 +513,32 @@ const Page = () => {
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: '12px',
                                 borderWidth: '0px',
-                                color: '#fff',
-                                backgroundColor: '#252431',
+                                color: 'var(--Primary-Text-Color)',
+                                backgroundColor: 'var(--Input-Box-Colors)',
                                 '& .MuiOutlinedInput-notchedOutline': {
                                   top: '-10px !important',
                                 },
                                 '& .MuiOutlinedInput-input': {
-                                  fontSize: '16px',
-                                  color: '#fff',
+                                  fontSize: 'var(--SubTitle-2)',
+                                  color: 'var(--Primary-Text-Color)',
                                   padding: '14px 16px',
-                                  fontWeight: 500,
+                                  fontWeight: 'var(--Medium)',
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#898B94',
-                                    fontWeight: 400,
+                                    color: 'var(Placeholder-Text)',
+                                    fontWeight: 'var(--Regular)',
                                   },
                                 },
                                 '& fieldset': {
-                                  borderColor: '#3A3948',
+                                  borderColor: 'var(--Stroke-Color)',
                                 },
                                 '&:hover fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                   borderWidth: '1px',
-                                  color: '#fff',
+                                  color: 'var(--Primary-Text-Color)',
                                 },
                               },
                               '& .MuiFormHelperText-root': {
@@ -580,7 +593,7 @@ const Page = () => {
                         >
                           Confirm Password
                         </Typography>
-                        <div style={{ marginBottom: '24px' }}>
+                        <div style={{ marginBottom: '32px' }}>
                           <Field
                             as={TextField}
                             fullWidth
@@ -597,32 +610,32 @@ const Page = () => {
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: '12px',
                                 borderWidth: '0px',
-                                color: '#fff',
-                                backgroundColor: '#252431',
+                                color: 'var(--Primary-Text-Color)',
+                                backgroundColor: 'var(--Input-Box-Colors)',
                                 '& .MuiOutlinedInput-notchedOutline': {
                                   top: '-10px !important',
                                 },
                                 '& .MuiOutlinedInput-input': {
-                                  fontSize: '16px',
-                                  color: '#fff',
+                                  fontSize: 'var(--SubTitle-2)',
+                                  color: 'var(--Primary-Text-Color)',
                                   padding: '14px 16px',
-                                  fontWeight: 500,
+                                  fontWeight: 'var(--Medium)',
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#898B94',
-                                    fontWeight: 400,
+                                    color: 'var(Placeholder-Text)',
+                                    fontWeight: 'var(--Regular)',
                                   },
                                 },
                                 '& fieldset': {
-                                  borderColor: '#3A3948',
+                                  borderColor: 'var(--Stroke-Color)',
                                 },
                                 '&:hover fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                 },
                                 '&.Mui-focused fieldset': {
-                                  borderColor: '#fff',
+                                  borderColor: 'var(--Primary-Text-Color)',
                                   borderWidth: '1px',
-                                  color: '#fff',
+                                  color: 'var(--Primary-Text-Color)',
                                 },
                               },
                               '& .MuiFormHelperText-root': {

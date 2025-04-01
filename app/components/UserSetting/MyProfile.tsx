@@ -107,6 +107,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                     marginBottom: '28px',
                     width: '60px',
                     height: '60px',
+                    textTransform: 'capitalize',
                   }}
                 >
                   {firstName?.[0]}
@@ -310,7 +311,9 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                     }}
                   />
                 </div>
-                <div className={styles.dialogFormGroup}>
+                <div
+                  className={`${styles.dialogFormGroup} ${styles.mobileInputBox}`}
+                >
                   <Typography
                     variant="body2"
                     component="label"
@@ -333,40 +336,51 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                     type="text"
                     id="contact_number"
                     name="contact_number"
+                    className={styles.mobileInput}
                     error={Boolean(
                       errors.contact_number && touched.contact_number
                     )}
                     sx={{
                       marginTop: '5px',
+                      '& .MuiSelect-select': {
+                        padding: 0,
+                      },
+                      '& .MuiInputBase-input': {
+                        padding: '14px 15px !important',
+                        whiteSpace: 'unset !important',
+                        overflow: 'hidden !important',
+                        textOverflow: 'unset !important',
+                      },
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '12px',
                         borderWidth: '0px',
-                        color: '#fff',
-                        backgroundColor: '#252431',
+                        color: 'var(--Primary-Text-Color)',
+                        backgroundColor: 'var(--Input-Box-Colors)',
+                        paddingLeft: '0',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
                         '& .MuiOutlinedInput-input': {
-                          fontSize: '16px',
-                          color: '#fff',
+                          fontSize: 'var(--SubTitle-3)',
+                          color: 'var(--Primary-Text-Color)',
                           padding: '14px 16px',
-                          fontWeight: 500,
+                          fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
                           '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
+                            color: 'var(Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
                           },
                         },
                         '& fieldset': {
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                         },
                         '&:hover fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Primary-Text-Color)',
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Primary-Text-Color)',
                           borderWidth: '1px',
-                          color: '#fff',
+                          color: 'var(--Primary-Text-Color)',
                         },
                       },
                       '& .MuiFormHelperText-root': {
@@ -381,7 +395,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                         <InputAdornment position="start">
                           <Select
                             value={countryCode}
-                            className="select-new"
+                            className={styles.selectNew}
                             onChange={(e) => setCountryCode(e.target.value)}
                             sx={{
                               padding: '0px',
@@ -393,7 +407,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                               '& .MuiSelect-icon': {
                                 color: '#fff',
                                 position: 'absolute',
-                                right: '-10px',
+                                right: '0px',
                               },
                             }}
                           >

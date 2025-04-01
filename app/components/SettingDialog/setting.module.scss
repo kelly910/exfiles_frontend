@@ -280,3 +280,37 @@
     }
   }
 }
+
+.mobileInputBox {
+  .mobileInput {
+    border: 1px solid var(--Stroke-Color) !important;
+    border-radius: 12px;
+  }
+  .selectNew fieldset {
+    border-style: unset;
+    border-width: unset;
+    border-color: unset;
+    position: relative;
+    padding: 0 !important;
+  }
+  .selectNew {
+    width: 70px !important;
+    padding-right: 0 !important;
+  }
+  .selectNew:before {
+    background-color: var(--Placeholder-Text);
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -3px;
+    width: 1px;
+    height: 29px;
+    transform: translateY(-50%);
+  }
+  .mobileInput svg {
+    right: 0;
+    fill: white;
+    top: 0;
+    transform: translateY(50%);
+  }
+}

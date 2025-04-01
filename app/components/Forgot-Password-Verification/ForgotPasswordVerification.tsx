@@ -227,19 +227,36 @@ const Page = () => {
                                   height: '48px',
                                   width: '48px',
                                   textAlign: 'center',
-                                  fontSize: '20px',
+                                  marginTop: '5px',
                                   '& .MuiOutlinedInput-root': {
-                                    backgroundColor: 'transparent',
-                                    color: 'var(--Txt-On-Gradient)',
-                                    borderRadius: '8px',
-                                    textAlign: 'center',
-                                    '& fieldset': { borderColor: '#3A3948' },
+                                    borderRadius: '12px',
+                                    borderWidth: '0px',
+                                    color: 'var(--Primary-Text-Color)',
+                                    backgroundColor: 'var(--Input-Box-Colors)',
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                      top: '-10px !important',
+                                    },
+                                    '& .MuiOutlinedInput-input': {
+                                      fontSize: 'var(--SubTitle-2)',
+                                      color: 'var(--Primary-Text-Color)',
+                                      padding: '14px 16px',
+                                      fontWeight: 'var(--Medium)',
+                                      borderRadius: '12px',
+                                      '&::placeholder': {
+                                        color: 'var(Placeholder-Text)',
+                                        fontWeight: 'var(--Regular)',
+                                      },
+                                    },
+                                    '& fieldset': {
+                                      borderColor: 'var(--Stroke-Color)',
+                                    },
                                     '&:hover fieldset': {
-                                      borderColor: '#ffffff',
+                                      borderColor: 'var(--Primary-Text-Color)',
                                     },
                                     '&.Mui-focused fieldset': {
-                                      borderColor: '#fff',
-                                      borderWidth: '2px',
+                                      borderColor: 'var(--Primary-Text-Color)',
+                                      borderWidth: '1px',
+                                      color: 'var(--Primary-Text-Color)',
                                     },
                                   },
                                 }}

@@ -157,6 +157,7 @@ export default function FeedbackDialog({
                     placeholder="Write your feedback"
                     multiline
                     minRows={4}
+                    maxRow={6}
                     error={Boolean(errors.body && touched.body)}
                     sx={{
                       marginTop: '0px',
@@ -176,6 +177,8 @@ export default function FeedbackDialog({
                           fontWeight: 500,
                           borderRadius: '12px',
                           padding: '2px',
+                          maxHeight: '350px',
+                          overflowY: 'auto !important',
                           '&::placeholder': {
                             color: '#888',
                             fontWeight: 400,
