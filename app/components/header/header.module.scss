@@ -1,22 +1,22 @@
 header {
   .documentTitle {
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 140%;
+    font-weight: var(--Bold);
+    font-size: var(--SubTitle-1);
+    line-height: 1.4;
   }
 
   .documentNo {
     padding-left: 28px;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 140%;
-    color: #898b94;
+    font-weight: var(--Regular);
+    font-size: var(--SubTitle-2);
+    line-height: 1.4;
+    color: var(--Subtext-Color);
   }
 
   .messageButton {
     padding: 8px;
-    border: 0.82px solid #3a3948;
-    background-color: #2c2a38;
+    border: 0.82px solid var(--Stroke-Color);
+    background-color: var(--Card-Image);
     min-width: unset;
   }
 }
@@ -25,8 +25,8 @@ header {
   ul {
     border-radius: 12px;
     padding: 0;
-    background-color: #1b1a25;
-    color: #dadae1;
+    background-color: var(--Card-Color);
+    color: var(--Primary-Text-Color);
     padding: 4px;
     box-shadow: -5px 8px 21px 0px #00000026;
   }
@@ -41,15 +41,15 @@ header {
     min-width: 180px;
 
     &:hover {
-      background-color: #2c2a38;
+      background-color: var(--Card-Image);
     }
 
     p {
-      font-weight: 500;
-      font-size: 13px;
-      line-height: 140%;
-      letter-spacing: -2%;
-      color: #dadae1;
+      font-weight: var(--Regular);
+      font-size: var(--SubTitle-4);
+      line-height: 1.4;
+      letter-spacing: 0%;
+      color: var(--Primary-Text-Color);
       width: 100%;
     }
   }

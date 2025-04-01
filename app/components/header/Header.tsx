@@ -73,7 +73,7 @@ export default function Header() {
       <AppBar
         position="static"
         className="nav-open header"
-        sx={{ backgroundColor: '#11101BE5', position: "sticky", top: "0" }}
+        sx={{ backgroundColor: '#11101BE5', position: 'sticky', top: '0' }}
       >
         <Container maxWidth={false}>
           <Toolbar
@@ -196,7 +196,9 @@ export default function Header() {
                       fontSize: '16px',
                       fontWeight: 600,
                       padding: '9px 10px',
-                      lineHeight: '140%',
+                      lineHeight: '1.4',
+                      display: 'flex',
+                      alignItems: 'center',
                     }}
                   >
                     {firstName?.[0]}

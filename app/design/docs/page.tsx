@@ -9,8 +9,8 @@ import {
 } from '@mui/material';
 import styles from './style.module.scss';
 import Image from 'next/image';
-import Header from '@/app/components/header/Header';
-import Sidebar from '@/app/components/sidebar/Sidebar';
+import Header from '@components/Header/Header';
+import Sidebar from '@components/Sidebar/Sidebar';
 
 export default function Page() {
   return (
@@ -262,6 +262,7 @@ function DocCard() {
           />
           <Typography variant="body1" className={styles.docTitle}>
             Neon Insights
+            <span>general log memory usage</span>
           </Typography>
           <Image
             src="/images/more.svg"

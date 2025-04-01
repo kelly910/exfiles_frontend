@@ -9,27 +9,29 @@ import {
 } from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './style.module.scss';
-import Header from '@/app/components/header/Header';
+import Header from '@components/Header/Header';
 import ChatWindows from '@/app/components/Chat-Windows/ChatWindows';
 import DialogBox from '@/app/components/Dialog-Box/DialogBox';
+import Sidebar from '@/app/components/Sidebar/Sidebar';
 
 export default function Page() {
   return (
     <>
+      <Sidebar />
       <Header />
       <main>
         <div>
           <Container maxWidth="lg" disableGutters>
-            <div className={styles.chatBoarbMain}>
+            <Box component="section" className={styles.chatBoarbMain}>
               <Box component="section" className={styles.chatHeading}>
-                <div className={styles.chatHeader}>
+                <Box component="div" className={styles.chatHeader}>
                   <Typography variant="h2" className={styles.chatTitle}>
                     Wondering What is ExFiles?
                   </Typography>
                   <Typography variant="body1" className={styles.chatSubtitle}>
                     Try clicking on below examples to get things going
                   </Typography>
-                </div>
+                </Box>
 
                 <Box className={styles.gridBox} component="div">
                   <Grid
@@ -120,11 +122,7 @@ export default function Page() {
               </Box>
               <Box component="section" className={styles.chatHeading}>
                 <div className={styles.chatHeader}>
-                  <Typography
-                    variant="h2"
-                    className={styles.chatTitle}
-                    sx={{ opacity: 0.8 }}
-                  >
+                  <Typography variant="h2" className={styles.chatTitle}>
                     How can I help you with?
                   </Typography>
                   <Typography
@@ -162,7 +160,7 @@ export default function Page() {
                   </Button>
                 </Box>
               </Box>
-            </div>
+            </Box>
             <ChatWindows />
             <DialogBox />
           </Container>

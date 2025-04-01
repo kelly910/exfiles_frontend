@@ -199,7 +199,7 @@ const Page = () => {
                               justifyContent: 'center',
                               flexDirection: 'row',
                               maxWidth: '300px',
-                              margin: '0 auto 30px auto',
+                              margin: '0 auto 40px auto',
                               gap: '24px',
                             }}
                           >
@@ -226,7 +226,7 @@ const Page = () => {
                                   fontSize: '20px',
                                   '& .MuiOutlinedInput-root': {
                                     backgroundColor: 'transparent',
-                                    color: '#ffffff',
+                                    color: 'var(--Txt-On-Gradient)',
                                     borderRadius: '8px',
                                     textAlign: 'center',
                                     '& fieldset': { borderColor: '#3A3948' },
@@ -266,7 +266,6 @@ const Page = () => {
                                   ? 'none'
                                   : 'auto',
                                 color: isResendDisabled ? '#888' : '#007bff',
-                                textDecoration: 'none',
                               }}
                             >
                               {isResendDisabled
