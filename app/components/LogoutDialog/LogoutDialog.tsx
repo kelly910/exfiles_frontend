@@ -1,8 +1,11 @@
+'use client';
+
 import React, { useState } from 'react';
-import styles from './style.module.scss';
+import styles from './logout.module.scss';
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -11,6 +14,12 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { logout } from '@/app/redux/slices/profileSetting';
+import { setLoader } from '@/app/redux/slices/loader';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
@@ -30,26 +39,43 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function LogoutDialog() {
-  const [open, setOpen] = useState(false);
+interface LogoutDialogProps {
+  openLogoutDialogProps: boolean;
+  onClose: () => void;
+}
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
+export default function LogoutDialog({
+  openLogoutDialogProps,
+  onClose,
+}: LogoutDialogProps) {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
+
+  const loggedInUserToken = loggedInUser?.data?.token ?? '';
+
+  const logoutUser = async () => {
+    setLoading(true);
+    await dispatch(setLoader(true));
+    setTimeout(async () => {
+      await dispatch(logout(loggedInUserToken));
+      setLoading(false);
+      dispatch(setLoader(false));
+      localStorage.removeItem('loggedInUser');
+      document.cookie = `accessToken=; path=/; max-age=0`;
+      router.push('/login');
+    }, 1000);
   };
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Logout
-      </Button>
-
       <BootstrapDialog
-        onClose={handleClose}
+        onClose={onClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        open={openLogoutDialogProps}
         className={styles.headerDialogBox}
         sx={{
           background: 'rgb(17 16 27 / 0%)',
@@ -81,7 +107,7 @@ export default function LogoutDialog() {
           </DialogTitle>
           <IconButton
             aria-label="close"
-            onClick={handleClose}
+            onClick={onClose}
             sx={(theme) => ({
               position: 'absolute',
               right: 8,
@@ -99,10 +125,20 @@ export default function LogoutDialog() {
         </Box>
         <DialogContent dividers className={styles.dialogBody}>
           <Box component="div" className={styles.dialogFormButtonBox}>
-            <Button className={styles.formCancelBtn} onClick={handleClose}>
+            <Button className={styles.formCancelBtn} onClick={onClose}>
               Cancel
             </Button>
-            <Button className={styles.formSaveBtn}>Logout</Button>
+            <Button
+              className={styles.formSaveBtn}
+              onClick={logoutUser}
+              disabled={loading}
+            >
+              {loading ? (
+                <CircularProgress size={16} color="inherit" />
+              ) : (
+                'Logout'
+              )}
+            </Button>
           </Box>
         </DialogContent>
       </BootstrapDialog>

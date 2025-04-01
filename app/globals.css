@@ -75,6 +75,15 @@
 body {
   -ms-overflow-style: none;
   /* Hide default scrollbar */
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+.main-body {
+  width: 100%;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 body::-webkit-scrollbar {

@@ -6,6 +6,8 @@ import { combineReducers } from 'redux';
 import registerSlice from './slices/register';
 import loginSlice from './slices/login';
 import loaderSlice from './slices/loader';
+import profileSettingSlice from './slices/profileSetting';
+import changePasswordSlice from './slices/changePassword';
 
 const createNoopStorage = () => {
   return {
@@ -29,7 +31,7 @@ const storage =
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['loader'],
+  blacklist: ['loader', 'changePassword', 'profileSetting'],
   // whitelist: ["auth"], // specify reducers to persist
 };
 
@@ -37,6 +39,8 @@ const rootReducer = combineReducers({
   register: registerSlice,
   login: loginSlice,
   loader: loaderSlice,
+  profileSetting: profileSettingSlice,
+  changePassword: changePasswordSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

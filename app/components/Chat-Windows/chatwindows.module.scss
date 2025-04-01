@@ -20,6 +20,10 @@
     transform: translateY(-50%);
   }
 
+  &:first-child{
+    margin-top: 24px;
+  }
+
   span {
     border: 0.5px solid var(--Stroke-Color);
     display: block;

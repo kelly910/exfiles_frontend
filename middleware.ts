@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
 
   // Redirect logged-in users away from login/signup
   if (token && PUBLIC_ROUTES.includes(pathname)) {
-    return NextResponse.redirect(new URL('/dashboard', req.url));
+    return NextResponse.redirect(new URL('/ai-chats', req.url));
   }
 
   // Redirect unauthorized users away from private pages
@@ -28,5 +28,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/login'], // Define which routes should trigger the middleware
+  matcher: ['/ai-chats/:path*', '/login'], // Define which routes should trigger the middleware
 };

@@ -9,8 +9,8 @@ import {
 } from '@mui/material';
 import styles from './style.module.scss';
 import Image from 'next/image';
-import Header from '@/app/components/Header/Header';
-import Sidebar from '@/app/components/Sidebar/Sidebar';
+import Header from '@/app/components/header/Header';
+import Sidebar from '@/app/components/sidebar/Sidebar';
 
 export default function Page() {
   return (

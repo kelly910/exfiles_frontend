@@ -47,9 +47,9 @@ const Page = () => {
 
     const token = getCookie('accessToken');
     if (token) {
-      router.push('/dashboard');
+      router.push('/ai-chats');
     }
-  }, []);
+  }, [router]);
 
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {
@@ -63,7 +63,7 @@ const Page = () => {
             const token: string | null = response?.data?.token || null;
             if (token) {
               document.cookie = `accessToken=${token}; path=/; max-age=3600`;
-              router.push('/dashboard');
+              router.push('/ai-chats');
             }
           }
         } catch (error) {
@@ -91,7 +91,7 @@ const Page = () => {
         const token: string | null = response?.data?.token || null;
         if (token) {
           document.cookie = `accessToken=${token}; path=/; max-age=3600`;
-          router.push('/dashboard');
+          router.push('/ai-chats');
           await dispatch(setLoader(false));
         }
       } catch (error) {
@@ -112,12 +112,14 @@ const Page = () => {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <Image
-                  src="/images/logo.svg"
-                  alt="logo"
-                  width={290}
-                  height={63}
-                />
+                <Link href=" https://exfiles.trooinbounddevs.com/">
+                  <Image
+                    src="/images/logo.svg"
+                    alt="logo"
+                    width={290}
+                    height={63}
+                  />
+                </Link>
               </div>
             </Box>
 

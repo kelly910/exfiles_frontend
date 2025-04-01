@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import styles from './style.module.scss';
+'use client';
+
+import React from 'react';
+import styles from './feedBack.module.scss';
 import {
   Box,
   Button,
@@ -31,26 +33,21 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function FeedbackDialog() {
-  const [open, setOpen] = useState(false);
+interface FeedbackDialogProps {
+  openFeedbackDialogProps: boolean;
+  onClose: () => void;
+}
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+export default function FeedbackDialog({
+  openFeedbackDialogProps,
+  onClose,
+}: FeedbackDialogProps) {
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Feedback
-      </Button>
-
       <BootstrapDialog
-        onClose={handleClose}
+        onClose={onClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        open={openFeedbackDialogProps}
         className={styles.headerDialogBox}
         sx={{
           background: 'rgb(17 16 27 / 0%)',
@@ -82,7 +79,7 @@ export default function FeedbackDialog() {
           </DialogTitle>
           <IconButton
             aria-label="close"
-            onClick={handleClose}
+            onClick={onClose}
             sx={(theme) => ({
               position: 'absolute',
               right: 8,
@@ -113,7 +110,7 @@ export default function FeedbackDialog() {
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '12px',
                   borderWidth: '0px',
-                  color: 'var(--Primary-Text-Color)',
+                  color: '#DADAE1',
                   backgroundColor: '#252431',
                   padding: '14px 16px',
                   '& .MuiOutlinedInput-notchedOutline': {
@@ -146,7 +143,7 @@ export default function FeedbackDialog() {
             />
           </Box>
           <Box component="div" className={styles.dialogFormButtonBox}>
-            <Button className={styles.formCancelBtn} onClick={handleClose}>
+            <Button className={styles.formCancelBtn} onClick={onClose}>
               Cancel
             </Button>
             <Button className={styles.formSaveBtn}>Submit</Button>
