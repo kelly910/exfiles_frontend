@@ -1,0 +1,391 @@
+// .docsPageMain {
+//   height: calc(100vh - 65px);
+//   overflow-y: auto;
+// }
+
+.docsMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.docsListing {
+  position: relative;
+  height: calc(100vh - 65px);
+  width: 100%;
+  overflow-y: auto;
+
+  .searchBoard {
+    width: 100%;
+    padding: 24px 33px 12px 33px;
+    background-color: var(--Background-Color);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    .docBoard {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+
+      .searchInput {
+        border: 1px solid var(--Stroke-Color);
+        border-radius: 10px;
+        padding: 4px 4px 4px 12px;
+        width: 100%;
+        color: var(--Subtext-Color);
+
+        &::after {
+          content: none !important;
+        }
+
+        input {
+          color: var(--Primary-Text-Color);
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  .searchIcon {
+    cursor: pointer;
+
+    .search {
+      background-image: url('/images/search.svg');
+      width: 28px;
+      height: 28px;
+      aspect-ratio: 1 / 1;
+      display: block;
+      position: relative;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 14px;
+      border: 0.72px solid var(--Stroke-Color);
+      background-color: var(--Card-Image);
+      padding: 7px;
+      border-radius: 8px;
+    }
+  }
+
+  .docBoxMain {
+    width: 100%;
+    padding: 12px 33px 24px 33px;
+
+    .docGridBox {
+      background-color: var(--Card-Color);
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      cursor: pointer;
+
+      &:hover {
+        border: 1px solid var(--Stroke-Color);
+      }
+
+      &:active {
+        border: 1px solid var(--Card-Border);
+      }
+
+      .docBox {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 8px;
+
+        .pdfImg {
+          width: 34px;
+          height: 34px;
+          background-color: var(--Card-Image);
+          border-radius: 4px;
+          padding: 7px;
+          flex: 0 0 auto;
+        }
+
+        .docTitle {
+          font-weight: var(--Bold);
+          font-size: var(--SubTitle-3);
+          line-height: 19px;
+          color: var(--Primary-Text-Color);
+          width: 100%;
+
+          span {
+            display: block;
+            font-weight: var(--Lighter);
+            font-size: var(--SubTitle-5);
+            line-height: 1.4;
+            color: var(--Subtext-Color);
+            margin-top: 2px;
+          }
+        }
+
+        .moreImg {
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+        }
+      }
+
+      .docDateBox {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+
+        .docTagBox {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+
+          .docTag {
+            font-weight: var(--Lighter);
+            font-size: var(--SubTitle-5);
+            line-height: 16px;
+            color: var(--Subtext-Color);
+            padding: 4px 8px;
+            border: 0.5px solid var(--Stroke-Color);
+            border-radius: 500px;
+          }
+        }
+
+        p {
+          font-weight: var(--Lighter);
+          font-size: var(--SubTitle-5);
+          line-height: 1.4;
+          text-align: right;
+          text-transform: capitalize;
+          color: var(--Subtext-Color);
+          min-width: fit-content;
+        }
+      }
+    }
+  }
+}
+
+.categories {
+  position: relative;
+  min-width: 300px;
+  width: 300px;
+  flex: 0 0 auto;
+  border-right: 1px solid var(--Stroke-Color);
+  padding-bottom: 24px;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+
+  .categoryBox {
+    padding: 21px 16px 16px 16px;
+    background-color: var(--Background-Color);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    .categoriesTitle {
+      font-weight: var(--Bold);
+      font-size: var(--SubTitle-2);
+      line-height: 1.4;
+      letter-spacing: 0%;
+      color: var(--Primary-Text-Color);
+    }
+  }
+
+  .docsFolder {
+    background-color: var(--Background-Color);
+    padding: 8px;
+    border-radius: 10px;
+    margin: 0 16px;
+    margin-bottom: 4px;
+    cursor: pointer;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &.active {
+      background-color: var(--Card-Image);
+    }
+
+    &:hover {
+      background-color: var(--Card-Image);
+    }
+
+    .folderBox {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 4px;
+
+      .arrowRightImg {
+        width: 16px;
+        flex: 0 0 auto;
+      }
+
+      .folderImg {
+        width: 18px;
+        flex: 0 0 auto;
+      }
+
+      .folderTitleBox {
+        width: 100%;
+
+        .folderTitle {
+          font-weight: var(--Bold);
+          font-size: var(--SubTitle-3);
+          line-height: 1.4;
+          letter-spacing: 0%;
+          color: var(--Primary-Text-Color);
+        }
+
+        .folderNo {
+          font-weight: var(--Regular);
+          font-size: var(--SubTitle-2);
+          line-height: 1.4;
+          letter-spacing: 0%;
+          color: var(--Subtext-Color);
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+}
+
+.docsBoard {
+  min-width: 500px;
+  width: 500px;
+  border-left: 1px solid var(--Stroke-Color);
+  position: relative;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+
+  .docsBoardHeader {
+    background-color: var(--Card-Color);
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--Stroke-Color);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    .docsInner {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 10px;
+
+      .docsTitle {
+        font-weight: var(--Medium);
+        font-size: var(--SubTitle-2);
+        line-height: 1.4;
+        color: var(--Primary-Text-Color);
+      }
+
+      .docsDate {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-5);
+        line-height: 1.4;
+        color: var(--Subtext-Color);
+      }
+    }
+
+    .docsInnerTag {
+      display: flex;
+      justify-content: start;
+      align-items: stretch;
+      gap: 8px;
+      margin-top: 4px;
+
+      span {
+        background: var(--Card-Image);
+        border: 0.5px solid var(--Stroke-Color);
+        padding: 4px 8px;
+        border-radius: 500px;
+        font-weight: var(--Medium);
+        font-size: var(--SubTitle-6);
+        line-height: 1.4;
+        text-transform: capitalize;
+      }
+    }
+  }
+
+  .docsBoardBody {
+    padding: 16px 24px 24px 24px;
+
+    .docsBodyTitle {
+      font-weight: var(--Regular);
+      font-size: var(--SubTitle-3);
+      line-height: 1.4;
+      color: var(--Subtext-Color);
+    }
+
+    .docsBodyText {
+      padding: 12px 11px;
+      background-color: var(--Card-Color);
+      border-radius: 12px;
+      margin-top: 12px;
+      margin-bottom: 24px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      // p {
+      //   font-weight: var(--Regular);
+      //   font-size: var(--SubTitle-2);
+      //   line-height: 1.4;
+      //   color: var(--Primary-Text-Color);
+      // }
+
+      div {
+        font-weight: var(--Regular);
+        font-size: var(--SubTitle-2);
+        line-height: 1.4;
+        color: var(--Primary-Text-Color);
+      }
+    }
+  }
+
+  .docsButtonBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--Card-Color);
+    border-radius: 12px;
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 24px;
+    margin-bottom: 56px;
+
+    span.docsDas {
+      border: 1px solid var(--Primary-Text-Color);
+      height: 15px;
+    }
+
+    .docsButton {
+      font-weight: var(--Regular);
+      font-size: var(--SubTitle-2);
+      line-height: 1.4;
+      color: var(--Primary-Text-Color);
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 8px;
+      text-transform: capitalize;
+      padding: 12px 8px;
+    }
+  }
+}
+
+@media (max-width: 1300px) {
+  .docsBoard {
+    min-width: unset;
+    width: 400px;
+    flex: 0 0 auto;
+  }
+
+  .categories {
+    min-width: unset;
+    width: 200px;
+  }
+}

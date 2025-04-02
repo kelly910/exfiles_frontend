@@ -103,12 +103,12 @@ export default function Header() {
                   // onClick={handleOpenNavMenu}
                   color="inherit"
                 >
-                  <Image
+                  {/* <Image
                     src="/images/more.svg"
                     alt="menu"
                     width={20}
                     height={20}
-                  />
+                  /> */}
                 </IconButton>
                 <Menu
                   id="menu-appbar"

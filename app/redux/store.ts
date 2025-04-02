@@ -10,6 +10,9 @@ import profileSettingSlice from './slices/profileSetting';
 import changePasswordSlice from './slices/changePassword';
 import userFeedbackSlice from './slices/feedback';
 import chatSlice from './slices/Chat';
+import categoryListingSlice from './slices/categoryListing';
+import documentListingSlice from './slices/documentByCategory';
+import documentSummarySlice from './slices/documentSummary';
 
 const createNoopStorage = () => {
   return {
@@ -33,7 +36,15 @@ const storage =
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['loader', 'changePassword', 'profileSetting', 'userFeedback'],
+  blacklist: [
+    'loader',
+    'changePassword',
+    'profileSetting',
+    'userFeedback',
+    'categoryListing',
+    'documentListing',
+    'documentSummary',
+  ],
   // whitelist: ["auth"], // specify reducers to persist
 };
 
@@ -45,6 +56,9 @@ const rootReducer = combineReducers({
   changePassword: changePasswordSlice,
   userFeedback: userFeedbackSlice,
   chat: chatSlice,
+  categoryListing: categoryListingSlice,
+  documentListing: documentListingSlice,
+  documentSummary: documentSummarySlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
