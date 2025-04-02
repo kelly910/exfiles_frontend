@@ -1,11 +1,4 @@
-export const generateSHA256 = async (file: File): Promise<string> => {
-  const arrayBuffer = await file.arrayBuffer(); // Convert file to ArrayBuffer
-  const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer); // Generate hash
-  const hashArray = Array.from(new Uint8Array(hashBuffer)); // Convert to byte array
-  return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join(''); // Convert to hex string
-};
-
-export async function computeChecksum(blob) {
+export async function computeChecksum(blob: Blob) {
   // Convert Blob to ArrayBuffer
   const buffer = await blob.arrayBuffer();
 

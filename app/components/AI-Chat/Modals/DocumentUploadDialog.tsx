@@ -1,9 +1,10 @@
 import DocUploadStyles from '@components/AI-Chat/Modals/DocumentUploadModal.module.scss';
-import React, { useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -16,7 +17,11 @@ import {
   FILE_UPLOAD_CHUNK_SIZE,
 } from '@/app/utils/constants';
 import UploadFileItem from '@components/AI-Chat/FileUpload/UploadFileItem';
-import { computeChecksum, generateSHA256 } from '@/app/utils/functions';
+import { computeChecksum } from '@/app/utils/functions';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
+import { showToast } from '@/app/shared/toast/ShowToast';
+import { ErrorResponse, handleError } from '@/app/utils/handleError';
 
 interface DocumentUploadModalProps {
   open: boolean;
@@ -45,10 +50,10 @@ export default function DocumentUploadDialog({
   open,
   handleClose,
 }: DocumentUploadModalProps) {
+  const dispatch = useAppDispatch();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [uploadFiles, setUploadFiles] = useState<Array<UploadFiles> | []>([]);
-  console.log(uploadFiles, 'uploadFiles');
-
+  const [isLoading, setIsLoading] = useState(false);
   const storedUser = localStorage.getItem('loggedInUser');
 
   const handleOpenUserFileInput = () => {
@@ -61,7 +66,7 @@ export default function DocumentUploadDialog({
     fileData: UploadFiles,
     onProgress: (progress: number) => void
   ) => {
-    const { file, fileId, controller } = fileData;
+    const { file, controller } = fileData;
     const totalChunks = Math.ceil(file.size / FILE_UPLOAD_CHUNK_SIZE);
 
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
@@ -90,7 +95,7 @@ export default function DocumentUploadDialog({
       formData.append('checksum', checkSUM);
 
       try {
-        let apiURI: string = documentId ? `${apiUrl}${documentId}/` : apiUrl; // If `documentId` exists, append it to the request URL
+        const apiURI: string = documentId ? `${apiUrl}${documentId}/` : apiUrl; // If `documentId` exists, append it to the request URL
         const response = await fetch(apiURI, {
           method: chunkIndex === 0 ? 'POST' : 'PUT',
           body: formData,
@@ -215,7 +220,10 @@ export default function DocumentUploadDialog({
     handleFileChange(event);
   };
 
-  const handleFileDesc = (e: any, fileId: string) => {
+  const handleFileDesc = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    fileId: string
+  ) => {
     setUploadFiles((prevFiles) =>
       prevFiles.map((prevFile) =>
         prevFile.fileId === fileId
@@ -238,20 +246,69 @@ export default function DocumentUploadDialog({
     });
   };
 
-  const handleContinue = () => {
-    const userUploadedFiles = uploadFiles.filter((file) => file.uploadedFileId);
-    const payloadDocUpload = userUploadedFiles.map(
-      ({ uploadedFileId, docDesc }) => ({
-        temp_doc: uploadedFileId,
-        description: docDesc,
+  const uploadActualDocuments = async (
+    threadUUID: string,
+    payloadData: {
+      temp_doc: number;
+      description: string;
+    }[]
+  ) => {
+    setIsLoading(true);
+    const resultData = await dispatch(
+      uploadActualDocs({
+        thread_uuid: threadUUID,
+        data: payloadData,
       })
     );
-    console.log(payloadDocUpload, 'payloadDocUpload');
+    setIsLoading(false);
+
+    if (uploadActualDocs.fulfilled.match(resultData)) {
+      showToast(
+        'success',
+        resultData.payload?.messages[0] || 'Document uploaded successfully.'
+      );
+      // Need to redirect user to that Thread page
+
+      handleClose();
+      return;
+    }
+
+    if (uploadActualDocs.rejected.match(resultData)) {
+      handleError(resultData.payload as ErrorResponse);
+      console.error('failed:', resultData.payload);
+      return;
+    }
+  };
+
+  const handleContinue = async () => {
+    const payloadDocs = uploadFiles
+      .filter(({ uploadedFileId }) => typeof uploadedFileId === 'number')
+      .map(({ uploadedFileId, docDesc }) => ({
+        temp_doc: uploadedFileId as number,
+        description: docDesc,
+      }));
+
+    if (payloadDocs.length === 0) return false; // Exit early if no valid files
+
+    // Create New Thread
+    const resultData = await dispatch(createNewThread({}));
+
+    if (createNewThread.rejected.match(resultData)) {
+      showToast('error', 'Something went wrong. Please try again!');
+      console.error('createNewThread failed:', resultData.payload);
+      return;
+    }
+
+    const createdThreadID = resultData.payload?.uuid;
+    if (!createdThreadID) return;
+
+    // Upload documents
+    uploadActualDocuments(createdThreadID, payloadDocs);
   };
 
   return (
     <BootstrapDialog
-      onClose={handleClose}
+      onClose={isLoading ? undefined : handleClose} // Prevents calling handleClose when isLoading is true
       aria-labelledby="customized-dialog-title"
       open={open}
       className={DocUploadStyles.dialogBox}
@@ -265,14 +322,16 @@ export default function DocumentUploadDialog({
           Documents Upload
         </DialogTitle>
         <IconButton
-          className={DocUploadStyles.closeIcon}
+          className={isLoading ? '' : DocUploadStyles.closeIcon}
           aria-label="close"
-          onClick={handleClose}
+          onClick={isLoading ? undefined : handleClose}
           sx={(theme) => ({
             position: 'absolute',
             right: 8,
             top: 8,
             color: theme.palette.grey[500],
+            cursor: isLoading ? 'not-allowed' : 'pointer', // Change cursor
+            pointerEvents: isLoading ? 'none' : 'auto', // Prevent click when loading
           })}
         >
           <Image
@@ -355,6 +414,7 @@ export default function DocumentUploadDialog({
               fullWidth
               sx={{ mt: 2 }}
               onClick={handleOpenUserFileInput}
+              disabled={isLoading}
             >
               <Image
                 src="/images/add-icon.svg"
@@ -371,10 +431,14 @@ export default function DocumentUploadDialog({
             className="btn btn-primary"
             fullWidth
             sx={{ mt: 2 }}
-            disabled={false}
+            disabled={isLoading}
             onClick={() => handleContinue()}
           >
-            Continue
+            {isLoading ? (
+              <CircularProgress size={20} style={{ color: 'white' }} />
+            ) : (
+              'Continue'
+            )}
           </Button>
         </Box>
       </DialogContent>

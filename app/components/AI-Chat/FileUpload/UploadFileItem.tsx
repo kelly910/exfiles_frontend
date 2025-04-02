@@ -3,27 +3,29 @@ import debounce from 'lodash.debounce';
 
 import DocUploadStyles from '@components/AI-Chat/Modals/DocumentUploadModal.module.scss';
 import { Box, LinearProgress, TextField, Typography } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { formatFileSizeLabel } from '@/app/utils/functions';
 
 interface FileItemProps {
   fileName: string;
   fileSize: number;
   progress: number;
-  isUploading: boolean;
+  isUploading?: boolean;
   hasUploaded: boolean;
   fileErrorMsg?: string;
   hasError: boolean;
   fileId: string;
   onRemove: (fileId: string) => void;
-  handleFileDesc: (e: any, fileId: string) => void;
+  handleFileDesc: (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    fileId: string
+  ) => void;
 }
 
 export default function UploadFileItem({
   fileSize,
   fileName,
   progress,
-  isUploading,
   hasUploaded,
   fileErrorMsg,
   hasError,
@@ -32,8 +34,16 @@ export default function UploadFileItem({
   handleFileDesc,
 }: FileItemProps) {
   const debouncedHandleFileDesc = useCallback(
-    debounce((event: Event) => handleFileDesc(event, fileId), 300),
-    [fileId, handleFileDesc]
+    debounce(
+      (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        fileId: string
+      ) => {
+        handleFileDesc(event, fileId);
+      },
+      300
+    ),
+    [handleFileDesc]
   );
 
   return (
@@ -87,7 +97,7 @@ export default function UploadFileItem({
             fullWidth
             placeholder="Add Description of this file"
             className={DocUploadStyles.fileInput}
-            onChange={debouncedHandleFileDesc}
+            onChange={(e) => debouncedHandleFileDesc(e, fileId)}
             sx={{
               marginTop: '5px',
               padding: '0',
