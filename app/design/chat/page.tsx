@@ -18,7 +18,7 @@ export default function Page() {
   return (
     <>
       <Sidebar />
-      <Header />
+      {/* <Header /> */}
       <main>
         <div>
           <Container maxWidth="lg" disableGutters>
