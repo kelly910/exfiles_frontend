@@ -111,6 +111,21 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
     }
   };
 
+  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const pasteData = event.clipboardData.getData('text').replace(/\D/g, '');
+    if (!pasteData) return;
+    const newOtp = [...otp];
+    for (let i = 0; i < pasteData.length; i++) {
+      if (i < otpLength) {
+        newOtp[i] = pasteData[i];
+      }
+    }
+    setOtp(newOtp);
+    const lastFilledIndex = Math.min(pasteData.length, otpLength) - 1;
+    inputRefs.current[lastFilledIndex]?.focus();
+  };
+
   const handleKeyDown = (
     index: number,
     event: React.KeyboardEvent<HTMLInputElement>
@@ -309,6 +324,7 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                         inputProps={{
                           maxLength: 1,
                           style: { textAlign: 'center' },
+                          onPaste: handlePaste,
                         }}
                       />
                     ))}

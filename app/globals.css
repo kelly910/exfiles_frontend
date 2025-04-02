@@ -586,3 +586,47 @@ input::-webkit-inner-spin-button {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+/* pagination */
+
+.pagination-box {
+  width: 100%;
+  position: sticky;
+  bottom: 0px;
+  z-index: 1;
+  background-color: var(--Background-Color);
+}
+
+.pagination {
+  border-radius: 10px;
+  background-color: var(--Card-Color);
+  width: 100%;
+}
+
+.pagination ul {
+  justify-content: flex-end;
+}
+
+.pagination ul li div,
+.pagination ul li button {
+  color: var(--Subtext-Color);
+  font-size: var(--SubTitle-3);
+  font-weight: var(--Medium);
+}
+
+.pagination ul li button:hover,
+.pagination ul li button.Mui-selected {
+  background-color: var(--Input-Box-Colors);
+  border-radius: 8px;
+}
+
+.pagination ul li button:hover,
+.pagination ul li button.Mui-selected {
+  color: var(--Primary-Text-Color);
+}
+
+.pagination ul li button svg {
+  fill: var(--Subtext-Color);
+}
+
+/* pagination */
