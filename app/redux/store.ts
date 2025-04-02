@@ -9,6 +9,7 @@ import loaderSlice from './slices/loader';
 import profileSettingSlice from './slices/profileSetting';
 import changePasswordSlice from './slices/changePassword';
 import userFeedbackSlice from './slices/feedback';
+import chatSlice from './slices/Chat';
 
 const createNoopStorage = () => {
   return {
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   profileSetting: profileSettingSlice,
   changePassword: changePasswordSlice,
   userFeedback: userFeedbackSlice,
+  chat: chatSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

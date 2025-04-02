@@ -13,6 +13,10 @@ const urlMapper = {
   updateUser: `${BASE_URL}users/`,
   changePassword: `${BASE_URL}change-password/`,
   feedback: `${BASE_URL}feedback/`,
+
+  // Chat Module
+  thread: `${BASE_URL}thread/`,
+  uploadActualDoc: `${BASE_URL}upload-actual-document/`,
 };
 
 export default urlMapper;

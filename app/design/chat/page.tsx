@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './style.module.scss';
-import Header from '@components/Header/Header';
+// import Header from '@components/Header/Header';
 import ChatWindows from '@/app/components/Chat-Windows/ChatWindows';
 import DialogBox from '@/app/components/Dialog-Box/DialogBox';
 import Sidebar from '@/app/components/Sidebar/Sidebar';
@@ -18,7 +18,7 @@ export default function Page() {
   return (
     <>
       <Sidebar />
-      <Header />
+      {/* <Header /> */}
       <main>
         <div>
           <Container maxWidth="lg" disableGutters>
