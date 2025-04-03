@@ -19,7 +19,7 @@ const initialState: CategoryListingState = {
 };
 
 interface DocumentListingResponse {
-  categories: CategoryListing[];
+  results: CategoryListing[];
   no_of_docs: number;
 }
 
@@ -47,7 +47,7 @@ const categoryListingSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCategories.fulfilled, (state, action) => {
-      state.categories = action.payload.categories;
+      state.categories = action.payload.results;
       state.no_of_docs = action.payload.no_of_docs;
     });
   },
