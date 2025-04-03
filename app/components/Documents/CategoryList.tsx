@@ -3,7 +3,7 @@
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import styles from './document.module.scss';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
@@ -26,10 +26,19 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
   const { categories } = useSelector(
     (state: RootState) => state.categoryListing
   );
+  const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (categories?.length > 0) {
+      const newCategoryId = catId ?? categories[0].id;
+      setActiveCategoryId(newCategoryId);
+      handleCategoryClick(newCategoryId);
+    }
+  }, [catId, categories]);
 
   const handleCategoryClick = (categoryId: number) => {
     router.push(`/documents/${categoryId}`);
@@ -48,7 +57,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
             <Box
               component="div"
               key={index}
-              className={`${styles.docsFolder} ${Number(catId) === category.id ? styles.active : ''}`}
+              className={`${styles.docsFolder} ${(Number(catId) || activeCategoryId) === category.id ? styles.active : ''}`}
               onClick={() => handleCategoryClick(category?.id)}
             >
               <div className={styles.folderBox}>

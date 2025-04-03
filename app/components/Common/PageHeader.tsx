@@ -15,12 +15,14 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import styles from './Header.module.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SettingDialog from '../SettingDialog/SettingDialog';
 import LogoutDialog from '../LogoutDialog/LogoutDialog';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import FeedbackDialog from '@components/FeedBackDialog/FeedBackDialog';
+import { fetchCategories } from '@/app/redux/slices/categoryListing';
+import { useAppDispatch } from '@/app/redux/hooks';
 
 export default function PageHeader() {
   const pages = ['Products', 'Pricing', 'Blog'];
@@ -67,6 +69,19 @@ export default function PageHeader() {
   );
   const firstName = loggedInUser?.data?.first_name;
   const lastName = loggedInUser?.data?.last_name;
+  const dispatch = useAppDispatch();
+  const { categories } = useSelector(
+    (state: RootState) => state.categoryListing
+  );
+
+  const numberOfDocs = categories.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.no_of_docs,
+    0
+  );
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   return (
     <>
@@ -81,7 +96,7 @@ export default function PageHeader() {
             sx={{ justifyContent: 'space-between', gap: '16px' }}
           >
             <Box sx={{ width: '100%' }}>
-              {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Image
                   src="/images/document-text.svg"
                   alt="menu"
@@ -100,15 +115,15 @@ export default function PageHeader() {
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
-                  onClick={handleOpenNavMenu}
+                  // onClick={handleOpenNavMenu}
                   color="inherit"
                 >
-                  <Image
+                  {/* <Image
                     src="/images/more.svg"
                     alt="menu"
                     width={20}
                     height={20}
-                  />
+                  /> */}
                 </IconButton>
                 <Menu
                   id="menu-appbar"
@@ -128,9 +143,9 @@ export default function PageHeader() {
               </Box>
               <Box>
                 <Typography variant="body1" className={styles.documentNo}>
-                  No. of Documents : <span>2500</span>
+                  No. of Documents : <span>{numberOfDocs}</span>
                 </Typography>
-              </Box> */}
+              </Box>
             </Box>
 
             <Box

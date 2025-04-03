@@ -63,18 +63,38 @@ const DocumentList: React.FC<DocumentListProps> = ({
         }
       }, 1000);
     }
-  }, [dispatch, catId, searchParams]);
+  }, [dispatch, catId]);
 
   const getDocumentImage = (fileType: string) => {
     const docType = documentType.find((doc) => doc.type.includes(fileType));
     return docType ? docType.image : '/images/pdf.svg';
   };
 
-  const handleSearchInput = (searchParams: string) => {
-    if (searchParams.length > 3) {
-      setSearchParams(searchParams);
-    } else {
-      setSearchParams('');
+  const handleSearchInput = (inputValue: string) => {
+    setSearchParams(inputValue.length > 3 ? inputValue : '');
+  };
+
+  const handleSearch = () => {
+    if (
+      (searchParams.length > 3 || searchParams.length === 0) &&
+      catId !== null
+    ) {
+      dispatch(setLoader(true));
+      setTimeout(async () => {
+        try {
+          await dispatch(
+            fetchDocumentsByCategory({
+              categoryId: catId,
+              search: searchParams.length > 3 ? searchParams : '',
+            })
+          ).unwrap();
+        } catch (error) {
+          handleError(error as ErrorResponse);
+          dispatch(setLoader(false));
+        } finally {
+          dispatch(setLoader(false));
+        }
+      }, 1000);
     }
   };
 
@@ -97,7 +117,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
               onChange={(e) => handleSearchInput(e.target.value)}
               endAdornment={
                 <InputAdornment position="end" className={styles.searchIcon}>
-                  <span className={styles.search}></span>
+                  <span className={styles.search} onClick={handleSearch}></span>
                 </InputAdornment>
               }
             />

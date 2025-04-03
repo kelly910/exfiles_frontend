@@ -572,18 +572,19 @@ const Sidebar = ({
               // expanded={expanded}
               // onChange={handleAccordionChange}
               // defaultExpanded
-              expanded={expanded === 'panel3'}
-              onChange={handleAccordionChange('panel3')}
+              // expanded={expanded === 'panel3'}
+              // onChange={handleAccordionChange('panel3')}
             >
               <AccordionSummary
                 expandIcon={
                   <Image
                     className={Style['img-none']}
-                    src={
-                      expanded === 'panel3'
-                        ? '/images/arrow-down.svg'
-                        : '/images/arrow-down-right.svg'
-                    }
+                    // src={
+                    //   expanded === 'panel3'
+                    //     ? '/images/arrow-down.svg'
+                    //     : '/images/arrow-down-right.svg'
+                    // }
+                    src="/images/arrow-down-right.svg"
                     alt="expand-collapse"
                     width={16}
                     height={16}
@@ -608,7 +609,7 @@ const Sidebar = ({
                 </Typography>
               </AccordionSummary>
 
-              <AccordionDetails className={Style['bottom-content']}>
+              {/* <AccordionDetails className={Style['bottom-content']}>
                 <div className={Style['accordion-content']}>
                   <div className={Style['left']}>
                     <p>
@@ -792,7 +793,7 @@ const Sidebar = ({
                     </div>
                   </div>
                 </div>
-              </AccordionDetails>
+              </AccordionDetails> */}
             </Accordion>
           </div>
         </div>

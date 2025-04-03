@@ -1,13 +1,13 @@
 'use client';
 
 import styles from './document.module.scss';
-import Header from '@components/Header/Header';
-// import Sidebar from '@/app/components/Common/Sidebar';
-import { useState } from 'react';
+import Sidebar from '@/app/components/Common/Sidebar';
+import { useEffect, useState } from 'react';
 import CategoryList from './CategoryList';
 import DocumentList from './DocumentList';
 import DocumentSummary from './DocumentSummary';
 import { useRouter } from 'next/navigation';
+import PageHeader from '../Common/PageHeader';
 
 export default function DocumentListComponent({ catId }: { catId: number }) {
   const router = useRouter();
@@ -22,11 +22,35 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
     });
   };
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    if (!selectedDocId) {
+      setIsSidebarOpen((prev) => !prev);
+    }
+  };
+
+  useEffect(() => {
+    if (!selectedDocId) {
+      setIsSidebarOpen((prev) => !prev);
+    } else {
+      setIsSidebarOpen(false);
+    }
+  }, [selectedDocId]);
+
+  const handleThreadClick = () => {
+    console.log('handleThreadClick');
+  };
+
   return (
-    <>
-      {/* <Sidebar /> */}
-      <Header />
-      <main className={styles.docsPageMain}>
+    <main className={`chat-body ${styles.docsPageMain}`}>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        handleThreadClick={handleThreadClick}
+      />
+      <section className="main-body">
+        <PageHeader />
         <div className={styles.docsMain}>
           <CategoryList catId={catId} />
           <DocumentList
@@ -35,7 +59,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
           />
           {selectedDocId !== null && <DocumentSummary docId={selectedDocId} />}
         </div>
-      </main>
-    </>
+      </section>
+    </main>
   );
 }
