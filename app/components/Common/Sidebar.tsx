@@ -12,6 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const Sidebar = ({
   isOpen,
@@ -25,6 +26,7 @@ const Sidebar = ({
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [expanded, setExpanded] = useState<boolean | string>('panel1'); // Track which accordion is expanded
 
+  const router = useRouter();
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -587,6 +589,7 @@ const Sidebar = ({
                     height={16}
                   />
                 }
+                onClick={() => router.push('/documents')}
                 aria-controls="panel1-content"
                 id="panel1-header"
                 classes={{
