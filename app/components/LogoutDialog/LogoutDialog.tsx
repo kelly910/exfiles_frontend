@@ -21,7 +21,7 @@ import { setLoader } from '@/app/redux/slices/loader';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
     backgroundColor: '#11101b',
     margin: '0px',
@@ -29,12 +29,13 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     borderRadius: '16px',
     minWidth: '450px',
     maxWidth: '90vw',
-    // Responsive styles
-    [theme.breakpoints.down('md')]: {
+    '@media (max-width: 500px)': {
+      maxWidth: '80vw',
       minWidth: '450px',
     },
-    [theme.breakpoints.down('sm')]: {
-      minWidth: '70vw',
+    '@media (max-width: 480px)': {
+      maxWidth: '95vw',
+      minWidth: '100%',
     },
   },
 }));

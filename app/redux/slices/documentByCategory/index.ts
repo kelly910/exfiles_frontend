@@ -35,13 +35,13 @@ const initialState: DocumentListingState = {
 
 export const fetchDocumentsByCategory = createAsyncThunk<
   DocumentListingResponse,
-  { categoryId: number; search?: string },
+  { categoryId: number; search?: string; page?: number },
   { rejectValue: string }
 >(
   'documents/fetchDocumentsByCategory',
-  async ({ categoryId, search }, { rejectWithValue }) => {
+  async ({ categoryId, search = '', page = 1 }, { rejectWithValue }) => {
     try {
-      const searchQuery = search ? `?search=${encodeURIComponent(search)}` : '';
+      const searchQuery = `?search=${encodeURIComponent(search)}&page=${page}&page_size=12`;
       const response = await api.get<DocumentListingResponse>(
         `${urlMapper.getDocumentByCategory}${categoryId}${searchQuery}`
       );

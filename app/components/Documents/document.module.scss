@@ -72,6 +72,7 @@
   .docBoxMain {
     width: 100%;
     padding: 12px 33px 24px 33px;
+    min-height: calc(100% - 74px - 91px);
 
     .docGridBox {
       background-color: var(--Card-Color);
@@ -105,7 +106,7 @@
 
         .docTitle {
           font-weight: var(--Bold);
-          font-size: var(--SubTitle-3);
+          font-size: var(--SubTitle-2);
           line-height: 19px;
           color: var(--Primary-Text-Color);
           width: 100%;

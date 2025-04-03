@@ -10,6 +10,7 @@ import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
 import { setLoader } from '@/app/redux/slices/loader';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { convertDateFormat } from '@/app/utils/constants';
 
 interface DocumentSummaryProps {
   docId: number;
@@ -47,7 +48,8 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({ docId }) => {
                 {documentSummary?.file_name}
               </Typography>
               <Typography variant="body1" className={styles.docsDate}>
-                Uploaded On : <span>{documentSummary?.upload_on}</span>
+                Uploaded On :{' '}
+                <span>{convertDateFormat(documentSummary?.upload_on)}</span>
               </Typography>
             </div>
             <div className={styles.docsInnerTag}>
