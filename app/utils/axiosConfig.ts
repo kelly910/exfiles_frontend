@@ -24,12 +24,13 @@ api.interceptors.request.use(
     const parsedUser = getLoggedInUser ? JSON.parse(getLoggedInUser) : null;
     const token: string | null = parsedUser?.data?.token || null;
 
-    if (config.url?.includes(urlMapper.login)) {
-      delete config.headers.Authorization;
-    }
-
     if (token) {
       config.headers.Authorization = `Token ${token}`; // Attach token to headers
+    }
+
+    // Remove Authorization Token In Login API
+    if (config.url?.includes(urlMapper.login)) {
+      delete config.headers.Authorization;
     }
     return config;
   },
