@@ -4,7 +4,7 @@ import { Box, Grid, Input, InputAdornment, Typography } from '@mui/material';
 import Image from 'next/image';
 import styles from './document.module.scss';
 import { documentType } from '@/app/utils/constants';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { fetchDocumentsByCategory } from '@/app/redux/slices/documentByCategory';
 import { RootState } from '@/app/redux/store';
@@ -37,6 +37,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
   handleOpenDocumentSummary,
 }) => {
   const dispatch = useAppDispatch();
+  const [searchParams, setSearchParams] = useState('');
   const { documents, count } = useSelector(
     (state: RootState) => state.documentListing
   );
@@ -46,9 +47,14 @@ const DocumentList: React.FC<DocumentListProps> = ({
   useEffect(() => {
     if (catId) {
       dispatch(setLoader(true));
-      setTimeout(() => {
+      setTimeout(async () => {
         try {
-          dispatch(fetchDocumentsByCategory(catId));
+          await dispatch(
+            fetchDocumentsByCategory({
+              categoryId: catId,
+              search: searchParams,
+            })
+          ).unwrap();
         } catch (error) {
           handleError(error as ErrorResponse);
           dispatch(setLoader(false));
@@ -57,11 +63,19 @@ const DocumentList: React.FC<DocumentListProps> = ({
         }
       }, 1000);
     }
-  }, [dispatch, catId]);
+  }, [dispatch, catId, searchParams]);
 
   const getDocumentImage = (fileType: string) => {
     const docType = documentType.find((doc) => doc.type.includes(fileType));
     return docType ? docType.image : '/images/pdf.svg';
+  };
+
+  const handleSearchInput = (searchParams: string) => {
+    if (searchParams.length > 3) {
+      setSearchParams(searchParams);
+    } else {
+      setSearchParams('');
+    }
   };
 
   // const [page, setPage] = useState(1);
@@ -80,6 +94,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
               id="input-with-icon-adornment"
               className={styles.searchInput}
               placeholder="Search your documents"
+              onChange={(e) => handleSearchInput(e.target.value)}
               endAdornment={
                 <InputAdornment position="end" className={styles.searchIcon}>
                   <span className={styles.search}></span>
@@ -121,7 +136,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
                       />
                       <Typography variant="body1" className={styles.docTitle}>
                         {doc?.file_name}
-                        <span>general log memory usage</span>
+                        {/* <span>general log memory usage</span> */}
                       </Typography>
                       <Image
                         src="/images/more.svg"
