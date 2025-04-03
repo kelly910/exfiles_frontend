@@ -8,28 +8,19 @@ const ClientAuthCheck = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const checkAuth = () => {
-      const getCookie = (name: string): string | null => {
-        const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
-        return match ? match[2] : null;
-      };
-      const token = getCookie('accessToken');
-      if (token) {
-        router.push('/ai-chats');
-      }
+    const getCookie = (name: string): string | null => {
+      const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
+      return match ? match[2] : null;
     };
 
-    checkAuth();
+    const token = getCookie('accessToken');
 
-    const onPopState = () => {
-      checkAuth();
-    };
+    // Define routes that should NOT be accessible to authenticated users
+    const authRoutes = ['/login', '/signup'];
 
-    window.addEventListener('popstate', onPopState);
-
-    return () => {
-      window.removeEventListener('popstate', onPopState);
-    };
+    if (token && authRoutes.includes(pathname)) {
+      router.push('/ai-chats'); // Redirect only if on an auth page
+    }
   }, [pathname, router]);
 
   return <>{children}</>;
