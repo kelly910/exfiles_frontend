@@ -24,9 +24,9 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({ docId }) => {
   useEffect(() => {
     if (docId) {
       dispatch(setLoader(true));
-      setTimeout(() => {
+      setTimeout(async () => {
         try {
-          dispatch(fetchDocumentSummaryById(docId));
+          await dispatch(fetchDocumentSummaryById(docId)).unwrap();
         } catch (error) {
           handleError(error as ErrorResponse);
           dispatch(setLoader(false));

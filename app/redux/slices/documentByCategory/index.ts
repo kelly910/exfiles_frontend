@@ -35,14 +35,15 @@ const initialState: DocumentListingState = {
 
 export const fetchDocumentsByCategory = createAsyncThunk<
   DocumentListingResponse,
-  number,
+  { categoryId: number; search?: string },
   { rejectValue: string }
 >(
   'documents/fetchDocumentsByCategory',
-  async (categoryId, { rejectWithValue }) => {
+  async ({ categoryId, search }, { rejectWithValue }) => {
     try {
+      const searchQuery = search ? `?search=${encodeURIComponent(search)}` : '';
       const response = await api.get<DocumentListingResponse>(
-        `${urlMapper.getDocumentByCategory}${categoryId}`
+        `${urlMapper.getDocumentByCategory}${categoryId}${searchQuery}`
       );
       return response.data;
     } catch (error) {
@@ -54,7 +55,7 @@ export const fetchDocumentsByCategory = createAsyncThunk<
   }
 );
 
-const documentListingSlice = createSlice({
+const documentListSlice = createSlice({
   name: 'documentListing',
   initialState,
   reducers: {},
@@ -66,4 +67,4 @@ const documentListingSlice = createSlice({
   },
 });
 
-export default documentListingSlice.reducer;
+export default documentListSlice.reducer;

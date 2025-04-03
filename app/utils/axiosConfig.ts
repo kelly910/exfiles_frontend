@@ -1,4 +1,5 @@
 import axios from 'axios';
+import urlMapper from './apiEndPoints/urlMapper';
 
 // Create an Axios instance with a base URL
 const api = axios.create({
@@ -22,6 +23,10 @@ api.interceptors.request.use(
     const getLoggedInUser = getStoredToken();
     const parsedUser = getLoggedInUser ? JSON.parse(getLoggedInUser) : null;
     const token: string | null = parsedUser?.data?.token || null;
+
+    if (config.url?.includes(urlMapper.login)) {
+      delete config.headers.Authorization;
+    }
 
     if (token) {
       config.headers.Authorization = `Token ${token}`; // Attach token to headers

@@ -11,7 +11,7 @@ import changePasswordSlice from './slices/changePassword';
 import userFeedbackSlice from './slices/feedback';
 import chatSlice from './slices/Chat';
 import categoryListingSlice from './slices/categoryListing';
-import documentListingSlice from './slices/documentByCategory';
+import documentListSlice from './slices/documentByCategory';
 import documentSummarySlice from './slices/documentSummary';
 
 const createNoopStorage = () => {
@@ -57,7 +57,7 @@ const rootReducer = combineReducers({
   userFeedback: userFeedbackSlice,
   chat: chatSlice,
   categoryListing: categoryListingSlice,
-  documentListing: documentListingSlice,
+  documentListing: documentListSlice,
   documentSummary: documentSummarySlice,
 });
 
