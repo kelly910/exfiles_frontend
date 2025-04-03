@@ -41,7 +41,7 @@ const Sidebar = ({
     (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false); // Only expand the clicked panel
     };
-  
+
   return (
     <>
       <div
@@ -109,6 +109,14 @@ const Sidebar = ({
               className={Style['accordian']}
               expanded={expanded === 'panel1'}
               onChange={handleAccordionChange('panel1')}
+              sx={{
+                '.Mui-expanded': {
+                  backgroundColor: 'var(--Input-Box-Colors)',
+                },
+                'span.Mui-expanded': {
+                  transform: 'rotate(0deg)',
+                },
+              }}
             >
               <AccordionSummary
                 expandIcon={
@@ -348,6 +356,14 @@ const Sidebar = ({
               // onChange={handleAccordionChange}
               expanded={expanded === 'panel2'}
               onChange={handleAccordionChange('panel2')}
+              sx={{
+                '.Mui-expanded': {
+                  backgroundColor: 'var(--Input-Box-Colors)',
+                },
+                'span.Mui-expanded': {
+                  transform: 'rotate(0deg)',
+                },
+              }}
             >
               <AccordionSummary
                 expandIcon={
@@ -574,6 +590,14 @@ const Sidebar = ({
               // defaultExpanded
               // expanded={expanded === 'panel3'}
               // onChange={handleAccordionChange('panel3')}
+              sx={{
+                '.Mui-expanded': {
+                  backgroundColor: 'var(--Input-Box-Colors)',
+                },
+                'span.Mui-expanded': {
+                  transform: 'rotate(0deg)',
+                },
+              }}
             >
               <AccordionSummary
                 expandIcon={

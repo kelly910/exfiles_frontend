@@ -23,6 +23,27 @@ const BootstrapDialog = styled(Dialog)(() => ({
     borderRadius: '16px',
     minWidth: '850px',
     minHeight: '550px',
+
+    '@media (max-width: 1024px)': {
+      maxWidth: '80vw',
+      minWidth: '700px',
+      minHeight: '500px',
+    },
+    '@media (max-width: 768px)': {
+      maxWidth: '80vw',
+      minWidth: '480px', // 90% of the viewport width
+      minHeight: '400px',
+    },
+    '@media (max-width: 500px)': {
+      maxWidth: '80vw',
+      minWidth: '450px', // 90% of the viewport width
+      minHeight: '400px',
+    },
+    '@media (max-width: 480px)': {
+      maxWidth: '95vw',
+      minWidth: '100%', // Almost full width
+      minHeight: 'auto',
+    },
   },
 }));
 
