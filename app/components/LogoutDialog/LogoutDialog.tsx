@@ -21,7 +21,7 @@ import { setLoader } from '@/app/redux/slices/loader';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
     backgroundColor: '#11101b',
     margin: '0px',

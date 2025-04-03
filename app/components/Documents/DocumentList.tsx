@@ -1,9 +1,16 @@
 'use client';
 
-import { Box, Grid, Input, InputAdornment, Typography } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Input,
+  InputAdornment,
+  Pagination,
+  Typography,
+} from '@mui/material';
 import Image from 'next/image';
 import styles from './document.module.scss';
-import { documentType } from '@/app/utils/constants';
+import { convertDateFormat, documentType } from '@/app/utils/constants';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { fetchDocumentsByCategory } from '@/app/redux/slices/documentByCategory';
@@ -41,8 +48,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const { documents, count } = useSelector(
     (state: RootState) => state.documentListing
   );
-
-  console.log(count, 'count');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (catId) {
@@ -86,6 +92,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
             fetchDocumentsByCategory({
               categoryId: catId,
               search: searchParams.length > 3 ? searchParams : '',
+              page: 1,
             })
           ).unwrap();
         } catch (error) {
@@ -98,12 +105,20 @@ const DocumentList: React.FC<DocumentListProps> = ({
     }
   };
 
-  // const [page, setPage] = useState(1);
-  // const pageSize = 15;
+  const handlePageChange = async (
+    _: React.ChangeEvent<unknown>,
+    newPage: number
+  ) => {
+    setPage(newPage);
 
-  // const handlePageChange = (_: React.ChangeEvent<unknown>, newPage: number) => {
-  //   setPage(newPage);
-  // };
+    await dispatch(
+      fetchDocumentsByCategory({
+        categoryId: catId as number,
+        search: searchParams.length > 3 ? searchParams : '',
+        page: newPage,
+      })
+    ).unwrap();
+  };
 
   return (
     <>
@@ -179,7 +194,9 @@ const DocumentList: React.FC<DocumentListProps> = ({
                           </span>
                         )}
                       </div>
-                      <Typography variant="body1">{doc?.upload_on}</Typography>
+                      <Typography variant="body1">
+                        {convertDateFormat(doc?.upload_on)}
+                      </Typography>
                     </div>
                   </div>
                 </Grid>
@@ -188,26 +205,25 @@ const DocumentList: React.FC<DocumentListProps> = ({
               <></>
             )}
           </Grid>
-          {/* <Box
-            component="div"
-            className="pagination-box"
+        </Box>
+        <Box
+          component="div"
+          className="pagination-box"
+          sx={{
+            padding: '19px 33px 24px 33px',
+            marginBottom: '-24px',
+          }}
+        >
+          <Pagination
+            count={Math.ceil(count / 12)}
+            page={page}
+            onChange={handlePageChange}
+            shape="rounded"
+            className="pagination"
             sx={{
-              padding: '19px 0 24px 0',
-              marginBottom: '-24px',
+              padding: '8px 33px',
             }}
-          >
-            <Pagination
-              count={Math.ceil(rows.length / pageSize)}
-              count={10}
-              page={page}
-              onChange={handlePageChange}
-              shape="rounded"
-              className="pagination"
-              sx={{
-                padding: '8px 33px',
-              }}
-            />
-          </Box> */}
+          />
         </Box>
       </div>
     </>

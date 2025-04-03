@@ -70,13 +70,8 @@ export default function PageHeader() {
   const firstName = loggedInUser?.data?.first_name;
   const lastName = loggedInUser?.data?.last_name;
   const dispatch = useAppDispatch();
-  const { categories } = useSelector(
+  const { no_of_docs } = useSelector(
     (state: RootState) => state.categoryListing
-  );
-
-  const numberOfDocs = categories.reduce(
-    (accumulator, currentValue) => accumulator + currentValue.no_of_docs,
-    0
   );
 
   useEffect(() => {
@@ -143,7 +138,7 @@ export default function PageHeader() {
               </Box>
               <Box>
                 <Typography variant="body1" className={styles.documentNo}>
-                  No. of Documents : <span>{numberOfDocs}</span>
+                  No. of Documents : <span>{no_of_docs || 0}</span>
                 </Typography>
               </Box>
             </Box>
