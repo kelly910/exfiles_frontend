@@ -75,7 +75,7 @@ export default function PageHeader() {
   );
 
   useEffect(() => {
-    dispatch(fetchCategories());
+    dispatch(fetchCategories({ page: 1 }));
   }, [dispatch]);
 
   return (

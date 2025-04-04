@@ -109,7 +109,14 @@
           font-size: var(--SubTitle-2);
           line-height: 19px;
           color: var(--Primary-Text-Color);
-          width: 100%;
+          width: calc(100% - 70px);
+          word-wrap: break-word;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
 
           span {
             display: block;

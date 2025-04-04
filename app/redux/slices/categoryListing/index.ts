@@ -11,26 +11,35 @@ interface CategoryListing {
 interface CategoryListingState {
   categories: CategoryListing[];
   no_of_docs: number;
+  nextPage: number | null;
+  isFetching: boolean;
 }
 
 const initialState: CategoryListingState = {
   categories: [],
   no_of_docs: 0,
+  nextPage: 1,
+  isFetching: false,
 };
 
 interface DocumentListingResponse {
   results: CategoryListing[];
   no_of_docs: number;
+  next: string | null;
+}
+
+interface FetchCategoriesArgs {
+  page: number;
 }
 
 export const fetchCategories = createAsyncThunk<
   DocumentListingResponse,
-  void,
+  FetchCategoriesArgs,
   { rejectValue: string }
->('documents/fetchCategories', async (_, { rejectWithValue }) => {
+>('documents/fetchCategories', async ({ page }, { rejectWithValue }) => {
   try {
     const response = await api.get<DocumentListingResponse>(
-      urlMapper.getCategories
+      `${urlMapper.getCategories}?page=${page}&page_size=20`
     );
     return response.data;
   } catch (error) {
@@ -44,13 +53,33 @@ export const fetchCategories = createAsyncThunk<
 const categoryListingSlice = createSlice({
   name: 'categoryListing',
   initialState,
-  reducers: {},
+  reducers: {
+    resetCategories: (state) => {
+      state.categories = [];
+      state.no_of_docs = 0;
+      state.nextPage = 1;
+    },
+  },
   extraReducers: (builder) => {
-    builder.addCase(fetchCategories.fulfilled, (state, action) => {
-      state.categories = action.payload.results;
-      state.no_of_docs = action.payload.no_of_docs;
-    });
+    builder
+      .addCase(fetchCategories.pending, (state) => {
+        state.isFetching = true;
+      })
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.isFetching = false;
+        if (action.meta.arg.page === 1) {
+          state.categories = action.payload.results;
+        } else {
+          state.categories = [...state.categories, ...action.payload.results];
+        }
+        state.no_of_docs = action.payload.no_of_docs;
+        state.nextPage = action.payload.next ? action.meta.arg.page + 1 : null;
+      })
+      .addCase(fetchCategories.rejected, (state) => {
+        state.isFetching = false;
+      });
   },
 });
 
+export const { resetCategories } = categoryListingSlice.actions;
 export default categoryListingSlice.reducer;

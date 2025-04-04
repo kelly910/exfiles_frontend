@@ -3,10 +3,13 @@
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import styles from './document.module.scss';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
-import { fetchCategories } from '@/app/redux/slices/categoryListing';
+import {
+  fetchCategories,
+  resetCategories,
+} from '@/app/redux/slices/categoryListing';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
 
@@ -23,13 +26,22 @@ type CategoryListProps = {
 const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { categories } = useSelector(
+  const { categories, nextPage, isFetching } = useSelector(
     (state: RootState) => state.categoryListing
   );
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
+  const initialLoad = useRef(false);
 
   useEffect(() => {
-    dispatch(fetchCategories());
+    dispatch(resetCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!initialLoad.current) {
+      dispatch(fetchCategories({ page: 1 }));
+      initialLoad.current = true;
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -39,6 +51,26 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
       handleCategoryClick(newCategoryId);
     }
   }, [catId, categories]);
+
+  const lastCategoryRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node || !nextPage || isFetching) return;
+
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && !isFetching) {
+            dispatch(fetchCategories({ page: nextPage }));
+          }
+        },
+        { threshold: 0.5 }
+      );
+
+      observer.current.observe(node);
+    },
+    [dispatch, nextPage, isFetching]
+  );
 
   const handleCategoryClick = (categoryId: number) => {
     router.push(`/documents/${categoryId}`);
@@ -57,7 +89,8 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
             <Box
               component="div"
               key={index}
-              className={`${styles.docsFolder} ${(Number(catId) || activeCategoryId) === category.id ? styles.active : ''}`}
+              ref={index === categories.length - 1 ? lastCategoryRef : null}
+              className={`${styles.docsFolder} ${(Number(catId) || activeCategoryId) === category?.id ? styles.active : ''}`}
               onClick={() => handleCategoryClick(category?.id)}
             >
               <div className={styles.folderBox}>
