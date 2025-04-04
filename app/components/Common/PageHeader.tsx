@@ -119,14 +119,7 @@ export default function PageHeader() {
                   aria-haspopup="true"
                   // onClick={handleOpenNavMenu}
                   color="inherit"
-                >
-                  {/* <Image
-                    src="/images/more.svg"
-                    alt="menu"
-                    width={20}
-                    height={20}
-                  /> */}
-                </IconButton>
+                ></IconButton>
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorElNav}
@@ -202,7 +195,7 @@ export default function PageHeader() {
                 height={24}
               />
             </Button>
-            <Box sx={{ flexGrow: 0 }}>
+            <Box className="desktop-active" sx={{ flexGrow: 0 }}>
               <Tooltip title="">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
@@ -267,9 +260,8 @@ export default function PageHeader() {
                 ))}
               </Menu>
             </Box>
+            <TemporaryDrawer />
           </Toolbar>
-
-          <TemporaryDrawer />
         </Container>
       </AppBar>
       <SettingDialog

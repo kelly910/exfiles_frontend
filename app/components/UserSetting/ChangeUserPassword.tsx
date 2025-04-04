@@ -26,7 +26,13 @@ export interface ChangePasswordFormValues {
   new_password2: string;
 }
 
-const ChangeUserPassword = ({ closeDialog }: { closeDialog: () => void }) => {
+const ChangeUserPassword = ({
+  closeDialog,
+  mobileView,
+}: {
+  closeDialog: () => void;
+  mobileView: boolean;
+}) => {
   const [currentPassword, setCurrentPassword] = useState(false);
   const [newPassword, setNewPassword] = useState(false);
   const [repeatNewPassword, setRepeatNewPassword] = useState(false);
@@ -200,7 +206,7 @@ const ChangeUserPassword = ({ closeDialog }: { closeDialog: () => void }) => {
                       className="error-input-field"
                     />
                   </div>
-                  <br />
+                  {!mobileView ? <br /> : <></>}
                   <div className={styles.dialogFormGroup}>
                     <Typography
                       variant="body2"

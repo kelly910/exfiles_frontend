@@ -167,7 +167,7 @@ export default function SettingDialog({
           <>
             {activeTab === 'setting' && <MyProfile closeDialog={onClose} />}
             {activeTab === 'password' && (
-              <ChangeUserPassword closeDialog={onClose} />
+              <ChangeUserPassword closeDialog={onClose} mobileView={false} />
             )}
             {activeTab === 'delete' && <DeleteAccount closeDialog={onClose} />}
           </>
