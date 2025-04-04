@@ -23,6 +23,7 @@ import { RootState } from '@/app/redux/store';
 import FeedbackDialog from '@components/FeedBackDialog/FeedBackDialog';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch } from '@/app/redux/hooks';
+import TemporaryDrawer from '../Drawer/Drawer';
 
 export default function PageHeader() {
   const pages = ['Products', 'Pricing', 'Blog'];
@@ -83,7 +84,13 @@ export default function PageHeader() {
       <AppBar
         position="static"
         className="nav-open header"
-        sx={{ backgroundColor: '#11101BE5', position: 'sticky', top: '0' }}
+        sx={{
+          backgroundColor: '#11101BE5',
+          position: 'sticky',
+          top: '0',
+          maxHeight: '65px',
+          height: '65px',
+        }}
       >
         <Container maxWidth={false}>
           <Toolbar
@@ -112,14 +119,7 @@ export default function PageHeader() {
                   aria-haspopup="true"
                   // onClick={handleOpenNavMenu}
                   color="inherit"
-                >
-                  {/* <Image
-                    src="/images/more.svg"
-                    alt="menu"
-                    width={20}
-                    height={20}
-                  /> */}
-                </IconButton>
+                ></IconButton>
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorElNav}
@@ -195,7 +195,7 @@ export default function PageHeader() {
                 height={24}
               />
             </Button>
-            <Box sx={{ flexGrow: 0 }}>
+            <Box className="desktop-active" sx={{ flexGrow: 0 }}>
               <Tooltip title="">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
@@ -260,6 +260,7 @@ export default function PageHeader() {
                 ))}
               </Menu>
             </Box>
+            <TemporaryDrawer />
           </Toolbar>
         </Container>
       </AppBar>

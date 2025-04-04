@@ -658,3 +658,26 @@ input::-webkit-inner-spin-button {
 }
 
 /* pagination */
+
+
+/* start profile sidebar show-hide*/
+
+.mobile-active {
+  display: none;
+}
+
+.desktop-active {
+  display: block;
+}
+
+@media (max-width:600px) {
+  .mobile-active {
+    display: block;
+  }
+
+  .desktop-active {
+    display: none;
+  }
+}
+
+/* end profile sidebar show-hide*/

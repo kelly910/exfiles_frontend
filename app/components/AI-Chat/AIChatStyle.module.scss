@@ -14,11 +14,10 @@
         align-items: flex-start;
 
         p {
-          color: #dadae1cc;
-          font-weight: 500;
-          font-size: 16px;
+          color: var(--Primary-Text-Color);
+          font-weight: var(--Regular);
+          font-size: var(--SubTitle-2);
           line-height: 140%;
-          letter-spacing: -2%;
         }
       }
 
@@ -30,34 +29,88 @@
 }
 
 .chatHeader {
+  text-align: center;
+
+  .chatHeaderImage {
+    margin: 0 auto;
+    margin-bottom: 33px;
+  }
+
   .chatTitle {
-    color: #dadae1;
+    color: var(--Primary-Text-Color);
     text-align: center;
     margin-bottom: 12px;
     font-weight: 700;
-    font-size: 28px;
+    font-size: var(--Heading-1);
     line-height: 140%;
-    letter-spacing: -2%;
   }
 
   .chatSubtitle {
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: var(--Regular);
+    font-size: var(--SubTitle-3);
     line-height: 140%;
-    letter-spacing: -2%;
     text-align: center;
-    color: #898b94;
+    color: var(--Subtext-Color);
     margin: 0 auto;
   }
 }
 
 .chatGridBox {
-  border: 1px solid #3a3948;
-  background-color: #1b1a25;
+  border: 1px solid var(--Stroke-Color);
+  background-color: var(--Card-Color);
   width: 100%;
   border-radius: 12px;
   padding: 24px 16px;
   height: 100%;
+}
+
+// LogIncident class
+
+.chatLogIncident {
+  position: relative;
+  border: transparent;
+  background-color: transparent;
+  padding: 1px;
+  overflow: hidden;
+
+  .chatBox {
+    background-color: var(--Card-Color);
+    padding: 24px 16px;
+    border-radius: 14px;
+    position: relative;
+    z-index: 1;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      top: 0;
+      right: 0;
+      z-index: -1;
+      background-image: url('/images/log-incident.png');
+      background-repeat: no-repeat;
+      background-position: top right;
+      background-size: contain;
+      border-radius: 12px;
+    }
+  }
+
+  p {
+    max-width: calc(100% - 100px);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: var(--Main-Gradient);
+    z-index: -1;
+    border-radius: 14px;
+  }
 }
 
 .chatBoarbMain {
@@ -66,7 +119,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 100px;
-  min-height: 100vh;
+  min-height: calc(100vh - 65px);
   padding: 100px 0;
   max-width: 1000px;
   margin: 0 auto;
@@ -74,17 +127,17 @@
 
 .fileInput {
   padding: 9px 16px;
-  background-color: #1b1a25;
+  background-color: var(--Card-Color);
   width: 100%;
   border-radius: 10px;
-  color: #898b94;
+  color: var(--Subtext-Color);
 
   &::after {
     content: none !important;
   }
 
   input {
-    color: #dadae1;
+    color: var(--Primary-Text-Color);
   }
 }
 
@@ -93,7 +146,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  border: 1px solid #3a3948;
+  border: 1px solid var(--Stroke-Color);
   border-radius: 12px;
   padding: 16px;
   margin-top: 24px;
@@ -101,7 +154,7 @@
 
 .fileIcon {
   cursor: pointer;
-  // border: 0.72px solid #3A3948;
+  // border: 0.72px solid var(--Stroke-Color);
 
   .clip {
     background-image: url('/images/paperclip.svg');
