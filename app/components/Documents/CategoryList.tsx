@@ -32,6 +32,9 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
   const initialLoad = useRef(false);
+  const [showLoading, setShowLoading] = useState(false);
+  const loadedPages = useRef(new Set<number>());
+  const categoryRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
   useEffect(() => {
     dispatch(resetCategories());
@@ -54,19 +57,23 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
 
   const lastCategoryRef = useCallback(
     (node: HTMLDivElement | null) => {
-      if (!node || !nextPage || isFetching) return;
-
+      if (!node || !nextPage || isFetching || loadedPages.current.has(nextPage))
+        return;
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && !isFetching) {
-            dispatch(fetchCategories({ page: nextPage }));
+            loadedPages.current.add(nextPage);
+            setShowLoading(true);
+            setTimeout(async () => {
+              await dispatch(fetchCategories({ page: nextPage }));
+              setShowLoading(false);
+            }, 1000);
           }
         },
         { threshold: 0.5 }
       );
-
       observer.current.observe(node);
     },
     [dispatch, nextPage, isFetching]
@@ -74,6 +81,10 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
 
   const handleCategoryClick = (categoryId: number) => {
     router.push(`/documents/${categoryId}`);
+    categoryRefs.current[categoryId]?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+    });
   };
 
   return (
@@ -89,7 +100,10 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
             <Box
               component="div"
               key={index}
-              ref={index === categories.length - 1 ? lastCategoryRef : null}
+              ref={(el: HTMLDivElement | null) => {
+                categoryRefs.current[category.id] = el;
+                if (index === categories.length - 1 && el) lastCategoryRef(el);
+              }}
               className={`${styles.docsFolder} ${(Number(catId) || activeCategoryId) === category?.id ? styles.active : ''}`}
               onClick={() => handleCategoryClick(category?.id)}
             >
@@ -106,7 +120,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
                     {category?.name}
                   </Typography>
                   <Typography variant="body1" className={styles.folderNo}>
-                    No. of Docs : <span>{category?.no_of_docs}</span>
+                    No. of Docs : <span>{category?.no_of_docs || 0}</span>
                   </Typography>
                 </div>
                 <Image
@@ -119,6 +133,16 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
               </div>
             </Box>
           ))}
+        {showLoading && (
+          <Box className={styles.infiniteLoader}>
+            <Image
+              src="/gif/infinite-loader.gif"
+              alt="infiniteLoader"
+              width={100}
+              height={100}
+            />
+          </Box>
+        )}
       </Box>
     </>
   );

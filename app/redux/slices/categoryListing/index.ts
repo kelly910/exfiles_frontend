@@ -67,10 +67,13 @@ const categoryListingSlice = createSlice({
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.isFetching = false;
+        const newCategories = action.payload.results.filter(
+          (newCat) => !state.categories.some((cat) => cat.id === newCat.id)
+        );
         if (action.meta.arg.page === 1) {
           state.categories = action.payload.results;
         } else {
-          state.categories = [...state.categories, ...action.payload.results];
+          state.categories = [...state.categories, ...newCategories];
         }
         state.no_of_docs = action.payload.no_of_docs;
         state.nextPage = action.payload.next ? action.meta.arg.page + 1 : null;
