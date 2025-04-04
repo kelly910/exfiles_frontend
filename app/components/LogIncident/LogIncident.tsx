@@ -2,12 +2,7 @@
 import styles from './logincident.module.scss';
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import {
-  DataGrid,
-  GridColDef,
-  GridMoreVertIcon,
-  GridRowClassNameParams,
-} from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowClassNameParams } from '@mui/x-data-grid';
 import {
   Button,
   IconButton,

@@ -111,6 +111,7 @@ export default function TemporaryDrawer() {
           <Button
             onClick={handleCloseFirstDrawer}
             className={styles.backButton}
+            sx={{ marginBottom: '24px' }}
           >
             <Image
               src="/images/arrow-left.svg"
@@ -225,7 +226,7 @@ export default function TemporaryDrawer() {
             left: 'auto',
             width: '100%',
             maxHeight: 'calc(100vh - 65px)',
-            background: 'var(--Card-Color)',
+            background: 'var(--Background-Color)',
             borderLeft: '1px solid  #3A3948',
           },
           '& .MuiBackdrop-root': {
@@ -237,24 +238,41 @@ export default function TemporaryDrawer() {
         <List
           sx={{
             width: '100%',
-            padding: '24px 16px',
+            padding: '0',
             height: '100%',
             '&>div': {
-              height: 'calc(100% - 65px)',
+              height: 'calc(100% - 58px)',
+              padding: '24px 16px',
             },
           }}
         >
-          <Button
-            onClick={handleCloseSecondDrawer}
-            className={styles.backButton}
+          <Box
+            component="section"
+            sx={{
+              padding: '12px 16px',
+              height: 'auto',
+              background: 'var(--Card-Color)',
+              border: '0 solid #3A3948',
+              borderTopWidth: '1px',
+              borderBottomWidth: '1px',
+            }}
+            className={styles.drawerSidebarHeader}
           >
-            <Image
-              src="/images/arrow-left.svg"
-              alt="user"
-              width={16}
-              height={16}
-            />
-          </Button>
+            <Button
+              onClick={handleCloseSecondDrawer}
+              className={styles.backButton}
+            >
+              <Image
+                src="/images/arrow-left.svg"
+                alt="user"
+                width={16}
+                height={16}
+              />
+            </Button>
+            <Typography variant="body1" color="initial">
+              My Profile
+            </Typography>
+          </Box>
           {renderSecondDrawerContent()}
         </List>
       </Drawer>

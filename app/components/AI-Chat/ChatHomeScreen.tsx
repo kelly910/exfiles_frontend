@@ -73,7 +73,9 @@ export default function ChatHomeScreen() {
               md={4}
               className={AIChatStyles.gridBoxInner}
             >
-              <div className={AIChatStyles.chatGridBox}>
+              <div
+                className={`${AIChatStyles.chatGridBox} ${AIChatStyles.chatLogIncident}`} //${AIChatStyles.chatLogIncident} use only Log Incident
+              >
                 <div className={AIChatStyles.chatBox}>
                   <Typography variant="body1">
                     If you could visit one planet, which would it be?
@@ -86,7 +88,7 @@ export default function ChatHomeScreen() {
                     fullWidth
                   >
                     Start with this question
-                    <span className="arrow"></span>
+                    <span className="incident"></span>
                   </Button>
                 </div>
               </div>
@@ -119,14 +121,27 @@ export default function ChatHomeScreen() {
             </Grid>
           </Grid>
         </Box>
+
+        {/* <div className={AIChatStyles.chatHeader}>
+          <Image
+            src="/images/new-incident.svg"
+            alt="new-incident"
+            width={130}
+            height={130}
+            className={AIChatStyles.chatHeaderImage}
+          />
+          <Typography variant="h2" className={AIChatStyles.chatTitle}>
+            Anything unusual happened?
+          </Typography>
+          <Typography variant="body1" className={AIChatStyles.chatSubtitle}>
+            This is the place to log all the unusual incident happened. Start
+            typing your incident below.
+          </Typography>
+        </div> */}
       </Box>
       <Box component="section" className={AIChatStyles.chatHeading}>
         <div className={AIChatStyles.chatHeader}>
-          <Typography
-            variant="h2"
-            className={AIChatStyles.chatTitle}
-            sx={{ opacity: 0.8 }}
-          >
+          <Typography variant="h2" className={AIChatStyles.chatTitle}>
             How can I help you with?
           </Typography>
           <Typography
