@@ -1,0 +1,263 @@
+'use client';
+
+import * as React from 'react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  List,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import Image from 'next/image';
+import styles from '@components/Drawer/drawer.module.scss';
+import { useState } from 'react';
+import MyProfile from '@components/UserSetting/MyProfile';
+import ChangeUserPassword from '@components/UserSetting/ChangeUserPassword';
+import DeleteAccount from '@components/UserSetting/DeleteAccount';
+
+export default function TemporaryDrawer() {
+  const [isFirstDrawerOpen, setFirstDrawerOpen] = useState(false);
+  const [activeSecondDrawer, setActiveSecondDrawer] = useState<string | null>(
+    null
+  );
+  // Open First Drawer
+  const handleOpenFirstDrawer = () => setFirstDrawerOpen(true);
+  const handleCloseFirstDrawer = () => {
+    setFirstDrawerOpen(false);
+    setActiveSecondDrawer(null); // Close all second drawers
+  };
+
+  // Open Specific Second Drawer
+  const handleOpenSecondDrawer = (drawerName: string) =>
+    setActiveSecondDrawer(drawerName);
+  const handleCloseSecondDrawer = () => setActiveSecondDrawer(null);
+
+  // Select component based on active drawer
+  const renderSecondDrawerContent = () => {
+    switch (activeSecondDrawer) {
+      case 'profile1':
+        return <MyProfile closeDialog={handleCloseSecondDrawer} />;
+      case 'profile2':
+        return <ChangeUserPassword closeDialog={handleCloseSecondDrawer} />;
+      case 'profile3':
+        return <DeleteAccount closeDialog={handleCloseSecondDrawer} />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Box>
+      <Tooltip title="">
+        <IconButton
+          onClick={handleOpenFirstDrawer}
+          // onClick={handleOpenUserMenu}
+          sx={{ p: 0 }}
+        >
+          <Avatar
+            alt="abbreviaton"
+            sx={{
+              backgroundColor: '#DADAE1',
+              color: '#1B1A25',
+              fontSize: '16px',
+              fontWeight: 600,
+              padding: '9px 10px',
+              lineHeight: '140%',
+              textTransform: 'capitalize',
+            }}
+          >
+            PL
+            {/* {firstName?.[0]}
+            {lastName?.[0]} */}
+          </Avatar>
+        </IconButton>
+      </Tooltip>
+      <Drawer
+        anchor="right"
+        open={isFirstDrawerOpen}
+        onClose={handleCloseFirstDrawer}
+        sx={{
+          top: '65px',
+          right: '0',
+          left: 'auto',
+          maxHeight: 'calc(100vh - 65px)',
+          '& .MuiPaper-root': {
+            top: '65px',
+            width: 'calc(100% - 64px)',
+            maxHeight: 'calc(100vh - 65px)',
+            background: 'var(--Card-Color)',
+            borderLeft: '1px solid  #3A3948',
+          },
+          '& .MuiBackdrop-root': {
+            top: '65px',
+            maxHeight: 'calc(100vh - 65px)',
+          },
+        }}
+      >
+        <List
+          sx={{
+            width: '100%',
+            padding: '24px 16px',
+            height: '100%',
+          }}
+          className={styles.mainDropdown}
+        >
+          {/* <Button onClick={handleOpenSecondDrawer}>
+                    <ListItemText primary="Open Second Drawer" />
+                  </Button> */}
+          <Button
+            onClick={handleCloseFirstDrawer}
+            className={styles.backButton}
+          >
+            <Image
+              src="/images/arrow-left.svg"
+              alt="user"
+              width={16}
+              height={16}
+            />
+          </Button>
+          <Box component="div" className={styles.dialogSidebar}>
+            <Box component="div" className={styles.dialogSidebarHeader}>
+              <Typography variant="h6" className={styles.dialogSemiTitle}>
+                General settings
+              </Typography>
+              <Box component="div" className={styles.dialogSidebarContent}>
+                <Button
+                  className={styles.menuDropdown}
+                  onClick={() => handleOpenSecondDrawer('profile1')}
+                >
+                  <Image
+                    src="/images/profile.svg"
+                    alt="profile.svg"
+                    width={18}
+                    height={18}
+                  />
+                  <Typography>My Profile</Typography>
+                  <Image
+                    src="/images/arrow-down-right.svg"
+                    alt="user"
+                    width={16}
+                    height={16}
+                  />
+                </Button>
+                <Button
+                  className={styles.menuDropdown}
+                  onClick={() => handleOpenSecondDrawer('profile2')}
+                >
+                  <Image
+                    src="/images/password-change.svg"
+                    alt="password-change.svg"
+                    width={18}
+                    height={18}
+                  />
+                  <Typography>Change Password</Typography>
+                  <Image
+                    src="/images/arrow-down-right.svg"
+                    alt="user"
+                    width={16}
+                    height={16}
+                  />
+                </Button>
+                <Button
+                  className={styles.menuDropdown}
+                  // onClick={() => handleCloseUserMenu('Log out')}
+                >
+                  <Image
+                    src="/images/logout.svg"
+                    alt="password-change.svg"
+                    width={18}
+                    height={18}
+                  />
+                  <Typography>Logout</Typography>
+                  <Image
+                    src="/images/arrow-down-right.svg"
+                    alt="user"
+                    width={16}
+                    height={16}
+                  />
+                </Button>
+              </Box>
+            </Box>
+            <Box component="div" className={styles.dialogSidebarHeader}>
+              <Typography variant="h6" className={styles.dialogSemiTitle}>
+                Danger Zone
+              </Typography>
+              <Box component="div" className={styles.dialogSidebarContent}>
+                <Button
+                  className={styles.menuDropdown}
+                  onClick={() => handleOpenSecondDrawer('profile3')}
+                >
+                  <Image
+                    src="/images/trash-white.svg"
+                    alt="trash-white.svg"
+                    width={18}
+                    height={18}
+                  />
+                  <Typography>Delete Account</Typography>
+                  <Image
+                    src="/images/arrow-down-right.svg"
+                    alt="user"
+                    width={16}
+                    height={16}
+                  />
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        </List>
+      </Drawer>
+      <Drawer
+        anchor="right"
+        open={Boolean(activeSecondDrawer)}
+        onClose={handleCloseSecondDrawer}
+        sx={{
+          top: '65px',
+          right: '0',
+          left: 'auto',
+          width: '100%',
+          maxHeight: 'calc(100vh - 65px)',
+          '& .MuiPaper-root': {
+            top: '65px',
+            right: '0',
+            left: 'auto',
+            width: '100%',
+            maxHeight: 'calc(100vh - 65px)',
+            background: 'var(--Card-Color)',
+            borderLeft: '1px solid  #3A3948',
+          },
+          '& .MuiBackdrop-root': {
+            top: '65px',
+            maxHeight: 'calc(100vh - 65px)',
+          },
+        }}
+      >
+        <List
+          sx={{
+            width: '100%',
+            padding: '24px 16px',
+            height: '100%',
+            '&>div': {
+              height: 'calc(100% - 65px)',
+            },
+          }}
+        >
+          <Button
+            onClick={handleCloseSecondDrawer}
+            className={styles.backButton}
+          >
+            <Image
+              src="/images/arrow-left.svg"
+              alt="user"
+              width={16}
+              height={16}
+            />
+          </Button>
+          {renderSecondDrawerContent()}
+        </List>
+      </Drawer>
+    </Box>
+  );
+}

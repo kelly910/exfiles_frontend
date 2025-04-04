@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import styles from '../SettingDialog/setting.module.scss';
+import styles from '@components/SettingDialog/setting.module.scss';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useState } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
@@ -73,379 +73,385 @@ const ChangeUserPassword = ({ closeDialog }: { closeDialog: () => void }) => {
 
   return (
     <>
-      <Formik
-        initialValues={initialValues}
-        enableReinitialize={true}
-        validationSchema={changePasswordUserLoginValidationSchema}
-        onSubmit={changePasswordClick}
-      >
-        {({ values, errors, touched, handleSubmit, handleChange }) => (
-          <Form onSubmit={handleSubmit} className={styles.dialogFormBox}>
-            <Box component="div" className={styles.dialogFormContent}>
-              <div className={styles.dialogFormInner}>
-                <div className={styles.dialogFormGroup}>
-                  <Typography
-                    variant="body2"
-                    component="label"
-                    htmlFor="old_password"
-                    sx={{
-                      display: 'block',
-                      fontSize: '14px',
-                      color:
-                        errors.old_password && touched.old_password
-                          ? '#ff4d4d'
-                          : '#676972',
-                      fontWeight: 500,
-                    }}
-                  >
-                    Current Password
-                  </Typography>
-                  <Field
-                    as={TextField}
-                    fullWidth
-                    type={currentPassword ? 'text' : 'password'}
-                    id="old_password"
-                    name="old_password"
-                    placeholder="Your Current Password"
-                    error={Boolean(errors.old_password && touched.old_password)}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      handleChange(e);
-                      handleInputChange({
-                        ...values,
-                        old_password: e.target.value,
-                      });
-                    }}
-                    sx={{
-                      marginTop: '4px',
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        borderWidth: '0px',
-                        color: '#DADAE1',
-                        backgroundColor: '#252431',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          top: '-10px !important',
-                        },
-                        '& .MuiOutlinedInput-input': {
-                          fontSize: '14px',
-                          color: '#DADAE1',
-                          padding: '12px',
-                          fontWeight: 500,
-                          borderRadius: '12px',
-                          '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
-                          },
-                        },
-                        '& fieldset': {
-                          borderColor: '#3A3948',
-                        },
-                        '&:hover fieldset': {
-                          borderColor: '#fff',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
-                          borderWidth: '1px',
-                          color: '#fff',
-                        },
-                      },
-                      '& .MuiFormHelperText-root': {
+      <div className={styles.headerDialogBox}>
+        <Formik
+          initialValues={initialValues}
+          enableReinitialize={true}
+          validationSchema={changePasswordUserLoginValidationSchema}
+          onSubmit={changePasswordClick}
+        >
+          {({ values, errors, touched, handleSubmit, handleChange }) => (
+            <Form onSubmit={handleSubmit} className={styles.dialogFormBox}>
+              <Box component="div" className={styles.dialogFormContent}>
+                <div className={styles.dialogFormInner}>
+                  <div className={styles.dialogFormGroup}>
+                    <Typography
+                      variant="body2"
+                      component="label"
+                      htmlFor="old_password"
+                      sx={{
+                        display: 'block',
+                        fontSize: '14px',
                         color:
                           errors.old_password && touched.old_password
                             ? '#ff4d4d'
-                            : '#b0b0b0',
-                      },
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setCurrentPassword((prev) => !prev)}
-                            edge="end"
-                            sx={{
-                              padding: '0',
-                              width: '20px',
-                              margin: '0',
-                            }}
-                          >
-                            {currentPassword ? (
-                              <Visibility
-                                sx={{
-                                  color: '#b0b0b0',
-                                  width: '20px',
-                                  height: '20px',
-                                }}
-                              />
-                            ) : (
-                              <VisibilityOff
-                                sx={{
-                                  color: '#b0b0b0',
-                                  width: '20px',
-                                  height: '20px',
-                                }}
-                              />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <ErrorMessage
-                    name="old_password"
-                    component="div"
-                    className="error-input-field"
-                  />
-                </div>
-                <br />
-                <div className={styles.dialogFormGroup}>
-                  <Typography
-                    variant="body2"
-                    component="label"
-                    htmlFor="new_password1"
-                    sx={{
-                      display: 'block',
-                      fontSize: '14px',
-                      color:
-                        errors.new_password1 && touched.new_password1
-                          ? '#ff4d4d'
-                          : '#676972',
-                      fontWeight: 500,
-                    }}
-                  >
-                    New Password*
-                  </Typography>
-                  <Field
-                    as={TextField}
-                    fullWidth
-                    type={newPassword ? 'text' : 'password'}
-                    id="new_password1"
-                    name="new_password1"
-                    placeholder="Choose a strong Password"
-                    error={Boolean(
-                      errors.new_password1 && touched.new_password1
-                    )}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      handleChange(e);
-                      handleInputChange({
-                        ...values,
-                        new_password1: e.target.value,
-                      });
-                    }}
-                    sx={{
-                      marginTop: '4px',
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        borderWidth: '0px',
-                        color: '#DADAE1',
-                        backgroundColor: '#252431',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          top: '-10px !important',
-                        },
-                        '& .MuiOutlinedInput-input': {
-                          fontSize: '14px',
-                          color: '#DADAE1',
-                          padding: '12px',
-                          fontWeight: 500,
+                            : '#676972',
+                        fontWeight: 500,
+                      }}
+                    >
+                      Current Password
+                    </Typography>
+                    <Field
+                      as={TextField}
+                      fullWidth
+                      type={currentPassword ? 'text' : 'password'}
+                      id="old_password"
+                      name="old_password"
+                      placeholder="Your Current Password"
+                      error={Boolean(
+                        errors.old_password && touched.old_password
+                      )}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleChange(e);
+                        handleInputChange({
+                          ...values,
+                          old_password: e.target.value,
+                        });
+                      }}
+                      sx={{
+                        marginTop: '4px',
+                        '& .MuiOutlinedInput-root': {
                           borderRadius: '12px',
-                          '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
+                          borderWidth: '0px',
+                          color: '#DADAE1',
+                          backgroundColor: '#252431',
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            top: '-10px !important',
+                          },
+                          '& .MuiOutlinedInput-input': {
+                            fontSize: '14px',
+                            color: '#DADAE1',
+                            padding: '12px',
+                            fontWeight: 500,
+                            borderRadius: '12px',
+                            '&::placeholder': {
+                              color: '#888',
+                              fontWeight: 400,
+                            },
+                          },
+                          '& fieldset': {
+                            borderColor: '#3A3948',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#fff',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#fff',
+                            borderWidth: '1px',
+                            color: '#fff',
                           },
                         },
-                        '& fieldset': {
-                          borderColor: '#3A3948',
+                        '& .MuiFormHelperText-root': {
+                          color:
+                            errors.old_password && touched.old_password
+                              ? '#ff4d4d'
+                              : '#b0b0b0',
                         },
-                        '&:hover fieldset': {
-                          borderColor: '#fff',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
-                          borderWidth: '1px',
-                          color: '#fff',
-                        },
-                      },
-                      '& .MuiFormHelperText-root': {
+                      }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() =>
+                                setCurrentPassword((prev) => !prev)
+                              }
+                              edge="end"
+                              sx={{
+                                padding: '0',
+                                width: '20px',
+                                margin: '0',
+                              }}
+                            >
+                              {currentPassword ? (
+                                <Visibility
+                                  sx={{
+                                    color: '#b0b0b0',
+                                    width: '20px',
+                                    height: '20px',
+                                  }}
+                                />
+                              ) : (
+                                <VisibilityOff
+                                  sx={{
+                                    color: '#b0b0b0',
+                                    width: '20px',
+                                    height: '20px',
+                                  }}
+                                />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <ErrorMessage
+                      name="old_password"
+                      component="div"
+                      className="error-input-field"
+                    />
+                  </div>
+                  <br />
+                  <div className={styles.dialogFormGroup}>
+                    <Typography
+                      variant="body2"
+                      component="label"
+                      htmlFor="new_password1"
+                      sx={{
+                        display: 'block',
+                        fontSize: '14px',
                         color:
                           errors.new_password1 && touched.new_password1
                             ? '#ff4d4d'
-                            : '#b0b0b0',
-                      },
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setNewPassword((prev) => !prev)}
-                            edge="end"
-                            sx={{
-                              padding: '0',
-                              width: '20px',
-                              margin: '0',
-                            }}
-                          >
-                            {newPassword ? (
-                              <Visibility
-                                sx={{
-                                  color: '#b0b0b0',
-                                  width: '20px',
-                                  height: '20px',
-                                }}
-                              />
-                            ) : (
-                              <VisibilityOff
-                                sx={{
-                                  color: '#b0b0b0',
-                                  width: '20px',
-                                  height: '20px',
-                                }}
-                              />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <ErrorMessage
-                    name="new_password1"
-                    component="div"
-                    className="error-input-field"
-                  />
-                </div>
-                <div className={styles.dialogFormGroup}>
-                  <Typography
-                    variant="body2"
-                    component="label"
-                    htmlFor="new_password2"
-                    sx={{
-                      display: 'block',
-                      fontSize: '14px',
-                      color:
-                        errors.new_password2 && touched.new_password2
-                          ? '#ff4d4d'
-                          : '#676972',
-                      fontWeight: 500,
-                    }}
-                  >
-                    Repeat New Password*
-                  </Typography>
-                  <Field
-                    as={TextField}
-                    fullWidth
-                    type={repeatNewPassword ? 'text' : 'password'}
-                    id="new_password2"
-                    name="new_password2"
-                    placeholder="Repeat your password"
-                    error={Boolean(
-                      errors.new_password2 && touched.new_password2
-                    )}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      handleChange(e);
-                      handleInputChange({
-                        ...values,
-                        new_password2: e.target.value,
-                      });
-                    }}
-                    sx={{
-                      marginTop: '4px',
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        borderWidth: '0px',
-                        color: '#DADAE1',
-                        backgroundColor: '#252431',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          top: '-10px !important',
-                        },
-                        '& .MuiOutlinedInput-input': {
-                          fontSize: '14px',
-                          color: '#DADAE1',
-                          padding: '12px',
-                          fontWeight: 500,
+                            : '#676972',
+                        fontWeight: 500,
+                      }}
+                    >
+                      New Password*
+                    </Typography>
+                    <Field
+                      as={TextField}
+                      fullWidth
+                      type={newPassword ? 'text' : 'password'}
+                      id="new_password1"
+                      name="new_password1"
+                      placeholder="Choose a strong Password"
+                      error={Boolean(
+                        errors.new_password1 && touched.new_password1
+                      )}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleChange(e);
+                        handleInputChange({
+                          ...values,
+                          new_password1: e.target.value,
+                        });
+                      }}
+                      sx={{
+                        marginTop: '4px',
+                        '& .MuiOutlinedInput-root': {
                           borderRadius: '12px',
-                          '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
+                          borderWidth: '0px',
+                          color: '#DADAE1',
+                          backgroundColor: '#252431',
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            top: '-10px !important',
+                          },
+                          '& .MuiOutlinedInput-input': {
+                            fontSize: '14px',
+                            color: '#DADAE1',
+                            padding: '12px',
+                            fontWeight: 500,
+                            borderRadius: '12px',
+                            '&::placeholder': {
+                              color: '#888',
+                              fontWeight: 400,
+                            },
+                          },
+                          '& fieldset': {
+                            borderColor: '#3A3948',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#fff',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#fff',
+                            borderWidth: '1px',
+                            color: '#fff',
                           },
                         },
-                        '& fieldset': {
-                          borderColor: '#3A3948',
+                        '& .MuiFormHelperText-root': {
+                          color:
+                            errors.new_password1 && touched.new_password1
+                              ? '#ff4d4d'
+                              : '#b0b0b0',
                         },
-                        '&:hover fieldset': {
-                          borderColor: '#fff',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
-                          borderWidth: '1px',
-                          color: '#fff',
-                        },
-                      },
-                      '& .MuiFormHelperText-root': {
+                      }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => setNewPassword((prev) => !prev)}
+                              edge="end"
+                              sx={{
+                                padding: '0',
+                                width: '20px',
+                                margin: '0',
+                              }}
+                            >
+                              {newPassword ? (
+                                <Visibility
+                                  sx={{
+                                    color: '#b0b0b0',
+                                    width: '20px',
+                                    height: '20px',
+                                  }}
+                                />
+                              ) : (
+                                <VisibilityOff
+                                  sx={{
+                                    color: '#b0b0b0',
+                                    width: '20px',
+                                    height: '20px',
+                                  }}
+                                />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <ErrorMessage
+                      name="new_password1"
+                      component="div"
+                      className="error-input-field"
+                    />
+                  </div>
+                  <div className={styles.dialogFormGroup}>
+                    <Typography
+                      variant="body2"
+                      component="label"
+                      htmlFor="new_password2"
+                      sx={{
+                        display: 'block',
+                        fontSize: '14px',
                         color:
                           errors.new_password2 && touched.new_password2
                             ? '#ff4d4d'
-                            : '#b0b0b0',
-                      },
-                    }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() =>
-                              setRepeatNewPassword((prev) => !prev)
-                            }
-                            edge="end"
-                            sx={{
-                              padding: '0',
-                              width: '20px',
-                              margin: '0',
-                            }}
-                          >
-                            {repeatNewPassword ? (
-                              <Visibility
-                                sx={{
-                                  color: '#b0b0b0',
-                                  width: '20px',
-                                  height: '20px',
-                                }}
-                              />
-                            ) : (
-                              <VisibilityOff
-                                sx={{
-                                  color: '#b0b0b0',
-                                  width: '20px',
-                                  height: '20px',
-                                }}
-                              />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <ErrorMessage
-                    name="new_password2"
-                    component="div"
-                    className="error-input-field"
-                  />
+                            : '#676972',
+                        fontWeight: 500,
+                      }}
+                    >
+                      Repeat New Password*
+                    </Typography>
+                    <Field
+                      as={TextField}
+                      fullWidth
+                      type={repeatNewPassword ? 'text' : 'password'}
+                      id="new_password2"
+                      name="new_password2"
+                      placeholder="Repeat your password"
+                      error={Boolean(
+                        errors.new_password2 && touched.new_password2
+                      )}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleChange(e);
+                        handleInputChange({
+                          ...values,
+                          new_password2: e.target.value,
+                        });
+                      }}
+                      sx={{
+                        marginTop: '4px',
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '12px',
+                          borderWidth: '0px',
+                          color: '#DADAE1',
+                          backgroundColor: '#252431',
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            top: '-10px !important',
+                          },
+                          '& .MuiOutlinedInput-input': {
+                            fontSize: '14px',
+                            color: '#DADAE1',
+                            padding: '12px',
+                            fontWeight: 500,
+                            borderRadius: '12px',
+                            '&::placeholder': {
+                              color: '#888',
+                              fontWeight: 400,
+                            },
+                          },
+                          '& fieldset': {
+                            borderColor: '#3A3948',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#fff',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#fff',
+                            borderWidth: '1px',
+                            color: '#fff',
+                          },
+                        },
+                        '& .MuiFormHelperText-root': {
+                          color:
+                            errors.new_password2 && touched.new_password2
+                              ? '#ff4d4d'
+                              : '#b0b0b0',
+                        },
+                      }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() =>
+                                setRepeatNewPassword((prev) => !prev)
+                              }
+                              edge="end"
+                              sx={{
+                                padding: '0',
+                                width: '20px',
+                                margin: '0',
+                              }}
+                            >
+                              {repeatNewPassword ? (
+                                <Visibility
+                                  sx={{
+                                    color: '#b0b0b0',
+                                    width: '20px',
+                                    height: '20px',
+                                  }}
+                                />
+                              ) : (
+                                <VisibilityOff
+                                  sx={{
+                                    color: '#b0b0b0',
+                                    width: '20px',
+                                    height: '20px',
+                                  }}
+                                />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <ErrorMessage
+                      name="new_password2"
+                      component="div"
+                      className="error-input-field"
+                    />
+                  </div>
                 </div>
-              </div>
-            </Box>
-            {isFieldFilled && (
-              <Box component="div" className={styles.dialogFormButtonBox}>
-                <Button
-                  className={styles.formSaveBtn}
-                  type="submit"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <CircularProgress size={16} color="inherit" />
-                  ) : (
-                    'Update Password'
-                  )}
-                </Button>
               </Box>
-            )}
-          </Form>
-        )}
-      </Formik>
+              {isFieldFilled && (
+                <Box component="div" className={styles.dialogFormButtonBox}>
+                  <Button
+                    className={styles.formSaveBtn}
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <CircularProgress size={16} color="inherit" />
+                    ) : (
+                      'Update Password'
+                    )}
+                  </Button>
+                </Box>
+              )}
+            </Form>
+          )}
+        </Formik>
+      </div>
     </>
   );
 };

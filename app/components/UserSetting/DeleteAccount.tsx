@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import styles from '../SettingDialog/setting.module.scss';
+import styles from '@components/SettingDialog/setting.module.scss';
 import { Field, Form, Formik } from 'formik';
 import { setLoader } from '@/app/redux/slices/loader';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
@@ -178,208 +178,213 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
 
   return (
     <>
-      {!showNextSlide ? (
-        <form className={styles.dialogFormBox}>
-          <Box component="div" className={styles.dialogFormContent}>
-            <Box>
-              <Typography className={styles.accountDeletTitle}>
-                Delete Your Account
-              </Typography>
-              <Typography variant="body1" className={styles.accountFormDetails}>
-                This action will delete all your files, chats and information
-                from Exfiles servers. This action can not be Undone. If you want
-                to continue please type “DELETE” in the text box below.
-              </Typography>
-            </Box>
-            <div className={styles.dialogFormInner}>
-              <div
-                className={`${styles.dialogFormGroup} ${styles.dialogFormFull}`}
-              >
-                <TextField
-                  fullWidth
-                  type="text"
-                  id="first_name"
-                  name="first_name"
-                  placeholder=""
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  sx={{
-                    marginTop: '0px',
-                    padding: '0',
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '12px',
-                      borderWidth: '0px',
-                      color: '#DADAE1',
-                      backgroundColor: '#252431',
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        top: '-10px !important',
-                      },
-                      '& .MuiOutlinedInput-input': {
-                        fontSize: '14px',
-                        color: '#DADAE1',
-                        padding: '14px 16px',
-                        fontWeight: 500,
+      <div className={styles.headerDialogBox}>
+        {!showNextSlide ? (
+          <form className={styles.dialogFormBox}>
+            <Box component="div" className={styles.dialogFormContent}>
+              <Box>
+                <Typography className={styles.accountDeletTitle}>
+                  Delete Your Account
+                </Typography>
+                <Typography
+                  variant="body1"
+                  className={styles.accountFormDetails}
+                >
+                  This action will delete all your files, chats and information
+                  from Exfiles servers. This action can not be Undone. If you
+                  want to continue please type “DELETE” in the text box below.
+                </Typography>
+              </Box>
+              <div className={styles.dialogFormInner}>
+                <div
+                  className={`${styles.dialogFormGroup} ${styles.dialogFormFull}`}
+                >
+                  <TextField
+                    fullWidth
+                    type="text"
+                    id="first_name"
+                    name="first_name"
+                    placeholder=""
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    sx={{
+                      marginTop: '0px',
+                      padding: '0',
+                      '& .MuiOutlinedInput-root': {
                         borderRadius: '12px',
-                        '&::placeholder': {
-                          color: '#888',
-                          fontWeight: 400,
+                        borderWidth: '0px',
+                        color: '#DADAE1',
+                        backgroundColor: '#252431',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          top: '-10px !important',
+                        },
+                        '& .MuiOutlinedInput-input': {
+                          fontSize: '14px',
+                          color: '#DADAE1',
+                          padding: '14px 16px',
+                          fontWeight: 500,
+                          borderRadius: '12px',
+                          '&::placeholder': {
+                            color: '#888',
+                            fontWeight: 400,
+                          },
+                        },
+                        '& fieldset': {
+                          borderColor: '#3A3948',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: '#fff',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#fff',
+                          borderWidth: '1px',
+                          color: '#fff',
                         },
                       },
-                      '& fieldset': {
-                        borderColor: '#3A3948',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#fff',
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#fff',
-                        borderWidth: '1px',
-                        color: '#fff',
-                      },
-                    },
-                  }}
-                />
-              </div>
-            </div>
-          </Box>
-          {inputValue === 'DELETE' && (
-            <Box component="div" className={styles.dialogFormButtonBox}>
-              <Button
-                onClick={handleContinueClick}
-                className={styles.formSaveBtn}
-                disabled={loadingContinue}
-              >
-                {loadingContinue ? (
-                  <CircularProgress size={16} color="inherit" />
-                ) : (
-                  'Continue'
-                )}
-              </Button>
-            </Box>
-          )}
-        </form>
-      ) : (
-        <Formik
-          initialValues={{
-            otp: ['', '', '', ''],
-          }}
-          enableReinitialize={true}
-          onSubmit={deleteAccountClick}
-        >
-          {({ handleSubmit }) => {
-            return (
-              <Form onSubmit={handleSubmit} className={styles.dialogFormBox}>
-                <Box component="div" className={styles.dialogFormContent}>
-                  <Box>
-                    <Typography className={styles.accountDeletTitle}>
-                      Delete Your Account
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      className={styles.accountFormDetails}
-                    >
-                      We have sent you an OTP on your registered mobile number.
-                      Please enter OTP below to continue.
-                    </Typography>
-                  </Box>
-                  <div
-                    className={`${styles.dialogFormInner} ${styles.dialogFormOpt}`}
-                  >
-                    {otp.map((digit, index) => (
-                      <Field
-                        as={TextField}
-                        key={index}
-                        variant="outlined"
-                        type="text"
-                        value={digit}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          handleChange(index, e)
-                        }
-                        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
-                          handleKeyDown(index, e)
-                        }
-                        inputRef={(el: HTMLInputElement | null) =>
-                          (inputRefs.current[index] = el)
-                        }
-                        sx={{
-                          height: '48px',
-                          width: '48px',
-                          textAlign: 'center',
-                          fontSize: '20px',
-                          '& .MuiOutlinedInput-root': {
-                            backgroundColor: 'transparent',
-                            color: '#ffffff',
-                            borderRadius: '8px',
-                            textAlign: 'center',
-                            '& fieldset': { borderColor: '#3A3948' },
-                            '&:hover fieldset': {
-                              borderColor: '#ffffff',
-                            },
-                            '&.Mui-focused fieldset': {
-                              borderColor: '#fff',
-                              borderWidth: '2px',
-                            },
-                          },
-                        }}
-                        inputProps={{
-                          maxLength: 1,
-                          style: { textAlign: 'center' },
-                          onPaste: handlePaste,
-                        }}
-                      />
-                    ))}
-                  </div>
-                  <Link
-                    href="#"
-                    className="link-primary"
-                    onClick={resendOtp}
-                    style={{
-                      cursor: 'pointer',
-                      color: isResendDisabled ? '#888' : '#007bff',
-                      pointerEvents: isResendDisabled ? 'none' : 'auto',
-                      textDecoration: 'underline',
-                      marginTop: '32px',
-                      display: 'inline-block',
                     }}
-                  >
-                    {isResendDisabled
-                      ? `Resend OTP? (00:${timer < 10 ? `0${timer}` : timer})`
-                      : 'Resend OTP'}
-                  </Link>
-                </Box>
-                <Box
-                  component="div"
-                  className={`${styles.dialogFormButtonBox} ${styles.dialogDeletButtonBox}`}
+                  />
+                </div>
+              </div>
+            </Box>
+            {inputValue === 'DELETE' && (
+              <Box component="div" className={styles.dialogFormButtonBox}>
+                <Button
+                  onClick={handleContinueClick}
+                  className={styles.formSaveBtn}
+                  disabled={loadingContinue}
                 >
-                  <Button
-                    className={styles.formBackBtn}
-                    onClick={handleBackClick}
+                  {loadingContinue ? (
+                    <CircularProgress size={16} color="inherit" />
+                  ) : (
+                    'Continue'
+                  )}
+                </Button>
+              </Box>
+            )}
+          </form>
+        ) : (
+          <Formik
+            initialValues={{
+              otp: ['', '', '', ''],
+            }}
+            enableReinitialize={true}
+            onSubmit={deleteAccountClick}
+          >
+            {({ handleSubmit }) => {
+              return (
+                <Form onSubmit={handleSubmit} className={styles.dialogFormBox}>
+                  <Box component="div" className={styles.dialogFormContent}>
+                    <Box>
+                      <Typography className={styles.accountDeletTitle}>
+                        Delete Your Account
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        className={styles.accountFormDetails}
+                      >
+                        We have sent you an OTP on your registered mobile
+                        number. Please enter OTP below to continue.
+                      </Typography>
+                    </Box>
+                    <div
+                      className={`${styles.dialogFormInner} ${styles.dialogFormOpt}`}
+                    >
+                      {otp.map((digit, index) => (
+                        <Field
+                          as={TextField}
+                          key={index}
+                          variant="outlined"
+                          type="text"
+                          value={digit}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            handleChange(index, e)
+                          }
+                          onKeyDown={(
+                            e: React.KeyboardEvent<HTMLInputElement>
+                          ) => handleKeyDown(index, e)}
+                          inputRef={(el: HTMLInputElement | null) =>
+                            (inputRefs.current[index] = el)
+                          }
+                          sx={{
+                            height: '48px',
+                            width: '48px',
+                            textAlign: 'center',
+                            fontSize: '20px',
+                            '& .MuiOutlinedInput-root': {
+                              backgroundColor: 'transparent',
+                              color: '#ffffff',
+                              borderRadius: '8px',
+                              textAlign: 'center',
+                              '& fieldset': { borderColor: '#3A3948' },
+                              '&:hover fieldset': {
+                                borderColor: '#ffffff',
+                              },
+                              '&.Mui-focused fieldset': {
+                                borderColor: '#fff',
+                                borderWidth: '2px',
+                              },
+                            },
+                          }}
+                          inputProps={{
+                            maxLength: 1,
+                            style: { textAlign: 'center' },
+                            onPaste: handlePaste,
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <Link
+                      href="#"
+                      className="link-primary"
+                      onClick={resendOtp}
+                      style={{
+                        cursor: 'pointer',
+                        color: isResendDisabled ? '#888' : '#007bff',
+                        pointerEvents: isResendDisabled ? 'none' : 'auto',
+                        textDecoration: 'underline',
+                        marginTop: '32px',
+                        display: 'inline-block',
+                      }}
+                    >
+                      {isResendDisabled
+                        ? `Resend OTP? (00:${timer < 10 ? `0${timer}` : timer})`
+                        : 'Resend OTP'}
+                    </Link>
+                  </Box>
+                  <Box
+                    component="div"
+                    className={`${styles.dialogFormButtonBox} ${styles.dialogDeletButtonBox}`}
                   >
-                    <Image
-                      src="/images/arrow-left.svg"
-                      alt="left arrow"
-                      width={16}
-                      height={16}
-                    />{' '}
-                    Back
-                  </Button>
-                  <Button
-                    className={`${styles.formSaveBtn} ${styles.formDeletBtn}`}
-                    disabled={loading}
-                    type="submit"
-                  >
-                    {loading ? (
-                      <CircularProgress size={16} color="inherit" />
-                    ) : (
-                      'Delete Account'
-                    )}
-                  </Button>
-                </Box>
-              </Form>
-            );
-          }}
-        </Formik>
-      )}
+                    <Button
+                      className={styles.formBackBtn}
+                      onClick={handleBackClick}
+                    >
+                      <Image
+                        src="/images/arrow-left.svg"
+                        alt="left arrow"
+                        width={16}
+                        height={16}
+                      />{' '}
+                      Back
+                    </Button>
+                    <Button
+                      className={`${styles.formSaveBtn} ${styles.formDeletBtn}`}
+                      disabled={loading}
+                      type="submit"
+                    >
+                      {loading ? (
+                        <CircularProgress size={16} color="inherit" />
+                      ) : (
+                        'Delete Account'
+                      )}
+                    </Button>
+                  </Box>
+                </Form>
+              );
+            }}
+          </Formik>
+        )}
+      </div>
     </>
   );
 };

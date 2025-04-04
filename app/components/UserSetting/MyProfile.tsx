@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import styles from '../SettingDialog/setting.module.scss';
+import styles from '@components/SettingDialog/setting.module.scss';
 import {
   MenuItem,
   Avatar,
@@ -84,7 +84,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
   };
 
   return (
-    <>
+    <div className={styles.headerDialogBox}>
       <Formik
         initialValues={initialValues}
         enableReinitialize={true}
@@ -447,7 +447,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
           </Form>
         )}
       </Formik>
-    </>
+    </div>
   );
 };
 
