@@ -1,4 +1,4 @@
-import DocUploadStyles from '@components/AI-Chat/Modals/DocumentUploadModal.module.scss';
+import DocUploadStyles from '@components/AI-Chat/styles/DocumentUploadModal.module.scss';
 import React, { ChangeEvent, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
@@ -16,7 +16,7 @@ import {
   ALLOWED_FILE_TYPES,
   FILE_UPLOAD_CHUNK_SIZE,
 } from '@/app/utils/constants';
-import UploadFileItem from '@components/AI-Chat/FileUpload/UploadFileItem';
+import UploadFileItem from '@/app/components/AI-Chat/components/FileUpload/UploadFileItem';
 import { computeChecksum } from '@/app/utils/functions';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';

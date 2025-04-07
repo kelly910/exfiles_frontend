@@ -12,7 +12,11 @@ import { fetchThreadMessagesByThreadId } from '@/app/redux/slices/Chat';
 import { useAppDispatch } from '@/app/redux/hooks';
 
 const DynamicChatHomeScreen = dynamic(
-  () => import('@components/AI-Chat/ChatHomeScreen')
+  () => import('@/app/components/AI-Chat/screens/ChatHomeScreen')
+);
+const DynamicChatMessagesComponent = dynamic(
+  () =>
+    import('@/app/components/AI-Chat/components/Messages/ChatMessagesComponent')
 );
 
 export default function AIChatComponent({ threadId }: { threadId: string }) {
@@ -64,7 +68,7 @@ export default function AIChatComponent({ threadId }: { threadId: string }) {
             {!threadId ? (
               <DynamicChatHomeScreen />
             ) : (
-              <ChatWindows threadId={threadId} />
+              <DynamicChatMessagesComponent threadId={threadId} />
             )}
           </Container>
         </section>

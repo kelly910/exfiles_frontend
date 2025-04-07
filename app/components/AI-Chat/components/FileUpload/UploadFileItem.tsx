@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import debounce from 'lodash.debounce';
 
-import DocUploadStyles from '@components/AI-Chat/Modals/DocumentUploadModal.module.scss';
+import DocUploadStyles from '@components/AI-Chat/styles/DocumentUploadModal.module.scss';
 import { Box, LinearProgress, TextField, Typography } from '@mui/material';
 import { ChangeEvent, useCallback } from 'react';
 import { formatFileSizeLabel } from '@/app/utils/functions';

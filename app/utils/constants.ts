@@ -19,3 +19,10 @@ export const convertDateFormat = (date: string): string => {
   const [day, month, year] = date.split('-');
   return `${month}-${day}-${year}`;
 };
+
+// Uploaded document Status
+export const DOCUMENT_STATUS = {
+  PENDING: 'pending',
+  SUCCESS: 'success',
+  FAILED: 'failed',
+};

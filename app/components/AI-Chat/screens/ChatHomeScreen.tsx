@@ -3,12 +3,13 @@ import dynamic from 'next/dynamic';
 
 import { Box, Button, Grid, Typography } from '@mui/material';
 
-import AIChatStyles from '@components/AI-Chat/AIChatStyle.module.scss';
-import UserChatInput from './UserChatInput';
+import AIChatStyles from '@components/AI-Chat/styles/AIChatStyle.module.scss';
+import UserChatInput from '@components/AI-Chat/components/Input/UserChatInput';
 
 // Dynamic Custom Component imports
 const DynamicDocUploadModal = dynamic(
-  () => import('@components/AI-Chat/Modals/DocumentUploadDialog')
+  () =>
+    import('@/app/components/AI-Chat/components/Modals/DocumentUploadDialog')
 );
 
 export default function ChatHomeScreen() {

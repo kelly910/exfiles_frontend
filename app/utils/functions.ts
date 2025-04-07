@@ -1,3 +1,5 @@
+import { documentType } from './constants';
+
 export async function computeChecksum(blob: Blob) {
   // Convert Blob to ArrayBuffer
   const buffer = await blob.arrayBuffer();
@@ -22,4 +24,22 @@ export const formatFileSizeLabel = (size: number): string => {
   } else {
     return size + ' Bytes';
   }
+};
+
+export const formatTo12HourTimeManually = (dateString: string): string => {
+  const date = new Date(dateString);
+  let hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+
+  return `${hours < 10 ? '0' + hours : hours}:${minutesStr} ${ampm}`;
+};
+
+export const getDocumentImage = (fileType: string) => {
+  const docType = documentType.find((doc) => doc.type.includes(fileType));
+  return docType ? docType.image : '/images/pdf.svg';
 };
