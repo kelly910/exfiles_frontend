@@ -25,7 +25,7 @@ import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch } from '@/app/redux/hooks';
 import TemporaryDrawer from '../Drawer/Drawer';
 
-export default function PageHeader() {
+export default function PageHeader({ threadId }: { threadId: string }) {
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);

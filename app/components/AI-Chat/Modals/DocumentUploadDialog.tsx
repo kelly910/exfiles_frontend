@@ -22,6 +22,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { useRouter } from 'next/navigation';
 
 interface DocumentUploadModalProps {
   open: boolean;
@@ -51,6 +52,8 @@ export default function DocumentUploadDialog({
   handleClose,
 }: DocumentUploadModalProps) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [uploadFiles, setUploadFiles] = useState<Array<UploadFiles> | []>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -268,6 +271,7 @@ export default function DocumentUploadDialog({
         resultData.payload?.messages[0] || 'Document uploaded successfully.'
       );
       // Need to redirect user to that Thread page
+      router.push(`/ai-chats/${threadUUID}`); // Navigate to thread page
 
       handleClose();
       return;

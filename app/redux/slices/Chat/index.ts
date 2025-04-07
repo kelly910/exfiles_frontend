@@ -3,6 +3,8 @@ import api from '@/app/utils/axiosConfig';
 import urlMapper from '@/app/utils/apiEndPoints/urlMapper';
 
 import {
+  GetMessagesByThreadIdPayload,
+  GetMessagesByThreadIdResponse,
   ThreadCreationPayload,
   ThreadCreationResponse,
   UploadDocsPayload,
@@ -54,6 +56,29 @@ export const uploadActualDocs = createAsyncThunk<
     return rejectWithValue('Something went wrong. Please try again.');
   }
 });
+
+/* ------------ Chat Messages Actions Start ------------------ */
+export const fetchThreadMessagesByThreadId = createAsyncThunk<
+  GetMessagesByThreadIdResponse,
+  GetMessagesByThreadIdPayload,
+  { rejectValue: string }
+>(
+  'chat/fetchThreadMessagesByThreadId',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await api.get<GetMessagesByThreadIdResponse>(
+        `${urlMapper.chatMessage}${payload.thread_uuid}/`
+      );
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        (error as { response?: { data?: { messages?: string[] } } })?.response
+          ?.data?.messages?.[0] || 'Something went wrong. Please try again.';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+/* ------------ Chat Messages Actions End ------------------ */
 
 const chatSlice = createSlice({
   name: 'chat',

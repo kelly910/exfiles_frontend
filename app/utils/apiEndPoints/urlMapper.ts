@@ -20,6 +20,7 @@ const urlMapper = {
   // Chat Module
   thread: `${BASE_URL}thread/`,
   uploadActualDoc: `${BASE_URL}upload-actual-document/`,
+  chatMessage: `${BASE_URL}chat-message/`,
 };
 
 export default urlMapper;
