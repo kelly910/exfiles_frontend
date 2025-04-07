@@ -5,12 +5,15 @@ import {
   Grid,
   Input,
   InputAdornment,
+  Menu,
+  MenuItem,
   Typography,
 } from '@mui/material';
 import styles from './style.module.scss';
 import Image from 'next/image';
 import Header from '@components/Header/Header';
 import Sidebar from '@components/Sidebar/Sidebar';
+import React from 'react';
 
 export default function Page() {
   return (
@@ -286,6 +289,18 @@ function DocCard() {
 }
 
 function DocFolder() {
+  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   return (
     <Box component="div" className={`${styles.docsFolder} ${styles.active}`}>
       <div className={styles.folderBox}>
@@ -304,13 +319,44 @@ function DocFolder() {
             No. of Docs : <span>18</span>
           </Typography>
         </div>
-        <Image
+        {/* <Image
           src="/images/arrow-right.svg"
           alt="folder"
           width={16}
           height={16}
           className={styles.arrowRightImg}
-        />
+        /> */}
+        <Button onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          <Image
+            src="/images/arrow-right.svg"
+            alt="folder"
+            width={16}
+            height={16}
+            className={styles.arrowRightImg}
+          />
+        </Button>
+        <Menu
+          sx={{ mt: '45px' }}
+          id="menu-appbar"
+          anchorEl={anchorElUser}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={Boolean(anchorElUser)}
+          onClose={handleCloseUserMenu}
+        >
+          {settings.map((setting) => (
+            <MenuItem key={setting} onClick={handleCloseUserMenu}>
+              <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+            </MenuItem>
+          ))}
+        </Menu>
       </div>
     </Box>
   );

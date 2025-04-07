@@ -28,7 +28,6 @@
         letter-spacing: 0%;
         color: var(--Txt-On-Gradient);
       }
-
       .dialogSemiTitle {
         font-weight: var(--Regular);
         font-size: var(--SubTitle-3);
@@ -41,19 +40,9 @@
 
   .dialogBody {
     padding: 0;
-
-    .dialogFormBox {
-      padding: 24px;
-      padding-bottom: 0;
-
-      .dialogFormBox {
-        background-color: var(--Input-Box-Colors);
-
-        .dialogTextArea {
-          width: 100%;
-        }
-      }
-    }
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
 
     .dialogFormButtonBox {
       width: 100%;
@@ -61,7 +50,7 @@
       justify-content: flex-end;
       align-items: center;
       gap: 32px;
-      padding: 24px;
+      padding: 16px;
 
       .formCancelBtn {
         text-transform: capitalize;
@@ -85,15 +74,14 @@
         line-height: 10px;
         letter-spacing: 0px;
         min-width: 140px;
-        background: var(--Main-Gradient);
+        background: #e72240;
         color: var(--Txt-On-Gradient);
         border-radius: 12px;
         padding: 15px 24px;
         transition: all 0.2s;
 
         &:hover {
-          background: var(--Main-Gradient-hover);
-          background-blend-mode: overlay;
+          opacity: 0.9;
         }
       }
     }

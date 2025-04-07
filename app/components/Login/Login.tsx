@@ -220,7 +220,14 @@ const Page = () => {
                         >
                           Password
                         </Typography>
-                        <div style={{ marginBottom: '32px' }}>
+                        <Box
+                          sx={{
+                            marginBottom: '32px', // Default (above 550px)
+                            '@media (max-width:550px)': {
+                              marginBottom: '24px', // When screen is 550px or smaller
+                            },
+                          }}
+                        >
                           <Field
                             as={TextField}
                             fullWidth
@@ -295,7 +302,7 @@ const Page = () => {
                             component="div"
                             className="error-input-field"
                           />
-                        </div>
+                        </Box>
 
                         <Box
                           className={styles.btnGroup}

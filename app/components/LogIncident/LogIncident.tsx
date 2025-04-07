@@ -11,6 +11,7 @@ import {
   Menu,
   MenuItem,
   Pagination,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 import Image from 'next/image';
@@ -179,7 +180,7 @@ export default function LogIncident() {
                 width={18}
                 height={18}
               />
-              Delete
+              <Typography>Delete</Typography>
             </MenuItem>
           </Menu>
         </>

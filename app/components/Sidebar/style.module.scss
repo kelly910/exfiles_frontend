@@ -122,7 +122,7 @@
       line-height: normal;
       transition: 0.2s ease-in-out;
       &:hover {
-        background-color: var(--Main-Gradient);
+        background: var(--Main-Gradient-hover);
       }
       span {
         vertical-align: middle;
