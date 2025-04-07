@@ -79,12 +79,15 @@
       background-color: #2c2a38;
     }
 
+    img {
+      flex: 0 0 auto;
+    }
+
     p {
-      font-weight: 500;
-      font-size: 13px;
-      line-height: 140%;
-      letter-spacing: -2%;
-      color: #dadae1;
+      font-weight: var(--Medium);
+      font-size: var(--SubTitle-2);
+      line-height: 1.4;
+      color: #e72240;
       width: 100%;
     }
   }

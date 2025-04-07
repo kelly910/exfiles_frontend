@@ -253,6 +253,11 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                       },
                     }}
                   />
+                  <ErrorMessage
+                    name="last_name"
+                    component="div"
+                    className="error-input-field"
+                  />
                 </div>
                 <div className={styles.dialogFormGroup}>
                   <Typography
@@ -397,6 +402,9 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                             value={countryCode}
                             className={styles.selectNew}
                             onChange={(e) => setCountryCode(e.target.value)}
+                            MenuProps={{
+                              disableScrollLock: true,
+                            }}
                             sx={{
                               padding: '0px',
                               color: '#b0b0b0',

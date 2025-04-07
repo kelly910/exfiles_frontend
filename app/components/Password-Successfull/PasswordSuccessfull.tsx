@@ -39,12 +39,8 @@ const Page = () => {
 
             <Box component="section">
               <div className={styles.formCard}>
-                <Box
-                  component="form"
-                  className={styles.authForm}
-                  sx={{ textAlign: 'center' }}
-                >
-                  <div>
+                <Box component="form" className={styles.formHeader}>
+                  <div className={styles.formHeaderImage}>
                     <Image
                       src="/images/success.svg"
                       height={148}
@@ -52,18 +48,10 @@ const Page = () => {
                       alt="logo"
                     />
                   </div>
-                  <Typography
-                    variant="h1"
-                    component="h1"
-                    sx={{ textAlign: 'center', fotntSize: '28px' }}
-                  >
+                  <Typography variant="h2" className={styles.formTitle}>
                     Password updated successfully.
                   </Typography>
-                  <Typography
-                    variant="body1"
-                    component="p"
-                    className={styles.formSubtitle}
-                  >
+                  <Typography variant="body1" className={styles.formSubtitle}>
                     Password for your account has been updated successfully.
                     Please Login to continue using ExFiles
                   </Typography>

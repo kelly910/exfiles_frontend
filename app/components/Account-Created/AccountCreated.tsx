@@ -41,10 +41,10 @@ const Page = () => {
               <div className={styles.formCard}>
                 <Box
                   component="form"
-                  className={styles.authForm}
+                  className={styles.formHeader}
                   sx={{ textAlign: 'center' }}
                 >
-                  <div>
+                  <div className={styles.formHeaderImage}>
                     <Image
                       src="/images/created.svg"
                       height={148}
@@ -53,9 +53,9 @@ const Page = () => {
                     />
                   </div>
                   <Typography
-                    variant="h1"
-                    component="h1"
+                    variant="h2"
                     sx={{ textAlign: 'center', fotntSize: '28px' }}
+                    className={styles.formTitle}
                   >
                     Account created successfully.
                   </Typography>

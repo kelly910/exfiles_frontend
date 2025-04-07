@@ -37,7 +37,7 @@ export default function ChatHomeScreen() {
         <Box className={AIChatStyles.gridBox} component="div">
           <Grid
             container
-            spacing={4}
+            spacing={{ xs: 2, md: 4 }}
             justifyContent="center"
             alignItems="stretch"
           >

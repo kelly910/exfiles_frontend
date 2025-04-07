@@ -249,6 +249,9 @@ const Page = () => {
                             id="last_name"
                             name="last_name"
                             placeholder="Enter Last Name here"
+                            error={Boolean(
+                              errors.last_name && touched.last_name
+                            )}
                             sx={{
                               marginTop: '5px',
                               '& .MuiOutlinedInput-root': {
@@ -283,9 +286,17 @@ const Page = () => {
                                 },
                               },
                               '& .MuiFormHelperText-root': {
-                                color: '#b0b0b0',
+                                color:
+                                  errors.last_name && touched.last_name
+                                    ? '#ff4d4d'
+                                    : '#b0b0b0',
                               },
                             }}
+                          />
+                          <ErrorMessage
+                            name="last_name"
+                            component="div"
+                            className="error-input-field"
                           />
                         </div>
 
@@ -453,6 +464,9 @@ const Page = () => {
                                     onChange={(e) =>
                                       setCountryCode(e.target.value)
                                     }
+                                    MenuProps={{
+                                      disableScrollLock: true,
+                                    }}
                                     sx={{
                                       padding: '0px',
                                       color: '#b0b0b0',
@@ -593,7 +607,14 @@ const Page = () => {
                         >
                           Confirm Password
                         </Typography>
-                        <div style={{ marginBottom: '32px' }}>
+                        <Box
+                          sx={{
+                            marginBottom: '32px', // Default (above 550px)
+                            '@media (max-width:550px)': {
+                              marginBottom: '24px', // When screen is 550px or smaller
+                            },
+                          }}
+                        >
                           <Field
                             as={TextField}
                             fullWidth
@@ -672,7 +693,7 @@ const Page = () => {
                             component="div"
                             className="error-input-field"
                           />
-                        </div>
+                        </Box>
 
                         <Box
                           className={styles.btnGroup}

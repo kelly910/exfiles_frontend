@@ -1,10 +1,14 @@
 'use client';
 
+import React from 'react';
 import {
   Box,
   Grid,
+  IconButton,
   Input,
   InputAdornment,
+  Menu,
+  MenuItem,
   Pagination,
   Typography,
 } from '@mui/material';
@@ -18,6 +22,7 @@ import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
 import { setLoader } from '@/app/redux/slices/loader';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import DeleteDialog from '../LogoutDialog/DeleteDialog';
 
 type Tag = {
   id: number;
@@ -37,11 +42,13 @@ type Document = {
 type DocumentListProps = {
   catId: number | null;
   handleOpenDocumentSummary: (docId: number) => void;
+  selectedDoc: number | null;
 };
 
 const DocumentList: React.FC<DocumentListProps> = ({
   catId,
   handleOpenDocumentSummary,
+  selectedDoc,
 }) => {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useState('');
@@ -49,6 +56,8 @@ const DocumentList: React.FC<DocumentListProps> = ({
     (state: RootState) => state.documentListing
   );
   const [page, setPage] = useState(1);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [deleletDocId, setDeleletDocId] = useState<number | null>(null);
 
   useEffect(() => {
     if (catId) {
@@ -120,9 +129,48 @@ const DocumentList: React.FC<DocumentListProps> = ({
     ).unwrap();
   };
 
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleDeleteOption = (documentId: number) => {
+    setDeleletDocId(documentId);
+    handleCloseUserMenu();
+    setOpenDeleteDialog(true);
+  };
+
   return (
     <>
       <div className={styles.docsListing}>
+        {/* <Box component="div" className={styles.categoryBox}>
+          <Box className={styles.categoryBoxInner}>
+            <Button
+              // onClick={handleCloseDrawer}
+              className={styles.backButton}
+              sx={{ marginBottom: '24px' }}
+            >
+              <Image
+                src="/images/arrow-left.svg"
+                alt="user"
+                width={16}
+                height={16}
+              />
+            </Button>
+            <Typography variant="body1" className={styles.categoriesTitle}>
+              Categories
+            </Typography>
+          </Box>
+          <Typography variant="body1" className={styles.categoriesSemiTitle}>
+            No. of Docs : <span>112</span>
+          </Typography>
+        </Box> */}
         <Box component="div" className={styles.searchBoard}>
           <Box component="div" className={styles.docBoard}>
             <Input
@@ -158,9 +206,10 @@ const DocumentList: React.FC<DocumentListProps> = ({
                   lg={4}
                   key={doc?.id}
                   className={styles.docBoxInner}
-                  onClick={() => handleOpenDocumentSummary(doc?.id)}
                 >
-                  <div className={styles.docGridBox}>
+                  <div
+                    className={`${styles.docGridBox} ${selectedDoc === doc?.id ? styles.active : ''}`}
+                  >
                     <div className={styles.docBox}>
                       <Image
                         src={getDocumentImage(doc?.file_type)}
@@ -168,18 +217,61 @@ const DocumentList: React.FC<DocumentListProps> = ({
                         width={19}
                         height={24}
                         className={styles.pdfImg}
+                        onClick={() => handleOpenDocumentSummary(doc?.id)}
                       />
-                      <Typography variant="body1" className={styles.docTitle}>
+                      <Typography
+                        variant="body1"
+                        className={styles.docTitle}
+                        onClick={() => handleOpenDocumentSummary(doc?.id)}
+                      >
                         {doc?.file_name}
-                        {/* <span>general log memory usage</span> */}
                       </Typography>
-                      <Image
-                        src="/images/more.svg"
-                        alt="more"
-                        width={16}
-                        height={16}
-                        className={styles.moreImg}
-                      />
+                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                        <Image
+                          src="/images/more.svg"
+                          alt="more"
+                          width={16}
+                          height={16}
+                          className={styles.moreImg}
+                        />
+                      </IconButton>
+                      <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                        className={styles.mainDropdown}
+                        sx={{
+                          '& .MuiPaper-root': {
+                            backgroundColor: 'var(--Input-Box-Colors)',
+                            marginTop: '70px',
+                            boxShadow: 'none',
+                            borderRadius: '12px',
+                          },
+                        }}
+                      >
+                        <MenuItem
+                          onClick={() => handleDeleteOption(doc?.id)}
+                          className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
+                        >
+                          <Image
+                            src="/images/trash.svg"
+                            alt="tras"
+                            width={18}
+                            height={18}
+                          />
+                          <Typography>Delete Document</Typography>
+                        </MenuItem>
+                      </Menu>
                     </div>
                     <div className={styles.docDateBox}>
                       <div className={styles.docTagBox}>
@@ -189,7 +281,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
                           </span>
                         ))}
                         {doc?.tags?.length > 1 && (
-                          <span className={styles.docTag}>
+                          <span className={styles.docTagCount}>
                             +{doc?.tags?.length - 1}
                           </span>
                         )}
@@ -226,6 +318,12 @@ const DocumentList: React.FC<DocumentListProps> = ({
           />
         </Box>
       </div>
+      <DeleteDialog
+        openDeleteDialogProps={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        type="Document"
+        deletedId={deleletDocId}
+      />
     </>
   );
 };

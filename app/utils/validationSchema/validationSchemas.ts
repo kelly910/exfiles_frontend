@@ -1,7 +1,12 @@
 import * as Yup from 'yup';
 
-const firstNameSchema: Yup.StringSchema = Yup.string().required(
-  'First name is required'
+const firstNameSchema: Yup.StringSchema = Yup.string()
+  .matches(/^[A-Za-z]+$/, 'Only letters are allowed, no spaces')
+  .required('First name is required');
+
+const lastNameSchema: Yup.StringSchema = Yup.string().matches(
+  /^[A-Za-z]+$/,
+  'Only letters are allowed, no spaces'
 );
 
 const passwordSchema: Yup.StringSchema = Yup.string()
@@ -65,6 +70,7 @@ const feedbackBodySchema: Yup.StringSchema = Yup.string()
 
 export {
   firstNameSchema,
+  lastNameSchema,
   passwordSchema,
   emailSchema,
   confirmPasswordSchema,

@@ -42,22 +42,33 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
     console.log('handleThreadClick');
   };
 
+  const closeSummaryDrawer = () => {
+    setSelectedsDocId(null);
+  };
+
   return (
     <main className={`chat-body ${styles.docsPageMain}`}>
       <Sidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
         handleThreadClick={handleThreadClick}
+        title="Documents"
       />
       <section className="main-body">
-        <PageHeader />
+        <PageHeader title="Documents" />
         <div className={styles.docsMain}>
           <CategoryList catId={catId} />
           <DocumentList
             catId={catId}
             handleOpenDocumentSummary={handleSelectedDocSummary}
+            selectedDoc={selectedDocId}
           />
-          {selectedDocId !== null && <DocumentSummary docId={selectedDocId} />}
+          {selectedDocId !== null && (
+            <DocumentSummary
+              docId={selectedDocId}
+              selectedDocIdNull={closeSummaryDrawer}
+            />
+          )}
         </div>
       </section>
     </main>

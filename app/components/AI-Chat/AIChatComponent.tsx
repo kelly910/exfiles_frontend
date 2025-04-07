@@ -60,9 +60,10 @@ export default function AIChatComponent({ threadId }: { threadId: string }) {
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
           handleThreadClick={handleThreadClick}
+          title=""
         />
         <section className="main-body">
-          <PageHeader threadId={threadId} />
+          <PageHeader title="" />
 
           <Container maxWidth="lg" disableGutters>
             {!threadId ? (

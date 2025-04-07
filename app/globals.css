@@ -8,7 +8,7 @@
   --Txt-On-Gradient: #FFFFFF;
 
   --Main-Gradient: linear-gradient(90deg, #2A1AD8 0%, #4E26E2 25%, #7231EC 50%, #953DF5 75%, #B948FF 100%);
-  --Main-Gradient-hover: linear-gradient(90deg, #2A1AD8 0%, #4E26E2 25%, #7231EC 50%, #953DF5 75%, #B948FF 100%);
+  --Main-Gradient-hover: linear-gradient(-90deg, #2A1AD8 0%, #4E26E2 25%, #7231EC 50%, #953DF5 75%, #B948FF 100%);
   --Input-Box-Colors: #252431;
 
   --Stroke-Color: #3A3948;
@@ -263,6 +263,13 @@ a {
   height: 18px;
 }
 
+@media (max-width: 500px) {
+  .btn.btn-primary-arrow {
+    font-size: var(--SubTitle-3) !important;
+  }
+
+}
+
 .btn-arrow {
   background: var(--Main-Gradient);
   padding: 9px !important;
@@ -274,7 +281,7 @@ a {
 .btn.btn-primary:hover,
 .btn.btn-primary:active,
 .btn.btn-primary:focus {
-  background: var(--Main-Gradient);
+  background: var(--Main-Gradient-hover);
   background-blend-mode: overlay;
   transition: all 0.2s linear;
 }
@@ -344,7 +351,7 @@ a {
 }
 
 .link-primary {
-  font-weight: 600 !important;
+  font-weight: var(--Medium) !important;
   font-size: var(--SubTitle-2) !important;
   letter-spacing: 0%;
   color: var(--Subtext-Color) !important;
@@ -435,7 +442,7 @@ header {
   }
 
   .btn.btn-primary {
-    font-size: 11.2px;
+    font-size: var(--SubTitle-3) !important;
     /* 30% reduction */
     padding: 9.1px 16.8px;
     /* 30% reduction */
@@ -446,17 +453,22 @@ header {
   .btn.btn-primary:hover,
   .btn.btn-primary:active,
   .btn.btn-primary:focus {
-    background: var(--Main-Gradient);
+    background: var(--Main-Gradient-hover);
     transition: all 0.2s linear;
   }
 
   .btn.btn-tertiary {
-    font-size: 11.2px;
-    /* 30% reduction */
-    padding: 8.4px 16.8px;
-    /* 30% reduction */
-    border-radius: 8.4px;
-    /* 30% reduction */
+    min-width: unset;
+    padding: 13px;
+    font-size: 0 !important;
+  }
+
+  .btn.btn-tertiary span {
+    margin: 0;
+  }
+
+  .btn.btn-tertiary span img {
+    margin: 0;
   }
 
   .btn.btn-secondary {
@@ -479,8 +491,18 @@ header {
 
   /* Link adjustments */
   .link-primary {
-    font-size: var(--SubTitle-3) !important;
+    /* font-size: var(--SubTitle-3) !important; */
     /* 30% reduction */
+  }
+}
+
+@media (max-width: 400px) {
+  .btn.btn-secondary {
+    width: 100%;
+  }
+
+  .btn.btn-primary {
+    width: 100%;
   }
 }
 

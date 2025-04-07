@@ -79,7 +79,16 @@
       padding: 8px;
       border-radius: 10px;
       border: 1px solid transparent;
+      height: 100%;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: unset;
+
+      &.active {
+        border: 1px solid var(--Card-Border);
+      }
 
       &:hover {
         border: 1px solid var(--Stroke-Color);
@@ -92,20 +101,21 @@
       .docBox {
         display: flex;
         justify-content: space-between;
-        align-items: start;
+        align-items: flex-start;
         gap: 8px;
 
         .pdfImg {
           width: 34px;
           height: 34px;
-          background-color: var(--Card-Image);
+          background-color: var(--Card-Color);
           border-radius: 4px;
           padding: 7px;
           flex: 0 0 auto;
+          border: 1px solid var(--Stroke-Color);
         }
 
         .docTitle {
-          font-weight: var(--Bold);
+          font-weight: var(--Medium);
           font-size: var(--SubTitle-2);
           line-height: 19px;
           color: var(--Primary-Text-Color);
@@ -149,13 +159,20 @@
           gap: 8px;
 
           .docTag {
-            font-weight: var(--Lighter);
+            font-weight: var(--Regular);
             font-size: var(--SubTitle-5);
             line-height: 16px;
             color: var(--Subtext-Color);
             padding: 4px 8px;
             border: 0.5px solid var(--Stroke-Color);
             border-radius: 500px;
+            background-color: var(--Card-Image);
+          }
+          .docTagCount {
+            font-weight: var(--Regular);
+            font-size: var(--SubTitle-5);
+            line-height: 16px;
+            color: var(--Subtext-Color);
           }
         }
 
@@ -205,6 +222,7 @@
     border-radius: 10px;
     margin: 0 16px;
     margin-bottom: 4px;
+    border: 1px solid transparent;
     cursor: pointer;
 
     &:last-child {
@@ -216,7 +234,8 @@
     }
 
     &:hover {
-      background-color: var(--Card-Image);
+      // background-color: var(--Card-Image);
+      border: 1px solid var(--Stroke-Color);
     }
 
     .folderBox {
@@ -265,6 +284,13 @@
   }
 }
 
+.docsBoardHide {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.4s;
+}
+
 .docsBoard {
   min-width: 500px;
   width: 500px;
@@ -272,6 +298,7 @@
   position: relative;
   height: calc(100vh - 65px);
   overflow-y: auto;
+  transition: all 0.4s;
 
   .docsBoardHeader {
     background-color: var(--Card-Color);
@@ -281,17 +308,45 @@
     top: 0;
     z-index: 2;
 
+    .docsBoardHeaderInner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+
+      .closeButton {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        padding: 0;
+        width: fit-content;
+        min-width: unset;
+      }
+    }
+
     .docsInner {
       display: flex;
       justify-content: space-between;
       align-items: start;
-      gap: 10px;
+      flex-direction: column;
+      gap: 2px;
+      margin-right: 10px;
+      width: 100%;
+      max-width: calc(100% - 50px);
 
       .docsTitle {
         font-weight: var(--Medium);
         font-size: var(--SubTitle-2);
         line-height: 1.4;
         color: var(--Primary-Text-Color);
+        word-wrap: break-word;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        max-width: 100%;
       }
 
       .docsDate {
@@ -299,6 +354,8 @@
         font-size: var(--SubTitle-5);
         line-height: 1.4;
         color: var(--Subtext-Color);
+        flex: 0 0 auto;
+        display: block;
       }
     }
 
@@ -307,7 +364,7 @@
       justify-content: start;
       align-items: stretch;
       gap: 8px;
-      margin-top: 4px;
+      margin-top: 8px;
 
       span {
         background: var(--Card-Image);
@@ -391,15 +448,120 @@
   }
 }
 
-@media (max-width: 1300px) {
-  .docsBoard {
-    min-width: unset;
-    width: 400px;
-    flex: 0 0 auto;
+.categoriesDrawer {
+  .categories {
+    width: 100%;
+    max-width: 100%;
+  }
+  .docsFolder {
+    background-color: transparent;
+  }
+  .categoryBox {
+    background-color: var(--Card-Color);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 23px 17px;
   }
 
-  .categories {
-    min-width: unset;
-    width: 200px;
+  .categoryBox {
+    .categoriesTitle {
+      font-size: var(--Heading-3);
+    }
+  }
+
+  .docsFolder {
+    .folderBox {
+      gap: 0;
+      .folderImg {
+        margin-right: 10px;
+      }
+      .folderTitleBox {
+        .folderTitle {
+          font-size: var(--SubTitle-1);
+        }
+        .folderNo {
+          font-size: var(--SubTitle-5);
+        }
+      }
+    }
+  }
+}
+
+.backButton {
+  background-color: var(--Input-Box-Colors) !important;
+  padding: 8px !important;
+  border: 1px solid #3a3948 !important;
+  min-width: fit-content !important;
+  margin: 0 !important;
+  margin-right: 12px !important;
+}
+
+.docsListing {
+  .categoryBox {
+    padding: 8px 16px;
+    background-color: var(--Card-Color);
+    border-bottom: 1px solid var(--Stroke-Color);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    .categoryBoxInner {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .categoriesSemiTitle {
+      font-weight: var(--Regular);
+      font-size: var(--SubTitle-5);
+      line-height: 140%;
+      color: var(--Subtext-Color);
+      padding-left: 46px;
+    }
+  }
+
+  .categoryBox .categoriesTitle {
+    font-weight: var(--Bold);
+    font-size: var(--SubTitle-1);
+    line-height: 1.4;
+    letter-spacing: 0%;
+    color: var(--Primary-Text-Color);
+  }
+}
+
+.mainDropdown {
+  ul {
+    border-radius: 12px;
+    padding: 0;
+    background-color: var(--Input-Box-Colors);
+    color: var(--Primary-Text-Color);
+    padding: 4px;
+    box-shadow: -5px 8px 21px 0px #00000026;
+  }
+
+  .menuDropdown {
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    min-width: 160px;
+
+    &:hover {
+      background-color: var(--Card-Image);
+    }
+
+    p {
+      font-weight: var(--Medium);
+      font-size: var(--SubTitle-4);
+      line-height: 1.4;
+      color: var(--Primary-Text-Color);
+      width: 100%;
+    }
+  }
+  .menuDropdownDelete {
+    p {
+      color: #e72240;
+    }
   }
 }
