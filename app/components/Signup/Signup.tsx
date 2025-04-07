@@ -453,6 +453,9 @@ const Page = () => {
                                     onChange={(e) =>
                                       setCountryCode(e.target.value)
                                     }
+                                    MenuProps={{
+                                      disableScrollLock: true,
+                                    }}
                                     sx={{
                                       padding: '0px',
                                       color: '#b0b0b0',
