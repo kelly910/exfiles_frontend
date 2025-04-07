@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Button,
-  Drawer,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-} from '@mui/material';
+import { Box, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import Image from 'next/image';
 import styles from './document.module.scss';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -95,11 +87,11 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
     });
   };
 
-  const [openDrawer, setOpenDrawer] = useState(true);
+  // const [openDrawer, setOpenDrawer] = useState(true);
 
-  const handleCloseDrawer = () => {
-    setOpenDrawer(false); // Close the drawer
-  };
+  // const handleCloseDrawer = () => {
+  //   setOpenDrawer(false);
+  // };
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -130,7 +122,6 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
                 if (index === categories.length - 1 && el) lastCategoryRef(el);
               }}
               className={`${styles.docsFolder} ${(Number(catId) || activeCategoryId) === category?.id ? styles.active : ''}`}
-              onClick={() => handleCategoryClick(category?.id)}
             >
               <div className={styles.folderBox}>
                 <Image
@@ -139,9 +130,14 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
                   width={18}
                   height={18}
                   className={styles.folderImg}
+                  onClick={() => handleCategoryClick(category?.id)}
                 />
                 <div className={styles.folderTitleBox}>
-                  <Typography variant="body1" className={styles.folderTitle}>
+                  <Typography
+                    variant="body1"
+                    className={styles.folderTitle}
+                    onClick={() => handleCategoryClick(category?.id)}
+                  >
                     {category?.name}
                   </Typography>
                   <Typography variant="body1" className={styles.folderNo}>
@@ -197,6 +193,16 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
               </div>
             </Box>
           ))}
+        {showLoading && (
+          <Box className={styles.infiniteLoader}>
+            <Image
+              src="/gif/infinite-loader.gif"
+              alt="infiniteLoader"
+              width={100}
+              height={100}
+            />
+          </Box>
+        )}
       </Box>
       {/* Sidebar Drawer for Small Screens */}
       {/* <Drawer

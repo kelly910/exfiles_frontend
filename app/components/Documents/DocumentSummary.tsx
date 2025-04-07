@@ -1,10 +1,10 @@
 'use client';
 
-import { Box, Button, Drawer, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import Image from 'next/image';
 import styles from './document.module.scss';
 import { useAppDispatch } from '@/app/redux/hooks';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
 import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
@@ -14,9 +14,13 @@ import { convertDateFormat } from '@/app/utils/constants';
 
 interface DocumentSummaryProps {
   docId: number;
+  selectedDocIdNull: () => void;
 }
 
-const DocumentSummary: React.FC<DocumentSummaryProps> = ({ docId }) => {
+const DocumentSummary: React.FC<DocumentSummaryProps> = ({
+  docId,
+  selectedDocIdNull,
+}) => {
   const dispatch = useAppDispatch();
   const documentSummary = useSelector(
     (state: RootState) => state.documentSummary.documentSummary
@@ -38,10 +42,14 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({ docId }) => {
     }
   }, [dispatch, docId]);
 
-  const [openDrawer, setOpenDrawer] = useState(true); // Default open
+  // const [openDrawer, setOpenDrawer] = useState(true);
 
   const handleCloseDrawer = () => {
-    setOpenDrawer(false); // Close drawer function
+    // setOpenDrawer(false); // Close drawer function
+    const url = new URL(window.location.href);
+    url.searchParams.delete('docId');
+    window.history.replaceState({}, '', url.pathname + url.search);
+    selectedDocIdNull();
   };
 
   return (
