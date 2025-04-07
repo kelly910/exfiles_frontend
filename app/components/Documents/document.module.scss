@@ -86,6 +86,10 @@
       justify-content: space-between;
       align-items: unset;
 
+      &.active {
+        border: 1px solid var(--Card-Border);
+      }
+
       &:hover {
         border: 1px solid var(--Stroke-Color);
       }

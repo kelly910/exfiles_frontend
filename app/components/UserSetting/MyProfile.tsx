@@ -253,6 +253,11 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                       },
                     }}
                   />
+                  <ErrorMessage
+                    name="last_name"
+                    component="div"
+                    className="error-input-field"
+                  />
                 </div>
                 <div className={styles.dialogFormGroup}>
                   <Typography
