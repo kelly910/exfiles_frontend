@@ -141,7 +141,7 @@ const Page = () => {
                             color:
                               errors.email && touched.email
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 'var(--Regular)',
                           }}
                         >
@@ -214,7 +214,7 @@ const Page = () => {
                             color:
                               errors.password && touched.password
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 'var(--Medium)',
                           }}
                         >

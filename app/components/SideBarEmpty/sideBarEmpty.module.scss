@@ -1,0 +1,20 @@
+.sideBarEmptyContainer {
+  width: 100%;
+  padding: 50px 20px;
+
+  .sideBarEmptyImage {
+    margin: 0 auto;
+    max-width: 100%;
+    display: block;
+    object-fit: contain;
+  }
+
+  .sideBarEmptyTitle {
+    font-weight: var(--Medium);
+    font-size: var(--SubTitle-3);
+    line-height: 1.4;
+    text-align: center;
+    margin-top: 6px;
+    color: var(--Placeholder-Text);
+  }
+}

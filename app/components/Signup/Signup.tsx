@@ -160,7 +160,7 @@ const Page = () => {
                             color:
                               errors.first_name && touched.first_name
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -235,7 +235,7 @@ const Page = () => {
                             color:
                               errors.last_name && touched.last_name
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -299,7 +299,7 @@ const Page = () => {
                             color:
                               errors.email && touched.email
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -372,7 +372,7 @@ const Page = () => {
                             color:
                               errors.contact_number && touched.contact_number
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -496,7 +496,7 @@ const Page = () => {
                             color:
                               errors.password && touched.password
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -590,7 +590,7 @@ const Page = () => {
                               errors.confirm_password &&
                               touched.confirm_password
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
