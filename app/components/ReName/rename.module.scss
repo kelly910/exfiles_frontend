@@ -38,6 +38,10 @@
     }
   }
 
+  .dialogInput {
+    padding: 16px 24px 0 24px;
+  }
+
   .dialogBody {
     padding: 0;
     display: flex;
@@ -51,6 +55,7 @@
       align-items: center;
       gap: 32px;
       padding: 16px;
+      padding-top: 24px;
 
       .formCancelBtn {
         text-transform: capitalize;
