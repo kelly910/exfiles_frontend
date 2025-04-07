@@ -25,7 +25,7 @@ import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch } from '@/app/redux/hooks';
 import TemporaryDrawer from '../Drawer/Drawer';
 
-export default function PageHeader() {
+export default function PageHeader({ title }: { title: string }) {
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
@@ -99,18 +99,27 @@ export default function PageHeader() {
           >
             <Box sx={{ width: '100%' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Image
-                  src="/images/document-text.svg"
-                  alt="menu"
-                  width={20}
-                  height={20}
-                />
+                {title === 'Documents' ? (
+                  <Image
+                    src="/images/document-text.svg"
+                    alt="menu"
+                    width={20}
+                    height={20}
+                  />
+                ) : (
+                  <Image
+                    src="/images/log-incident-sidebar.svg"
+                    alt="menu"
+                    width={20}
+                    height={20}
+                  />
+                )}
                 <Typography
                   variant="body1"
                   sx={{ display: 'flex' }}
                   className={styles.documentTitle}
                 >
-                  Documents
+                  {title}
                 </Typography>
                 <IconButton
                   size="small"
@@ -138,7 +147,15 @@ export default function PageHeader() {
               </Box>
               <Box>
                 <Typography variant="body1" className={styles.documentNo}>
-                  No. of Documents : <span>{no_of_docs || 0}</span>
+                  {title === 'Documents' ? (
+                    <>
+                      No. of Documents : <span>{no_of_docs || 0}</span>
+                    </>
+                  ) : (
+                    <>
+                      No. of Incidents : <span>32</span>
+                    </>
+                  )}
                 </Typography>
               </Box>
             </Box>
