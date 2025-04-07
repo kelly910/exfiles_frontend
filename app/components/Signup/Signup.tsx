@@ -249,6 +249,9 @@ const Page = () => {
                             id="last_name"
                             name="last_name"
                             placeholder="Enter Last Name here"
+                            error={Boolean(
+                              errors.last_name && touched.last_name
+                            )}
                             sx={{
                               marginTop: '5px',
                               '& .MuiOutlinedInput-root': {
@@ -283,9 +286,17 @@ const Page = () => {
                                 },
                               },
                               '& .MuiFormHelperText-root': {
-                                color: '#b0b0b0',
+                                color:
+                                  errors.last_name && touched.last_name
+                                    ? '#ff4d4d'
+                                    : '#b0b0b0',
                               },
                             }}
+                          />
+                          <ErrorMessage
+                            name="last_name"
+                            component="div"
+                            className="error-input-field"
                           />
                         </div>
 

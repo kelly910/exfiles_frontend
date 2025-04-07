@@ -42,11 +42,13 @@ type Document = {
 type DocumentListProps = {
   catId: number | null;
   handleOpenDocumentSummary: (docId: number) => void;
+  selectedDoc: number | null;
 };
 
 const DocumentList: React.FC<DocumentListProps> = ({
   catId,
   handleOpenDocumentSummary,
+  selectedDoc,
 }) => {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useState('');
@@ -205,7 +207,9 @@ const DocumentList: React.FC<DocumentListProps> = ({
                   key={doc?.id}
                   className={styles.docBoxInner}
                 >
-                  <div className={styles.docGridBox}>
+                  <div
+                    className={`${styles.docGridBox} ${selectedDoc === doc?.id ? styles.active : ''}`}
+                  >
                     <div className={styles.docBox}>
                       <Image
                         src={getDocumentImage(doc?.file_type)}
