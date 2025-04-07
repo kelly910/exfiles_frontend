@@ -195,9 +195,10 @@ export default function LogIncident() {
           handleThreadClick={(threadUUID: string) => {
             console.log(`Thread clicked: ${threadUUID}`);
           }}
+          title="Log Incident"
         />
         <section className="main-body">
-          <PageHeader />
+          <PageHeader title="Log Incident" />
           <Box
             sx={{
               height: 'calc(100vh - 65px)',
@@ -281,7 +282,7 @@ export default function LogIncident() {
               <Input
                 id="input-with-icon-adornment"
                 className={styles.searchInput}
-                placeholder="Search your documents"
+                placeholder="Search here..."
                 endAdornment={
                   <InputAdornment position="end" className={styles.searchIcon}>
                     <span className={styles.search}></span>

@@ -48,9 +48,10 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
         handleThreadClick={handleThreadClick}
+        title="Documents"
       />
       <section className="main-body">
-        <PageHeader />
+        <PageHeader title="Documents" />
         <div className={styles.docsMain}>
           <CategoryList catId={catId} />
           <DocumentList

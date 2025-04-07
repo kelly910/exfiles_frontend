@@ -22,6 +22,7 @@ const Sidebar = ({
   isOpen: boolean;
   toggleSidebar: () => void;
   handleThreadClick: (threadUUID: string) => void;
+  title: string;
 }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [expanded, setExpanded] = useState<boolean | string>('panel1'); // Track which accordion is expanded
@@ -37,8 +38,8 @@ const Sidebar = ({
     setAnchorEl(null);
   };
 
-  const handleAccordionChange = (panel: string) => 
-    (event: React.SyntheticEvent, isExpanded: boolean) => {
+  const handleAccordionChange =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false); // Only expand the clicked panel
     };
 
@@ -585,11 +586,6 @@ const Sidebar = ({
             </Accordion>
             <Accordion
               className={Style['accordian']}
-              // expanded={expanded}
-              // onChange={handleAccordionChange}
-              // defaultExpanded
-              // expanded={expanded === 'panel3'}
-              // onChange={handleAccordionChange('panel3')}
               sx={{
                 '.Mui-expanded': {
                   backgroundColor: 'var(--Input-Box-Colors)',
@@ -603,11 +599,6 @@ const Sidebar = ({
                 expandIcon={
                   <Image
                     className={Style['img-none']}
-                    // src={
-                    //   expanded === 'panel3'
-                    //     ? '/images/arrow-down.svg'
-                    //     : '/images/arrow-down-right.svg'
-                    // }
                     src="/images/arrow-down-right.svg"
                     alt="expand-collapse"
                     width={16}
@@ -632,192 +623,47 @@ const Sidebar = ({
                   Documents
                 </Typography>
               </AccordionSummary>
+            </Accordion>
 
-              {/* <AccordionDetails className={Style['bottom-content']}>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>
-                      How to optimize images in WordPress for faster loading
-                      (complete guide)
-                    </p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>Travelling as a way of self-discovery and progress</p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>The unseen of spending three years at Pixelgrade</p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>How to build a loyal community online and offline</p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-              </AccordionDetails> */}
+            <Accordion
+              className={Style['accordian']}
+              sx={{
+                '.Mui-expanded': {
+                  backgroundColor: 'var(--Input-Box-Colors)',
+                },
+                'span.Mui-expanded': {
+                  transform: 'rotate(0deg)',
+                },
+              }}
+            >
+              <AccordionSummary
+                expandIcon={
+                  <Image
+                    className={Style['img-none']}
+                    src="/images/arrow-down-right.svg"
+                    alt="expand-collapse"
+                    width={16}
+                    height={16}
+                  />
+                }
+                onClick={() => router.push('/log-incident')}
+                aria-controls="panel1-content"
+                id="panel1-header"
+                classes={{
+                  root: Style['customAccordionHeading'],
+                  content: Style['customAccordionContent'],
+                }}
+              >
+                <Typography component="span" className={Style['heading']}>
+                  <Image
+                    src="/images/log-incident-sidebar.svg"
+                    alt="pin"
+                    width={18}
+                    height={18}
+                  />
+                  Log Incident
+                </Typography>
+              </AccordionSummary>
             </Accordion>
           </div>
         </div>

@@ -35,9 +35,10 @@ export default function AIChatComponent() {
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
           handleThreadClick={handleThreadClick}
+          title=""
         />
         <section className="main-body">
-          <PageHeader />
+          <PageHeader title="" />
 
           <Container maxWidth="lg" disableGutters>
             {!threadId ? <DynamicChatHomeScreen /> : <ChatWindows />}
