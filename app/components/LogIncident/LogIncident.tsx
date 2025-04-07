@@ -11,57 +11,14 @@ import {
   Menu,
   MenuItem,
   Pagination,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 import Image from 'next/image';
 import Sidebar from '../Common/Sidebar';
 import PageHeader from '../Common/PageHeader';
-
-// const columns: GridColDef<(typeof rows)[number]>[] = [
-//   { field: 'id', headerName: '#', width: 90 },
-//   {
-//     field: 'firstName',
-//     headerName: 'DISCRIPTION',
-//     flex: 1,
-//     editable: true,
-//   },
-//   {
-//     field: 'lastName',
-//     headerName: 'DATE CREATED',
-//     width: 200,
-//     editable: true,
-//   },
-//   {
-//     field: 'actions',
-//     headerName: 'Actions',
-//     width: 100,
-//     sortable: false,
-//     filterable: false,
-//     renderCell: (params) => (
-//       <>
-//         <IconButton onClick={(event) => handleOpenMenu(event, params.row.id)}>
-//           <GridMoreVertIcon />
-//         </IconButton>
-//         <Menu
-//           anchorEl={anchorEl}
-//           // open={Boolean(anchorEl) && selectedRowId === params.row.id}
-//           onClose={handleCloseMenu}
-//         >
-//           <MenuItem
-//           // onClick={handleEdit}
-//           >
-//             Edit
-//           </MenuItem>
-//           <MenuItem
-//           // onClick={handleDelete}
-//           >
-//             Delete
-//           </MenuItem>
-//         </Menu>
-//       </>
-//     ),
-//   },
-// ];
+import DeleteDialog from '../LogoutDialog/DeleteDialog';
+import { useState } from 'react';
 
 const rows = [
   { id: 1, lastName: 'Snow', firstName: 'Jon' },
@@ -97,15 +54,13 @@ const rows = [
 ];
 
 export default function LogIncident() {
-  const [page, setPage] = React.useState(1);
-  const pageSize = 5; // Define how many rows per page
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
   const isMobile = useMediaQuery('(max-width:768px)');
-
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
-  // const sidebarRef = useRef<HTMLInputElement>(null);
-
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [selectedRowId, setSelectedRowId] = React.useState<number | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const handleOpenMenu = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -128,34 +83,32 @@ export default function LogIncident() {
     setPage(newPage);
   };
 
+  const deleteDialogOpen = () => {
+    setAnchorEl(null);
+    setOpenDeleteDialog(true);
+  };
+
   const columns: GridColDef[] = [
     {
       field: 'id',
       headerName: '#',
       width: 90,
-      filterable: false,
-      editable: false,
     },
     {
       field: 'firstName',
       headerName: 'DISCRIPTION',
       flex: 1,
-      editable: false,
-      filterable: false,
     },
     {
       field: 'lastName',
       headerName: 'DATE CREATED',
       width: 200,
-      editable: false,
-      filterable: false,
     },
     {
       field: 'actions',
       headerName: '',
       width: 100,
       sortable: false,
-      filterable: false,
       renderCell: (params) => (
         <>
           <IconButton onClick={(event) => handleOpenMenu(event, params.row.id)}>
@@ -172,14 +125,17 @@ export default function LogIncident() {
               },
             }}
           >
-            <MenuItem className={styles.menuDropdown}>
+            <MenuItem
+              className={styles.menuDropdown}
+              onClick={deleteDialogOpen}
+            >
               <Image
                 src="/images/trash.svg"
                 alt="delet"
                 width={18}
                 height={18}
               />
-              Delete
+              <Typography>Delete</Typography>
             </MenuItem>
           </Menu>
         </>
@@ -209,22 +165,22 @@ export default function LogIncident() {
               borderRadius: '8px',
               boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
               '& .MuiDataGrid-root': {
-                backgroundColor: '#11101B', // Grid background
-                color: '#DADAE1', // Text color
+                backgroundColor: '#11101B',
+                color: '#DADAE1',
                 borderRadius: '8px',
                 border: 'none',
               },
               '& .MuiDataGrid-row:nth-of-type(even)': {
-                backgroundColor: '#11101B', // Even rows: White
+                backgroundColor: '#11101B',
                 color: '#DADAE1',
               },
               '& .MuiDataGrid-row:nth-of-type(odd)': {
-                backgroundColor: '#1B1A25', // Odd rows: Black
+                backgroundColor: '#1B1A25',
                 color: '#DADAE1',
                 borderRadius: '10px',
               },
               '& .MuiDataGrid-columnHeaders': {
-                backgroundColor: '#11101B', // Header background
+                backgroundColor: '#11101B',
                 color: '#DADAE1',
                 fontSize: '16px',
                 fontWeight: 'bold',
@@ -240,36 +196,35 @@ export default function LogIncident() {
                 display: 'none !important',
               },
               '& .MuiDataGrid-cell': {
-                border: 'none', // Removes cell border
-                borderTop: 'none !important', // Removes cell border
+                border: 'none',
+                borderTop: 'none !important',
                 fontSize: '14px',
               },
               '& .MuiDataGrid-footerContainer': {
-                backgroundColor: '#1B1A25', // Style pagination container
+                backgroundColor: '#1B1A25',
                 borderTop: 'none',
                 color: '#DADAE1',
                 borderRadius: '10px',
               },
               '& .MuiTablePagination-root': {
-                color: '#DADAE1', // Pagination text color
+                color: '#DADAE1',
               },
               '& .MuiSelect-select': {
-                // Fixes Dropdown Styling (was .MuiTablePagination-select)
                 color: '#DADAE1',
                 backgroundColor: '#11101B',
                 borderRadius: '8px',
               },
               '& .MuiTablePagination-actions button': {
-                color: '#DADAE1', // Pagination buttons color
+                color: '#DADAE1',
               },
               '& .Mui-disabled': {
-                color: '#666', // Disabled button color
+                color: '#666',
               },
               '& .MuiDataGrid-container': {
-                backgroundColor: '#11101B', // Ensures the top container background changes
+                backgroundColor: '#11101B',
               },
               '& .MuiDataGrid-row': {
-                backgroundColor: '#11101B', // Ensures all rows have the background
+                backgroundColor: '#11101B',
               },
               '& .MuiDataGrid-container--top [role=row]': {
                 backgroundColor: '#11101B !important',
@@ -310,7 +265,6 @@ export default function LogIncident() {
                 '.active-menu-row': { border: '1px solid var(--Stroke-Color)' },
                 '.MuiDataGrid-footerContainer': { display: 'none' },
                 '.MuiDataGrid-filler': { display: 'none' },
-                // '.MuiDataGrid-cell': { pointerEvents: 'none' },
                 '.MuiDataGrid-columnHeader:focus': { outline: 'none' },
                 '.MuiDataGrid-columnHeader::focus-within': { outline: 'none' },
                 '.MuiDataGrid-columnHeader:focus-within': { outline: 'none' },
@@ -331,8 +285,11 @@ export default function LogIncident() {
                 },
               }}
               className={styles.loIncidentTable}
-              disableColumnMenu
-              disableRowSelectionOnClick
+              sortingOrder={['asc', 'desc']}
+              disableVirtualization={true}
+              disableColumnResize={true}
+              disableColumnMenu={true}
+              disableRowSelectionOnClick={true}
             />
             <Box
               component="div"
@@ -358,6 +315,12 @@ export default function LogIncident() {
           </Box>
         </section>
       </main>
+      <DeleteDialog
+        openDeleteDialogProps={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        type="LogIncident"
+        deletedId={selectedRowId}
+      />
     </>
   );
 }

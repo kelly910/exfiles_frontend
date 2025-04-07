@@ -125,7 +125,7 @@
       line-height: normal;
       transition: 0.2s ease-in-out;
       &:hover {
-        background-color: var(--Main-Gradient);
+        background: var(--Main-Gradient-hover);
       }
       span {
         vertical-align: middle;
@@ -142,7 +142,7 @@
 .sidebar-accordian {
   overflow-y: auto;
   .accordian {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     background-color: unset;
     box-shadow: unset;
     &:before {

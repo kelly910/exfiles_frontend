@@ -171,20 +171,20 @@
 
 @media (max-width: 900px) {
   .chatGridBox {
-    max-width: 600px;
+    max-width: 500px;
     margin: 0 auto;
   }
 
   .chatHeading {
     .gridBox {
       .gridBoxInner {
-        .chatBox {
-          align-items: center;
-          flex-direction: row;
-        }
+        // .chatBox {
+        //   align-items: center;
+        //   flex-direction: row;
+        // }
 
         .gridBoxButton {
-          margin-top: 0;
+          // margin-top: 0;
           flex: 0 0 auto;
         }
       }
@@ -192,23 +192,47 @@
   }
 
   .chatBoarbMain {
-    max-width: 800px;
+    max-width: 100%;
+  }
+
+  .chatBoarbMain {
+    padding: 50px 0;
+    gap: 50px;
   }
 }
 
 @media (max-width: 500px) {
+  .chatGridBox {
+    padding: 18px 10px;
+  }
+  .chatLogIncident {
+    padding: 1px;
+    .chatBox {
+      padding: 18px 10px;
+    }
+  }
   .chatHeading {
     .gridBox {
+      margin-top: 20px;
       .gridBoxInner {
         .chatBox {
-          align-items: flex-start;
-          flex-direction: column;
         }
 
         .gridBoxButton {
-          margin-top: 10px;
+          margin-top: 13px;
+          font-size: var(--SubTitle-3);
         }
       }
     }
+  }
+  .chatHeader {
+    .chatTitle {
+      font-size: var(--Heading-2);
+      margin-bottom: 8px;
+    }
+  }
+  .chatBoard {
+    padding: 16px 12px;
+    margin-top: 32px;
   }
 }

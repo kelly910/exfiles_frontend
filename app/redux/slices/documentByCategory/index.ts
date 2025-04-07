@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../../utils/axiosConfig';
 import urlMapper from '@/app/utils/apiEndPoints/urlMapper';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 interface Tag {
   id: number;
@@ -55,15 +56,43 @@ export const fetchDocumentsByCategory = createAsyncThunk<
   }
 );
 
+export const deleteDocumentByDocId = createAsyncThunk<
+  number,
+  number,
+  { rejectValue: string }
+>('documents/deleteDocument', async (deletedId, { rejectWithValue }) => {
+  try {
+    const response = await api.delete<{ message: string[] }>(
+      `${urlMapper.getDocumentSummary}${deletedId}/`
+    );
+    const successMessage =
+      response.data.message?.[0] || 'Document deleted successfully.';
+    showToast('success', successMessage);
+    return deletedId;
+  } catch (error) {
+    const errorMessage =
+      (error as { response?: { data?: { messages?: string[] } } })?.response
+        ?.data?.messages?.[0] || 'Failed to delete the document.';
+    return rejectWithValue(errorMessage);
+  }
+});
+
 const documentListSlice = createSlice({
   name: 'documentListing',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchDocumentsByCategory.fulfilled, (state, action) => {
-      state.documents = action.payload.results;
-      state.count = action.payload.count;
-    });
+    builder
+      .addCase(fetchDocumentsByCategory.fulfilled, (state, action) => {
+        state.documents = action.payload.results;
+        state.count = action.payload.count;
+      })
+      .addCase(deleteDocumentByDocId.fulfilled, (state, action) => {
+        state.documents = state.documents.filter(
+          (doc) => doc.id !== action.payload
+        );
+        state.count -= 1;
+      });
   },
 });
 
