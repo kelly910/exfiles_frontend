@@ -61,6 +61,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
           <DocumentList
             catId={catId}
             handleOpenDocumentSummary={handleSelectedDocSummary}
+            selectedDoc={selectedDocId}
           />
           {selectedDocId !== null && (
             <DocumentSummary
