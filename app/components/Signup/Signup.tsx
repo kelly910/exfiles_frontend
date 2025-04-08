@@ -404,6 +404,9 @@ const Page = () => {
                             error={Boolean(
                               errors.contact_number && touched.contact_number
                             )}
+                            inputProps={{
+                              maxLength: 10,
+                            }}
                             sx={{
                               marginTop: '5px',
                               '& .MuiSelect-select': {
