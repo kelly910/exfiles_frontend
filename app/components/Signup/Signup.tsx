@@ -160,7 +160,7 @@ const Page = () => {
                             color:
                               errors.first_name && touched.first_name
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -235,7 +235,7 @@ const Page = () => {
                             color:
                               errors.last_name && touched.last_name
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -310,7 +310,7 @@ const Page = () => {
                             color:
                               errors.email && touched.email
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -383,7 +383,7 @@ const Page = () => {
                             color:
                               errors.contact_number && touched.contact_number
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -483,8 +483,6 @@ const Page = () => {
                                   >
                                     <MenuItem value="+91">+91</MenuItem>
                                     <MenuItem value="+1">+1</MenuItem>
-                                    <MenuItem value="+44">+44</MenuItem>
-                                    <MenuItem value="+61">+61</MenuItem>
                                   </Select>
                                 </InputAdornment>
                               ),
@@ -507,7 +505,7 @@ const Page = () => {
                             color:
                               errors.password && touched.password
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -601,7 +599,7 @@ const Page = () => {
                               errors.confirm_password &&
                               touched.confirm_password
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -770,7 +768,7 @@ const Page = () => {
                   Already a Member?
                 </Typography>
                 <Typography variant="body1" component="p" gutterBottom>
-                  Lorem Ipsum dolor sit amet
+                  Lorem Ipsim doloer sit ale jnneui
                 </Typography>
               </div>
               <Button

@@ -232,6 +232,7 @@ a {
   border: none;
   font-weight: var(--Bold);
   width: max-content;
+  min-width: 150px;
   padding: 5px 8px;
   border-radius: 8px;
   display: flex;
@@ -239,7 +240,7 @@ a {
   align-items: center;
   gap: 4px;
   font-weight: var(--Medium);
-  font-size: var(--SubTitle-2) !important;
+  font-size: var(--SubTitle-4) !important;
   line-height: 1.4;
 }
 

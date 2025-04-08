@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux';
 import { setLoader } from '@/app/redux/slices/loader';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import DeleteDialog from '../LogoutDialog/DeleteDialog';
+import DocumentsEmpty from '../DocumentsEmpty/DocumentsEmpty';
 
 type Tag = {
   id: number;
@@ -148,8 +149,9 @@ const DocumentList: React.FC<DocumentListProps> = ({
 
   return (
     <>
-      <div className={styles.docsListing}>
-        {/* <Box component="div" className={styles.categoryBox}>
+      {documents?.length > 0 ? (
+        <div className={styles.docsListing}>
+          {/* <Box component="div" className={styles.categoryBox}>
           <Box className={styles.categoryBoxInner}>
             <Button
               // onClick={handleCloseDrawer}
@@ -171,153 +173,162 @@ const DocumentList: React.FC<DocumentListProps> = ({
             No. of Docs : <span>112</span>
           </Typography>
         </Box> */}
-        <Box component="div" className={styles.searchBoard}>
-          <Box component="div" className={styles.docBoard}>
-            <Input
-              id="input-with-icon-adornment"
-              className={styles.searchInput}
-              placeholder="Search your documents"
-              onChange={(e) => handleSearchInput(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end" className={styles.searchIcon}>
-                  <span className={styles.search} onClick={handleSearch}></span>
-                </InputAdornment>
-              }
+          <Box component="div" className={styles.searchBoard}>
+            <Box component="div" className={styles.docBoard}>
+              <Input
+                id="input-with-icon-adornment"
+                className={styles.searchInput}
+                placeholder="Search your documents"
+                onChange={(e) => handleSearchInput(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end" className={styles.searchIcon}>
+                    <span
+                      className={styles.search}
+                      onClick={handleSearch}
+                    ></span>
+                  </InputAdornment>
+                }
+              />
+            </Box>
+          </Box>
+
+          <Box
+            className={`${styles.docBoxMain} ${selectedDoc ? styles.docBoxMainOpen : ''}`}
+            component="div"
+          >
+            <Grid
+              container
+              spacing={2}
+              justifyContent="start"
+              alignItems="stretch"
+            >
+              {catId ? (
+                Array.isArray(documents) &&
+                documents?.length > 0 &&
+                documents?.map((doc: Document) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={6}
+                    lg={4}
+                    key={doc?.id}
+                    className={styles.docBoxInner}
+                  >
+                    <div
+                      className={`${styles.docGridBox} ${selectedDoc === doc?.id ? styles.active : ''}`}
+                    >
+                      <div className={styles.docBox}>
+                        <Image
+                          src={getDocumentImage(doc?.file_type)}
+                          alt="pdf"
+                          width={19}
+                          height={24}
+                          className={styles.pdfImg}
+                          onClick={() => handleOpenDocumentSummary(doc?.id)}
+                        />
+                        <Typography
+                          variant="body1"
+                          className={styles.docTitle}
+                          onClick={() => handleOpenDocumentSummary(doc?.id)}
+                        >
+                          {doc?.file_name}
+                        </Typography>
+                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                          <Image
+                            src="/images/more.svg"
+                            alt="more"
+                            width={16}
+                            height={16}
+                            className={styles.moreImg}
+                          />
+                        </IconButton>
+                        <Menu
+                          id="menu-appbar"
+                          anchorEl={anchorElUser}
+                          anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          keepMounted
+                          transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          open={Boolean(anchorElUser)}
+                          onClose={handleCloseUserMenu}
+                          className={styles.mainDropdown}
+                          sx={{
+                            '& .MuiPaper-root': {
+                              backgroundColor: 'var(--Input-Box-Colors)',
+                              marginTop: '70px',
+                              boxShadow: 'none',
+                              borderRadius: '12px',
+                            },
+                          }}
+                        >
+                          <MenuItem
+                            onClick={() => handleDeleteOption(doc?.id)}
+                            className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
+                          >
+                            <Image
+                              src="/images/trash.svg"
+                              alt="tras"
+                              width={18}
+                              height={18}
+                            />
+                            <Typography>Delete Document</Typography>
+                          </MenuItem>
+                        </Menu>
+                      </div>
+                      <div className={styles.docDateBox}>
+                        <div className={styles.docTagBox}>
+                          {doc?.tags?.slice(0, 1)?.map((tag) => (
+                            <span key={tag?.id} className={styles.docTag}>
+                              {tag?.name}
+                            </span>
+                          ))}
+                          {doc?.tags?.length > 1 && (
+                            <span className={styles.docTagCount}>
+                              +{doc?.tags?.length - 1}
+                            </span>
+                          )}
+                        </div>
+                        <Typography variant="body1">
+                          {convertDateFormat(doc?.upload_on)}
+                        </Typography>
+                      </div>
+                    </div>
+                  </Grid>
+                ))
+              ) : (
+                <></>
+              )}
+            </Grid>
+          </Box>
+          <Box
+            component="div"
+            className="pagination-box"
+            sx={{
+              padding: '19px 33px 24px 33px',
+              marginBottom: '-24px',
+            }}
+          >
+            <Pagination
+              count={Math.ceil(count / 12)}
+              page={page}
+              onChange={handlePageChange}
+              shape="rounded"
+              className="pagination"
+              sx={{
+                padding: '8px 33px',
+              }}
             />
           </Box>
-        </Box>
-
-        <Box className={styles.docBoxMain} component="div">
-          <Grid
-            container
-            spacing={2}
-            justifyContent="start"
-            alignItems="stretch"
-          >
-            {catId ? (
-              Array.isArray(documents) &&
-              documents?.length > 0 &&
-              documents?.map((doc: Document) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={12}
-                  md={6}
-                  lg={4}
-                  key={doc?.id}
-                  className={styles.docBoxInner}
-                >
-                  <div
-                    className={`${styles.docGridBox} ${selectedDoc === doc?.id ? styles.active : ''}`}
-                  >
-                    <div className={styles.docBox}>
-                      <Image
-                        src={getDocumentImage(doc?.file_type)}
-                        alt="pdf"
-                        width={19}
-                        height={24}
-                        className={styles.pdfImg}
-                        onClick={() => handleOpenDocumentSummary(doc?.id)}
-                      />
-                      <Typography
-                        variant="body1"
-                        className={styles.docTitle}
-                        onClick={() => handleOpenDocumentSummary(doc?.id)}
-                      >
-                        {doc?.file_name}
-                      </Typography>
-                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Image
-                          src="/images/more.svg"
-                          alt="more"
-                          width={16}
-                          height={16}
-                          className={styles.moreImg}
-                        />
-                      </IconButton>
-                      <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorElUser}
-                        anchorOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        open={Boolean(anchorElUser)}
-                        onClose={handleCloseUserMenu}
-                        className={styles.mainDropdown}
-                        sx={{
-                          '& .MuiPaper-root': {
-                            backgroundColor: 'var(--Input-Box-Colors)',
-                            marginTop: '70px',
-                            boxShadow: 'none',
-                            borderRadius: '12px',
-                          },
-                        }}
-                      >
-                        <MenuItem
-                          onClick={() => handleDeleteOption(doc?.id)}
-                          className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
-                        >
-                          <Image
-                            src="/images/trash.svg"
-                            alt="tras"
-                            width={18}
-                            height={18}
-                          />
-                          <Typography>Delete Document</Typography>
-                        </MenuItem>
-                      </Menu>
-                    </div>
-                    <div className={styles.docDateBox}>
-                      <div className={styles.docTagBox}>
-                        {doc?.tags?.slice(0, 1)?.map((tag) => (
-                          <span key={tag?.id} className={styles.docTag}>
-                            {tag?.name}
-                          </span>
-                        ))}
-                        {doc?.tags?.length > 1 && (
-                          <span className={styles.docTagCount}>
-                            +{doc?.tags?.length - 1}
-                          </span>
-                        )}
-                      </div>
-                      <Typography variant="body1">
-                        {convertDateFormat(doc?.upload_on)}
-                      </Typography>
-                    </div>
-                  </div>
-                </Grid>
-              ))
-            ) : (
-              <></>
-            )}
-          </Grid>
-        </Box>
-        <Box
-          component="div"
-          className="pagination-box"
-          sx={{
-            padding: '19px 33px 24px 33px',
-            marginBottom: '-24px',
-          }}
-        >
-          <Pagination
-            count={Math.ceil(count / 12)}
-            page={page}
-            onChange={handlePageChange}
-            shape="rounded"
-            className="pagination"
-            sx={{
-              padding: '8px 33px',
-            }}
-          />
-        </Box>
-      </div>
+        </div>
+      ) : (
+        <DocumentsEmpty />
+      )}
       <DeleteDialog
         openDeleteDialogProps={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}
