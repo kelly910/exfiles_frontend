@@ -19,3 +19,9 @@ export const convertDateFormat = (date: string): string => {
   const [day, month, year] = date.split('-');
   return `${month}-${day}-${year}`;
 };
+
+// Convert YYYY-MM-DD To MM-DD-YYYY
+export const convertDateFormatForIncident = (date: string): string => {
+  const [year, month, day] = date.split('-');
+  return `${month}-${day}-${year}`;
+};
