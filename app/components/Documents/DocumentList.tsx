@@ -187,7 +187,10 @@ const DocumentList: React.FC<DocumentListProps> = ({
           </Box>
         </Box>
 
-        <Box className={styles.docBoxMain} component="div">
+        <Box
+          className={`${styles.docBoxMain} ${selectedDoc ? styles.docBoxMainOpen : ''}`}
+          component="div"
+        >
           <Grid
             container
             spacing={2}

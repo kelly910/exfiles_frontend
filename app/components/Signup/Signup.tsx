@@ -770,7 +770,7 @@ const Page = () => {
                   Already a Member?
                 </Typography>
                 <Typography variant="body1" component="p" gutterBottom>
-                  Lorem Ipsum dolor sit amet
+                  Lorem Ipsim doloer sit ale jnneui
                 </Typography>
               </div>
               <Button
