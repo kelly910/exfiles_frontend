@@ -51,8 +51,6 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     setEditMode(false);
   };
 
-  const saveSummary = () => {};
-
   useEffect(() => {
     if (docId) {
       dispatch(setLoader(true));
