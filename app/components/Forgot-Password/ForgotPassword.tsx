@@ -108,7 +108,7 @@ const Page = () => {
                             color:
                               errors.email && touched.email
                                 ? '#ff4d4d'
-                                : 'var(--Primary-Text-Color)',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 'var(--Medium)',
                           }}
                         >

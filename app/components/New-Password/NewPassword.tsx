@@ -121,7 +121,7 @@ const Page = () => {
                             color:
                               errors.new_password && touched.new_password
                                 ? '#ff4d4d'
-                                : '#676972',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >
@@ -217,7 +217,7 @@ const Page = () => {
                               errors.confirm_password &&
                               touched.confirm_password
                                 ? '#ff4d4d'
-                                : '#676972',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 500,
                           }}
                         >

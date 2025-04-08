@@ -83,6 +83,25 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
     }
   };
 
+  // const handleInputChange = (values: UpdateUserFormValues) => {
+  //   const current = {
+  //     ...values,
+  //     contact_number: `${countryCode}${values.contact_number}`,
+  //   };
+  //   const initial = {
+  //     ...initialValues,
+  //     contact_number: initialValues.contact_number
+  //       ? `${countryCode}${initialValues.contact_number}`
+  //       : '',
+  //   };
+  //   const isChanged = Object.keys(initial).some(
+  //     (key) =>
+  //       current[key as keyof UpdateUserFormValues] !==
+  //       initial[key as keyof UpdateUserFormValues]
+  //   );
+  //   setIsFieldFilled(isChanged);
+  // };
+
   return (
     <div className={styles.headerDialogBox}>
       <Formik
@@ -342,6 +361,9 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                     id="contact_number"
                     name="contact_number"
                     className={styles.mobileInput}
+                    inputProps={{
+                      maxLength: 10,
+                    }}
                     error={Boolean(
                       errors.contact_number && touched.contact_number
                     )}
@@ -421,8 +443,6 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                           >
                             <MenuItem value="+91">+91</MenuItem>
                             <MenuItem value="+1">+1</MenuItem>
-                            <MenuItem value="+44">+44</MenuItem>
-                            <MenuItem value="+61">+61</MenuItem>
                           </Select>
                         </InputAdornment>
                       ),

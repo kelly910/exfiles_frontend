@@ -382,6 +382,79 @@
   .docsBoardBody {
     padding: 16px 24px 24px 24px;
 
+    .dialogFormButtonBox {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 32px;
+      padding: 24px 0px 24px 24px;
+
+      .formCancelBtn {
+        text-transform: capitalize;
+        padding: 0;
+        font-weight: var(--Regular);
+        font-size: var(--SubTitle-2);
+        line-height: 1.4;
+        text-align: center;
+        color: var(--Subtext-Color);
+        transition: all 0.2s;
+
+        &:hover {
+          color: var(--Primary-Text-Color);
+        }
+      }
+
+      .formSaveBtn {
+        text-transform: capitalize;
+        font-weight: var(--Medium);
+        font-size: var(--SubTitle-3);
+        line-height: 10px;
+        letter-spacing: 0px;
+        min-width: 140px;
+        background: var(--Main-Gradient);
+
+        color: var(--Txt-On-Gradient);
+        border-radius: 12px;
+        padding: 15px 24px;
+        transition: all 0.2s;
+
+        &:hover {
+          background: var(--Main-Gradient);
+          background-blend-mode: overlay;
+        }
+
+        &.formDeletBtn {
+          background: #e72240;
+
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+
+      .formBackBtn {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        text-transform: capitalize;
+        padding: 0;
+        font-weight: var(--Regular);
+        font-size: var(--SubTitle-2);
+        text-align: center;
+        color: var(--Subtext-Color);
+        transition: all 0.2s;
+
+        &:hover {
+          color: var(--Primary-Text-Color);
+        }
+      }
+
+      &.dialogDeletButtonBox {
+        justify-content: space-between;
+      }
+    }
+
     .docsBodyTitle {
       font-weight: var(--Regular);
       font-size: var(--SubTitle-3);
@@ -444,6 +517,15 @@
       gap: 8px;
       text-transform: capitalize;
       padding: 12px 8px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .docsBoardBody {
+    .dialogFormButtonBox {
+      flex-wrap: wrap;
+      gap: 20px;
     }
   }
 }

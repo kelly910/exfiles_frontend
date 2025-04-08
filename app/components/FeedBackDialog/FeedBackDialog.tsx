@@ -72,7 +72,6 @@ export default function FeedbackDialog({
         if (response?.messages?.length) {
           showToast('success', response?.messages[0]);
         }
-        console.log(response, 'response');
         dispatch(setLoader(false));
         setLoading(false);
         onClose();

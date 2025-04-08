@@ -74,6 +74,9 @@ export default function PageHeader({ title }: { title: string }) {
   const { no_of_docs } = useSelector(
     (state: RootState) => state.categoryListing
   );
+  const { no_of_incident } = useSelector(
+    (state: RootState) => state.logIncidents
+  );
 
   useEffect(() => {
     dispatch(fetchCategories({ page: 1 }));
@@ -153,7 +156,7 @@ export default function PageHeader({ title }: { title: string }) {
                     </>
                   ) : (
                     <>
-                      No. of Incidents : <span>32</span>
+                      No. of Incidents : <span>{no_of_incident || 0}</span>
                     </>
                   )}
                 </Typography>

@@ -141,7 +141,7 @@ const Page = () => {
                             color:
                               errors.email && touched.email
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 'var(--Regular)',
                           }}
                         >
@@ -214,7 +214,7 @@ const Page = () => {
                             color:
                               errors.password && touched.password
                                 ? '#ff4d4d'
-                                : '#898B94',
+                                : 'var(--Subtext-Color)',
                             fontWeight: 'var(--Medium)',
                           }}
                         >
@@ -234,7 +234,7 @@ const Page = () => {
                             type={showPassword ? 'text' : 'password'}
                             id="password"
                             name="password"
-                            placeholder="Choose a strong Password"
+                            placeholder="Enter Password here"
                             error={Boolean(errors.password && touched.password)}
                             sx={{
                               marginTop: '8px',
@@ -382,7 +382,7 @@ const Page = () => {
                   Not a Member yet?
                 </Typography>
                 <Typography variant="body1" component="p" gutterBottom>
-                  Lorem Ipsum dolor sit amet
+                  Lorem Ipsim doloer sit ale jnneui
                 </Typography>
               </div>
               <Button

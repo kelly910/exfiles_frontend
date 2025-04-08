@@ -20,6 +20,12 @@ export const convertDateFormat = (date: string): string => {
   return `${month}-${day}-${year}`;
 };
 
+// Convert YYYY-MM-DD To MM-DD-YYYY
+export const convertDateFormatForIncident = (date: string): string => {
+  const [year, month, day] = date.split('-');
+  return `${month}-${day}-${year}`;
+};
+
 // Uploaded document Status
 export const DOCUMENT_STATUS = {
   PENDING: 'pending',
