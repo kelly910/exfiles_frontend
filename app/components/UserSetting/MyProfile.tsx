@@ -361,6 +361,9 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                     id="contact_number"
                     name="contact_number"
                     className={styles.mobileInput}
+                    inputProps={{
+                      maxLength: 10,
+                    }}
                     error={Boolean(
                       errors.contact_number && touched.contact_number
                     )}
