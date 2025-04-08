@@ -74,6 +74,15 @@
     padding: 12px 33px 24px 33px;
     min-height: calc(100% - 74px - 91px);
 
+    .noRecordsFound {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
+      align-items: center;
+      color: var(--Subtext-Color);
+      font-size: var(--SubTitle-2);
+    }
+
     .docGridBox {
       background-color: var(--Card-Color);
       padding: 8px;

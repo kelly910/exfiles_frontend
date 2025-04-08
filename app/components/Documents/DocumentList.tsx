@@ -56,6 +56,9 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const { documents, count } = useSelector(
     (state: RootState) => state.documentListing
   );
+  const { no_of_docs } = useSelector(
+    (state: RootState) => state.categoryListing
+  );
   const [page, setPage] = useState(1);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleletDocId, setDeleletDocId] = useState<number | null>(null);
@@ -149,7 +152,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
 
   return (
     <>
-      {documents?.length > 0 ? (
+      {no_of_docs ? (
         <div className={styles.docsListing}>
           {/* <Box component="div" className={styles.categoryBox}>
           <Box className={styles.categoryBoxInner}>
@@ -202,9 +205,8 @@ const DocumentList: React.FC<DocumentListProps> = ({
               justifyContent="start"
               alignItems="stretch"
             >
-              {catId ? (
+              {catId && documents?.length > 0 ? (
                 Array.isArray(documents) &&
-                documents?.length > 0 &&
                 documents?.map((doc: Document) => (
                   <Grid
                     item
@@ -302,7 +304,9 @@ const DocumentList: React.FC<DocumentListProps> = ({
                   </Grid>
                 ))
               ) : (
-                <></>
+                <Typography variant="body1" className={styles.noRecordsFound}>
+                  No records found
+                </Typography>
               )}
             </Grid>
           </Box>
