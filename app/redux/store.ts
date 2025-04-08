@@ -13,6 +13,7 @@ import chatSlice from './slices/Chat';
 import categoryListingSlice from './slices/categoryListing';
 import documentListSlice from './slices/documentByCategory';
 import documentSummarySlice from './slices/documentSummary';
+import editSummarySlice from './slices/editSummary';
 
 const createNoopStorage = () => {
   return {
@@ -44,6 +45,7 @@ const persistConfig = {
     'categoryListing',
     'documentListing',
     'documentSummary',
+    'editSummary',
   ],
   // whitelist: ["auth"], // specify reducers to persist
 };
@@ -59,6 +61,7 @@ const rootReducer = combineReducers({
   categoryListing: categoryListingSlice,
   documentListing: documentListSlice,
   documentSummary: documentSummarySlice,
+  editSummary: editSummarySlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
