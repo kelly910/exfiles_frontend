@@ -483,8 +483,6 @@ const Page = () => {
                                   >
                                     <MenuItem value="+91">+91</MenuItem>
                                     <MenuItem value="+1">+1</MenuItem>
-                                    <MenuItem value="+44">+44</MenuItem>
-                                    <MenuItem value="+61">+61</MenuItem>
                                   </Select>
                                 </InputAdornment>
                               ),
