@@ -68,6 +68,10 @@ const feedbackBodySchema: Yup.StringSchema = Yup.string()
   .max(200, 'Feedback must be at most 200 characters')
   .required('Please write your feedback here');
 
+const summarySchema: Yup.StringSchema = Yup.string().required(
+  'Please write your summary here'
+);
+
 export {
   firstNameSchema,
   lastNameSchema,
@@ -81,4 +85,5 @@ export {
   newPassword1Schema,
   newPassword2Schema,
   feedbackBodySchema,
+  summarySchema,
 };
