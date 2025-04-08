@@ -140,7 +140,11 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
                   >
                     {category?.name}
                   </Typography>
-                  <Typography variant="body1" className={styles.folderNo}>
+                  <Typography
+                    variant="body1"
+                    className={styles.folderNo}
+                    onClick={() => handleCategoryClick(category?.id)}
+                  >
                     No. of Docs : <span>{category?.no_of_docs || 0}</span>
                   </Typography>
                 </div>
