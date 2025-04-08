@@ -18,6 +18,10 @@ import { deleteDocumentByDocId } from '@/app/redux/slices/documentByCategory';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { setLoader } from '@/app/redux/slices/loader';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
+import {
+  deleteIncidentById,
+  fetchLogIncidents,
+} from '@/app/redux/slices/logIncident';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -60,11 +64,11 @@ export default function DeleteDialog({
     setTimeout(async () => {
       if (type === 'Document') {
         await dispatch(deleteDocumentByDocId(deletedId as number));
+        await dispatch(fetchCategories({ page: 1 }));
       } else {
-        console.log('LogIncident');
-        // await dispatch(deleteDocumentByDocId(deletedId as number));
+        await dispatch(deleteIncidentById(deletedId as number));
+        await dispatch(fetchLogIncidents({ page: 1 }));
       }
-      await dispatch(fetchCategories({ page: 1 }));
       onClose();
       dispatch(setLoader(false));
       setLoading(false);
@@ -102,7 +106,7 @@ export default function DeleteDialog({
                 Delete {type === 'Document' ? 'Document' : ''}
               </Typography>
               <Typography variant="body1" className={styles.dialogSemiTitle}>
-                Are you sure you want delete this{' '}
+                Are you sure you want to delete this{' '}
                 {type === 'Document' ? ' document' : 'incident'}?
               </Typography>
             </Box>
