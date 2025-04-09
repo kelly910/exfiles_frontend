@@ -59,8 +59,8 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
           await dispatch(fetchDocumentSummaryById(docId)).unwrap();
         } catch (error) {
           handleError(error as ErrorResponse);
-          dispatch(setLoader(false));
         } finally {
+          handleCloseDrawer();
           dispatch(setLoader(false));
         }
       }, 2000);

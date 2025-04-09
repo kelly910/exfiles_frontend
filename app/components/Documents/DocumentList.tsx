@@ -3,7 +3,6 @@
 import React from 'react';
 import {
   Box,
-  Grid,
   IconButton,
   Input,
   InputAdornment,
@@ -55,6 +54,9 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const [searchParams, setSearchParams] = useState('');
   const { documents, count } = useSelector(
     (state: RootState) => state.documentListing
+  );
+  const { no_of_docs } = useSelector(
+    (state: RootState) => state.categoryListing
   );
   const [page, setPage] = useState(1);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -119,8 +121,6 @@ const DocumentList: React.FC<DocumentListProps> = ({
     _: React.ChangeEvent<unknown>,
     newPage: number
   ) => {
-    setPage(newPage);
-
     await dispatch(
       fetchDocumentsByCategory({
         categoryId: catId as number,
@@ -128,6 +128,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
         page: newPage,
       })
     ).unwrap();
+    setPage(newPage);
   };
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -149,29 +150,29 @@ const DocumentList: React.FC<DocumentListProps> = ({
 
   return (
     <>
-      {documents?.length > 0 ? (
+      {no_of_docs ? (
         <div className={styles.docsListing}>
           {/* <Box component="div" className={styles.categoryBox}>
-          <Box className={styles.categoryBoxInner}>
-            <Button
-              // onClick={handleCloseDrawer}
-              className={styles.backButton}
-              sx={{ marginBottom: '24px' }}
-            >
-              <Image
-                src="/images/arrow-left.svg"
-                alt="user"
-                width={16}
-                height={16}
-              />
-            </Button>
-            <Typography variant="body1" className={styles.categoriesTitle}>
-              Categories
+            <Box className={styles.categoryBoxInner}>
+              <Button
+                // onClick={handleCloseDrawer}
+                className={styles.backButton}
+                sx={{ marginBottom: '24px' }}
+              >
+                <Image
+                  src="/images/arrow-left.svg"
+                  alt="user"
+                  width={16}
+                  height={16}
+                />
+              </Button>
+              <Typography variant="body1" className={styles.categoriesTitle}>
+                Categories
+              </Typography>
+            </Box>
+            <Typography variant="body1" className={styles.categoriesSemiTitle}>
+              No. of Docs : <span>112</span>
             </Typography>
-          </Box>
-          <Typography variant="body1" className={styles.categoriesSemiTitle}>
-            No. of Docs : <span>112</span>
-          </Typography>
         </Box> */}
           <Box component="div" className={styles.searchBoard}>
             <Box component="div" className={styles.docBoard}>
@@ -196,115 +197,104 @@ const DocumentList: React.FC<DocumentListProps> = ({
             className={`${styles.docBoxMain} ${selectedDoc ? styles.docBoxMainOpen : ''}`}
             component="div"
           >
-            <Grid
-              container
-              spacing={2}
-              justifyContent="start"
-              alignItems="stretch"
-            >
-              {catId ? (
+            <Box component="div" className={styles.docBoxInner}>
+              {catId && documents?.length > 0 ? (
                 Array.isArray(documents) &&
-                documents?.length > 0 &&
                 documents?.map((doc: Document) => (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={12}
-                    md={6}
-                    lg={4}
+                  // <Box key={doc?.id} className={styles.docBoxInner}>
+                  <Box
                     key={doc?.id}
-                    className={styles.docBoxInner}
+                    className={`${styles.docGridBox} ${selectedDoc === doc?.id ? styles.active : ''}`}
                   >
-                    <div
-                      className={`${styles.docGridBox} ${selectedDoc === doc?.id ? styles.active : ''}`}
-                    >
-                      <div className={styles.docBox}>
+                    <div className={styles.docBox}>
+                      <Image
+                        src={getDocumentImage(doc?.file_type)}
+                        alt="pdf"
+                        width={19}
+                        height={24}
+                        className={styles.pdfImg}
+                        onClick={() => handleOpenDocumentSummary(doc?.id)}
+                      />
+                      <Typography
+                        variant="body1"
+                        className={styles.docTitle}
+                        onClick={() => handleOpenDocumentSummary(doc?.id)}
+                      >
+                        {doc?.file_name}
+                      </Typography>
+                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                         <Image
-                          src={getDocumentImage(doc?.file_type)}
-                          alt="pdf"
-                          width={19}
-                          height={24}
-                          className={styles.pdfImg}
-                          onClick={() => handleOpenDocumentSummary(doc?.id)}
+                          src="/images/more.svg"
+                          alt="more"
+                          width={16}
+                          height={16}
+                          className={styles.moreImg}
                         />
-                        <Typography
-                          variant="body1"
-                          className={styles.docTitle}
-                          onClick={() => handleOpenDocumentSummary(doc?.id)}
+                      </IconButton>
+                      <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                        className={styles.mainDropdown}
+                        sx={{
+                          '& .MuiPaper-root': {
+                            backgroundColor: 'var(--Input-Box-Colors)',
+                            marginTop: '70px',
+                            boxShadow: 'none',
+                            borderRadius: '12px',
+                          },
+                        }}
+                      >
+                        <MenuItem
+                          onClick={() => handleDeleteOption(doc?.id)}
+                          className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
                         >
-                          {doc?.file_name}
-                        </Typography>
-                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                           <Image
-                            src="/images/more.svg"
-                            alt="more"
-                            width={16}
-                            height={16}
-                            className={styles.moreImg}
+                            src="/images/trash.svg"
+                            alt="tras"
+                            width={18}
+                            height={18}
                           />
-                        </IconButton>
-                        <Menu
-                          id="menu-appbar"
-                          anchorEl={anchorElUser}
-                          anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                          }}
-                          keepMounted
-                          transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                          }}
-                          open={Boolean(anchorElUser)}
-                          onClose={handleCloseUserMenu}
-                          className={styles.mainDropdown}
-                          sx={{
-                            '& .MuiPaper-root': {
-                              backgroundColor: 'var(--Input-Box-Colors)',
-                              marginTop: '70px',
-                              boxShadow: 'none',
-                              borderRadius: '12px',
-                            },
-                          }}
-                        >
-                          <MenuItem
-                            onClick={() => handleDeleteOption(doc?.id)}
-                            className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
-                          >
-                            <Image
-                              src="/images/trash.svg"
-                              alt="tras"
-                              width={18}
-                              height={18}
-                            />
-                            <Typography>Delete Document</Typography>
-                          </MenuItem>
-                        </Menu>
-                      </div>
-                      <div className={styles.docDateBox}>
-                        <div className={styles.docTagBox}>
-                          {doc?.tags?.slice(0, 1)?.map((tag) => (
-                            <span key={tag?.id} className={styles.docTag}>
-                              {tag?.name}
-                            </span>
-                          ))}
-                          {doc?.tags?.length > 1 && (
-                            <span className={styles.docTagCount}>
-                              +{doc?.tags?.length - 1}
-                            </span>
-                          )}
-                        </div>
-                        <Typography variant="body1">
-                          {convertDateFormat(doc?.upload_on)}
-                        </Typography>
-                      </div>
+                          <Typography>Delete Document</Typography>
+                        </MenuItem>
+                      </Menu>
                     </div>
-                  </Grid>
+                    <div className={styles.docDateBox}>
+                      <div className={styles.docTagBox}>
+                        {doc?.tags?.slice(0, 1)?.map((tag) => (
+                          <span key={tag?.id} className={styles.docTag}>
+                            {tag?.name}
+                          </span>
+                        ))}
+                        {doc?.tags?.length > 1 && (
+                          <span className={styles.docTagCount}>
+                            +{doc?.tags?.length - 1}
+                          </span>
+                        )}
+                      </div>
+                      <Typography variant="body1">
+                        {convertDateFormat(doc?.upload_on)}
+                      </Typography>
+                    </div>
+                  </Box>
+                  // </Box>
                 ))
               ) : (
-                <></>
+                <Typography variant="body1" className={styles.noRecordsFound}>
+                  No records found
+                </Typography>
               )}
-            </Grid>
+            </Box>
           </Box>
           <Box
             component="div"

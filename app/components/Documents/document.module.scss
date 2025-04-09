@@ -74,6 +74,16 @@
     padding: 12px 33px 24px 33px;
     min-height: calc(100% - 74px - 91px);
 
+    .noRecordsFound {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
+      align-items: center;
+      color: var(--Subtext-Color);
+      font-size: var(--SubTitle-2);
+      min-height: calc(100vh - 65px - 74px - 91px - 36px);
+    }
+
     .docGridBox {
       background-color: var(--Card-Color);
       padding: 8px;
@@ -85,6 +95,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: unset;
+      max-width: 100%;
 
       &.active {
         border: 1px solid var(--Card-Border);
@@ -299,6 +310,10 @@
   height: calc(100vh - 65px);
   overflow-y: auto;
   transition: all 0.4s;
+
+  @media (max-width: 1100px) {
+    min-width: 400px;
+  }
 
   .docsBoardHeader {
     background-color: var(--Card-Color);
@@ -644,6 +659,55 @@
   .menuDropdownDelete {
     p {
       color: #e72240;
+    }
+  }
+}
+
+.docBoxMain {
+  .docBoxInner {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 16px;
+    overflow: hidden;
+    max-width: 100%;
+
+    .docGridBox {
+      width: calc(33.33% - 10.66px);
+      max-width: 100%;
+
+      @media (max-width: 1100px) {
+        width: calc(50% - 8px);
+      }
+
+      @media (max-width: 550px) {
+        width: calc(100%);
+      }
+    }
+  }
+}
+
+.docBoxMainOpen {
+  .docBoxInner {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
+    overflow: hidden;
+    max-width: 100%;
+
+    .docGridBox {
+      width: calc(50% - 8px);
+      max-width: 100%;
+
+      @media (max-width: 1100px) {
+        width: calc(100%);
+      }
+
+      @media (max-width: 550px) {
+        width: calc(100%);
+      }
     }
   }
 }

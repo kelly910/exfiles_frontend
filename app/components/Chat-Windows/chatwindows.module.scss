@@ -20,7 +20,7 @@
     transform: translateY(-50%);
   }
 
-  &:first-child{
+  &:first-child {
     margin-top: 24px;
   }
 
@@ -53,6 +53,32 @@
   margin-right: auto;
   margin-left: 0;
   margin-bottom: 32px;
+
+  .chatAlSummaryButtonMain {
+    padding: 2px 12px 8px 12px;
+    background: var(--Card-Color);
+
+    .chatAlSummaryButton {
+      font-weight: var(--Medium);
+      font-size: var(--SubTitle-5);
+      line-height: 1.4;
+      text-align: center;
+      color: var(--Txt-On-Gradient);
+      background: var(--Main-Gradient);
+      text-transform: capitalize;
+      padding: 9px 20px;
+      border-radius: 8px;
+
+      &:hover {
+        background: var(--Main-Gradient-hover);
+        transition: all 0.3s;
+      }
+
+      img {
+        margin-right: 12px;
+      }
+    }
+  }
 
   .chatAlContent {
     overflow: hidden;
@@ -190,9 +216,20 @@
       .chatAlFileInner {
         margin-top: 8px;
         background-color: var(--Input-Box-Colors);
-        border-radius: 6px;
+        border-radius: 12px;
         padding: 8px;
         border: 1px solid #3a3948;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: space-between;
+        width: 100%;
+
+        div {
+          width: 100%;
+        }
 
         &:first-child {
           margin-top: 0;
@@ -205,11 +242,12 @@
         border-radius: 3px;
         display: flex;
         width: fit-content;
+        max-width: fit-content;
       }
 
       .chatAlText {
         font-weight: var(--Medium);
-        font-size: var(--SubTitle-3);
+        font-size: var(--SubTitle-2);
         line-height: 140%;
         color: var(--Primary-Text-Color);
         margin-top: 8px;
@@ -225,11 +263,35 @@
         margin-top: 8px;
         cursor: pointer;
 
+        &:has(.chatAlUploadFailed) {
+          align-items: start;
+        }
+
+        img {
+          flex: 0 0 auto;
+
+          &:first-child {
+            margin-right: 4px;
+          }
+        }
+
         p {
-          font-weight: var(--Medium);
+          font-weight: var(--Regular);
           font-size: var(--SubTitle-5);
           line-height: 140%;
           color: var(--Primary-Text-Color);
+          width: 100%;
+        }
+
+        .chatAlUploadFailed {
+          display: block;
+          width: fit-content;
+          padding: 0;
+          margin: 0;
+
+          p {
+            margin: 0;
+          }
         }
       }
     }
@@ -272,6 +334,13 @@
         background: var(--Input-Box-Colors);
         border: 1px solid var(--Stroke-Color);
         padding: 8px;
+      }
+
+      .chatAlFileHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        flex-direction: column;
       }
 
       .fileBox {

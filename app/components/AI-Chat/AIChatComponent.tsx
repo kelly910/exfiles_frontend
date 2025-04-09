@@ -23,7 +23,10 @@ export default function AIChatComponent({ threadId }: { threadId: string }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    // Set initial state based on screen width
+    return window.innerWidth <= 1024;
+  });
   const [isMessagesLoading, setIsMessagesLoading] = useState(true);
 
   // const sidebarRef = useRef<HTMLInputElement>(null);
@@ -35,6 +38,25 @@ export default function AIChatComponent({ threadId }: { threadId: string }) {
   const handleThreadClick = (thread: string) => {
     router.push(`/ai-chats/${thread}`); // Navigate to thread page
   };
+
+  // New code
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1100) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+
+    handleResize(); // Call on mount to ensure it sets correctly
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  console.log('sidebar', isSidebarOpen);
+  // New code
 
   const getThreadMessagesDetails = async (thread: string) => {
     setIsMessagesLoading(true);
@@ -63,7 +85,11 @@ export default function AIChatComponent({ threadId }: { threadId: string }) {
           title=""
         />
         <section className="main-body">
-          <PageHeader title="" />
+          <PageHeader
+            isSidebarOpen={isSidebarOpen}
+            toggleSidebar={toggleSidebar}
+            title=""
+          />
 
           <Container maxWidth="lg" disableGutters>
             {!threadId ? (

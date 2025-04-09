@@ -25,7 +25,17 @@ import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch } from '@/app/redux/hooks';
 import TemporaryDrawer from '../Drawer/Drawer';
 
-export default function PageHeader({ title }: { title: string }) {
+interface PageHeaderProps {
+  toggleSidebar: () => void;
+  title: string;
+  isSidebarOpen: boolean;
+}
+
+export default function PageHeader({
+  title,
+  toggleSidebar,
+  isSidebarOpen,
+}: PageHeaderProps) {
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
@@ -100,7 +110,30 @@ export default function PageHeader({ title }: { title: string }) {
             disableGutters
             sx={{ justifyContent: 'space-between', gap: '16px' }}
           >
-            <Box sx={{ width: '100%' }}>
+            <Button onClick={toggleSidebar} className={styles.toggleBtnHedaer}>
+              <Image
+                key={isSidebarOpen ? 'open' : 'closed'}
+                src={
+                  isSidebarOpen
+                    ? '/images/close.svg' // Active state image
+                    : '/images/sidebar-hide-icon.svg' // Inactive state image
+                }
+                alt="menu"
+                width={24}
+                height={24}
+              />
+            </Button>
+
+            <Box className={styles.mobileLogo}>
+              <Image
+                src="/images/mobileLogo.png"
+                alt="logo"
+                width={40}
+                height={38}
+              />
+            </Box>
+
+            <Box sx={{ width: '100%' }} className={styles.docsHeader}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {title === 'Documents' ? (
                   <Image

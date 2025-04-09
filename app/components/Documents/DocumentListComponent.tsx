@@ -8,10 +8,26 @@ import DocumentList from './DocumentList';
 import DocumentSummary from './DocumentSummary';
 import { useRouter } from 'next/navigation';
 import PageHeader from '../Common/PageHeader';
+import DocumentsEmpty from '../DocumentsEmpty/DocumentsEmpty';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { fetchCategories } from '@/app/redux/slices/categoryListing';
 
 export default function DocumentListComponent({ catId }: { catId: number }) {
   const router = useRouter();
   const [selectedDocId, setSelectedsDocId] = useState<number | null>(null);
+  const dispatch = useAppDispatch();
+  const [showEmptyCategoryComponent, setShowEmptyCategoryComponent] =
+    useState(false);
+
+  useEffect(() => {
+    dispatch(fetchCategories({ page: 1 }))
+      .unwrap()
+      .then(async (res) => {
+        if (res?.no_of_docs > 0) {
+          await setShowEmptyCategoryComponent(true);
+        }
+      });
+  }, [dispatch]);
 
   const handleSelectedDocSummary = (docId: number) => {
     setSelectedsDocId(docId);
@@ -55,19 +71,29 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
         title="Documents"
       />
       <section className="main-body">
-        <PageHeader title="Documents" />
+        <PageHeader
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          title="Documents"
+        />
         <div className={styles.docsMain}>
-          <CategoryList catId={catId} />
-          <DocumentList
-            catId={catId}
-            handleOpenDocumentSummary={handleSelectedDocSummary}
-            selectedDoc={selectedDocId}
-          />
-          {selectedDocId !== null && (
-            <DocumentSummary
-              docId={selectedDocId}
-              selectedDocIdNull={closeSummaryDrawer}
-            />
+          {showEmptyCategoryComponent ? (
+            <>
+              <CategoryList catId={catId} />
+              <DocumentList
+                catId={catId}
+                handleOpenDocumentSummary={handleSelectedDocSummary}
+                selectedDoc={selectedDocId}
+              />
+              {selectedDocId !== null && (
+                <DocumentSummary
+                  docId={selectedDocId}
+                  selectedDocIdNull={closeSummaryDrawer}
+                />
+              )}
+            </>
+          ) : (
+            <DocumentsEmpty />
           )}
         </div>
       </section>
