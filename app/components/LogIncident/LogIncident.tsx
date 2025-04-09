@@ -125,6 +125,7 @@ export default function LogIncident() {
       field: 'name',
       headerName: 'DESCRIPTION',
       flex: 1,
+      minWidth: 500,
     },
     {
       field: 'created',
@@ -134,7 +135,7 @@ export default function LogIncident() {
     {
       field: 'actions',
       headerName: '',
-      width: 100,
+      width: 70,
       sortable: false,
       renderCell: (params) => (
         <>
@@ -191,7 +192,11 @@ export default function LogIncident() {
           title="Log Incident"
         />
         <section className="main-body">
-          <PageHeader title="Log Incident" />
+          <PageHeader
+            isSidebarOpen={isSidebarOpen}
+            toggleSidebar={toggleSidebar}
+            title="Log Incident"
+          />
           {no_of_incident ? (
             <Box
               sx={{

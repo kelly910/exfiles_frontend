@@ -1,3 +1,25 @@
+.sidebarLayer {
+  width: 100vw;
+  height: calc(100vh - 65px);
+  position: fixed;
+  top: 65px;
+  left: 0;
+  // background-color: var(--Background-Color);
+  backdrop-filter: blur(24px);
+  z-index: 99;
+  display: none;
+
+  @media (max-width: 1100px) {
+    display: block;
+  }
+}
+.closeLayer {
+  left: -100%;
+
+  @media (max-width: 1100px) {
+    display: block;
+  }
+}
 .sidebar {
   // position: fixed;
   background-color: var(--Card-Color);
@@ -10,6 +32,17 @@
   max-height: 100vh;
   transition: all 0.4s;
   // overflow-y: auto;
+  @media (max-width: 1100px) {
+    width: 100%;
+    max-width: 300px;
+    max-height: calc(100vh - 65px);
+    top: 65px;
+    bottom: 0;
+    position: fixed;
+    left: 0;
+    border-right: 1px solid var(--Stroke-Color);
+  }
+
   .main-logo {
     width: auto;
     display: flex;
@@ -17,18 +50,26 @@
     justify-content: start;
     padding: 10px 12px;
     border-bottom: 1px solid var(--Stroke-Color);
+
+    @media (max-width: 1100px) {
+      display: none;
+      border-bottom: 0;
+    }
+
     .close-sidebar-logo {
       display: none;
       height: 44px;
       img {
         height: 100%;
         width: 100%;
+        max-height: 44px;
       }
     }
     .opensidebar-logo {
       height: 44px;
       img {
         height: 100%;
+        max-height: 44px;
       }
     }
   }
@@ -52,13 +93,20 @@
 }
 
 .sidebar-details {
-  padding: 16px 12px 16px 13px;
-  padding: 16px 12px 16px 13px;
+  padding: 16px 12px 16px 12px;
   display: flex;
   flex-direction: column;
   height: calc(100vh - 65px - 173px);
   min-height: 300px;
   overflow: hidden;
+
+  @media (max-width: 1100px) {
+    padding: 16px 24px 16px 24px;
+  }
+
+  @media (max-width: 600px) {
+    padding: 16px;
+  }
 
   .sidebar-top {
     display: flex;
@@ -69,12 +117,17 @@
     .left {
       height: 32px;
       width: 32px;
+      min-width: unset;
       display: flex;
       align-items: center;
       justify-content: center;
       border: 0.82px solid var(--Stroke-Color);
       border-radius: 7px;
       background-color: var(--Card-Image);
+
+      @media (max-width: 1100px) {
+        display: none;
+      }
 
       a {
         display: flex;
@@ -86,6 +139,7 @@
     .right {
       height: 32px;
       width: 32px;
+      min-width: unset;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -93,10 +147,41 @@
       border-radius: 7px;
       background-color: var(--Card-Image);
 
+      &.active {
+        display: none;
+      }
+
+      @media (max-width: 1100px) {
+        display: none;
+      }
+
       a {
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+    }
+
+    .search {
+      width: 100%;
+      position: relative;
+      display: none;
+
+      @media (max-width: 1100px) {
+        display: block;
+      }
+
+      .search-btn {
+        background-color: var(--Card-Color);
+        padding: 7px;
+        border: 1px solid var(--Stroke-Color);
+        min-width: unset;
+        border-radius: 10px;
+
+        position: absolute;
+        bottom: 50%;
+        transform: translateY(50%);
+        right: 5px;
       }
     }
   }
@@ -106,6 +191,30 @@
   .sidebar-list-details {
     padding: 0;
     margin-bottom: 16px;
+
+    .search {
+      width: 100%;
+      position: relative;
+      display: block;
+
+      @media (max-width: 1100px) {
+        display: none;
+      }
+
+      .search-btn {
+        background-color: var(--Card-Color);
+        padding: 5px;
+        border: 1px solid var(--Stroke-Color);
+        min-width: unset;
+        border-radius: 10px;
+
+        position: absolute;
+        bottom: 50%;
+        transform: translateY(50%);
+        right: 5px;
+      }
+    }
+
     li {
       padding: 0;
     }
@@ -282,6 +391,15 @@
 
 .closesidebar {
   width: 65px !important;
+  @media (max-width: 1100px) {
+    width: 100%;
+    max-width: 300px;
+    max-height: calc(100vh - 65px);
+    top: 65px;
+    bottom: 0;
+    position: fixed;
+    left: -100%;
+  }
   .main-logo {
     .close-sidebar-logo {
       display: block !important;
@@ -299,10 +417,11 @@
     height: calc(100vh - 65px - 77px);
   }
   .main-logo {
-    justify-content: center;
+    justify-content: flex-start;
   }
   .sidebar-top {
-    justify-content: center;
+    justify-content: flex-start;
+    margin: 0 4px;
     .right {
       display: none;
     }

@@ -1,8 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Style from './Sidebar.module.scss';
 import ListItem from '@mui/material/ListItem';
-import { Link, List } from '@mui/material';
+import { Box, Link, List, TextField } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -43,8 +43,20 @@ const Sidebar = ({
       setExpanded(isExpanded ? panel : false); // Only expand the clicked panel
     };
 
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleToggleSearch = () => {
+    setIsSearchOpen((prev) => !prev);
+  };
+
   return (
     <>
+      <span
+        className={`${Style['sidebarLayer']} ${!isOpen ? Style.closeLayer : ''}`}
+        onClick={toggleSidebar}
+      ></span>
       <div
         className={`${Style['sidebar']} ${!isOpen ? Style.closesidebar : ''}`}
       >
@@ -56,14 +68,14 @@ const Sidebar = ({
             <Image
               src="/images/close-sidebar-logo.svg"
               alt="close-sidebar-logo"
-              width={44}
+              width={41}
               height={44}
             />
           </Link>
         </div>
         <div className={Style['sidebar-details']}>
           <div className={Style['sidebar-top']}>
-            <div className={Style['left']} onClick={toggleSidebar}>
+            <Button className={Style['left']} onClick={toggleSidebar}>
               <Link href="#">
                 <Image
                   src="/images/sidebar-hide-icon.svg"
@@ -72,8 +84,11 @@ const Sidebar = ({
                   height={16}
                 />
               </Link>
-            </div>
-            <div className={Style['right']}>
+            </Button>
+            <Button
+              className={`${Style['right']} ${isSearchOpen ? Style['active'] : ''}`}
+              onClick={handleToggleSearch}
+            >
               <Link href="#">
                 <Image
                   src="/images/search-sidebar.svg"
@@ -82,27 +97,155 @@ const Sidebar = ({
                   height={16}
                 />
               </Link>
+            </Button>
+            <div className={Style['search']}>
+              <Box>
+                <TextField
+                  // as={TextField}
+                  fullWidth
+                  type="text"
+                  id="email"
+                  name="email"
+                  value={search}
+                  placeholder="Enter Email Address here"
+                  onChange={(e) => setSearch(e.target.value)}
+                  // error={Boolean(errors.email && touched.email)}
+                  sx={{
+                    marginTop: '0',
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '10px',
+                      borderWidth: '0px',
+                      color: 'var(--Primary-Text-Color)',
+                      backgroundColor: 'var(--Input-Box-Colors)',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        top: '-10px !important',
+                      },
+                      '& .MuiOutlinedInput-input': {
+                        fontSize: 'var(--SubTitle-3)',
+                        color: 'var(--Primary-Text-Color)',
+                        padding: '8px 40px 8px 12px',
+                        fontWeight: 'var(--Regular)',
+                        borderRadius: '10px',
+                        '&::placeholder': {
+                          color: 'var(Placeholder-Text)',
+                          fontWeight: 'var(--Regular)',
+                        },
+                      },
+                      '& fieldset': {
+                        borderColor: 'var(--Stroke-Color)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'var(--Primary-Text-Color)',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'var(--Primary-Text-Color)',
+                        borderWidth: '1px',
+                        color: 'var(--Primary-Text-Color)',
+                      },
+                    },
+                  }}
+                />
+                <Button
+                  className={Style['search-btn']}
+                  onClick={() => {
+                    setSearch('');
+                    inputRef.current?.focus();
+                  }}
+                >
+                  <Image
+                    src={
+                      search.trim()
+                        ? '/images/close.svg'
+                        : '/images/search-sidebar.svg'
+                    }
+                    alt="sidebar-hide-icon"
+                    width={12}
+                    height={12}
+                  />
+                </Button>
+              </Box>
             </div>
           </div>
           <div className={Style['sidebar-list']}>
             <List className={Style['sidebar-list-details']}>
-              <ListItem>
-                <Link
-                  href="#"
-                  underline="none"
-                  className={Style['sidebar-btn']}
-                >
-                  <span className={Style['btn-text']}>Start New Chat</span>{' '}
-                  <span>
-                    <Image
-                      src="/images/add-icon.svg"
-                      alt="icon"
-                      width={20}
-                      height={20}
+              {isSearchOpen ? (
+                <div className={Style['search']}>
+                  <Box>
+                    <TextField
+                      // as={TextField}
+                      fullWidth
+                      type="text"
+                      id="email"
+                      name="email"
+                      placeholder="Enter Email Address here"
+                      // error={Boolean(errors.email && touched.email)}
+                      sx={{
+                        marginTop: '0',
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '10px',
+                          borderWidth: '0px',
+                          color: 'var(--Primary-Text-Color)',
+                          backgroundColor: 'var(--Input-Box-Colors)',
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            top: '-10px !important',
+                          },
+                          '& .MuiOutlinedInput-input': {
+                            fontSize: 'var(--SubTitle-3)',
+                            color: 'var(--Primary-Text-Color)',
+                            padding: '10px 40px 10px 12px',
+                            fontWeight: 'var(--Regular)',
+                            borderRadius: '10px',
+                            '&::placeholder': {
+                              color: 'var(Placeholder-Text)',
+                              fontWeight: 'var(--Regular)',
+                            },
+                          },
+                          '& fieldset': {
+                            borderColor: 'var(--Stroke-Color)',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'var(--Primary-Text-Color)',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'var(--Primary-Text-Color)',
+                            borderWidth: '1px',
+                            color: 'var(--Primary-Text-Color)',
+                          },
+                        },
+                      }}
                     />
-                  </span>{' '}
-                </Link>
-              </ListItem>
+                    <Button
+                      className={Style['search-btn']}
+                      onClick={handleToggleSearch}
+                    >
+                      <Image
+                        src="/images/close.svg"
+                        alt="sidebar-hide-icon"
+                        width={16}
+                        height={16}
+                      />
+                    </Button>
+                  </Box>
+                </div>
+              ) : (
+                <ListItem>
+                  <Link
+                    href="#"
+                    underline="none"
+                    className={Style['sidebar-btn']}
+                  >
+                    <span className={Style['btn-text']}>Start New Chat</span>{' '}
+                    <span>
+                      <Image
+                        src="/images/add-icon.svg"
+                        alt="icon"
+                        width={20}
+                        height={20}
+                      />
+                    </span>{' '}
+                  </Link>
+                </ListItem>
+              )}
             </List>
           </div>
           <div className={Style['sidebar-accordian']}>

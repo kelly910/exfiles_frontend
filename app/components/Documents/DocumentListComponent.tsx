@@ -71,7 +71,11 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
         title="Documents"
       />
       <section className="main-body">
-        <PageHeader title="Documents" />
+        <PageHeader
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          title="Documents"
+        />
         <div className={styles.docsMain}>
           {showEmptyCategoryComponent ? (
             <>
