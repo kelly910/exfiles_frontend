@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from 'react';
 
-import { Container } from '@mui/material';
+import { Container, useMediaQuery } from '@mui/material';
 import PageHeader from '@components/Common/PageHeader';
-import ChatWindows from '@/app/components/Chat-Windows/ChatWindows';
-import Sidebar from '@/app/components/Common/Sidebar';
+import Sidebar from '@components/Common/Sidebar';
+
 import { useParams, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { fetchThreadMessagesByThreadId } from '@/app/redux/slices/Chat';
 import { useAppDispatch } from '@/app/redux/hooks';
+import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 
 const DynamicChatHomeScreen = dynamic(
   () => import('@/app/components/AI-Chat/screens/ChatHomeScreen')
@@ -23,10 +24,9 @@ export default function AIChatComponent({ threadId }: { threadId: string }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
-    // Set initial state based on screen width
-    return window.innerWidth <= 1024;
-  });
+  const isSmallScreen = useMediaQuery('(max-width:1100px)');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(isSmallScreen);
+
   const [isMessagesLoading, setIsMessagesLoading] = useState(true);
 
   // const sidebarRef = useRef<HTMLInputElement>(null);
@@ -39,24 +39,29 @@ export default function AIChatComponent({ threadId }: { threadId: string }) {
     router.push(`/ai-chats/${thread}`); // Navigate to thread page
   };
 
+  const handlePinnedAnswerClick = (selectedMessage: PinnedAnswerMessage) => {
+    if (selectedMessage.thread && selectedMessage.uuid) {
+      router.push(
+        `/ai-chats/${selectedMessage.thread.uuid}/?message=${selectedMessage.uuid}`
+      );
+    }
+  };
+
   // New code
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 1100) {
-        setIsSidebarOpen(false);
-      } else {
-        setIsSidebarOpen(true);
-      }
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     if (window.innerWidth <= 1100) {
+  //       setIsSidebarOpen(false);
+  //     } else {
+  //       setIsSidebarOpen(true);
+  //     }
+  //   };
 
-    handleResize(); // Call on mount to ensure it sets correctly
-    window.addEventListener('resize', handleResize);
+  //   handleResize(); // Call on mount to ensure it sets correctly
+  //   window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  console.log('sidebar', isSidebarOpen);
-  // New code
+  //   return () => window.removeEventListener('resize', handleResize);
+  // }, []);
 
   const getThreadMessagesDetails = async (thread: string) => {
     setIsMessagesLoading(true);
@@ -65,7 +70,6 @@ export default function AIChatComponent({ threadId }: { threadId: string }) {
         thread_uuid: threadId,
       })
     );
-    console.log(resultData, 'resultData');
     setIsMessagesLoading(false);
   };
 
@@ -82,6 +86,7 @@ export default function AIChatComponent({ threadId }: { threadId: string }) {
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
           handleThreadClick={handleThreadClick}
+          handlePinnedAnswerClick={handlePinnedAnswerClick}
           title=""
         />
         <section className="main-body">

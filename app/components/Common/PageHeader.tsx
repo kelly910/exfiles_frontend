@@ -16,14 +16,15 @@ import {
 import Image from 'next/image';
 import styles from './Header.module.scss';
 import React, { useEffect, useState } from 'react';
-import SettingDialog from '../SettingDialog/SettingDialog';
-import LogoutDialog from '../LogoutDialog/LogoutDialog';
+import SettingDialog from '@components/SettingDialog/SettingDialog';
+import LogoutDialog from '@components/LogoutDialog/LogoutDialog';
+
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import FeedbackDialog from '@components/FeedBackDialog/FeedBackDialog';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch } from '@/app/redux/hooks';
-import TemporaryDrawer from '../Drawer/Drawer';
+import TemporaryDrawer from '@components/Drawer/Drawer';
 
 interface PageHeaderProps {
   toggleSidebar: () => void;

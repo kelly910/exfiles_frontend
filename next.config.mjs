@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   async redirects() {
     return [
       {
@@ -7,7 +8,7 @@ const nextConfig = {
         destination: '/ai-chats',
         permanent: true, // Set to false if you want a temporary redirect
       },
-    ]
+    ];
   },
 };
 

@@ -20,6 +20,8 @@ const urlMapper = {
   getDocumentSummary: `${BASE_URL}document/`,
   // Chat Module
   thread: `${BASE_URL}thread/`,
+  pinnedMessages: `${BASE_URL}pinned-messages/`,
+  togglePinMessages: `${BASE_URL}pin-unpin-message/`,
   uploadActualDoc: `${BASE_URL}upload-actual-document/`,
   chatMessage: `${BASE_URL}chat-message/`,
 };
