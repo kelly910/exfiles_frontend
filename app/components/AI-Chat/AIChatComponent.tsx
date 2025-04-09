@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Container } from '@mui/material';
 import PageHeader from '@components/Common/PageHeader';
@@ -17,7 +17,10 @@ export default function AIChatComponent() {
   const router = useRouter();
   const { threadId } = useParams();
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    // Set initial state based on screen width
+    return window.innerWidth <= 1024;
+  });
   // const sidebarRef = useRef<HTMLInputElement>(null);
 
   const toggleSidebar = () => {
@@ -27,6 +30,25 @@ export default function AIChatComponent() {
   const handleThreadClick = (threadId: string) => {
     router.push(`/ai-chats/${threadId}`); // Navigate to thread page
   };
+
+  // New code
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1100) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+
+    handleResize(); // Call on mount to ensure it sets correctly
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  console.log('sidebar', isSidebarOpen);
+  // New code
 
   return (
     <>
@@ -38,7 +60,11 @@ export default function AIChatComponent() {
           title=""
         />
         <section className="main-body">
-          <PageHeader title="" />
+          <PageHeader
+            isSidebarOpen={isSidebarOpen}
+            toggleSidebar={toggleSidebar}
+            title=""
+          />
 
           <Container maxWidth="lg" disableGutters>
             {!threadId ? <DynamicChatHomeScreen /> : <ChatWindows />}

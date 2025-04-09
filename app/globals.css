@@ -177,6 +177,10 @@ a {
   font-size: 16px;
 }
 
+input {
+  text-indent: 2px;
+}
+
 /* colors */
 
 .bg-primary {
@@ -373,6 +377,7 @@ header {
   top: 0;
   right: 0;
   z-index: 999;
+  justify-content: center;
   background-color: #11101B;
 }
 
