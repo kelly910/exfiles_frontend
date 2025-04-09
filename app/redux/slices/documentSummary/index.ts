@@ -15,6 +15,7 @@ interface DocumentSummary {
   ai_description: string;
   description: string;
   summary: string;
+  uuid?: string;
 }
 
 interface DocumentSummaryState {
@@ -27,7 +28,7 @@ const initialState: DocumentSummaryState = {
 
 export const fetchDocumentSummaryById = createAsyncThunk<
   DocumentSummary,
-  number
+  string
 >('documents/fetchDocumentSummaryById', async (docId) => {
   const response = await api.get<DocumentSummary>(
     `${urlMapper.getDocumentSummary}${docId}/`

@@ -46,7 +46,7 @@ interface DeleteDialogProps {
   openDeleteDialogProps: boolean;
   onClose: () => void;
   type: string;
-  deletedId: number | null;
+  deletedId: number | string;
 }
 
 export default function DeleteDialog({
