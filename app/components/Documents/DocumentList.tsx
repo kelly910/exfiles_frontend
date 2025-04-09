@@ -122,8 +122,6 @@ const DocumentList: React.FC<DocumentListProps> = ({
     _: React.ChangeEvent<unknown>,
     newPage: number
   ) => {
-    setPage(newPage);
-
     await dispatch(
       fetchDocumentsByCategory({
         categoryId: catId as number,
@@ -131,6 +129,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
         page: newPage,
       })
     ).unwrap();
+    setPage(newPage);
   };
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
