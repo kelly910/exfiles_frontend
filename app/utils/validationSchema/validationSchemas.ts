@@ -29,7 +29,10 @@ const confirmNewPasswordSchema: Yup.StringSchema = Yup.string()
 
 const emailSchema: Yup.StringSchema = Yup.string()
   .email('Invalid email address')
-  .matches(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, 'Invalid email address')
+  .matches(
+    /^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    'Email contains invalid characters'
+  )
   .required('Email is required');
 
 const contactNumberSchema: Yup.StringSchema = Yup.string()
