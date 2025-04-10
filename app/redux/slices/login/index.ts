@@ -40,6 +40,7 @@ export interface SocialGoogleLoginResponse {
     user_type: string;
     is_email_verified: boolean;
     token: string;
+    google_login: boolean;
   };
 }
 
@@ -59,6 +60,7 @@ interface LoginResponse {
     user_type: string;
     is_email_verified: boolean;
     token: string;
+    google_login: boolean;
   };
 }
 
