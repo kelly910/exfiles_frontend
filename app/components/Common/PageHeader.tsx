@@ -16,14 +16,16 @@ import {
 import Image from 'next/image';
 import styles from './Header.module.scss';
 import React, { useEffect, useState } from 'react';
-import SettingDialog from '../SettingDialog/SettingDialog';
-import LogoutDialog from '../LogoutDialog/LogoutDialog';
+import SettingDialog from '@components/SettingDialog/SettingDialog';
+import LogoutDialog from '@components/LogoutDialog/LogoutDialog';
+
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import FeedbackDialog from '@components/FeedBackDialog/FeedBackDialog';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch } from '@/app/redux/hooks';
-import TemporaryDrawer from '../Drawer/Drawer';
+import TemporaryDrawer from '@components/Drawer/Drawer';
+import { useRouter } from 'next/navigation';
 
 interface PageHeaderProps {
   toggleSidebar: () => void;
@@ -36,6 +38,7 @@ export default function PageHeader({
   toggleSidebar,
   isSidebarOpen,
 }: PageHeaderProps) {
+  const router = useRouter();
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
@@ -130,6 +133,7 @@ export default function PageHeader({
                 alt="logo"
                 width={40}
                 height={38}
+                onClick={() => router.push('/ai-chats')}
               />
             </Box>
 

@@ -1,4 +1,4 @@
-import AIChatStyles from '@components/AI-Chat/AIChatStyle.module.scss';
+import AIChatStyles from '@components/AI-Chat/styles/AIChatStyle.module.scss';
 import { Box, Button, Input, InputAdornment } from '@mui/material';
 
 interface UserChatInputProps {

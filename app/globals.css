@@ -372,13 +372,13 @@ input {
 /* ==== Header ===== */
 
 header {
+  background-color: var(--Background-Color) !important;
   border-bottom: 1px solid #3A3948;
   position: sticky;
   top: 0;
   right: 0;
   z-index: 999;
   justify-content: center;
-  background-color: #11101B;
 }
 
 /* 

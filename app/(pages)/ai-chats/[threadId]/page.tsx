@@ -5,14 +5,12 @@ const DynamicAIChatComponent = dynamic(
   () => import('@components/AI-Chat/AIChatComponent')
 );
 
-// export default async function Page({
-//   params,
-// }: {
-//   params: Promise<{ threadId: string }>;
-// }) {
-//   return <DynamicAIChatComponent />;
-// }
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ threadId: string }>;
+}) {
+  const { threadId } = await params;
 
-export default async function Page() {
-  return <DynamicAIChatComponent />;
+  return <DynamicAIChatComponent threadId={threadId} />;
 }

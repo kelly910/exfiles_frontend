@@ -1,48 +1,40 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Style from './Sidebar.module.scss';
 import ListItem from '@mui/material/ListItem';
 import { Box, Link, List, TextField } from '@mui/material';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Fade from '@mui/material/Fade';
 import Image from 'next/image';
+import SidebarAccordion from './SidebarAccordion';
+import { useAppDispatch } from '@/app/redux/hooks';
+import {
+  fetchPinnedMessagesList,
+  fetchThreadList,
+} from '@/app/redux/slices/Chat';
+import ThreadList from './ThreadsList';
+import PinnedMessagesList from './PinnedMessagesList';
+import {
+  GetThreadListResponse,
+  PinnedAnswerMessage,
+  PinnedAnswerMessagesResponse,
+} from '@/app/redux/slices/Chat/chatTypes';
+import NoRecordFound from './NoRecordFound';
 import { useRouter } from 'next/navigation';
 
 const Sidebar = ({
   isOpen,
   toggleSidebar,
   handleThreadClick,
+  handlePinnedAnswerClick,
 }: {
   isOpen: boolean;
   toggleSidebar: () => void;
   handleThreadClick: (threadUUID: string) => void;
+  handlePinnedAnswerClick: (selectedMessage: PinnedAnswerMessage) => void;
   title: string;
 }) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [expanded, setExpanded] = useState<boolean | string>('panel1'); // Track which accordion is expanded
-
+  const dispatch = useAppDispatch();
   const router = useRouter();
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleAccordionChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false); // Only expand the clicked panel
-    };
-
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -50,6 +42,66 @@ const Sidebar = ({
   const handleToggleSearch = () => {
     setIsSearchOpen((prev) => !prev);
   };
+  const [expanded, setExpanded] = useState<boolean | string>('panel1'); // Track which accordion is expanded
+
+  const [initialAllChatsData, setInitialAllChatsData] =
+    useState<GetThreadListResponse | null>(null);
+
+  const [initialAllPinnedChatsData, setInitialAllPinnedChatsData] =
+    useState<PinnedAnswerMessagesResponse | null>(null);
+
+  const handleAccordionChange =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false); // Only expand the clicked panel
+    };
+
+  const getThreadList = async (page = 1) => {
+    try {
+      const resultData = await dispatch(fetchThreadList({ page }));
+
+      if (fetchThreadList.fulfilled.match(resultData)) {
+        const payload = resultData.payload;
+
+        if (payload?.results?.length > 0) {
+          if (page === 1) {
+            setInitialAllChatsData(payload); // Only set on initial fetch
+          }
+          return payload;
+        }
+      }
+
+      return { results: [], count: 0 };
+    } catch (err) {
+      console.error('Error fetching thread list:', err);
+      return { results: [], count: 0 };
+    }
+  };
+
+  const getPinnedMessagesList = async (page = 1) => {
+    try {
+      const resultData = await dispatch(fetchPinnedMessagesList({ page }));
+
+      if (fetchPinnedMessagesList.fulfilled.match(resultData)) {
+        const payload = resultData.payload;
+        if (payload?.results?.length > 0) {
+          if (page === 1) {
+            setInitialAllPinnedChatsData(payload); // Only set on initial fetch
+          }
+          return payload;
+        }
+      }
+
+      return { results: [], count: 0 };
+    } catch (err) {
+      console.error('Error fetching thread list:', err);
+      return { results: [], count: 0 };
+    }
+  };
+
+  useEffect(() => {
+    getThreadList(1);
+    getPinnedMessagesList(1);
+  }, []);
 
   return (
     <>
@@ -62,7 +114,13 @@ const Sidebar = ({
       >
         <div className={Style['main-logo']}>
           <Link href="#" className={Style['opensidebar-logo']}>
-            <Image src="/images/logo.svg" alt="logo" width={200} height={44} />
+            <Image
+              src="/images/logo.svg"
+              alt="logo"
+              width={200}
+              height={44}
+              onClick={() => router.push('/ai-chats')}
+            />
           </Link>
           <Link href="#" className={Style['close-sidebar-logo']}>
             <Image
@@ -249,565 +307,82 @@ const Sidebar = ({
             </List>
           </div>
           <div className={Style['sidebar-accordian']}>
-            <Accordion
-              className={Style['accordian']}
-              expanded={expanded === 'panel1'}
-              onChange={handleAccordionChange('panel1')}
-              sx={{
-                '.Mui-expanded': {
-                  backgroundColor: 'var(--Input-Box-Colors)',
-                },
-                'span.Mui-expanded': {
-                  transform: 'rotate(0deg)',
-                },
-              }}
+            <SidebarAccordion
+              title={`Pinned Chats ${initialAllPinnedChatsData ? initialAllPinnedChatsData?.count : ''}`}
+              icon="/images/sidebar-Pin.svg"
+              expanded={expanded}
+              panelKey="panel1"
+              handleAccordionChange={handleAccordionChange}
             >
-              <AccordionSummary
-                expandIcon={
-                  <Image
-                    className={Style['img-none']}
-                    src={
-                      expanded === 'panel1'
-                        ? '/images/arrow-down.svg'
-                        : '/images/arrow-down-right.svg'
+              {!initialAllPinnedChatsData && (
+                <NoRecordFound title={'No Chats are pinned yet.'} />
+              )}
+
+              {initialAllPinnedChatsData &&
+                initialAllPinnedChatsData?.count > 0 && (
+                  <PinnedMessagesList
+                    initialAllChatsData={initialAllPinnedChatsData?.results}
+                    totalCount={initialAllPinnedChatsData?.count}
+                    fetchPinnedAnswerList={(pageVal) =>
+                      getPinnedMessagesList(pageVal)
                     }
-                    alt="expand-collapse"
-                    width={16}
-                    height={16}
-                  />
-                }
-                aria-controls="panel1-content"
-                id="panel1-header"
-                classes={{
-                  root: Style['customAccordionHeading'],
-                  content: Style['customAccordionContent'],
-                }}
-              >
-                <Typography component="span" className={Style['heading']}>
-                  <Image
-                    src="/images/sidebar-Pin.svg"
-                    alt="pin"
-                    width={18}
-                    height={18}
-                  />{' '}
-                  Pinned Chats (12)
-                </Typography>
-              </AccordionSummary>
-
-              <AccordionDetails className={`${Style['bottom-content']} abc`}>
-                <div
-                  className={Style['accordion-content']}
-                  onClick={() => handleThreadClick('sdhfjsjdf')}
-                >
-                  <div className={Style['left']}>
-                    <p>
-                      How to optimize images in WordPress for faster loading
-                      (complete guide)
-                    </p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'left',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'left',
-                        }}
-                      >
-                        <MenuItem onClick={handleClose}>
-                          <Typography>Lorem 1</Typography>
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                          <Typography>Lorem 2</Typography>
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                          <Typography>Lorem 3</Typography>
-                        </MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>Travelling as a way of self-discovery and progress</p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>The unseen of spending three years at Pixelgrade</p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>How to build a loyal community online and offline</p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Lorem 1</MenuItem>
-                        <MenuItem onClick={handleClose}>Lorem 1</MenuItem>
-                        <MenuItem onClick={handleClose}>Lorem 1</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              className={Style['accordian']}
-              // expanded={expanded}
-              // onChange={handleAccordionChange}
-              expanded={expanded === 'panel2'}
-              onChange={handleAccordionChange('panel2')}
-              sx={{
-                '.Mui-expanded': {
-                  backgroundColor: 'var(--Input-Box-Colors)',
-                },
-                'span.Mui-expanded': {
-                  transform: 'rotate(0deg)',
-                },
-              }}
-            >
-              <AccordionSummary
-                expandIcon={
-                  <Image
-                    className={Style['img-none']}
-                    src={
-                      expanded === 'panel2'
-                        ? '/images/arrow-down.svg'
-                        : '/images/arrow-down-right.svg'
+                    handlePinnedAnswerClick={handlePinnedAnswerClick}
+                    updateTotalCount={(count: number) =>
+                      setInitialAllPinnedChatsData((prev) => ({
+                        ...(prev ?? {
+                          previous: null,
+                          next: null,
+                          results: [],
+                        }),
+                        count,
+                      }))
                     }
-                    alt="expand-collapse"
-                    width={16}
-                    height={16}
                   />
-                }
-                aria-controls="panel1-content"
-                id="panel1-header"
-                classes={{
-                  root: Style['customAccordionHeading'],
-                  content: Style['customAccordionContent'],
-                }}
-              >
-                <Typography component="span" className={Style['heading']}>
-                  <Image
-                    src="/images/messages.svg"
-                    alt="pin"
-                    width={18}
-                    height={18}
-                  />
-                  All Chats (101)
-                </Typography>
-              </AccordionSummary>
+                )}
+            </SidebarAccordion>
 
-              <AccordionDetails className={Style['bottom-content']}>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>
-                      How to optimize images in WordPress for faster loading
-                      (complete guide)
-                    </p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Lorem 1</MenuItem>
-                        <MenuItem onClick={handleClose}>Lorem 1</MenuItem>
-                        <MenuItem onClick={handleClose}>Lorem 1</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>Travelling as a way of self-discovery and progress</p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>The unseen of spending three years at Pixelgrade</p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Lorem 1</MenuItem>
-                        <MenuItem onClick={handleClose}>Lorem 1</MenuItem>
-                        <MenuItem onClick={handleClose}>Lorem 1</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-                <div className={Style['accordion-content']}>
-                  <div className={Style['left']}>
-                    <p>How to build a loyal community online and offline</p>
-                  </div>
-                  <div className={Style['right']}>
-                    <div className={Style['pin-img']}>
-                      <Image
-                        src="/images/sidebar-Pin.svg"
-                        alt="pin"
-                        width={18}
-                        height={18}
-                      />
-                    </div>
-                    <div>
-                      <Button
-                        id="fade-button"
-                        aria-controls={open ? 'fade-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                      >
-                        <Image
-                          src="/images/more.svg"
-                          alt="user-icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Button>
-                      <Menu
-                        id="fade-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'fade-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        TransitionComponent={Fade}
-                      >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                      </Menu>
-                    </div>
-                  </div>
-                </div>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              className={Style['accordian']}
-              sx={{
-                '.Mui-expanded': {
-                  backgroundColor: 'var(--Input-Box-Colors)',
-                },
-                'span.Mui-expanded': {
-                  transform: 'rotate(0deg)',
-                },
-              }}
+            <SidebarAccordion
+              title={`All Chats ${initialAllChatsData ? `(${initialAllChatsData?.count})` : ''}`}
+              icon="/images/messages.svg"
+              expanded={expanded}
+              panelKey="panel2"
+              handleAccordionChange={handleAccordionChange}
             >
-              <AccordionSummary
-                expandIcon={
-                  <Image
-                    className={Style['img-none']}
-                    src="/images/arrow-down-right.svg"
-                    alt="expand-collapse"
-                    width={16}
-                    height={16}
-                  />
-                }
-                onClick={() => router.push('/documents')}
-                aria-controls="panel1-content"
-                id="panel1-header"
-                classes={{
-                  root: Style['customAccordionHeading'],
-                  content: Style['customAccordionContent'],
-                }}
-              >
-                <Typography component="span" className={Style['heading']}>
-                  <Image
-                    src="/images/document-text.svg"
-                    alt="pin"
-                    width={18}
-                    height={18}
-                  />
-                  Documents
-                </Typography>
-              </AccordionSummary>
-            </Accordion>
+              {!initialAllChatsData && (
+                <NoRecordFound title={'Your chats will show up here.'} />
+              )}
 
-            <Accordion
-              className={Style['accordian']}
-              sx={{
-                '.Mui-expanded': {
-                  backgroundColor: 'var(--Input-Box-Colors)',
-                },
-                'span.Mui-expanded': {
-                  transform: 'rotate(0deg)',
-                },
-              }}
-            >
-              <AccordionSummary
-                expandIcon={
-                  <Image
-                    className={Style['img-none']}
-                    src="/images/arrow-down-right.svg"
-                    alt="expand-collapse"
-                    width={16}
-                    height={16}
-                  />
-                }
-                onClick={() => router.push('/log-incident')}
-                aria-controls="panel1-content"
-                id="panel1-header"
-                classes={{
-                  root: Style['customAccordionHeading'],
-                  content: Style['customAccordionContent'],
-                }}
-              >
-                <Typography component="span" className={Style['heading']}>
-                  <Image
-                    src="/images/log-incident-sidebar.svg"
-                    alt="pin"
-                    width={18}
-                    height={18}
-                  />
-                  Log Incident
-                </Typography>
-              </AccordionSummary>
-            </Accordion>
+              {initialAllChatsData && initialAllChatsData?.count > 0 && (
+                <ThreadList
+                  initialAllChatsData={initialAllChatsData?.results}
+                  totalCount={initialAllChatsData?.count}
+                  fetchChats={(pageVal) => getThreadList(pageVal)}
+                  handleThreadClick={handleThreadClick}
+                  updateTotalCount={(count: number) =>
+                    setInitialAllChatsData((prev) => ({
+                      ...(prev ?? { previous: null, next: null, results: [] }),
+                      count,
+                    }))
+                  }
+                />
+              )}
+            </SidebarAccordion>
+
+            <SidebarAccordion
+              title={'Documents'}
+              icon="/images/document-text.svg"
+              expanded={expanded}
+              panelKey="panel3"
+              handleAccordionChange={handleAccordionChange}
+            ></SidebarAccordion>
+
+            <SidebarAccordion
+              title={'Log Incident'}
+              icon="/images/log-incident-sidebar.svg"
+              expanded={expanded}
+              panelKey="panel4"
+              handleAccordionChange={handleAccordionChange}
+            ></SidebarAccordion>
           </div>
         </div>
         <div className={Style['sidebar-btm']}>

@@ -25,3 +25,10 @@ export const convertDateFormatForIncident = (date: string): string => {
   const [year, month, day] = date.split('-');
   return `${month}-${day}-${year}`;
 };
+
+// Uploaded document Status
+export const DOCUMENT_STATUS = {
+  PENDING: 'pending',
+  SUCCESS: 'success',
+  FAILED: 'failed',
+};

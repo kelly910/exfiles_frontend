@@ -27,6 +27,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import LogincidentEmpty from './LogincidentEmpty';
 import { convertDateFormatForIncident } from '@/app/utils/constants';
+import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
+import { useRouter } from 'next/navigation';
 
 export default function LogIncident() {
   const isMobile = useMediaQuery('(max-width:768px)');
@@ -40,6 +42,7 @@ export default function LogIncident() {
   const { incidents, count, no_of_incident } = useSelector(
     (state: RootState) => state.logIncidents
   );
+  const router = useRouter();
 
   const handleOpenMenu = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -76,6 +79,14 @@ export default function LogIncident() {
       }
     }, 1000);
   }, [dispatch]);
+
+  const handlePinnedAnswerClick = (selectedMessage: PinnedAnswerMessage) => {
+    if (selectedMessage.thread && selectedMessage.uuid) {
+      router.push(
+        `/ai-chats/${selectedMessage.thread.uuid}/?message=${selectedMessage.uuid}`
+      );
+    }
+  };
 
   const handlePageChange = async (
     _: React.ChangeEvent<unknown>,
@@ -189,6 +200,7 @@ export default function LogIncident() {
           handleThreadClick={(threadUUID: string) => {
             console.log(`Thread clicked: ${threadUUID}`);
           }}
+          handlePinnedAnswerClick={handlePinnedAnswerClick}
           title="Log Incident"
         />
         <section className="main-body">

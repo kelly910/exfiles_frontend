@@ -1,4 +1,4 @@
-import DocUploadStyles from '@components/AI-Chat/Modals/DocumentUploadModal.module.scss';
+import DocUploadStyles from '@components/AI-Chat/styles/DocumentUploadModal.module.scss';
 import React, { ChangeEvent, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
@@ -16,12 +16,13 @@ import {
   ALLOWED_FILE_TYPES,
   FILE_UPLOAD_CHUNK_SIZE,
 } from '@/app/utils/constants';
-import UploadFileItem from '@components/AI-Chat/FileUpload/UploadFileItem';
+import UploadFileItem from '@/app/components/AI-Chat/components/FileUpload/UploadFileItem';
 import { computeChecksum } from '@/app/utils/functions';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { useRouter } from 'next/navigation';
 
 interface DocumentUploadModalProps {
   open: boolean;
@@ -51,6 +52,8 @@ export default function DocumentUploadDialog({
   handleClose,
 }: DocumentUploadModalProps) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [uploadFiles, setUploadFiles] = useState<Array<UploadFiles> | []>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -268,6 +271,7 @@ export default function DocumentUploadDialog({
         resultData.payload?.messages[0] || 'Document uploaded successfully.'
       );
       // Need to redirect user to that Thread page
+      router.push(`/ai-chats/${threadUUID}`); // Navigate to thread page
 
       handleClose();
       return;
