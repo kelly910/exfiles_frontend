@@ -37,12 +37,13 @@ type Document = {
   description?: string;
   tags: Tag[];
   upload_on: string;
+  uuid?: string;
 };
 
 type DocumentListProps = {
   catId: number | null;
-  handleOpenDocumentSummary: (docId: number) => void;
-  selectedDoc: number | null;
+  handleOpenDocumentSummary: (docId: string) => void;
+  selectedDoc: string | '';
 };
 
 const DocumentList: React.FC<DocumentListProps> = ({
@@ -60,7 +61,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
   );
   const [page, setPage] = useState(1);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [deleletDocId, setDeleletDocId] = useState<number | null>(null);
+  const [deleletDocId, setDeleletDocId] = useState<string>('');
 
   useEffect(() => {
     if (catId) {
@@ -142,7 +143,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
     setAnchorElUser(null);
   };
 
-  const handleDeleteOption = (documentId: number) => {
+  const handleDeleteOption = (documentId: string) => {
     setDeleletDocId(documentId);
     handleCloseUserMenu();
     setOpenDeleteDialog(true);
@@ -204,7 +205,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
                   // <Box key={doc?.id} className={styles.docBoxInner}>
                   <Box
                     key={doc?.id}
-                    className={`${styles.docGridBox} ${selectedDoc === doc?.id ? styles.active : ''}`}
+                    className={`${styles.docGridBox} ${selectedDoc === doc?.uuid ? styles.active : ''}`}
                   >
                     <div className={styles.docBox}>
                       <Image
@@ -213,12 +214,16 @@ const DocumentList: React.FC<DocumentListProps> = ({
                         width={19}
                         height={24}
                         className={styles.pdfImg}
-                        onClick={() => handleOpenDocumentSummary(doc?.id)}
+                        onClick={() =>
+                          handleOpenDocumentSummary(String(doc?.uuid))
+                        }
                       />
                       <Typography
                         variant="body1"
                         className={styles.docTitle}
-                        onClick={() => handleOpenDocumentSummary(doc?.id)}
+                        onClick={() =>
+                          handleOpenDocumentSummary(String(doc?.uuid))
+                        }
                       >
                         {doc?.file_name}
                       </Typography>
@@ -256,7 +261,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
                         }}
                       >
                         <MenuItem
-                          onClick={() => handleDeleteOption(doc?.id)}
+                          onClick={() => handleDeleteOption(String(doc?.uuid))}
                           className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
                         >
                           <Image

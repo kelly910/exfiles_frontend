@@ -771,7 +771,7 @@ const Page = () => {
                   Already a Member?
                 </Typography>
                 <Typography variant="body1" component="p" gutterBottom>
-                  Lorem Ipsim doloer sit ale jnneui
+                  Login now to access your account.
                 </Typography>
               </div>
               <Button

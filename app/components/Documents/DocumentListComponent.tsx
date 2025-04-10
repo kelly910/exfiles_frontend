@@ -15,7 +15,7 @@ import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 
 export default function DocumentListComponent({ catId }: { catId: number }) {
   const router = useRouter();
-  const [selectedDocId, setSelectedsDocId] = useState<number | null>(null);
+  const [selectedDocId, setSelectedsDocId] = useState<string>('');
   const dispatch = useAppDispatch();
   const [showEmptyCategoryComponent, setShowEmptyCategoryComponent] =
     useState(false);
@@ -30,7 +30,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
       });
   }, [dispatch]);
 
-  const handleSelectedDocSummary = (docId: number) => {
+  const handleSelectedDocSummary = (docId: string) => {
     setSelectedsDocId(docId);
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.set('docId', docId.toString());
@@ -68,7 +68,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
   };
 
   const closeSummaryDrawer = () => {
-    setSelectedsDocId(null);
+    setSelectedsDocId('');
   };
 
   return (
@@ -95,7 +95,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
                 handleOpenDocumentSummary={handleSelectedDocSummary}
                 selectedDoc={selectedDocId}
               />
-              {selectedDocId !== null && (
+              {selectedDocId && (
                 <DocumentSummary
                   docId={selectedDocId}
                   selectedDocIdNull={closeSummaryDrawer}

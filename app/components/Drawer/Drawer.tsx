@@ -33,6 +33,10 @@ export default function TemporaryDrawer() {
   const firstName = loggedInUser?.data?.first_name;
   const lastName = loggedInUser?.data?.last_name;
 
+  const storedUser = localStorage.getItem('loggedInUser');
+  const loggedInUserData = storedUser ? JSON.parse(storedUser) : null;
+  const googleLogin = loggedInUserData?.data?.google_login;
+
   const handleOpenFirstDrawer = () => setFirstDrawerOpen(true);
   const handleCloseFirstDrawer = () => {
     setFirstDrawerOpen(false);
@@ -155,24 +159,26 @@ export default function TemporaryDrawer() {
                       height={16}
                     />
                   </Button>
-                  <Button
-                    className={styles.menuDropdown}
-                    onClick={() => handleOpenSecondDrawer('profile2')}
-                  >
-                    <Image
-                      src="/images/password-change.svg"
-                      alt="password-change.svg"
-                      width={18}
-                      height={18}
-                    />
-                    <Typography>Change Password</Typography>
-                    <Image
-                      src="/images/arrow-down-right.svg"
-                      alt="user"
-                      width={16}
-                      height={16}
-                    />
-                  </Button>
+                  {!googleLogin && (
+                    <Button
+                      className={styles.menuDropdown}
+                      onClick={() => handleOpenSecondDrawer('profile2')}
+                    >
+                      <Image
+                        src="/images/password-change.svg"
+                        alt="password-change.svg"
+                        width={18}
+                        height={18}
+                      />
+                      <Typography>Change Password</Typography>
+                      <Image
+                        src="/images/arrow-down-right.svg"
+                        alt="user"
+                        width={16}
+                        height={16}
+                      />
+                    </Button>
+                  )}
                   <Button
                     className={styles.menuDropdown}
                     onClick={handleOpenLogoutDialog}

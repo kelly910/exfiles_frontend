@@ -23,13 +23,13 @@ import { showToast } from '@/app/shared/toast/ShowToast';
 import { editSummaryValidation } from '@/app/utils/validationSchema/formValidationSchemas';
 
 interface DocumentSummaryProps {
-  docId: number;
+  docId: string;
   selectedDocIdNull: () => void;
 }
 
 export interface DocumentEditSummary {
   summary: string;
-  docId?: string;
+  docId: string;
 }
 
 const DocumentSummary: React.FC<DocumentSummaryProps> = ({
@@ -60,10 +60,11 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
         } catch (error) {
           handleError(error as ErrorResponse);
         } finally {
-          handleCloseDrawer();
           dispatch(setLoader(false));
         }
       }, 2000);
+    } else {
+      handleCloseDrawer();
     }
   }, [dispatch, docId]);
 
@@ -77,20 +78,27 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     selectedDocIdNull();
   };
 
+
+  const copySummary = async () => {
+    if (documentSummary?.summary) {
+      navigator.clipboard.writeText(documentSummary?.summary);
+      await showToast('info', 'Copied Summary successfully');
+    }
+  };
+
   const initialValues: DocumentEditSummary = {
     summary: documentSummary?.summary ?? '',
-    docId: documentSummary?.id?.toString() ?? '',
+    docId: documentSummary?.uuid?.toString() ?? '',
   };
 
   const newEditedSummary = async (
     values: DocumentEditSummary
   ): Promise<void> => {
-    console.log(values, 'values');
     setLoading(true);
     dispatch(setLoader(true));
     try {
       const response = await dispatch(editSummaryByDocId(values)).unwrap();
-      await dispatch(fetchDocumentSummaryById(Number(values.docId))).unwrap();
+      await dispatch(fetchDocumentSummaryById(values.docId)).unwrap();
       setTimeout(() => {
         if (response?.id) {
           showToast('success', 'Document Summary updated successfully.');
@@ -161,7 +169,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                   </Typography>
                 </div>
                 <Button
-                  onClick={handleCloseDrawer}
+                  onClick={() => handleCloseDrawer()}
                   className={styles.closeButton}
                   sx={{ marginBottom: '24px' }}
                 >
@@ -316,7 +324,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
             </div>
             {documentSummary?.summary && !editMode && (
               <Box component={'div'} className={styles.docsButtonBox}>
-                <Button className={styles.docsButton}>
+                <Button className={styles.docsButton} onClick={copySummary}>
                   <Image
                     src="/images/copy.svg"
                     alt="Download"

@@ -34,7 +34,7 @@ export default function LogIncident() {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+  const [selectedRowId, setSelectedRowId] = useState<string>('');
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useState('');
@@ -46,7 +46,7 @@ export default function LogIncident() {
 
   const handleOpenMenu = (
     event: React.MouseEvent<HTMLButtonElement>,
-    id: number
+    id: string
   ) => {
     setAnchorEl(event.currentTarget);
     setSelectedRowId(id);
@@ -54,7 +54,7 @@ export default function LogIncident() {
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
-    setSelectedRowId(null);
+    setSelectedRowId('');
   };
 
   const toggleSidebar = () => {

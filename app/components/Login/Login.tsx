@@ -382,7 +382,7 @@ const Page = () => {
                   Not a Member yet?
                 </Typography>
                 <Typography variant="body1" component="p" gutterBottom>
-                  Lorem Ipsim doloer sit ale jnneui
+                  Sign up now to get started with Exfiles.
                 </Typography>
               </div>
               <Button
