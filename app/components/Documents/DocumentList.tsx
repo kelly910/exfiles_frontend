@@ -195,7 +195,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
           </Box>
 
           <Box
-            className={`${styles.docBoxMain} ${Number(selectedDoc) ? styles.docBoxMainOpen : ''}`}
+            className={`${styles.docBoxMain} ${selectedDoc ? styles.docBoxMainOpen : ''}`}
             component="div"
           >
             <Box component="div" className={styles.docBoxInner}>

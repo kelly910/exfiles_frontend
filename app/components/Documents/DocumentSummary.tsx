@@ -78,6 +78,14 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     selectedDocIdNull();
   };
 
+
+  const copySummary = async () => {
+    if (documentSummary?.summary) {
+      navigator.clipboard.writeText(documentSummary?.summary);
+      await showToast('info', 'Copied Summary successfully');
+    }
+  };
+
   const initialValues: DocumentEditSummary = {
     summary: documentSummary?.summary ?? '',
     docId: documentSummary?.uuid?.toString() ?? '',
@@ -316,7 +324,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
             </div>
             {documentSummary?.summary && !editMode && (
               <Box component={'div'} className={styles.docsButtonBox}>
-                <Button className={styles.docsButton}>
+                <Button className={styles.docsButton} onClick={copySummary}>
                   <Image
                     src="/images/copy.svg"
                     alt="Download"
