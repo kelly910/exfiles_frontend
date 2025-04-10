@@ -56,9 +56,14 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const { documents, count } = useSelector(
     (state: RootState) => state.documentListing
   );
-  const { no_of_docs } = useSelector(
+  const { categories } = useSelector(
     (state: RootState) => state.categoryListing
   );
+
+  const findSelectedCategoryDocs = categories.find(
+    (category) => category.id === Number(catId)
+  );
+
   const [page, setPage] = useState(1);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleletDocId, setDeleletDocId] = useState<string>('');
@@ -151,7 +156,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
 
   return (
     <>
-      {no_of_docs ? (
+      {findSelectedCategoryDocs?.no_of_docs ? (
         <div className={styles.docsListing}>
           {/* <Box component="div" className={styles.categoryBox}>
             <Box className={styles.categoryBoxInner}>
