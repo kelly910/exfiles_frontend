@@ -255,9 +255,12 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
               <Box
                 component="div"
                 key={index}
-                ref={index === categories.length - 1 ? lastCategoryRef : null}
+                ref={(el: HTMLDivElement | null) => {
+                  categoryRefs.current[category.id] = el;
+                  if (index === categories.length - 1 && el)
+                    lastCategoryRef(el);
+                }}
                 className={`${styles.docsFolder} ${(Number(catId) || activeCategoryId) === category?.id ? styles.active : ''}`}
-                onClick={() => handleCategoryClick(category?.id)}
               >
                 <div className={styles.folderBox}>
                   <Image
@@ -266,25 +269,83 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
                     width={18}
                     height={18}
                     className={styles.folderImg}
+                    onClick={() => handleCategoryClick(category?.id)}
                   />
                   <div className={styles.folderTitleBox}>
-                    <Typography variant="body1" className={styles.folderTitle}>
+                    <Typography
+                      variant="body1"
+                      className={styles.folderTitle}
+                      onClick={() => handleCategoryClick(category?.id)}
+                    >
                       {category?.name}
                     </Typography>
-                    <Typography variant="body1" className={styles.folderNo}>
+                    <Typography
+                      variant="body1"
+                      className={styles.folderNo}
+                      onClick={() => handleCategoryClick(category?.id)}
+                    >
                       No. of Docs : <span>{category?.no_of_docs}</span>
                     </Typography>
                   </div>
-                  <Image
-                    src="/images/more.svg"
-                    alt="more"
-                    width={16}
-                    height={16}
-                    className={styles.arrowRightImg}
-                  />
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Image
+                      src="/images/more.svg"
+                      alt="more"
+                      width={16}
+                      height={16}
+                      className={styles.arrowRightImg}
+                    />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                    className={styles.mainDropdown}
+                    sx={{
+                      '& .MuiPaper-root': {
+                        backgroundColor: 'var(--Input-Box-Colors)',
+                        marginTop: '20px',
+                        boxShadow: 'none',
+                        borderRadius: '12px',
+                      },
+                    }}
+                  >
+                    <MenuItem
+                      onClick={handleCloseUserMenu}
+                      className={styles.menuDropdown}
+                    >
+                      <Image
+                        src="/images/edit-2.svg"
+                        alt="tras"
+                        width={18}
+                        height={18}
+                      />
+                      <Typography>Rename Category</Typography>
+                    </MenuItem>
+                  </Menu>
                 </div>
               </Box>
             ))}
+          {showLoading && (
+            <Box className={styles.infiniteLoader}>
+              <Image
+                src="/gif/infinite-loader.gif"
+                alt="infiniteLoader"
+                width={100}
+                height={100}
+              />
+            </Box>
+          )}
         </Box>
       </Drawer> */}
     </>
