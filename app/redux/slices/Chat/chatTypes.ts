@@ -107,8 +107,8 @@ export interface PinnedAnswerMessage {
 
 export interface PinnedAnswerMessagesResponse {
   count: number;
-  next: string | null;
-  previous: string | null;
-  results: PinnedAnswerMessage[];
+  next?: string | null;
+  previous?: string | null;
+  results: PinnedAnswerMessage[] | [];
 }
 // ----------- End Pinned Answers ---------------

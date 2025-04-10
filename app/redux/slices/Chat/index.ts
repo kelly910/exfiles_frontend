@@ -7,6 +7,7 @@ import {
   GetMessagesByThreadIdPayload,
   GetMessagesByThreadIdResponse,
   GetThreadListResponse,
+  PinnedAnswerMessagesResponse,
   PinnedAnswerToggleParams,
   PinnedAnswerToggleResponse,
   ThreadCreationPayload,
@@ -79,7 +80,7 @@ export const renameNewThread = createAsyncThunk<
   { rejectValue: string }
 >('chat/renameNewThread', async (payload, { rejectWithValue }) => {
   try {
-    const response = await api.patch<GetMessagesByThreadIdResponse>(
+    const response = await api.patch<ThreadCreationResponse>(
       `${urlMapper.thread}${payload.thread_uuid}/`,
       { name: payload.name }
     );
@@ -161,7 +162,7 @@ export const fetchThreadMessagesByThreadId = createAsyncThunk<
 
 /* ------------ Pinned Chat Messages Actions Start ------------------ */
 export const fetchPinnedMessagesList = createAsyncThunk<
-  GetThreadListResponse,
+  PinnedAnswerMessagesResponse,
   FetchThreadListParams | undefined,
   { rejectValue: string }
 >('chat/fetchPinnedMessagesList', async (payload, { rejectWithValue }) => {
@@ -180,7 +181,7 @@ export const fetchPinnedMessagesList = createAsyncThunk<
       params.append('search', payload.search);
     }
 
-    const response = await api.get<GetThreadListResponse>(
+    const response = await api.get<PinnedAnswerMessagesResponse>(
       `${urlMapper.pinnedMessages}?${params.toString()}`
     );
 

@@ -3,7 +3,10 @@ import Image from 'next/image';
 import Style from './Sidebar.module.scss';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { showToast } from '@/app/shared/toast/ShowToast';
-import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
+import {
+  PinnedAnswerMessage,
+  PinnedAnswerMessagesResponse,
+} from '@/app/redux/slices/Chat/chatTypes';
 import { useEffect, useRef, useState } from 'react';
 import { togglePinMessages } from '@/app/redux/slices/Chat';
 
@@ -11,7 +14,7 @@ interface PinnedMessagesListProps {
   initialAllChatsData: PinnedAnswerMessage[];
   fetchPinnedAnswerList: (
     page?: number
-  ) => Promise<{ total: number; results: PinnedAnswerMessage[] }>;
+  ) => Promise<PinnedAnswerMessagesResponse>;
   totalCount: number;
   updateTotalCount: (count: number) => void;
   handlePinnedAnswerClick: (pinnedObj: PinnedAnswerMessage) => void;
@@ -36,7 +39,7 @@ export default function PinnedMessagesList(props: PinnedMessagesListProps) {
   );
   const [isFetching, setIsFetching] = useState(false);
   const pageRef = useRef(page);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const fetchingRef = useRef(isFetching);
 
   useEffect(() => {
@@ -142,6 +145,7 @@ export default function PinnedMessagesList(props: PinnedMessagesListProps) {
           </div>
           <div className={Style['right']}>
             <div className={Style['pin-img']}>
+              {isLoading && ''}
               <Image
                 src="/images/sidebar-Pin.svg"
                 alt="pin"

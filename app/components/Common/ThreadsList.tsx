@@ -2,7 +2,10 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import Image from 'next/image';
 import Style from './Sidebar.module.scss';
 import { Button } from '@mui/material';
-import { Thread } from '@/app/redux/slices/Chat/chatTypes';
+import {
+  GetThreadListResponse,
+  Thread,
+} from '@/app/redux/slices/Chat/chatTypes';
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { deleteThread, renameNewThread } from '@/app/redux/slices/Chat';
@@ -14,7 +17,7 @@ const DynamicConfirmDeleteModal = dynamic(() => import('./ConfirmationDialog'));
 
 interface ThreadListProps {
   initialAllChatsData: Thread[];
-  fetchChats: (page?: number) => Promise<{ total: number; results: Thread[] }>;
+  fetchChats: (page?: number) => Promise<GetThreadListResponse>;
   totalCount: number;
   updateTotalCount: (count: number) => void;
   handleThreadClick: (threadUUID: string) => void;
@@ -31,7 +34,9 @@ export default function ThreadList({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const isOpenActionModal = Boolean(anchorEl);
-  const [currentSelectedItem, setCurrentSelectedItem] = useState(null);
+  const [currentSelectedItem, setCurrentSelectedItem] = useState<Thread | null>(
+    null
+  );
 
   // Rename Thread
   const [isOpenRenameModal, setIsOpenRenameModal] = useState(false);
@@ -46,7 +51,7 @@ export default function ThreadList({
   );
   const [isFetching, setIsFetching] = useState(false);
   const pageRef = useRef(page);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const fetchingRef = useRef(isFetching);
 
   useEffect(() => {
@@ -111,7 +116,7 @@ export default function ThreadList({
 
   const handleActionMenuClick = (
     event: React.MouseEvent<HTMLElement>,
-    data: any
+    data: Thread
   ) => {
     setAnchorEl(event.currentTarget);
     setCurrentSelectedItem(data);
@@ -130,7 +135,7 @@ export default function ThreadList({
     setIsOpenDeleteModal(true);
   };
 
-  const renameThread = async (values) => {
+  const renameThread = async (values: { name: string }) => {
     const { name } = values;
     if (currentSelectedItem?.uuid) {
       setIsLoading(true);

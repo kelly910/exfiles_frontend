@@ -19,12 +19,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { FormInputText } from '@/app/shared/forms/components/FormInputText';
+import { Thread } from '@/app/redux/slices/Chat/chatTypes';
 
 interface threadModalProps {
   open: boolean;
   handleClose: () => void;
-  handleSubmitProp: (values) => void;
-  threadValues: null | {};
+  handleSubmitProp: (values: IFormSubmit) => void;
+  threadValues: null | Thread;
   isLoading?: boolean;
 }
 
@@ -63,12 +64,7 @@ export default function RenameThreadModal(props: threadModalProps) {
     name: Yup.string().trim().required().label('Name'),
   });
 
-  const {
-    handleSubmit,
-    reset,
-    control,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, reset, control } = useForm({
     defaultValues: defaultValues,
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -78,9 +74,9 @@ export default function RenameThreadModal(props: threadModalProps) {
   useEffect(() => {
     if (threadValues?.name) {
       setDefaultValues({ name: threadValues?.name });
-      reset({ name: threadValues?.name || null });
+      reset({ name: threadValues?.name || '' });
     }
-  }, []);
+  }, [reset]);
 
   return (
     <BootstrapDialog

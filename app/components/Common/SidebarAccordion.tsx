@@ -8,7 +8,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 interface SidebarAccordionProps {
   title: string;
   icon: string;
-  expanded: string;
+  expanded: string | boolean;
   panelKey: string;
   handleAccordionChange: (
     panel: string

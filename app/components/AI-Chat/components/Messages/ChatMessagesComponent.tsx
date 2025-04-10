@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -11,9 +13,10 @@ import UploadFilesStatusMessage from './UploadFilesStatusMessage';
 import { Box, Container } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import { RootState } from '@/app/redux/store';
-import Question from './Question';
-import Answer from './Answer';
-import LoadingGenerateSummary from './LoadingGenerateSummary';
+import { GetMessagesByThreadIdResponse } from '@/app/redux/slices/Chat/chatTypes';
+// import Question from './Question';
+// import Answer from './Answer';
+// import LoadingGenerateSummary from './LoadingGenerateSummary';
 
 export default function ChatMessagesComponent({
   threadId,
@@ -26,7 +29,13 @@ export default function ChatMessagesComponent({
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMessagesLoading, setIsMessagesLoading] = useState(true);
 
-  const [messagesList, setMessagesList] = useState([]);
+  const [messagesList, setMessagesList] =
+    useState<GetMessagesByThreadIdResponse>({
+      count: 0,
+      next: null,
+      previous: null,
+      results: [],
+    });
   const loggedInUser = useAppSelector(
     (state: RootState) => state.login.loggedInUser
   );
@@ -37,9 +46,9 @@ export default function ChatMessagesComponent({
     setIsSidebarOpen((prev) => !prev);
   };
 
-  const groupByDate = (results) => {
+  const groupByDate = (results: any) => {
     if (results && results?.length > 0) {
-      return results?.reduce((acc, item) => {
+      return results?.reduce((acc: any, item: any) => {
         const date = dayjs(item.created).format('DD-MM-YYYY');
         if (!acc[date]) {
           acc[date] = [];
@@ -58,7 +67,7 @@ export default function ChatMessagesComponent({
     setIsMessagesLoading(true);
     const resultData = await dispatch(
       fetchThreadMessagesByThreadId({
-        thread_uuid: threadId,
+        thread_uuid: thread,
       })
     );
 
@@ -94,18 +103,18 @@ export default function ChatMessagesComponent({
                     component="div"
                     className={chatMessagesStyles.chatWindow}
                   >
-                    {groupedData[date].map((record) => (
+                    {groupedData[date].map((record: any) => (
                       <>
                         <UploadFilesStatusMessage
                           messageObj={record}
                           userDetails={loggedInUser}
                         />
-                        <LoadingGenerateSummary />
+                        {/* <LoadingGenerateSummary />
                         <Question
                           userDetails={loggedInUser}
                           messageObj={record}
                         />
-                        <Answer messageObj={record} />
+                        <Answer messageObj={record} /> */}
                       </>
                     ))}
                   </Box>

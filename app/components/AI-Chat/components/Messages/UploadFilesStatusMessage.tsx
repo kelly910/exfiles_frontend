@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import { useEffect, useState } from 'react';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import { Avatar, Box, Button, LinearProgress, Typography } from '@mui/material';
@@ -33,10 +36,14 @@ export default function UploadFilesStatusMessage({
       >
         {documementsList &&
           documementsList?.length > 0 &&
-          documementsList.map((documentItem) => {
+          documementsList.map((documentItem: any, index: number) => {
             const { file_data, trained_status, category_data } = documentItem;
             return (
-              <Box component="div" className={chatMessagesStyles.chatAlContent}>
+              <Box
+                key={index}
+                component="div"
+                className={chatMessagesStyles.chatAlContent}
+              >
                 <div className={chatMessagesStyles.fileBox}>
                   <span className={chatMessagesStyles.fileIcon}>
                     <Image

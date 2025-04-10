@@ -1,4 +1,4 @@
-import { Controller } from 'react-hook-form';
+import { Controller, FieldValues } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import { FormInputProps } from '../types';
 import { SxProps, Theme } from '@mui/material/styles';
@@ -41,16 +41,15 @@ const defaultTextFieldSx: SxProps<Theme> = {
   },
 };
 
-export const FormInputText = ({
+export const FormInputText = <T extends FieldValues>({
   name,
   control,
-  label,
   type = 'text',
   classNames,
   multiline,
   sx,
   ...props
-}: FormInputProps & { sx?: SxProps<Theme> }) => {
+}: FormInputProps<T>) => {
   return (
     <Controller
       name={name}

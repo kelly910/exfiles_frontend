@@ -1,3 +1,4 @@
+import { Thread } from '@/app/redux/slices/Chat/chatTypes';
 import { Fade, Menu, MenuItem } from '@mui/material';
 import { useEffect } from 'react';
 
@@ -7,7 +8,7 @@ interface threadMenuProps {
   handleClose: () => void;
   handleRename: () => void;
   handleDelete: () => void;
-  data: null | {};
+  data: null | Thread;
 }
 
 export default function ThreadActionMenu(props: threadMenuProps) {

@@ -3,7 +3,7 @@ import debounce from 'lodash.debounce';
 
 import DocUploadStyles from '@components/AI-Chat/styles/DocumentUploadModal.module.scss';
 import { Box, LinearProgress, TextField, Typography } from '@mui/material';
-import { ChangeEvent, useCallback } from 'react';
+import { ChangeEvent, useEffect, useMemo } from 'react';
 import { formatFileSizeLabel } from '@/app/utils/functions';
 
 interface FileItemProps {
@@ -33,18 +33,26 @@ export default function UploadFileItem({
   onRemove,
   handleFileDesc,
 }: FileItemProps) {
-  const debouncedHandleFileDesc = useCallback(
-    debounce(
-      (
-        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-        fileId: string
-      ) => {
-        handleFileDesc(event, fileId);
-      },
-      300
-    ),
+  const debouncedHandleFileDesc = useMemo(
+    () =>
+      debounce(
+        (
+          event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+          fileId: string
+        ) => {
+          handleFileDesc(event, fileId);
+        },
+        300
+      ),
     [handleFileDesc]
   );
+
+  // Clean up the debounced function when component unmounts or handleFileDesc changes
+  useEffect(() => {
+    return () => {
+      debouncedHandleFileDesc.cancel();
+    };
+  }, [debouncedHandleFileDesc]);
 
   return (
     <Box component="div" className={DocUploadStyles.fileBoxInner}>

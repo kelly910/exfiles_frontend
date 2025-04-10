@@ -1,15 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Container, useMediaQuery } from '@mui/material';
 import PageHeader from '@components/Common/PageHeader';
 import Sidebar from '@components/Common/Sidebar';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { fetchThreadMessagesByThreadId } from '@/app/redux/slices/Chat';
-import { useAppDispatch } from '@/app/redux/hooks';
+
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 
 const DynamicChatHomeScreen = dynamic(
@@ -20,14 +19,11 @@ const DynamicChatMessagesComponent = dynamic(
     import('@/app/components/AI-Chat/components/Messages/ChatMessagesComponent')
 );
 
-export default function AIChatComponent({ threadId }: { threadId: string }) {
+export default function AIChatComponent({ threadId }: { threadId?: string }) {
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   const isSmallScreen = useMediaQuery('(max-width:1100px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(isSmallScreen);
-
-  const [isMessagesLoading, setIsMessagesLoading] = useState(true);
 
   // const sidebarRef = useRef<HTMLInputElement>(null);
 
@@ -62,22 +58,6 @@ export default function AIChatComponent({ threadId }: { threadId: string }) {
 
   //   return () => window.removeEventListener('resize', handleResize);
   // }, []);
-
-  const getThreadMessagesDetails = async (thread: string) => {
-    setIsMessagesLoading(true);
-    const resultData = await dispatch(
-      fetchThreadMessagesByThreadId({
-        thread_uuid: threadId,
-      })
-    );
-    setIsMessagesLoading(false);
-  };
-
-  useEffect(() => {
-    if (threadId) {
-      getThreadMessagesDetails(threadId);
-    }
-  }, [threadId]);
 
   return (
     <>

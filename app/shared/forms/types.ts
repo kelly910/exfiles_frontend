@@ -1,28 +1,22 @@
-import React, { ReactNode, Ref } from 'react';
+import React, { ReactNode } from 'react';
+import { Control, FieldValues, Path, UseFormSetValue } from 'react-hook-form';
+import { SxProps, Theme } from '@mui/material/styles';
 
 export type SharedFieldProps = {
   name: string;
   placeholder?: string;
 };
-
-export type CoreReactHookFormProps = {
-  onChange?: (event: any) => void;
-  onBlur?: (event: any) => void;
-  ref?: Ref<any>;
-  forwardedRef?: Ref<any>;
-  name?: string;
-};
-
-export interface FormInputProps {
-  name: string;
-  control: any;
+export interface FormInputProps<T extends FieldValues = FieldValues> {
+  name: Path<T>;
+  control: Control<T>;
   label: string | ReactNode;
-  setValue?: any;
+  setValue?: UseFormSetValue<T>;
   type?: string;
-  multiline?: boolean | undefined;
+  multiline?: boolean;
   classNames?: string;
   inputRef?: React.RefObject<HTMLInputElement>;
   disabled?: boolean;
   defaultValue?: string;
   placeholder?: string;
+  sx?: SxProps<Theme>;
 }

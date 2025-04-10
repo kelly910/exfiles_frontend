@@ -5,7 +5,7 @@ import ListItem from '@mui/material/ListItem';
 import { Box, Link, List, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import SidebarAccordion from './SidebarAccordion';
 import { useAppDispatch } from '@/app/redux/hooks';
 import {
@@ -14,7 +14,11 @@ import {
 } from '@/app/redux/slices/Chat';
 import ThreadList from './ThreadsList';
 import PinnedMessagesList from './PinnedMessagesList';
-import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
+import {
+  GetThreadListResponse,
+  PinnedAnswerMessage,
+  PinnedAnswerMessagesResponse,
+} from '@/app/redux/slices/Chat/chatTypes';
 import NoRecordFound from './NoRecordFound';
 
 const Sidebar = ({
@@ -30,6 +34,8 @@ const Sidebar = ({
   title: string;
 }) => {
   const dispatch = useAppDispatch();
+  // const router = useRouter();
+
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,21 +45,11 @@ const Sidebar = ({
   };
   const [expanded, setExpanded] = useState<boolean | string>('panel1'); // Track which accordion is expanded
 
-  const [initialAllChatsData, setInitialAllChatsData] = useState<{
-    previous: string | null;
-    next: string | null;
-    count: number;
-    results: any[];
-  } | null>(null);
+  const [initialAllChatsData, setInitialAllChatsData] =
+    useState<GetThreadListResponse | null>(null);
 
-  const [initialAllPinnedChatsData, setInitialAllPinnedChatsData] = useState<{
-    previous: string | null;
-    next: string | null;
-    count: number;
-    results: any[];
-  } | null>();
-
-  const router = useRouter();
+  const [initialAllPinnedChatsData, setInitialAllPinnedChatsData] =
+    useState<PinnedAnswerMessagesResponse | null>(null);
 
   const handleAccordionChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
