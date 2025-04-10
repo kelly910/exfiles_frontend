@@ -25,6 +25,7 @@ import FeedbackDialog from '@components/FeedBackDialog/FeedBackDialog';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch } from '@/app/redux/hooks';
 import TemporaryDrawer from '@components/Drawer/Drawer';
+import { useRouter } from 'next/navigation';
 
 interface PageHeaderProps {
   toggleSidebar: () => void;
@@ -37,6 +38,7 @@ export default function PageHeader({
   toggleSidebar,
   isSidebarOpen,
 }: PageHeaderProps) {
+  const router = useRouter();
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
@@ -131,6 +133,7 @@ export default function PageHeader({
                 alt="logo"
                 width={40}
                 height={38}
+                onClick={() => router.push('/ai-chats')}
               />
             </Box>
 

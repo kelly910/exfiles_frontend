@@ -12,6 +12,7 @@ import DocumentsEmpty from '../DocumentsEmpty/DocumentsEmpty';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
+import { useMediaQuery } from '@mui/material';
 
 export default function DocumentListComponent({ catId }: { catId: number }) {
   const router = useRouter();
@@ -39,7 +40,8 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
     });
   };
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isSmallScreen = useMediaQuery('(max-width:1100px)');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(isSmallScreen);
 
   const toggleSidebar = () => {
     if (!selectedDocId) {
@@ -54,6 +56,21 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
       setIsSidebarOpen(false);
     }
   }, [selectedDocId]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1100) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+
+    handleResize(); // Call on mount to ensure it sets correctly
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleThreadClick = (thread: string) => {
     router.push(`/ai-chats/${thread}`); // Navigate to thread page

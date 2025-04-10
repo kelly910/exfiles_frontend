@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Container, useMediaQuery } from '@mui/material';
 import PageHeader from '@components/Common/PageHeader';
@@ -44,20 +44,20 @@ export default function AIChatComponent({ threadId }: { threadId?: string }) {
   };
 
   // New code
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     if (window.innerWidth <= 1100) {
-  //       setIsSidebarOpen(false);
-  //     } else {
-  //       setIsSidebarOpen(true);
-  //     }
-  //   };
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1100) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
 
-  //   handleResize(); // Call on mount to ensure it sets correctly
-  //   window.addEventListener('resize', handleResize);
+    handleResize(); // Call on mount to ensure it sets correctly
+    window.addEventListener('resize', handleResize);
 
-  //   return () => window.removeEventListener('resize', handleResize);
-  // }, []);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <>

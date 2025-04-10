@@ -5,7 +5,6 @@ import ListItem from '@mui/material/ListItem';
 import { Box, Link, List, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Image from 'next/image';
-// import { useRouter } from 'next/navigation';
 import SidebarAccordion from './SidebarAccordion';
 import { useAppDispatch } from '@/app/redux/hooks';
 import {
@@ -20,6 +19,7 @@ import {
   PinnedAnswerMessagesResponse,
 } from '@/app/redux/slices/Chat/chatTypes';
 import NoRecordFound from './NoRecordFound';
+import { useRouter } from 'next/navigation';
 
 const Sidebar = ({
   isOpen,
@@ -34,8 +34,7 @@ const Sidebar = ({
   title: string;
 }) => {
   const dispatch = useAppDispatch();
-  // const router = useRouter();
-
+  const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -115,7 +114,13 @@ const Sidebar = ({
       >
         <div className={Style['main-logo']}>
           <Link href="#" className={Style['opensidebar-logo']}>
-            <Image src="/images/logo.svg" alt="logo" width={200} height={44} />
+            <Image
+              src="/images/logo.svg"
+              alt="logo"
+              width={200}
+              height={44}
+              onClick={() => router.push('/ai-chats')}
+            />
           </Link>
           <Link href="#" className={Style['close-sidebar-logo']}>
             <Image
@@ -337,7 +342,7 @@ const Sidebar = ({
             </SidebarAccordion>
 
             <SidebarAccordion
-              title={`All Chatss ${initialAllChatsData ? `(${initialAllChatsData?.count})` : ''}`}
+              title={`All Chats ${initialAllChatsData ? `(${initialAllChatsData?.count})` : ''}`}
               icon="/images/messages.svg"
               expanded={expanded}
               panelKey="panel2"

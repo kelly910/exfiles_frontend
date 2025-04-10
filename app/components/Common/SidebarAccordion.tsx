@@ -4,6 +4,7 @@ import Style from './Sidebar.module.scss';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import { useRouter } from 'next/navigation';
 
 interface SidebarAccordionProps {
   title: string;
@@ -24,6 +25,13 @@ const SidebarAccordion = ({
   handleAccordionChange,
   children,
 }: SidebarAccordionProps) => {
+  const router = useRouter();
+  const redirection = (expanded: string) => {
+    if (expanded == 'panel3') {
+      router.push('/documents');
+    }
+  };
+
   return (
     <Accordion
       className={Style['accordian']}
@@ -60,7 +68,13 @@ const SidebarAccordion = ({
         }}
       >
         <Typography component="span" className={Style['heading']}>
-          <Image src={icon} alt="icon" width={18} height={18} />
+          <Image
+            src={icon}
+            alt="icon"
+            width={18}
+            height={18}
+            onClick={() => redirection(panelKey)}
+          />
           {title}
         </Typography>
       </AccordionSummary>
