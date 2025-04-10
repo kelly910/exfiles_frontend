@@ -78,7 +78,6 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     selectedDocIdNull();
   };
 
-
   const copySummary = async () => {
     if (documentSummary?.summary) {
       navigator.clipboard.writeText(documentSummary?.summary);
