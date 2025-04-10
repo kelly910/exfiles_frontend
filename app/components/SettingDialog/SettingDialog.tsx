@@ -57,6 +57,9 @@ export default function SettingDialog({
   onClose,
 }: SettingDialogProps) {
   const [activeTab, setActiveTab] = useState('setting');
+  const storedUser = localStorage.getItem('loggedInUser');
+  const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
+  const googleLogin = loggedInUser?.data?.google_login;
 
   return (
     <React.Fragment>
@@ -117,24 +120,26 @@ export default function SettingDialog({
                     height={16}
                   />
                 </Button>
-                <Button
-                  onClick={() => setActiveTab('password')}
-                  className={` ${activeTab === 'password' ? styles.active : ''}`}
-                >
-                  <Image
-                    src="/images/password-change.svg"
-                    alt="password-change.svg"
-                    width={18}
-                    height={18}
-                  />
-                  <Typography>Change Password</Typography>
-                  <Image
-                    src="/images/arrow-down-right.svg"
-                    alt="user"
-                    width={16}
-                    height={16}
-                  />
-                </Button>
+                {!googleLogin && (
+                  <Button
+                    onClick={() => setActiveTab('password')}
+                    className={` ${activeTab === 'password' ? styles.active : ''}`}
+                  >
+                    <Image
+                      src="/images/password-change.svg"
+                      alt="password-change.svg"
+                      width={18}
+                      height={18}
+                    />
+                    <Typography>Change Password</Typography>
+                    <Image
+                      src="/images/arrow-down-right.svg"
+                      alt="user"
+                      width={16}
+                      height={16}
+                    />
+                  </Button>
+                )}
               </Box>
             </Box>
             <Box component="div" className={styles.dialogSidebarHeader}>
