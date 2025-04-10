@@ -42,7 +42,7 @@ const Sidebar = ({
   const handleToggleSearch = () => {
     setIsSearchOpen((prev) => !prev);
   };
-  const [expanded, setExpanded] = useState<boolean | string>('panel1'); // Track which accordion is expanded
+  const [expanded, setExpanded] = useState<boolean | string>(''); // Track which accordion is expanded
 
   const [initialAllChatsData, setInitialAllChatsData] =
     useState<GetThreadListResponse | null>(null);

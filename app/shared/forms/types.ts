@@ -9,7 +9,7 @@ export type SharedFieldProps = {
 export interface FormInputProps<T extends FieldValues = FieldValues> {
   name: Path<T>;
   control: Control<T>;
-  label: string | ReactNode;
+  label?: string | ReactNode;
   setValue?: UseFormSetValue<T>;
   type?: string;
   multiline?: boolean;

@@ -205,7 +205,7 @@ export default function ThreadList({
           className={Style['accordion-content']}
           onClick={() => handleThreadClick(chat.uuid)}
         >
-          <div className={Style['left']}>
+          <div className={Style['left']} style={{ cursor: 'pointer' }}>
             <p>{chat.name ? chat.name : 'New Thread'}</p>
           </div>
           <div className={Style['right']}>

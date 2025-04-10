@@ -30,6 +30,9 @@ const SidebarAccordion = ({
     if (expanded == 'panel3') {
       router.push('/documents');
     }
+    if (expanded == 'panel2') {
+      router.push('/ai-chats');
+    }
   };
 
   return (
@@ -67,14 +70,12 @@ const SidebarAccordion = ({
           content: Style['customAccordionContent'],
         }}
       >
-        <Typography component="span" className={Style['heading']}>
-          <Image
-            src={icon}
-            alt="icon"
-            width={18}
-            height={18}
-            onClick={() => redirection(panelKey)}
-          />
+        <Typography
+          component="span"
+          className={Style['heading']}
+          onClick={() => redirection(panelKey)}
+        >
+          <Image src={icon} alt="icon" width={18} height={18} />
           {title}
         </Typography>
       </AccordionSummary>
