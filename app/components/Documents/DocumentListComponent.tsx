@@ -15,6 +15,7 @@ import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useMediaQuery } from '@mui/material';
 
 export default function DocumentListComponent({ catId }: { catId: number }) {
+  const mobileView = useMediaQuery('(min-width:600px)');
   const router = useRouter();
   const [selectedDocId, setSelectedsDocId] = useState<string>('');
   const dispatch = useAppDispatch();
@@ -50,10 +51,12 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
   };
 
   useEffect(() => {
-    if (!selectedDocId) {
-      setIsSidebarOpen((prev) => !prev);
-    } else {
-      setIsSidebarOpen(false);
+    if (mobileView) {
+      if (!selectedDocId) {
+        setIsSidebarOpen((prev) => !prev);
+      } else {
+        setIsSidebarOpen(false);
+      }
     }
   }, [selectedDocId]);
 
@@ -88,6 +91,18 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
     setSelectedsDocId('');
   };
 
+  const [openCategoryDrawerMobile, setOpenCategoryDrawerMobile] =
+    useState(false);
+
+  const openCategoryDrawer = (value: boolean) => {
+    setOpenCategoryDrawerMobile(value);
+  };
+
+  const handleOpenSidebar = (value: boolean) => {
+    setOpenCategoryDrawerMobile(false);
+    setIsSidebarOpen(value);
+  };
+
   return (
     <main className={`chat-body ${styles.docsPageMain}`}>
       <Sidebar
@@ -106,11 +121,17 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
         <div className={styles.docsMain}>
           {showEmptyCategoryComponent ? (
             <>
-              <CategoryList catId={catId} />
+              <CategoryList
+                catId={catId}
+                openCategoryDrawerMobile={openCategoryDrawerMobile}
+                handleCloseDrawer={() => setOpenCategoryDrawerMobile(false)}
+                openMainSidebar={(value) => handleOpenSidebar(value)}
+              />
               <DocumentList
                 catId={catId}
                 handleOpenDocumentSummary={handleSelectedDocSummary}
                 selectedDoc={selectedDocId}
+                handleOpenCategoryDrawer={(value) => openCategoryDrawer(value)}
               />
               {selectedDocId && (
                 <DocumentSummary
