@@ -1,6 +1,15 @@
 'use client';
 
-import { Box, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import Image from 'next/image';
 import styles from './document.module.scss';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -21,9 +30,18 @@ export type Category = {
 
 type CategoryListProps = {
   catId: number | null;
+  openCategoryDrawerMobile: boolean;
+  handleCloseDrawer: () => void;
+  openMainSidebar: (value: boolean) => void;
 };
 
-const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
+const CategoryList: React.FC<CategoryListProps> = ({
+  catId,
+  openCategoryDrawerMobile,
+  handleCloseDrawer,
+  openMainSidebar,
+}) => {
+  const mobileView = useMediaQuery('(min-width:600px)');
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { categories, nextPage, isFetching } = useSelector(
@@ -87,12 +105,6 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
     });
   };
 
-  // const [openDrawer, setOpenDrawer] = useState(true);
-
-  // const handleCloseDrawer = () => {
-  //   setOpenDrawer(false);
-  // };
-
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -106,146 +118,9 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
 
   return (
     <>
-      <Box component="div" className={styles.categories}>
-        <Box component="div" className={styles.categoryBox}>
-          <Typography variant="body1" className={styles.categoriesTitle}>
-            Categories
-          </Typography>
-        </Box>
-        {categories?.length > 0 &&
-          categories?.map((category, index) => (
-            <Box
-              component="div"
-              key={index}
-              ref={(el: HTMLDivElement | null) => {
-                categoryRefs.current[category.id] = el;
-                if (index === categories.length - 1 && el) lastCategoryRef(el);
-              }}
-              className={`${styles.docsFolder} ${(Number(catId) || activeCategoryId) === category?.id ? styles.active : ''}`}
-            >
-              <div className={styles.folderBox}>
-                <Image
-                  src="/images/folder.svg"
-                  alt="folder"
-                  width={18}
-                  height={18}
-                  className={styles.folderImg}
-                  onClick={() => handleCategoryClick(category?.id)}
-                />
-                <div className={styles.folderTitleBox}>
-                  <Typography
-                    variant="body1"
-                    className={styles.folderTitle}
-                    onClick={() => handleCategoryClick(category?.id)}
-                  >
-                    {category?.name}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    className={styles.folderNo}
-                    onClick={() => handleCategoryClick(category?.id)}
-                  >
-                    No. of Docs : <span>{category?.no_of_docs || 0}</span>
-                  </Typography>
-                </div>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Image
-                    src="/images/more.svg"
-                    alt="more"
-                    width={16}
-                    height={16}
-                    className={styles.arrowRightImg}
-                  />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                  className={styles.mainDropdown}
-                  sx={{
-                    '& .MuiPaper-root': {
-                      backgroundColor: 'var(--Input-Box-Colors)',
-                      marginTop: '20px',
-                      boxShadow: 'none',
-                      borderRadius: '12px',
-                    },
-                  }}
-                >
-                  <MenuItem
-                    onClick={handleCloseUserMenu}
-                    className={styles.menuDropdown}
-                  >
-                    <Image
-                      src="/images/edit-2.svg"
-                      alt="tras"
-                      width={18}
-                      height={18}
-                    />
-                    <Typography>Rename Category</Typography>
-                  </MenuItem>
-                </Menu>
-              </div>
-            </Box>
-          ))}
-        {showLoading && (
-          <Box className={styles.infiniteLoader}>
-            <Image
-              src="/gif/infinite-loader.gif"
-              alt="infiniteLoader"
-              width={100}
-              height={100}
-            />
-          </Box>
-        )}
-      </Box>
-      {/* Sidebar Drawer for Small Screens */}
-      {/* <Drawer
-        anchor="left"
-        open={openDrawer}
-        onClick={handleCloseDrawer}
-        className={styles.categoriesDrawer}
-        sx={{
-          top: '65px',
-          right: '0',
-          left: 'auto',
-          maxHeight: 'calc(100vh - 65px)',
-          '& .MuiPaper-root': {
-            top: '65px',
-            width: 'calc(100% - 64px)',
-            maxHeight: 'calc(100vh - 65px)',
-            background: 'var(--Card-Color)',
-            borderLeft: '1px solid  #3A3948',
-          },
-          '& .MuiBackdrop-root': {
-            top: '65px',
-            maxHeight: 'calc(100vh - 65px)',
-          },
-        }}
-      >
+      {mobileView ? (
         <Box component="div" className={styles.categories}>
           <Box component="div" className={styles.categoryBox}>
-            <Button
-              onClick={handleCloseDrawer}
-              className={styles.backButton}
-              sx={{ marginBottom: '24px' }}
-            >
-              <Image
-                src="/images/arrow-left.svg"
-                alt="user"
-                width={16}
-                height={16}
-              />
-            </Button>
             <Typography variant="body1" className={styles.categoriesTitle}>
               Categories
             </Typography>
@@ -284,7 +159,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
                       className={styles.folderNo}
                       onClick={() => handleCategoryClick(category?.id)}
                     >
-                      No. of Docs : <span>{category?.no_of_docs}</span>
+                      No. of Docs : <span>{category?.no_of_docs || 0}</span>
                     </Typography>
                   </div>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -347,7 +222,147 @@ const CategoryList: React.FC<CategoryListProps> = ({ catId }) => {
             </Box>
           )}
         </Box>
-      </Drawer> */}
+      ) : (
+        <Drawer
+          anchor="left"
+          open={openCategoryDrawerMobile}
+          onClose={handleCloseDrawer}
+          className={styles.categoriesDrawer}
+          sx={{
+            top: '65px',
+            right: '0',
+            left: 'auto',
+            maxHeight: 'calc(100vh - 65px)',
+            '& .MuiPaper-root': {
+              top: '65px',
+              width: 'calc(100% - 64px)',
+              maxHeight: 'calc(100vh - 65px)',
+              background: 'var(--Card-Color)',
+              borderLeft: '1px solid  #3A3948',
+            },
+            '& .MuiBackdrop-root': {
+              top: '65px',
+              maxHeight: 'calc(100vh - 65px)',
+            },
+          }}
+        >
+          <Box component="div" className={styles.categories}>
+            <Box component="div" className={styles.categoryBox}>
+              <Button
+                onClick={() => openMainSidebar(true)}
+                className={styles.backButton}
+                sx={{ marginBottom: '24px' }}
+              >
+                <Image
+                  src="/images/arrow-left.svg"
+                  alt="user"
+                  width={16}
+                  height={16}
+                />
+              </Button>
+              <Typography variant="body1" className={styles.categoriesTitle}>
+                Categories
+              </Typography>
+            </Box>
+            {categories?.length > 0 &&
+              categories?.map((category, index) => (
+                <Box
+                  component="div"
+                  key={index}
+                  ref={(el: HTMLDivElement | null) => {
+                    categoryRefs.current[category.id] = el;
+                    if (index === categories.length - 1 && el)
+                      lastCategoryRef(el);
+                  }}
+                  className={`${styles.docsFolder} ${(Number(catId) || activeCategoryId) === category?.id ? styles.active : ''}`}
+                >
+                  <div className={styles.folderBox}>
+                    <Image
+                      src="/images/folder.svg"
+                      alt="folder"
+                      width={18}
+                      height={18}
+                      className={styles.folderImg}
+                      onClick={() => handleCategoryClick(category?.id)}
+                    />
+                    <div className={styles.folderTitleBox}>
+                      <Typography
+                        variant="body1"
+                        className={styles.folderTitle}
+                        onClick={() => handleCategoryClick(category?.id)}
+                      >
+                        {category?.name}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        className={styles.folderNo}
+                        onClick={() => handleCategoryClick(category?.id)}
+                      >
+                        No. of Docs : <span>{category?.no_of_docs}</span>
+                      </Typography>
+                    </div>
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Image
+                        src="/images/more.svg"
+                        alt="more"
+                        width={16}
+                        height={16}
+                        className={styles.arrowRightImg}
+                      />
+                    </IconButton>
+                    <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorElUser}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      open={Boolean(anchorElUser)}
+                      onClose={handleCloseUserMenu}
+                      className={styles.mainDropdown}
+                      sx={{
+                        '& .MuiPaper-root': {
+                          backgroundColor: 'var(--Input-Box-Colors)',
+                          marginTop: '20px',
+                          boxShadow: 'none',
+                          borderRadius: '12px',
+                        },
+                      }}
+                    >
+                      <MenuItem
+                        onClick={handleCloseUserMenu}
+                        className={styles.menuDropdown}
+                      >
+                        <Image
+                          src="/images/edit-2.svg"
+                          alt="tras"
+                          width={18}
+                          height={18}
+                        />
+                        <Typography>Rename Category</Typography>
+                      </MenuItem>
+                    </Menu>
+                  </div>
+                </Box>
+              ))}
+            {showLoading && (
+              <Box className={styles.infiniteLoader}>
+                <Image
+                  src="/gif/infinite-loader.gif"
+                  alt="infiniteLoader"
+                  width={100}
+                  height={100}
+                />
+              </Box>
+            )}
+          </Box>
+        </Drawer>
+      )}
     </>
   );
 };
