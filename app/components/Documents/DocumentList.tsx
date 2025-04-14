@@ -55,7 +55,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
   selectedDoc,
   handleOpenCategoryDrawer,
 }) => {
-  const mobileView = useMediaQuery('(min-width:600px)');
+  const mobileView = useMediaQuery('(min-width:800px)');
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useState('');
   const { documents, count } = useSelector(

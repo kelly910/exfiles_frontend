@@ -3,7 +3,7 @@
   border-radius: 11px;
 
   .dialogHeader {
-    background-color: var(--Background-Color);
+    background-color: var(--Card-Color);
     border: 1px solid var(--Stroke-Color);
     border-bottom: 0;
     padding: 16px 24px;
@@ -22,12 +22,12 @@
       font-weight: var(--Medium);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
-      color: var(--Txt-On-Gradient);
+      color: var(--Primary-Text-Color);
     }
   }
 
   .dialogBody {
-    background-color: var(--Background-Color);
+    background-color: var(--Card-Color);
     padding: 0 24px;
     border-radius: 0 0 12px 12px;
     border: 1px solid var(--Stroke-Color);
@@ -39,11 +39,11 @@
     }
 
     .dialogContent {
-      background-color: var(--Card-Color);
+      background-color: var(--Input-Box-Colors);
+      border: 1px solid var(--Stroke-Color);
       border-radius: 10px;
       padding: 50px 20px;
       text-align: center;
-      margin: 0 0 24px 0;
 
       p {
         font-weight: var(--Lighter);
@@ -74,8 +74,8 @@
 .fileBoxInner {
   border: 1px solid var(--Stroke-Color);
   padding: 8px;
-  border-radius: 8px;
-  background-color: var(--Card-Color);
+  border-radius: 12px;
+  background-color: var(--Input-Box-Colors);
   margin-top: 12px;
 
   &:first-child {
@@ -86,29 +86,34 @@
     .fileBox {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       gap: 8px;
 
       .fileIcon {
-        width: 24px;
         display: inline-flex;
         flex: 0 0 auto;
-        padding: 3px 5px;
-        background-color: var(--Card-Image);
+        padding: 4px 6px;
+        background-color: var(--Card-Color);
         border-radius: 3px;
+        border: 0.94px solid var(--Stroke-Color);
+
+        img {
+          width: 18px;
+          height: 22px;
+        }
       }
 
       p {
         width: 100%;
         font-weight: var(--Medium);
-        font-size: var(--SubTitle-3);
+        font-size: var(--SubTitle-2);
         line-height: 1.4;
         color: var(--Primary-Text-Color);
 
         span {
           display: block;
-          font-weight: var(--Medium);
-          font-size: var(--SubTitle-6);
+          font-weight: var(--Lighter);
+          font-size: var(--SubTitle-5);
           line-height: 140%;
           letter-spacing: 0%;
           color: var(--Placeholder-Text);
@@ -144,7 +149,7 @@
   align-items: center;
   gap: 20px;
   padding: 24px 0;
-  background-color: var(--Background-Color);
+  background-color: var(--Card-Color);
   position: sticky;
   bottom: 0;
 
@@ -201,9 +206,9 @@
 
 .fileErrorBox {
   background: var(--Card-Color);
-  margin-top: 8px;
+  margin-top: 12px;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 5px 12px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -214,8 +219,8 @@
 
   p {
     font-weight: 400;
-    font-size: 14px;
-    line-height: 140%;
+    font-size: var(--SubTitle-6);
+    line-height: 7px;
     color: var(--Subtext-Color);
   }
 }

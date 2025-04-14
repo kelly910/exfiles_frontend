@@ -1,29 +1,24 @@
 'use client';
-import {
-  Box,
-  Container,
-  Grid,
-  Input,
-  InputAdornment,
-  Typography,
-} from '@mui/material';
+import { Box, Container, Input, InputAdornment } from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './style.module.scss';
 // import Header from '@components/Header/Header';
 import ChatWindows from '@/app/components/Chat-Windows/ChatWindows';
-import DialogBox from '@/app/components/Dialog-Box/DialogBox';
-import Sidebar from '@/app/components/Sidebar/Sidebar';
+import Header from '@/app/components/Header/Header';
 
 export default function Page() {
   return (
     <>
-      <Sidebar />
-      {/* <Header /> */}
+      {/* <Sidebar /> */}
+      <Header />
       <main>
-        <div>
+        <div className="chat-container">
           <Container maxWidth="lg" disableGutters>
-            <Box component="section" className={styles.chatBoarbMain}>
-              <Box component="section" className={styles.chatHeading}>
+            <ChatWindows />
+          </Container>
+        </div>
+        {/* <Box component="section" className={styles.chatBoarbMain}> */}
+        {/* <Box component="section" className={styles.chatHeading}>
                 <Box component="div" className={styles.chatHeader}>
                   <Typography variant="h2" className={styles.chatTitle}>
                     Wondering What is ExFiles?
@@ -119,9 +114,9 @@ export default function Page() {
                     </Grid>
                   </Grid>
                 </Box>
-              </Box>
-              <Box component="section" className={styles.chatHeading}>
-                <div className={styles.chatHeader}>
+              </Box> */}
+        {/* <Box component="section" className={styles.chatHeading}> */}
+        {/* <div className={styles.chatHeader}>
                   <Typography variant="h2" className={styles.chatTitle}>
                     How can I help you with?
                   </Typography>
@@ -133,36 +128,33 @@ export default function Page() {
                     Ask me anything. Enter the queries you get in textbox below,
                     and see the magic of ExFiles.
                   </Typography>
-                </div>
-
-                <Box component="div" className={styles.chatBoard}>
-                  <Input
-                    id="input-with-icon-adornment"
-                    className={styles.fileInput}
-                    placeholder="Write your question here"
-                    endAdornment={
-                      <InputAdornment
-                        position="end"
-                        className={styles.fileIcon}
-                      >
-                        <span className={styles.clip}></span>
-                      </InputAdornment>
-                    }
-                  />
-                  <Button
-                    type="button"
-                    variant="contained"
-                    className={`btn-arrow`}
-                    color="primary"
-                    fullWidth
-                  >
-                    <span className="arrow"></span>
-                  </Button>
-                </Box>
-              </Box>
+                </div> */}
+        <div>
+          <Container maxWidth="lg" disableGutters>
+            <Box component="div" className={styles.chatBoard}>
+              <Input
+                id="input-with-icon-adornment"
+                className={styles.fileInput}
+                placeholder="Write your question here"
+                endAdornment={
+                  <InputAdornment position="end" className={styles.fileIcon}>
+                    <span className={styles.clip}></span>
+                  </InputAdornment>
+                }
+              />
+              <Button
+                type="button"
+                variant="contained"
+                className={`btn-arrow`}
+                color="primary"
+                fullWidth
+              >
+                <span className="arrow"></span>
+              </Button>
             </Box>
-            <ChatWindows />
-            <DialogBox />
+            {/* </Box> */}
+            {/* </Box> */}
+            {/* <DialogBox /> */}
           </Container>
         </div>
       </main>

@@ -43,7 +43,7 @@
 
     .dialogSemiTitle {
       font-weight: var(--Lighter);
-      font-size: 10px;
+      font-size: var(--SubTitle-6);
       line-height: 1.4;
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -61,7 +61,7 @@
         justify-content: space-between;
         align-items: center;
         // gap: 4px;
-        margin-top: 8px;
+        margin-top: 6px;
         text-transform: capitalize;
 
         &:first-child {
@@ -119,18 +119,16 @@
         margin-top: 24px;
       }
 
-      .dialogFormGroup {
-        .formLabel {
-          font-weight: var(--Regular);
-          font-size: var(--SubTitle-3);
-          line-height: 1.4;
-          color: var(--Subtext-Color);
-        }
-      }
-
       .dialogFormFull {
         grid-column: span 2;
         margin-top: 24px;
+      }
+
+      label {
+        font-size: var(--SubTitle-3);
+        font-weight: var(--Medium);
+        line-height: 1.4;
+        color: var(--Subtext-Color);
       }
     }
 

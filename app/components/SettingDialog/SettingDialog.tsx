@@ -17,7 +17,7 @@ import DeleteAccount from '@/app/components/UserSetting/DeleteAccount';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
-    backgroundColor: '#11101b',
+    backgroundColor: 'var(--Card-Color)',
     margin: '0px',
     border: '1px solid #3a3948',
     borderRadius: '16px',

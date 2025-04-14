@@ -38,7 +38,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   docId,
   selectedDocIdNull,
 }) => {
-  const mobileView = useMediaQuery('(min-width:600px)');
+  const mobileView = useMediaQuery('(min-width:800px)');
   const dispatch = useAppDispatch();
   const documentSummary = useSelector(
     (state: RootState) => state.documentSummary.documentSummary

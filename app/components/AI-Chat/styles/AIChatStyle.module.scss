@@ -127,18 +127,31 @@
 
 .fileInput {
   padding: 9px 16px;
-  background-color: var(--Card-Color);
+  background-color: var(--Input-Box-Colors);
   width: 100%;
   border-radius: 10px;
   color: var(--Subtext-Color);
+  border: 1px solid var(--Stroke-Color);
 
   &::after {
     content: none !important;
   }
 
+  &::before {
+    content: none !important;
+  }
+
+  &:hover {
+    border: 1px solid var(--Subtext-Color);
+  }
+
   input {
     color: var(--Primary-Text-Color);
   }
+}
+
+.fileInput:has(input:focus) {
+  border: 1px solid var(--Subtext-Color);
 }
 
 .chatBoard {
@@ -150,6 +163,7 @@
   border-radius: 12px;
   padding: 16px;
   margin-top: 24px;
+  background-color: var(--Card-Color);
 }
 
 .fileIcon {
@@ -166,6 +180,12 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+    scale: 1;
+    transition: all 0.4s;
+
+    &:hover {
+      scale: 1.1;
+    }
   }
 }
 
