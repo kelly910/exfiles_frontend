@@ -87,11 +87,11 @@ export default function DocumentUploadDialog({
       const chunk = file.slice(start, end);
       // Generate SHA-256 checksum for each chunk
       const checkSUM = await computeChecksum(chunk);
-
+      const filename = file.name.split('.')[0];
       const formData = new FormData();
       formData.append('document', chunk);
       formData.append('extension', 'pdf');
-      formData.append('file_name', file.name);
+      formData.append('file_name', filename);
       formData.append('chunk_index', chunkIndex.toString());
       formData.append('total_index', totalChunks.toString());
       formData.append('file_size', file.size.toString());

@@ -1,9 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-
-import { useEffect, useState } from 'react';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
-import { Avatar, Box, Button, LinearProgress, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import {
   formatFileSizeLabel,
@@ -11,18 +7,19 @@ import {
   getDocumentImage,
 } from '@/app/utils/functions';
 import NameAvatar from './NameAvatar';
-import { RootState } from '@/app/redux/store';
-import { useSelector } from 'react-redux';
-import { DOCUMENT_STATUS } from '@/app/utils/constants';
+// import { RootState } from '@/app/redux/store';
+// import { useSelector } from 'react-redux';
+// import { DOCUMENT_STATUS } from '@/app/utils/constants';
+import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
+import { LoginResponse } from '@store/slices/login';
 
 export default function UploadFilesStatusMessage({
   messageObj,
   userDetails,
 }: {
-  messageObj: any;
-  userDetails: any;
+  messageObj: ChatMessage;
+  userDetails: LoginResponse;
 }) {
-  const [progress, setProgress] = useState(0);
   const documementsList = messageObj.uploaded_documents;
 
   return (
@@ -36,41 +33,43 @@ export default function UploadFilesStatusMessage({
       >
         {documementsList &&
           documementsList?.length > 0 &&
-          documementsList.map((documentItem: any, index: number) => {
-            const { file_data, trained_status, category_data } = documentItem;
-            return (
-              <Box
-                key={index}
-                component="div"
-                className={chatMessagesStyles.chatAlContent}
-              >
-                <div className={chatMessagesStyles.fileBox}>
-                  <span className={chatMessagesStyles.fileIcon}>
-                    <Image
-                      src={getDocumentImage(file_data.file_extension)}
-                      alt="file-extension-img"
-                      width={14}
-                      height={16}
-                      className={chatMessagesStyles.pdfImg}
-                    />
-                  </span>
-                  <Typography
-                    variant="body1"
-                    className={chatMessagesStyles.fileTitle}
-                  >
-                    {file_data.file_name}
-                    <span>{formatFileSizeLabel(file_data.file_size)}</span>
-                  </Typography>
-                </div>
+          documementsList.map(
+            (documentItem: UploadedDocument, index: number) => {
+              const { file_data } = documentItem;
+              // const { file_data, trained_status, category_data } = documentItem;
+              return (
+                <Box
+                  key={index}
+                  component="div"
+                  className={chatMessagesStyles.chatAlContent}
+                >
+                  <div className={chatMessagesStyles.fileBox}>
+                    <span className={chatMessagesStyles.fileIcon}>
+                      <Image
+                        src={getDocumentImage(file_data.file_extension)}
+                        alt="file-extension-img"
+                        width={14}
+                        height={16}
+                        className={chatMessagesStyles.pdfImg}
+                      />
+                    </span>
+                    <Typography
+                      variant="body1"
+                      className={chatMessagesStyles.fileTitle}
+                    >
+                      {file_data.file_name}
+                      <span>{formatFileSizeLabel(file_data.file_size)}</span>
+                    </Typography>
+                  </div>
 
-                {/*<Box
+                  {/*<Box
                   component="div"
                   className={chatMessagesStyles.chatAlProgress}
                 >
                   <LinearProgress />
                 </Box>*/}
 
-                {/* Assigning Category 
+                  {/* Assigning Category 
                 {trained_status === DOCUMENT_STATUS.PENDING && (
                   <Box
                     component="div"
@@ -90,8 +89,8 @@ export default function UploadFilesStatusMessage({
                     </Typography>
                   </Box>
                 )}*/}
-                {/* With Category */}
-                {trained_status === DOCUMENT_STATUS.SUCCESS &&
+                  {/* With Category */}
+                  {/* {trained_status === DOCUMENT_STATUS.SUCCESS &&
                   category_data && (
                     <Box
                       component="div"
@@ -116,9 +115,9 @@ export default function UploadFilesStatusMessage({
                         height={14}
                       />
                     </Box>
-                  )}
-                {/* Failed Document */}
-                {trained_status === DOCUMENT_STATUS.FAILED && (
+                  )} */}
+                  {/* Failed Document */}
+                  {/* {trained_status === DOCUMENT_STATUS.FAILED && (
                   <Box
                     component="div"
                     className={chatMessagesStyles.chatAlUploadFailed}
@@ -145,10 +144,11 @@ export default function UploadFilesStatusMessage({
                       Retry
                     </Button>
                   </Box>
-                )}
-              </Box>
-            );
-          })}
+                )} */}
+                </Box>
+              );
+            }
+          )}
 
         <span className={chatMessagesStyles.chatTime}>
           {formatTo12HourTimeManually(messageObj.created)}

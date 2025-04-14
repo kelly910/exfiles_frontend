@@ -29,6 +29,7 @@ export default function ChatWindows() {
             <ChatAlCombined />
             <ChatAlFiles />
             <ChatAlError />
+            <GeneratingCombined />
           </Box>
         </>
       ))}
@@ -229,7 +230,7 @@ function ChatAlHold() {
               height={14}
             />
             <Typography variant="body1" className={styles.chatAlText}>
-              Generating Summaries
+              Generating Summary Links
             </Typography>
           </Box>
           <Box component="div" className={styles.chatAlCategoryInner}>
@@ -240,7 +241,7 @@ function ChatAlHold() {
               height={14}
             />
             <Typography variant="body1" className={styles.chatAlText}>
-              Generating Summaries
+              Generating Summary Links
             </Typography>
           </Box>
         </Box>
@@ -284,20 +285,132 @@ function ChatAlFiles() {
           padding="2px 12px 8px 12px"
           sx={{ background: 'var(--Card-Color)' }}
         >
-          <Grid item xs={12} sm={12} md={6} className={styles.chatAlFile}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            xl={4}
+            className={styles.chatAlFile}
+          >
             <Box component="div" className={styles.chatAlFileInner}>
-              <Box component="div" className={styles.chatAlFileIcon}>
-                <Image
-                  src="/images/pdf.svg"
-                  alt="pdf"
-                  width={14}
-                  height={17}
-                  className={styles.pdfImg}
-                />
+              <Box component="div" className={styles.chatAlFileHeader}>
+                <Box component="div" className={styles.chatAlFileIcon}>
+                  <Image
+                    src="/images/pdf.svg"
+                    alt="pdf"
+                    width={13}
+                    height={16}
+                    className={styles.pdfImg}
+                  />
+                </Box>
+                <Typography variant="body1" className={styles.chatAlText}>
+                  RekamanProspek.pdf
+                </Typography>
               </Box>
-              <Typography variant="body1" className={styles.chatAlText}>
-                RekamanProspek.pdf
-              </Typography>
+              <Box component="div" className={styles.chatAlFileSummary}>
+                <Box component="div" className={styles.chatAlUploadFailed}>
+                  <Image
+                    src="/images/error.svg"
+                    alt="error"
+                    width={14}
+                    height={14}
+                  />
+                </Box>
+                <Box component="div" className={styles.chatAlUploadFailed}>
+                  <Typography variant="body1" className={styles.chatAlText}>
+                    Error in training while processing this document
+                  </Typography>
+                  <Button className={styles.charAlRetryButton}>
+                    <Image
+                      src="/images/retry.svg"
+                      alt="retry.svg"
+                      width={10}
+                      height={10}
+                    />
+                    Retry
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            xl={4}
+            className={styles.chatAlFile}
+          >
+            <Box component="div" className={styles.chatAlFileInner}>
+              <Box component="div" className={styles.chatAlFileHeader}>
+                <Box component="div" className={styles.chatAlFileIcon}>
+                  <Image
+                    src="/images/pdf.svg"
+                    alt="pdf"
+                    width={13}
+                    height={16}
+                    className={styles.pdfImg}
+                  />
+                </Box>
+                <Typography variant="body1" className={styles.chatAlText}>
+                  RekamanProspek.pdf
+                </Typography>
+              </Box>
+              <Box>
+                <Box component="div" className={styles.chatAlFileSummary}>
+                  <Image
+                    src="/images/folder.svg"
+                    alt="pdf"
+                    width={14}
+                    height={14}
+                    className={styles.pdfImg}
+                  />
+                  <Typography>Category Name</Typography>
+                  <Image
+                    src="/images/open-new.svg"
+                    alt="pdf"
+                    width={12}
+                    height={12}
+                    className={styles.pdfImg}
+                  />
+                </Box>
+                <Box component="div" className={styles.chatAlFileSummary}>
+                  <Typography>View Summary</Typography>
+                  <Image
+                    src="/images/open-new.svg"
+                    alt="pdf"
+                    width={12}
+                    height={12}
+                    className={styles.pdfImg}
+                  />
+                </Box>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            xl={4}
+            className={styles.chatAlFile}
+          >
+            <Box component="div" className={styles.chatAlFileInner}>
+              <Box component="div" className={styles.chatAlFileHeader}>
+                <Box component="div" className={styles.chatAlFileIcon}>
+                  <Image
+                    src="/images/pdf.svg"
+                    alt="pdf"
+                    width={13}
+                    height={16}
+                    className={styles.pdfImg}
+                  />
+                </Box>
+                <Typography variant="body1" className={styles.chatAlText}>
+                  RekamanProspek.pdf
+                </Typography>
+              </Box>
               <Box component="div" className={styles.chatAlFileSummary}>
                 <Typography>View Summary</Typography>
                 <Image
@@ -310,20 +423,29 @@ function ChatAlFiles() {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={12} md={6} className={styles.chatAlFile}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            xl={4}
+            className={styles.chatAlFile}
+          >
             <Box component="div" className={styles.chatAlFileInner}>
-              <Box component="div" className={styles.chatAlFileIcon}>
-                <Image
-                  src="/images/pdf.svg"
-                  alt="pdf"
-                  width={14}
-                  height={17}
-                  className={styles.pdfImg}
-                />
+              <Box component="div" className={styles.chatAlFileHeader}>
+                <Box component="div" className={styles.chatAlFileIcon}>
+                  <Image
+                    src="/images/pdf.svg"
+                    alt="pdf"
+                    width={13}
+                    height={16}
+                    className={styles.pdfImg}
+                  />
+                </Box>
+                <Typography variant="body1" className={styles.chatAlText}>
+                  RekamanProspek.pdf
+                </Typography>
               </Box>
-              <Typography variant="body1" className={styles.chatAlText}>
-                RekamanProspek.pdf
-              </Typography>
               <Box component="div" className={styles.chatAlFileSummary}>
                 <Typography>View Summary</Typography>
                 <Image
@@ -336,72 +458,29 @@ function ChatAlFiles() {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={12} md={6} className={styles.chatAlFile}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            xl={4}
+            className={styles.chatAlFile}
+          >
             <Box component="div" className={styles.chatAlFileInner}>
-              <Box component="div" className={styles.chatAlFileIcon}>
-                <Image
-                  src="/images/pdf.svg"
-                  alt="pdf"
-                  width={14}
-                  height={17}
-                  className={styles.pdfImg}
-                />
+              <Box component="div" className={styles.chatAlFileHeader}>
+                <Box component="div" className={styles.chatAlFileIcon}>
+                  <Image
+                    src="/images/pdf.svg"
+                    alt="pdf"
+                    width={13}
+                    height={16}
+                    className={styles.pdfImg}
+                  />
+                </Box>
+                <Typography variant="body1" className={styles.chatAlText}>
+                  RekamanProspek.pdf
+                </Typography>
               </Box>
-              <Typography variant="body1" className={styles.chatAlText}>
-                RekamanProspek.pdf
-              </Typography>
-              <Box component="div" className={styles.chatAlFileSummary}>
-                <Typography>View Summary</Typography>
-                <Image
-                  src="/images/open-new.svg"
-                  alt="pdf"
-                  width={12}
-                  height={12}
-                  className={styles.pdfImg}
-                />
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} className={styles.chatAlFile}>
-            <Box component="div" className={styles.chatAlFileInner}>
-              <Box component="div" className={styles.chatAlFileIcon}>
-                <Image
-                  src="/images/pdf.svg"
-                  alt="pdf"
-                  width={14}
-                  height={17}
-                  className={styles.pdfImg}
-                />
-              </Box>
-              <Typography variant="body1" className={styles.chatAlText}>
-                RekamanProspek.pdf
-              </Typography>
-              <Box component="div" className={styles.chatAlFileSummary}>
-                <Typography>View Summary</Typography>
-                <Image
-                  src="/images/open-new.svg"
-                  alt="pdf"
-                  width={12}
-                  height={12}
-                  className={styles.pdfImg}
-                />
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} className={styles.chatAlFile}>
-            <Box component="div" className={styles.chatAlFileInner}>
-              <Box component="div" className={styles.chatAlFileIcon}>
-                <Image
-                  src="/images/pdf.svg"
-                  alt="pdf"
-                  width={14}
-                  height={17}
-                  className={styles.pdfImg}
-                />
-              </Box>
-              <Typography variant="body1" className={styles.chatAlText}>
-                RekamanProspek.pdf
-              </Typography>
               <Box component="div" className={styles.chatAlFileSummary}>
                 <Typography>View Summary</Typography>
                 <Image
@@ -415,6 +494,17 @@ function ChatAlFiles() {
             </Box>
           </Grid>
         </Grid>
+        <Box className={styles.chatAlSummaryButtonMain}>
+          <Button className={styles.chatAlSummaryButton}>
+            <Image
+              src="/images/combined.svg"
+              alt="combined"
+              width={18}
+              height={18}
+            />
+            Generate Combined Summary
+          </Button>
+        </Box>
         <span className={styles.chatTime}>04:57 AM</span>
         <Box component="div" className={styles.chatAlIcon}>
           <Button>
@@ -544,8 +634,8 @@ function ChatAlError() {
                 <Image
                   src="/images/pdf.svg"
                   alt="pdf"
-                  width={14}
-                  height={16}
+                  width={18}
+                  height={22}
                   className={styles.pdfImg}
                 />
               </span>
@@ -636,8 +726,8 @@ function UserDocsUpload() {
               <Image
                 src="/images/pdf.svg"
                 alt="pdf"
-                width={14}
-                height={16}
+                width={18}
+                height={22}
                 className={styles.pdfImg}
               />
             </span>
@@ -657,8 +747,8 @@ function UserDocsUpload() {
               <Image
                 src="/images/pdf.svg"
                 alt="pdf"
-                width={14}
-                height={16}
+                width={18}
+                height={22}
                 className={styles.pdfImg}
               />
             </span>
@@ -686,8 +776,8 @@ function UserDocsUpload() {
               <Image
                 src="/images/pdf.svg"
                 alt="pdf"
-                width={14}
-                height={16}
+                width={18}
+                height={22}
                 className={styles.pdfImg}
               />
             </span>
@@ -706,7 +796,7 @@ function UserDocsUpload() {
             <Typography variant="body1" className={styles.chatAlText}>
               Upload Failed
             </Typography>
-            <Button className={styles.charAlRetryButton}>
+            {/* <Button className={styles.charAlRetryButton}>
               <Image
                 src="/images/retry.svg"
                 alt="retry.svg"
@@ -714,7 +804,7 @@ function UserDocsUpload() {
                 height={10}
               />
               Retry
-            </Button>
+            </Button> */}
           </Box>
         </Box>
 
@@ -724,8 +814,8 @@ function UserDocsUpload() {
               <Image
                 src="/images/pdf.svg"
                 alt="pdf"
-                width={14}
-                height={16}
+                width={18}
+                height={22}
                 className={styles.pdfImg}
               />
             </span>
@@ -753,6 +843,49 @@ function UserDocsUpload() {
           </Box>
         </Box>
 
+        <span className={styles.chatTime}>04:57 AM</span>
+      </Box>
+      <Box component="div" className={styles.chatAlImg}>
+        <Avatar
+          sx={{
+            backgroundColor: '#DADAE1',
+            color: '#1B1A25',
+            fontSize: '16px',
+            fontWeight: 600,
+            padding: '9px 10px',
+            lineHeight: '140%',
+          }}
+        >
+          AS
+        </Avatar>
+      </Box>
+    </Box>
+  );
+}
+
+// Generating Combined summary using
+
+function GeneratingCombined() {
+  return (
+    <Box component="div" className={`${styles.chatAl} ${styles.chatAlUser}`}>
+      <Box component="div" className={styles.chatAlContent}>
+        <Typography variant="body1" className={styles.chatAlContentText}>
+          Generating Combined summary using
+        </Typography>
+        <Box component="div" className={styles.chatAlGenerating}>
+          <span>RekamanProspek.pdf</span>
+          <span>KartuNama.jpeg</span>
+          <span>Company Profile.pdf</span>
+          <span>Brosur Nusawork.pdf</span>
+          <span>Brosur.pdf</span>
+          <span>Nusawork.pdf</span>
+          <span>Brosur.pdf</span>
+          <span>Nusawork.pdf</span>
+          <span>Brosur.pdf</span>
+          <span>Nusawork.pdf</span>
+          <span>Brosur.pdf</span>
+          <span>Nusawork.pdf</span>
+        </Box>
         <span className={styles.chatTime}>04:57 AM</span>
       </Box>
       <Box component="div" className={styles.chatAlImg}>

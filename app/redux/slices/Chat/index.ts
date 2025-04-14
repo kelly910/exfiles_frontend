@@ -16,8 +16,22 @@ import {
   UploadDocsPayload,
   UploadDocsResponse,
 } from './chatTypes';
+import { RootState } from '../../store';
 
-const initialState = {};
+interface ChatState {
+  activeThreadId: string | null;
+  messagesList: GetMessagesByThreadIdResponse;
+  messagesListLoading: boolean;
+}
+
+const initialState: ChatState = {
+  activeThreadId: null,
+  messagesList: {
+    count: 0,
+    results: [],
+  },
+  messagesListLoading: true,
+};
 
 export const fetchThreadList = createAsyncThunk<
   GetThreadListResponse,
@@ -221,8 +235,52 @@ export const togglePinMessages = createAsyncThunk<
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
-  reducers: {},
-  extraReducers: () => {},
+  reducers: {
+    setWebSocketMessage: (state, action) => {
+      const threadId = action.payload.data.chat_message_uuid;
+      const newMsg = action.payload.data.message;
+      console.log(threadId, newMsg);
+
+      // const targetData = [...state.messagesList.results];
+
+      // const messageExists = targetData.some(
+      //   (item) => item?.uuid === newMsg.uuid
+      // );
+      // // Check if the message with the same uuid already exists
+      // let index = targetData.findIndex(
+      //   (item) => item?.uuid === action.payload?.uuid
+      // );
+
+      // if (index !== -1) {
+      //   targetData[index] = action.payload;
+      // }
+
+      // Set the updated messages list to the state
+      // state.messagesList.results = targetData;
+    },
+    setActiveThreadId: (state, action) => {
+      state.activeThreadId = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchThreadMessagesByThreadId.pending, (state) => {
+        state.messagesListLoading = true;
+      })
+      .addCase(fetchThreadMessagesByThreadId.fulfilled, (state, action) => {
+        state.messagesListLoading = false;
+        state.messagesList = action.payload;
+      })
+      .addCase(fetchThreadMessagesByThreadId.rejected, (state) => {
+        state.messagesListLoading = false;
+      });
+  },
 });
+
+export const { setWebSocketMessage, setActiveThreadId } = chatSlice.actions;
+
+export const selectMessageList = (state: RootState) => state.chat.messagesList;
+export const selectActiveThreadId = (state: RootState) =>
+  state.chat.activeThreadId;
 
 export default chatSlice.reducer;

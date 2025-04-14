@@ -49,7 +49,7 @@ interface LoginPayload {
   password: string;
 }
 
-interface LoginResponse {
+export interface LoginResponse {
   messages: string[];
   data: {
     id: number;

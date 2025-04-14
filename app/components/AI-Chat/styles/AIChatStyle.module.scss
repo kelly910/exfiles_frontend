@@ -28,6 +28,12 @@
   }
 }
 
+.chatContainer {
+  height: calc(100vh - 65px - 104px - 45px);
+  margin: 20px 0;
+  overflow-y: auto;
+}
+
 .chatHeader {
   text-align: center;
 

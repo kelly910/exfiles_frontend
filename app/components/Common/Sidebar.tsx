@@ -288,7 +288,7 @@ const Sidebar = ({
               ) : (
                 <ListItem>
                   <Link
-                    href="#"
+                    href="/ai-chats"
                     underline="none"
                     className={Style['sidebar-btn']}
                   >
