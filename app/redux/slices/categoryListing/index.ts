@@ -13,6 +13,7 @@ interface CategoryListingState {
   no_of_docs: number;
   nextPage: number | null;
   isFetching: boolean;
+  count: number;
 }
 
 const initialState: CategoryListingState = {
@@ -20,12 +21,14 @@ const initialState: CategoryListingState = {
   no_of_docs: 0,
   nextPage: 1,
   isFetching: false,
+  count: 0,
 };
 
 interface DocumentListingResponse {
   results: CategoryListing[];
   no_of_docs: number;
   next: string | null;
+  count: number;
 }
 
 interface FetchCategoriesArgs {
@@ -58,6 +61,7 @@ const categoryListingSlice = createSlice({
       state.categories = [];
       state.no_of_docs = 0;
       state.nextPage = 1;
+      state.count = 0;
     },
   },
   extraReducers: (builder) => {
@@ -77,6 +81,7 @@ const categoryListingSlice = createSlice({
         }
         state.no_of_docs = action.payload.no_of_docs;
         state.nextPage = action.payload.next ? action.meta.arg.page + 1 : null;
+        state.count = action.payload.count;
       })
       .addCase(fetchCategories.rejected, (state) => {
         state.isFetching = false;

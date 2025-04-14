@@ -31,7 +31,8 @@ api.interceptors.request.use(
     // Remove Authorization Token In Login API
     if (
       config.url?.includes(urlMapper.login) ||
-      (config.url?.includes(urlMapper.register) && config?.method === 'post')
+      (config.url?.includes(urlMapper.register) && config?.method === 'post') ||
+      config.url?.includes(urlMapper.googleLogin)
     ) {
       delete config.headers.Authorization;
     }
