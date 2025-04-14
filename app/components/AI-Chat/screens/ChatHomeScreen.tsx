@@ -155,7 +155,10 @@ export default function ChatHomeScreen() {
           </Typography>
         </div>
 
-        <UserChatInput handleOpenDocUploadModal={handleClickOpen} />
+        <UserChatInput
+          handleOpenDocUploadModal={handleClickOpen}
+          sendMessage={() => {}}
+        />
       </Box>
 
       {isOpenDocUpload && (

@@ -1,19 +1,60 @@
 import AIChatStyles from '@components/AI-Chat/styles/AIChatStyle.module.scss';
 import { Box, Button, Input, InputAdornment } from '@mui/material';
+import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
+import { SocketPayload } from '../../types/aiChat.types';
+import { QUESTION_TYPES } from '@/app/utils/constants';
 
 interface UserChatInputProps {
   handleOpenDocUploadModal: () => void;
+  sendMessage: (payloadMsg: SocketPayload) => void;
 }
 
 export default function UserChatInput({
   handleOpenDocUploadModal,
+  sendMessage,
 }: UserChatInputProps) {
+  // const { sendMessage, selectedChatDropdownVal } = props;
+  const [text, setText] = useState('');
+
+  const handleKeyUp = useCallback(
+    (event: KeyboardEvent<HTMLInputElement>) => {
+      const key = event.key.toLowerCase();
+      if (key === 'enter') {
+        event.preventDefault();
+        handleMessageSending();
+      }
+    },
+    [text]
+  );
+
+  const handleText = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (value.trim() || value === '') {
+      setText(value);
+    }
+  }, []);
+
+  const handleMessageSending = () => {
+    // const currentFile = store.getState().chat.selectedDocument;
+    const message = {
+      message_type: QUESTION_TYPES.QUESTION,
+      message: text,
+    };
+    sendMessage(message);
+    setText('');
+  };
+
   return (
     <Box component="div" className={AIChatStyles.chatBoard}>
       <Input
         id="input-with-icon-adornment"
         className={AIChatStyles.fileInput}
         placeholder="Write your question here"
+        value={text}
+        onChange={handleText}
+        onKeyDown={handleKeyUp}
+        disabled={false}
         endAdornment={
           <InputAdornment
             position="end"
@@ -30,6 +71,7 @@ export default function UserChatInput({
         className={`btn-arrow`}
         color="primary"
         fullWidth
+        onClick={handleMessageSending}
       >
         <span className="arrow"></span>
       </Button>

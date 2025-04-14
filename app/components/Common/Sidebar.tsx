@@ -21,6 +21,8 @@ import {
 import NoRecordFound from './NoRecordFound';
 import { useRouter } from 'next/navigation';
 
+import SidebaarButton from '@components/Common/SidebaarButton';
+
 const Sidebar = ({
   isOpen,
   toggleSidebar,
@@ -38,6 +40,10 @@ const Sidebar = ({
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  if (isSearchOpen && !isOpen) {
+    setIsSearchOpen(false);
+  }
 
   const handleToggleSearch = () => {
     setIsSearchOpen((prev) => !prev);
@@ -288,7 +294,7 @@ const Sidebar = ({
               ) : (
                 <ListItem>
                   <Link
-                    href="#"
+                    href="/ai-chats"
                     underline="none"
                     className={Style['sidebar-btn']}
                   >
@@ -383,6 +389,8 @@ const Sidebar = ({
               panelKey="panel4"
               handleAccordionChange={handleAccordionChange}
             ></SidebarAccordion>
+
+            {/* <SidebaarButton /> */}
           </div>
         </div>
         <div className={Style['sidebar-btm']}>

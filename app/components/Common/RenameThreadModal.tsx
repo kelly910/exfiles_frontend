@@ -141,7 +141,7 @@ export default function RenameThreadModal(props: threadModalProps) {
           <FormInputText
             name="name"
             control={control}
-            label="Title"
+            // label="Title"
             placeholder="Enter Category Name here"
             sx={{
               marginTop: 2, // You can override or extend styles here

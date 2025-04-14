@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { Container, useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import PageHeader from '@components/Common/PageHeader';
 import Sidebar from '@components/Common/Sidebar';
 
@@ -11,6 +11,10 @@ import dynamic from 'next/dynamic';
 
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 
+// import { useAppDispatch } from '@/app/redux/hooks';
+import WebSocketInitializer from '@services/WebSocketInitializer';
+
+// Dynamic Custom Component imports
 const DynamicChatHomeScreen = dynamic(
   () => import('@/app/components/AI-Chat/screens/ChatHomeScreen')
 );
@@ -21,10 +25,9 @@ const DynamicChatMessagesComponent = dynamic(
 
 export default function AIChatComponent({ threadId }: { threadId?: string }) {
   const router = useRouter();
-
+  // const dispatch = useAppDispatch();
   const isSmallScreen = useMediaQuery('(max-width:1100px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(isSmallScreen);
-
   // const sidebarRef = useRef<HTMLInputElement>(null);
 
   const toggleSidebar = () => {
@@ -62,6 +65,7 @@ export default function AIChatComponent({ threadId }: { threadId?: string }) {
   return (
     <>
       <main className="chat-body">
+        <WebSocketInitializer />
         <Sidebar
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
@@ -73,16 +77,14 @@ export default function AIChatComponent({ threadId }: { threadId?: string }) {
           <PageHeader
             isSidebarOpen={isSidebarOpen}
             toggleSidebar={toggleSidebar}
-            title=""
+            title="New Thread"
           />
 
-          <Container maxWidth="lg" disableGutters>
-            {!threadId ? (
-              <DynamicChatHomeScreen />
-            ) : (
-              <DynamicChatMessagesComponent threadId={threadId} />
-            )}
-          </Container>
+          {!threadId ? (
+            <DynamicChatHomeScreen />
+          ) : (
+            <DynamicChatMessagesComponent threadId={threadId} />
+          )}
         </section>
       </main>
     </>

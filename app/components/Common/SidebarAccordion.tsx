@@ -30,9 +30,6 @@ const SidebarAccordion = ({
     if (expanded == 'panel3') {
       router.push('/documents');
     }
-    if (expanded == 'panel2') {
-      router.push('/ai-chats');
-    }
   };
 
   return (

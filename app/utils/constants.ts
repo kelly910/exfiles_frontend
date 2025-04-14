@@ -32,3 +32,9 @@ export const DOCUMENT_STATUS = {
   SUCCESS: 'success',
   FAILED: 'failed',
 };
+
+// Socket send message payload
+export const QUESTION_TYPES = {
+  COMBINED_SUMMARY: 'combined_summary',
+  QUESTION: 'question',
+} as const;

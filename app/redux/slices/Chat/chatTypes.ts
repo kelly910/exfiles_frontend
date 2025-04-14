@@ -55,17 +55,26 @@ export interface GetMessagesByThreadIdPayload {
   thread_uuid: string;
 }
 
-interface UploadedDocument {
+export interface UploadedDocument {
   id: number;
+  uuid: string;
   file: string;
   created: string;
-  file_name: string;
-  file_size: number;
   chat_message: number;
   trained_status: string;
+  file_data: {
+    file_name: string;
+    file_size: number;
+    file_url: string;
+    file_extension: string;
+  };
+  category_data: {
+    id: number;
+    name: string;
+  };
+  doc_type: string;
 }
-
-interface ChatMessage {
+export interface ChatMessage {
   id: number;
   uuid: string;
   created: string;
@@ -74,12 +83,15 @@ interface ChatMessage {
   receiver: number;
   message: string;
   uploaded_documents: UploadedDocument[];
+  summary_documents: UploadedDocument[] | null;
+  combined_summary_data: [] | null;
+  all_doc_summarized: boolean;
 }
 
 export interface GetMessagesByThreadIdResponse {
   count: number;
-  next: string | null;
-  previous: string | null;
+  next?: string | null;
+  previous?: string | null;
   results: ChatMessage[];
 }
 

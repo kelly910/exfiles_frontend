@@ -141,12 +141,12 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                     htmlFor="first_name"
                     sx={{
                       display: 'block',
-                      fontSize: '14px',
+                      fontSize: 'var(--SubTitle-3)',
                       color:
                         errors.first_name && touched.first_name
                           ? '#ff4d4d'
                           : '#676972',
-                      fontWeight: 500,
+                      fontWeight: 'var(--Regular)',
                     }}
                   >
                     First Name
@@ -164,16 +164,16 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '12px',
                         borderWidth: '0px',
-                        color: '#DADAE1',
+                        color: 'var(--Primary-Text-Color)',
                         backgroundColor: '#252431',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
                         '& .MuiOutlinedInput-input': {
-                          fontSize: '14px',
-                          color: '#DADAE1',
+                          fontSize: 'var(--SubTitle-3)',
+                          color: 'var(--Primary-Text-Color)',
                           padding: '14px 16px',
-                          fontWeight: 500,
+                          fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
                           '&::placeholder': {
                             color: '#888',
@@ -213,12 +213,12 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                     htmlFor="last_name"
                     sx={{
                       display: 'block',
-                      fontSize: '14px',
+                      fontSize: 'var(--SubTitle-3)',
                       color:
                         errors.last_name && touched.last_name
                           ? '#ff4d4d'
                           : '#676972',
-                      fontWeight: 500,
+                      fontWeight: 'var(--Regular)',
                     }}
                   >
                     Last Name
@@ -236,16 +236,16 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '12px',
                         borderWidth: '0px',
-                        color: '#DADAE1',
+                        color: 'var(--Primary-Text-Color)',
                         backgroundColor: '#252431',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
                         '& .MuiOutlinedInput-input': {
-                          fontSize: '14px',
-                          color: '#DADAE1',
+                          fontSize: 'var(--SubTitle-3)',
+                          color: 'var(--Primary-Text-Color)',
                           padding: '14px 16px',
-                          fontWeight: 500,
+                          fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
                           '&::placeholder': {
                             color: '#888',
@@ -300,16 +300,16 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '12px',
                         borderWidth: '0px',
-                        color: '#DADAE1',
+                        color: 'var(--Primary-Text-Color)',
                         backgroundColor: '#252431',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
                         '& .MuiOutlinedInput-input': {
-                          fontSize: '14px',
-                          color: '#DADAE1',
+                          fontSize: 'var(--SubTitle-3)',
+                          color: 'var(--Primary-Text-Color)',
                           padding: '14px 16px',
-                          fontWeight: 500,
+                          fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
                           '&::placeholder': {
                             color: '#888',
@@ -329,7 +329,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                         },
                       },
                       '& .Mui-disabled': {
-                        color: '#DADAE1',
+                        color: 'var(--Primary-Text-Color)',
                         WebkitTextFillColor: '#DADAE1',
                       },
                     }}
@@ -344,12 +344,12 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                     htmlFor="contact_number"
                     sx={{
                       display: 'block',
-                      fontSize: '14px',
+                      fontSize: 'var(--SubTitle-3)',
                       color:
                         errors.contact_number && touched.contact_number
                           ? '#ff4d4d'
                           : '#676972',
-                      fontWeight: 500,
+                      fontWeight: 'var(--Regular)',
                     }}
                   >
                     Mobile No

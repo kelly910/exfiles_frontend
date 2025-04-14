@@ -141,7 +141,7 @@ export default function LogIncident() {
     {
       field: 'created',
       headerName: 'DATE CREATED',
-      width: 200,
+      width: 150,
     },
     {
       field: 'actions',
@@ -323,7 +323,11 @@ export default function LogIncident() {
                   selectedRowId === params.id ? 'active-menu-row' : ''
                 }
                 sx={{
-                  '.MuiDataGrid-row': { border: '1px solid transparent' },
+                  '.MuiDataGrid-row': {
+                    border: '1px solid transparent',
+                    height: 'unset !important',
+                    maxHeight: 'unset !important',
+                  },
                   '.active-menu-row': {
                     border: '1px solid var(--Stroke-Color)',
                   },

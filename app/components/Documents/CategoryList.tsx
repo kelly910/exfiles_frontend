@@ -41,7 +41,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
   handleCloseDrawer,
   openMainSidebar,
 }) => {
-  const mobileView = useMediaQuery('(min-width:600px)');
+  const mobileView = useMediaQuery('(min-width:800px)');
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { categories, nextPage, isFetching } = useSelector(
