@@ -143,6 +143,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
               />
               {selectedDocId && (
                 <DocumentSummary
+                  catId={catId}
                   docId={selectedDocId}
                   selectedDocIdNull={closeSummaryDrawer}
                 />
