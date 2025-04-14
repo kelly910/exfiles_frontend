@@ -54,9 +54,11 @@ const SidebarAccordion = ({
           <Image
             className={Style['img-none']}
             src={
-              expanded === panelKey
-                ? '/images/arrow-down.svg'
-                : '/images/arrow-down-right.svg'
+              panelKey === 'panel3' || panelKey === 'panel4'
+                ? '/images/arrow-down-right.svg'
+                : expanded === panelKey
+                  ? '/images/arrow-down.svg'
+                  : '/images/arrow-down-right.svg'
             }
             alt="expand-collapse"
             width={16}

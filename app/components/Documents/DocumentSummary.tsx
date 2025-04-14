@@ -55,20 +55,17 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   };
 
   useEffect(() => {
-    if (docId) {
-      dispatch(setLoader(true));
-      setTimeout(async () => {
-        try {
-          await dispatch(fetchDocumentSummaryById(docId)).unwrap();
-        } catch (error) {
-          handleError(error as ErrorResponse);
-        } finally {
-          dispatch(setLoader(false));
-        }
-      }, 2000);
-    } else {
-      handleCloseDrawer();
-    }
+    if (!docId) return;
+    dispatch(setLoader(true));
+    setTimeout(async () => {
+      try {
+        await dispatch(fetchDocumentSummaryById(docId)).unwrap();
+      } catch (error) {
+        handleError(error as ErrorResponse);
+      } finally {
+        dispatch(setLoader(false));
+      }
+    }, 2000);
   }, [dispatch, docId]);
 
   const [openDrawer, setOpenDrawer] = useState(true);
@@ -81,10 +78,10 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     selectedDocIdNull();
   };
 
-  const copySummary = async () => {
+  const copySummary = () => {
     if (documentSummary?.summary) {
       navigator.clipboard.writeText(documentSummary?.summary);
-      await showToast('info', 'Copied Summary successfully');
+      showToast('info', 'Copied Summary successfully');
     }
   };
 

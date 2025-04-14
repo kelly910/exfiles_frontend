@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import CategoryList from './CategoryList';
 import DocumentList from './DocumentList';
 import DocumentSummary from './DocumentSummary';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import PageHeader from '../Common/PageHeader';
 import DocumentsEmpty from '../DocumentsEmpty/DocumentsEmpty';
 import { useAppDispatch } from '@/app/redux/hooks';
@@ -17,17 +17,25 @@ import { useMediaQuery } from '@mui/material';
 export default function DocumentListComponent({ catId }: { catId: number }) {
   const mobileView = useMediaQuery('(min-width:600px)');
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedDocId, setSelectedsDocId] = useState<string>('');
   const dispatch = useAppDispatch();
   const [showEmptyCategoryComponent, setShowEmptyCategoryComponent] =
     useState(false);
 
   useEffect(() => {
+    const urlDocId = searchParams.get('docId');
+    if (urlDocId) {
+      setSelectedsDocId(urlDocId);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     dispatch(fetchCategories({ page: 1 }))
       .unwrap()
-      .then(async (res) => {
-        if (res?.no_of_docs > 0) {
-          await setShowEmptyCategoryComponent(true);
+      .then((res) => {
+        if (res?.count > 0) {
+          setShowEmptyCategoryComponent(true);
         }
       });
   }, [dispatch]);
@@ -92,7 +100,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
   };
 
   const [openCategoryDrawerMobile, setOpenCategoryDrawerMobile] =
-    useState(false);
+    useState(true);
 
   const openCategoryDrawer = (value: boolean) => {
     setOpenCategoryDrawerMobile(value);
