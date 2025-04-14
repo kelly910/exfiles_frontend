@@ -200,13 +200,11 @@ export default function ThreadList({
   return (
     <div ref={containerRef} className={Style['accordion-content-infinite']}>
       {chats.map((chat) => (
-        <div
-          key={chat.uuid}
-          className={Style['accordion-content']}
-          onClick={() => handleThreadClick(chat.uuid)}
-        >
+        <div key={chat.uuid} className={Style['accordion-content']}>
           <div className={Style['left']} style={{ cursor: 'pointer' }}>
-            <p>{chat.name ? chat.name : 'New Thread'}</p>
+            <p onClick={() => handleThreadClick(chat.uuid)}>
+              {chat.name ? chat.name : 'New Thread'}
+            </p>
           </div>
           <div className={Style['right']}>
             <div>

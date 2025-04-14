@@ -390,7 +390,7 @@ const Sidebar = ({
               handleAccordionChange={handleAccordionChange}
             ></SidebarAccordion>
 
-            <SidebaarButton />
+            {/* <SidebaarButton /> */}
           </div>
         </div>
         <div className={Style['sidebar-btm']}>
