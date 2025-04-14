@@ -117,7 +117,7 @@ export default function RenameDialogs() {
                 color: 'var(--Primary-Text-Color)',
                 backgroundColor: 'var(--Input-Box-Colors)',
                 '& .MuiOutlinedInput-notchedOutline': {
-                  top: '-10px !important',
+                  top: '0 !important',
                 },
                 '& .MuiOutlinedInput-input': {
                   fontSize: 'var(--SubTitle-2)',
@@ -140,6 +140,9 @@ export default function RenameDialogs() {
                   borderColor: 'var(--Primary-Text-Color)',
                   borderWidth: '1px',
                   color: 'var(--Primary-Text-Color)',
+                },
+                legend: {
+                  display: 'none',
                 },
               },
               '& .MuiFormHelperText-root': {

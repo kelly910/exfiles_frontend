@@ -107,35 +107,36 @@ export default function UploadFileItem({
             className={DocUploadStyles.fileInput}
             onChange={(e) => debouncedHandleFileDesc(e, fileId)}
             sx={{
-              marginTop: '5px',
+              marginTop: '12px',
               padding: '0',
               '& .MuiOutlinedInput-root': {
-                borderRadius: '8px',
+                borderRadius: '6px',
                 borderWidth: '0px',
-                color: '#fff',
+                color: 'var(--Primary-Text-Color)',
                 backgroundColor: 'var(--Card-Color)',
                 '& .MuiOutlinedInput-input': {
-                  fontSize: '16px',
-                  color: '#fff',
-                  padding: '8px 12px',
+                  fontSize: 'var(--SubTitle-5)',
+                  color: 'var(--Primary-Text-Color)',
+                  padding: '12px 8px',
                   fontWeight: 500,
-                  borderRadius: '12px',
+                  borderRadius: '6px',
+                  background: 'var(--Card-Color)',
                   // backgroundColor: '#252431',
                   '&::placeholder': {
-                    color: '#888',
+                    color: 'var(--Placeholder-Text)',
                     fontWeight: 400,
                   },
                 },
                 '& fieldset': {
-                  borderColor: '#3A3948',
+                  top: '-10px',
                 },
                 '&:hover fieldset': {
-                  borderColor: '#fff',
+                  borderColor: 'var(--Primary-Text-Color)',
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: '#fff',
-                  borderWidth: '1px',
-                  color: '#fff',
+                  borderColor: 'var(--Primary-Text-Color)',
+                  borderWidth: '0.5px',
+                  color: 'var(--Primary-Text-Color)',
                 },
               },
               '& .MuiFormHelperText-root': {
@@ -151,8 +152,8 @@ export default function UploadFileItem({
             <Image
               src="/images/upload-error.svg"
               alt="upload-error"
-              width={14}
-              height={14}
+              width={10}
+              height={9}
               className={DocUploadStyles.trashImg}
             />
             <Typography variant="body1">{fileErrorMsg}</Typography>
