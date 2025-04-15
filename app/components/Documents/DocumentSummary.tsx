@@ -18,15 +18,17 @@ import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
 import { setLoader } from '@/app/redux/slices/loader';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
-import { convertDateFormat } from '@/app/utils/constants';
+import { convertDateFormat, processText } from '@/app/utils/constants';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { editSummaryByDocId } from '@/app/redux/slices/editSummary';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { editSummaryValidation } from '@/app/utils/validationSchema/formValidationSchemas';
+import { useRouter } from 'next/navigation';
 
 interface DocumentSummaryProps {
   docId: string;
   selectedDocIdNull: () => void;
+  catId: number | null;
 }
 
 export interface DocumentEditSummary {
@@ -37,6 +39,7 @@ export interface DocumentEditSummary {
 const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   docId,
   selectedDocIdNull,
+  catId,
 }) => {
   const mobileView = useMediaQuery('(min-width:800px)');
   const dispatch = useAppDispatch();
@@ -45,6 +48,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   );
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const editSummary = () => {
     setEditMode(true);
@@ -59,7 +63,16 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     dispatch(setLoader(true));
     setTimeout(async () => {
       try {
-        await dispatch(fetchDocumentSummaryById(docId)).unwrap();
+        await dispatch(fetchDocumentSummaryById(docId))
+          .unwrap()
+          .then((res) => {
+            if (res?.uuid && catId) {
+              // use docId or res.uuid
+              router.replace(`/documents/${catId}?docId=${res?.uuid}`, {
+                scroll: false,
+              });
+            }
+          });
       } catch (error) {
         handleError(error as ErrorResponse);
       } finally {
@@ -166,9 +179,8 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     <div className={styles.docsBodyText}>
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: (documentSummary?.ai_description ?? '')
-                            .replace(/\n/g, '<br />')
-                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'),
+                          __html:
+                            processText(documentSummary?.ai_description) ?? '',
                         }}
                       />
                     </div>
@@ -290,9 +302,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       <div className={styles.docsBodyText}>
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: (documentSummary?.summary ?? '')
-                              .replace(/\n/g, '<br />')
-                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'),
+                            __html: processText(documentSummary?.summary) ?? '',
                           }}
                         />
                       </div>
@@ -409,9 +419,9 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       <div className={styles.docsBodyText}>
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: (documentSummary?.ai_description ?? '')
-                              .replace(/\n/g, '<br />')
-                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'),
+                            __html:
+                              processText(documentSummary?.ai_description) ??
+                              '',
                           }}
                         />
                       </div>
@@ -536,12 +546,8 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         <div className={styles.docsBodyText}>
                           <div
                             dangerouslySetInnerHTML={{
-                              __html: (documentSummary?.summary ?? '')
-                                .replace(/\n/g, '<br />')
-                                .replace(
-                                  /\*\*(.*?)\*\*/g,
-                                  '<strong>$1</strong>'
-                                ),
+                              __html:
+                                processText(documentSummary?.summary) ?? '',
                             }}
                           />
                         </div>

@@ -49,8 +49,8 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
     });
   };
 
-  const isSmallScreen = useMediaQuery('(max-width:1100px)');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(isSmallScreen);
+  // const isSmallScreen = useMediaQuery('(max-width:1100px)');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
     if (!selectedDocId) {
@@ -143,6 +143,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
               />
               {selectedDocId && (
                 <DocumentSummary
+                  catId={catId}
                   docId={selectedDocId}
                   selectedDocIdNull={closeSummaryDrawer}
                 />
