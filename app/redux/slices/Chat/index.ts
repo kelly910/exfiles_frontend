@@ -255,18 +255,26 @@ const chatSlice = createSlice({
         if (newMsg && threadId && msgId && state.isStreaming) {
           if (typeof newMsg == 'object') {
             const targetData = [...state.messagesList.results];
+
             const messageExists = targetData.some(
               (item) => item?.uuid == newMsg.uuid
             );
+
             if (messageExists) {
               const index = targetData.findIndex(
                 (item) => item?.uuid == newMsg.uuid
               );
               if (index !== -1) {
-                state.isStreaming = false;
                 targetData[index] = newMsg;
+                state.isStreaming = false;
+              } else {
+                state.isStreaming = false;
+                targetData.push(newMsg);
+                state.messagesList.results = targetData;
+                state.messageChunks = [];
               }
             }
+            // state.messageChunks = [];
           } else {
             state.messageChunks = [...(state.messageChunks || []), newMsg];
           }

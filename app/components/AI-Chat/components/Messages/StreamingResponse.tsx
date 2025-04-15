@@ -4,6 +4,11 @@ import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.mod
 import Image from 'next/image';
 import { formatTo12HourTimeManually } from '@/app/utils/functions';
 
+interface StreamingResponseProps {
+  inputText: string;
+  isStreaming: boolean;
+}
+
 const processText = (text: string) => {
   if (text) {
     // Step 1: Double asterisk to bold
@@ -32,8 +37,8 @@ const processText = (text: string) => {
   return text;
 };
 
-export default function StreamingResponse(props) {
-  const { inputText, messageObj } = props;
+export default function StreamingResponse(props: StreamingResponseProps) {
+  const { inputText } = props;
 
   return (
     <Box
@@ -64,7 +69,7 @@ export default function StreamingResponse(props) {
           />
         </Typography>
         <span className={chatMessagesStyles.chatTime}>
-          {formatTo12HourTimeManually(messageObj?.created)}
+          {formatTo12HourTimeManually()}
         </span>
         <Box component="div" className={chatMessagesStyles.chatAlIcon}>
           <Button>
