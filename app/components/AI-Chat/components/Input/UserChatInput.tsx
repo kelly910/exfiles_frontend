@@ -19,7 +19,7 @@ export default function UserChatInput({
   const handleKeyUp = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
       const key = event.key.toLowerCase();
-      if (key === 'enter') {
+      if (key === 'enter' && !event.shiftKey) {
         event.preventDefault();
         handleMessageSending();
       }
@@ -54,6 +54,9 @@ export default function UserChatInput({
         value={text}
         onChange={handleText}
         onKeyDown={handleKeyUp}
+        multiline
+        minRows={1}
+        maxRows={3}
         disabled={false}
         endAdornment={
           <InputAdornment

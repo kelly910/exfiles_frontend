@@ -1,14 +1,17 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import {
   fetchThreadMessagesByThreadId,
+  selectIsStreaming,
   selectMessageList,
+  selectMessagesChunks,
   setActiveThreadId,
+  setIsStreaming,
 } from '@/app/redux/slices/Chat';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import UploadFilesStatusMessage from './UploadFilesStatusMessage';
@@ -18,15 +21,13 @@ import { RootState } from '@/app/redux/store';
 import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
 import Question from './Question';
 import UserChatInput from '../Input/UserChatInput';
-// import Answer from './Answer';
+import Answer from './Answer';
 import AIChatStyles from '@components/AI-Chat/styles/AIChatStyle.module.scss';
-import LoadingDocumentsSummary from './LoadingDocumentsSummary';
 import ShowGeneratedSummariesDocs from './ShowGeneratedSummariesDocs';
 import { useSelector } from 'react-redux';
-import GeneratingCombinedSummary from './GeneratingCombinedSummary';
-import ShowGeneratedCombinedSummaries from './ShowGeneratedCombinedSummaries';
 import { SocketPayload } from '../../types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
+import StreamingResponse from './StreamingResponse';
 
 export default function ChatMessagesComponent({
   threadId,
@@ -36,7 +37,9 @@ export default function ChatMessagesComponent({
   const router = useRouter();
   const dispatch = useAppDispatch();
   const messagesList = useSelector(selectMessageList);
-
+  const isStreamingMessages = useSelector(selectIsStreaming);
+  const messagesChunks = useSelector(selectMessagesChunks);
+  const chatElementRef = useRef<HTMLInputElement>(null);
   // const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   // const [isMessagesLoading, setIsMessagesLoading] = useState(true);
 
@@ -98,17 +101,38 @@ export default function ChatMessagesComponent({
   }, [threadId]);
 
   const handleSendMessage = (payloadData: SocketPayload) => {
+    dispatch(setIsStreaming(true));
     sendSocketMessage({ ...payloadData, thread_uuid: threadId });
   };
 
+  const jumpToLastMessage = () => {
+    if (chatElementRef.current) {
+      chatElementRef.current.scrollTop = chatElementRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    jumpToLastMessage();
+  }, [messagesList]);
+
+  useEffect(() => {
+    const lastChild = chatElementRef.current?.lastElementChild.querySelector(
+      '.streaming-container:last-child'
+    );
+
+    if (lastChild && isStreamingMessages) {
+      lastChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [messagesChunks]);
+
   return (
     <>
-      <div className={AIChatStyles.chatContainer}>
+      <div className={AIChatStyles.chatContainer} ref={chatElementRef}>
         <Container maxWidth="lg" disableGutters>
           {groupedData &&
             Object.keys(groupedData).map((date) => {
               return (
-                <>
+                <React.Fragment key={date}>
                   <Box component="div" className={chatMessagesStyles.chatDate}>
                     <span> {date}</span>
                   </Box>
@@ -117,26 +141,19 @@ export default function ChatMessagesComponent({
                     className={chatMessagesStyles.chatWindow}
                   >
                     {groupedData[date].map((record: ChatMessage) => (
-                      <>
+                      <React.Fragment key={record.uuid}>
                         {loggedInUser &&
                         loggedInUser.data.id == record.sender ? (
                           <>
-                            {record.uploaded_documents.length > 0 && (
+                            {record.uploaded_documents?.length > 0 && (
                               <UploadFilesStatusMessage
                                 messageObj={record}
                                 userDetails={loggedInUser}
                               />
                             )}
 
-                            {record.uploaded_documents.length == 0 && (
+                            {record.message && (
                               <Question
-                                userDetails={loggedInUser}
-                                messageObj={record}
-                              />
-                            )}
-
-                            {record.uploaded_documents.length == 0 && (
-                              <GeneratingCombinedSummary
                                 userDetails={loggedInUser}
                                 messageObj={record}
                               />
@@ -144,49 +161,46 @@ export default function ChatMessagesComponent({
                           </>
                         ) : (
                           <>
-                            {!record.uploaded_documents &&
-                              !record.combined_summary_data?.length && (
-                                <LoadingDocumentsSummary messageObj={record} />
-                              )}
                             {record.summary_documents &&
-                              record.summary_documents.length > 0 &&
-                              !record.combined_summary_data && (
-                                <ShowGeneratedSummariesDocs
-                                  handleDocCategoryClick={(documentItem) =>
-                                    handleDocCategoryClick(documentItem)
-                                  }
-                                  handleDocSummaryClick={(documentItem) =>
-                                    handleDocSummaryClick(documentItem)
-                                  }
-                                  handleGenerateCombinedSummary={(
-                                    payloadData
-                                  ) => handleSendMessage(payloadData)}
-                                  messageObj={record}
-                                />
-                              )}
-                            {
-                              <ShowGeneratedCombinedSummaries
+                            record.summary_documents.length > 0 &&
+                            !record.combined_summary_data ? (
+                              <ShowGeneratedSummariesDocs
+                                handleDocCategoryClick={(documentItem) =>
+                                  handleDocCategoryClick(documentItem)
+                                }
+                                handleDocSummaryClick={(documentItem) =>
+                                  handleDocSummaryClick(documentItem)
+                                }
+                                handleGenerateCombinedSummary={(payloadData) =>
+                                  handleSendMessage(payloadData)
+                                }
                                 messageObj={record}
                               />
-                            }
+                            ) : (
+                              <Answer messageObj={record} />
+                            )}
                           </>
                         )}
-
-                        {/* <LoadingGenerateSummary />
-                        <Question
-                          userDetails={loggedInUser}
-                          messageObj={record}
-                        />
-                        <Answer messageObj={record} /> */}
-                      </>
+                      </React.Fragment>
                     ))}
                   </Box>
-                </>
+                </React.Fragment>
               );
             })}
+
+          {isStreamingMessages &&
+            messagesChunks &&
+            messagesChunks.length > 2 && (
+              <StreamingResponse
+                isStreaming={isStreamingMessages}
+                inputText={messagesChunks.join('')}
+              />
+            )}
         </Container>
       </div>
-      <div style={{ padding: '0 10px 20px 10px' }}>
+      <div
+        style={{ padding: '0 10px 20px 10px', position: 'sticky', bottom: 0 }}
+      >
         <Container maxWidth="lg" disableGutters>
           <UserChatInput
             handleOpenDocUploadModal={() => {}}

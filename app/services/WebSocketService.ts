@@ -18,7 +18,6 @@ export const initWebSocketStore = (storeDispatch: AppDispatch) => {
 };
 
 export const WebSocketService = (): void => {
-  console.log(socket);
   if (socket) return;
   const AUTH_TOKEN = getCookie('accessToken');
   const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
@@ -39,12 +38,7 @@ export const WebSocketService = (): void => {
     socket.onmessage = (event: IMessageEvent) => {
       try {
         const data = JSON.parse(event.data as string);
-        const newMsg = data.data.message;
-        const threadUUID = data.chat_message_uuid;
-
         dispatch(setWebSocketMessage(data));
-        if (threadUUID && newMsg) {
-        }
       } catch (err) {
         console.log(err);
         console.error('❌ Invalid message format:', event.data);
