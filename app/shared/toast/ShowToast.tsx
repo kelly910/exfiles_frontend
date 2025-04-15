@@ -1,3 +1,5 @@
+import { Button } from '@mui/material';
+import Image from 'next/image';
 import { toast, ToastContent, ToastOptions, Slide, Id } from 'react-toastify';
 
 export const defaultToastOptions: ToastOptions = {
@@ -32,11 +34,74 @@ export const showToast = (
 
   switch (type) {
     case 'success':
-      return toast.success(content, optionsToApply);
+      return toast.success(content, {
+        ...optionsToApply,
+        className: 'success-toast toast',
+        icon: (
+          <Image
+            src="/images/toast-tick.svg"
+            alt="success-icon"
+            width={24}
+            height={24}
+          />
+        ),
+        closeButton: ({ closeToast }) => (
+          <Button onClick={closeToast}>
+            <Image
+              src="/images/close.svg"
+              width={12}
+              height={12}
+              alt="close-icon"
+            />
+          </Button>
+        ),
+      });
     case 'error':
-      return toast.error(content, optionsToApply);
+      return toast.error(content, {
+        ...optionsToApply,
+        className: 'error-toast toast',
+        icon: (
+          <Image
+            src="/images/toast-danger.svg"
+            alt="success-icon"
+            width={24}
+            height={24}
+          />
+        ),
+        closeButton: ({ closeToast }) => (
+          <Button onClick={closeToast}>
+            <Image
+              src="/images/close.svg"
+              width={12}
+              height={12}
+              alt="close-icon"
+            />
+          </Button>
+        ),
+      });
     case 'info':
-      return toast.info(content, optionsToApply);
+      return toast.info(content, {
+        ...optionsToApply,
+        className: 'info-toast toast',
+        icon: (
+          <Image
+            src="/images/toast-info.svg"
+            alt="success-icon"
+            width={24}
+            height={24}
+          />
+        ),
+        closeButton: ({ closeToast }) => (
+          <Button onClick={closeToast}>
+            <Image
+              src="/images/close.svg"
+              width={12}
+              height={12}
+              alt="close-icon"
+            />
+          </Button>
+        ),
+      });
     case 'warning':
       return toast.warn(content, optionsToApply);
     case 'default':
