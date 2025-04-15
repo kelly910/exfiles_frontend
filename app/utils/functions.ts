@@ -26,8 +26,8 @@ export const formatFileSizeLabel = (size: number): string => {
   }
 };
 
-export const formatTo12HourTimeManually = (dateString: string): string => {
-  const date = new Date(dateString);
+export const formatTo12HourTimeManually = (dateString?: string): string => {
+  const date = dateString ? new Date(dateString) : new Date();
   let hours = date.getHours();
   const minutes = date.getMinutes();
   const ampm = hours >= 12 ? 'PM' : 'AM';

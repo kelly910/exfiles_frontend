@@ -48,6 +48,7 @@ const persistConfig = {
     'documentSummary',
     'editSummary',
     'logIncidents',
+    'chat',
   ],
   // whitelist: ["auth"], // specify reducers to persist
 };

@@ -20,8 +20,10 @@ import { RootState } from '../../store';
 
 interface ChatState {
   activeThreadId: string | null;
+  isStreaming: boolean;
   messagesList: GetMessagesByThreadIdResponse;
   messagesListLoading: boolean;
+  messageChunks: string[];
 }
 
 const initialState: ChatState = {
@@ -30,7 +32,9 @@ const initialState: ChatState = {
     count: 0,
     results: [],
   },
+  isStreaming: false,
   messagesListLoading: true,
+  messageChunks: [],
 };
 
 export const fetchThreadList = createAsyncThunk<
@@ -237,29 +241,78 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     setWebSocketMessage: (state, action) => {
-      const threadId = action.payload.data.chat_message_uuid;
-      const newMsg = action.payload.data.message;
-      console.log(threadId, newMsg);
+      const threadId = action.payload.data.thread_uuid;
+      const msgId = action.payload.data.chat_message_uuid;
+      const newQuestionMsg = action.payload.data?.chat_message_data;
 
-      // const targetData = [...state.messagesList.results];
+      const newMsg = action.payload.data?.message;
 
-      // const messageExists = targetData.some(
-      //   (item) => item?.uuid === newMsg.uuid
-      // );
-      // // Check if the message with the same uuid already exists
-      // let index = targetData.findIndex(
-      //   (item) => item?.uuid === action.payload?.uuid
-      // );
+      if (newQuestionMsg) {
+        const targetData = [...state.messagesList.results];
+        targetData.push(newQuestionMsg);
+        state.messagesList.results = targetData;
+      } else {
+        if (newMsg && threadId && msgId && state.isStreaming) {
+          if (typeof newMsg == 'object') {
+            const targetData = [...state.messagesList.results];
 
-      // if (index !== -1) {
-      //   targetData[index] = action.payload;
-      // }
+            const messageExists = targetData.some(
+              (item) => item?.uuid == newMsg.uuid
+            );
 
-      // Set the updated messages list to the state
-      // state.messagesList.results = targetData;
+            if (messageExists) {
+              const index = targetData.findIndex(
+                (item) => item?.uuid == newMsg.uuid
+              );
+              if (index !== -1) {
+                targetData[index] = newMsg;
+                state.isStreaming = false;
+              } else {
+                state.isStreaming = false;
+                targetData.push(newMsg);
+                state.messagesList.results = targetData;
+                state.messageChunks = [];
+              }
+            }
+            // state.messageChunks = [];
+          } else {
+            state.messageChunks = [...(state.messageChunks || []), newMsg];
+          }
+        } else {
+          const targetData = [...state.messagesList.results];
+
+          const messageExists = targetData.some(
+            (item) => item?.uuid == newMsg.uuid
+          );
+          // Check if the message with the same uuid already exists
+          if (messageExists) {
+            const index = targetData.findIndex(
+              (item) => item?.uuid == newMsg.uuid
+            );
+            if (index !== -1) {
+              targetData[index] = newMsg;
+            }
+          }
+
+          if (!messageExists) {
+            targetData.push(action.payload);
+
+            // if (state.activeThreadId == state.streamingThreadId) {
+            //   // If the message does not exist, add the new message
+            //   targetData.push(action.payload);
+            // }
+          }
+
+          // Set the updated messages list to the state
+          state.messagesList.results = targetData;
+        }
+      }
     },
     setActiveThreadId: (state, action) => {
       state.activeThreadId = action.payload;
+    },
+    setIsStreaming: (state, action) => {
+      state.isStreaming = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -277,10 +330,14 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setWebSocketMessage, setActiveThreadId } = chatSlice.actions;
+export const { setWebSocketMessage, setActiveThreadId, setIsStreaming } =
+  chatSlice.actions;
 
 export const selectMessageList = (state: RootState) => state.chat.messagesList;
 export const selectActiveThreadId = (state: RootState) =>
   state.chat.activeThreadId;
+export const selectMessagesChunks = (state: RootState) =>
+  state.chat.messageChunks;
+export const selectIsStreaming = (state: RootState) => state.chat.isStreaming;
 
 export default chatSlice.reducer;

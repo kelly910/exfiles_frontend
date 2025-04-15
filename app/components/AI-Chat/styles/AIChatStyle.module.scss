@@ -132,12 +132,13 @@
 }
 
 .fileInput {
-  padding: 9px 16px;
+  padding: 9px 16px !important;
   background-color: var(--Input-Box-Colors);
   width: 100%;
   border-radius: 10px;
-  color: var(--Subtext-Color);
+  color: var(--Subtext-Color) !important;
   border: 1px solid var(--Stroke-Color);
+  align-items: end;
 
   &::after {
     content: none !important;
@@ -163,18 +164,22 @@
 .chatBoard {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 14px;
   border: 1px solid var(--Stroke-Color);
   border-radius: 12px;
   padding: 16px;
   margin-top: 24px;
   background-color: var(--Card-Color);
+
+  button {
+    margin-bottom: 5px;
+  }
 }
 
 .fileIcon {
   cursor: pointer;
-  // border: 0.72px solid var(--Stroke-Color);
+  margin-bottom: 2px;
 
   .clip {
     background-image: url('/images/paperclip.svg');
@@ -246,9 +251,6 @@
     .gridBox {
       margin-top: 20px;
       .gridBoxInner {
-        .chatBox {
-        }
-
         .gridBoxButton {
           margin-top: 13px;
           font-size: var(--SubTitle-3);
