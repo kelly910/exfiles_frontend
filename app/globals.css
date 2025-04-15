@@ -734,3 +734,36 @@ input::-webkit-inner-spin-button {
   width: 50px;
   height: 50px;
 }
+
+/* toast start */
+.toast {
+  background-color: var(--Card-Color) !important;
+  padding: 14px 20px !important;
+  border: 1px solid var(--Stroke-Color);
+  color: var(--Primary-Text-Color) !important;
+  font-size: var(--SubTitle-3);
+  font-weight: var(--Medium);
+  border-radius: 14px !important;
+  gap: 10px;
+  align-items: center;
+  filter: drop-shadow(0px 20px 30px black);
+}
+
+.toast div {
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+}
+
+.toast button {
+  background: var(--Stroke-Color);
+  min-width: fit-content;
+  padding: 7px;
+  height: fit-content;
+}
+
+.error-toast.toast {
+  color: #E72240 !important;
+}
+
+/* toast end */
