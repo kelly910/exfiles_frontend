@@ -1,15 +1,16 @@
 header {
   .documentTitle {
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 140%;
+    font-weight: var(--Bold);
+    font-size: var(--Heading-4);
+    line-height: 1.4;
+    color: var(--Primary-Text-Color);
   }
 
   .documentNo {
     padding-left: 28px;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 140%;
+    font-weight: var(--Regular);
+    font-size: var(--SubTitle-5);
+    line-height: 1.4;
     color: #898b94;
   }
 
@@ -95,9 +96,9 @@ header {
     }
 
     p {
-      font-weight: 500;
+      font-weight: var(--Regular);
       font-size: 13px;
-      line-height: 140%;
+      line-height: 1.4;
       letter-spacing: -2%;
       color: #dadae1;
       width: 100%;

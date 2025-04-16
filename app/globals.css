@@ -243,10 +243,10 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
-  font-weight: var(--Medium);
-  font-size: var(--SubTitle-4) !important;
-  line-height: 1.4;
+  gap: 6px;
+  font-weight: var(--Regular);
+  font-size: var(--SubTitle-5) !important;
+  line-height: var(--SubTitle-5);
 }
 
 .btn.btn-primary-arrow span.incident,
@@ -271,7 +271,7 @@ input {
 
 @media (max-width: 500px) {
   .btn.btn-primary-arrow {
-    font-size: var(--SubTitle-3) !important;
+    font-size: var(--SubTitle-5) !important;
   }
 
 }

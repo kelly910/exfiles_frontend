@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-import { useMediaQuery } from '@mui/material';
 import PageHeader from '@components/Common/PageHeader';
 import Sidebar from '@components/Common/Sidebar';
 
@@ -26,8 +25,8 @@ const DynamicChatMessagesComponent = dynamic(
 export default function AIChatComponent({ threadId }: { threadId?: string }) {
   const router = useRouter();
   // const dispatch = useAppDispatch();
-  const isSmallScreen = useMediaQuery('(max-width:1100px)');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(isSmallScreen);
+  // const isSmallScreen = useMediaQuery('(max-width:1100px)');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   // const sidebarRef = useRef<HTMLInputElement>(null);
 
   const toggleSidebar = () => {

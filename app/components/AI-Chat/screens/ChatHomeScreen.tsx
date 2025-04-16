@@ -5,6 +5,12 @@ import { Box, Button, Grid, Typography } from '@mui/material';
 
 import AIChatStyles from '@components/AI-Chat/styles/AIChatStyle.module.scss';
 import UserChatInput from '@components/AI-Chat/components/Input/UserChatInput';
+import { SocketPayload } from '@components/AI-Chat/types/aiChat.types';
+import { sendSocketMessage } from '@/app/services/WebSocketService';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { createNewThread } from '@/app/redux/slices/Chat';
+import { showToast } from '@/app/shared/toast/ShowToast';
+import { useRouter } from 'next/navigation';
 
 // Dynamic Custom Component imports
 const DynamicDocUploadModal = dynamic(
@@ -13,13 +19,41 @@ const DynamicDocUploadModal = dynamic(
 );
 
 export default function ChatHomeScreen() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
   const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClickOpen = () => {
     setIsOpenDocUpload(true);
   };
   const handleClose = () => {
     setIsOpenDocUpload(false);
+  };
+
+  const handleNewSendMessage = async (payloadData: SocketPayload) => {
+    setIsLoading(true);
+    // Before sending a message we will create a new thread
+    const resultData = await dispatch(
+      createNewThread({
+        name: payloadData.message.trim(),
+      })
+    );
+
+    if (createNewThread.rejected.match(resultData)) {
+      showToast('error', 'Something went wrong. Please try again!');
+      console.error('createNewThread failed:', resultData.payload);
+      return;
+    }
+
+    const createdThreadID = resultData.payload?.uuid;
+    setIsLoading(false);
+
+    if (!createdThreadID) return;
+    sendSocketMessage({ ...payloadData, thread_uuid: createdThreadID });
+
+    router.push(`/ai-chats/${createdThreadID}`);
   };
 
   return (
@@ -79,7 +113,7 @@ export default function ChatHomeScreen() {
               >
                 <div className={AIChatStyles.chatBox}>
                   <Typography variant="body1">
-                    If you could visit one planet, which would it be?
+                    Something Unexpected Happened?
                   </Typography>
                   <Button
                     type="button"
@@ -157,7 +191,8 @@ export default function ChatHomeScreen() {
 
         <UserChatInput
           handleOpenDocUploadModal={handleClickOpen}
-          sendMessage={() => {}}
+          sendMessage={(payloadData) => handleNewSendMessage(payloadData)}
+          isLoadingProp={isLoading}
         />
       </Box>
 

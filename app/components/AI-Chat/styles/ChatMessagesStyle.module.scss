@@ -1,20 +1,20 @@
 .chatWindow {
   width: 100%;
-  padding: 0 10px;
+  padding: 0 16px;
 }
 
 .chatDate {
   width: 100%;
   position: relative;
   margin-bottom: 24px;
-  padding: 0 10px;
+  padding: 0 16px;
 
   &::after {
     content: '';
     position: absolute;
     display: block;
     width: 100%;
-    max-width: calc(100% - 20px);
+    max-width: calc(100% - 32px);
     height: 1px;
     background-color: var(--Stroke-Color);
     top: 50%;
@@ -292,12 +292,12 @@
           flex: 0 0 auto;
 
           &:first-child {
-            margin-right: 4px;
+            margin-right: 6px;
           }
         }
 
         p {
-          font-weight: var(--Regular);
+          font-weight: var(--Lighter);
           font-size: var(--SubTitle-5);
           line-height: 140%;
           color: var(--Primary-Text-Color);
@@ -475,10 +475,14 @@ span.chatTime {
   border-radius: 12px;
   max-width: 90%;
 
+  span.chatTime {
+    border-radius: 0 0 8px 8px;
+  }
+
   .chatAlContent {
     min-width: 350px;
     padding: 8px;
-    border-radius: 0;
+    border-radius: 8px 0 0 0;
 
     .fileBox {
       display: flex;

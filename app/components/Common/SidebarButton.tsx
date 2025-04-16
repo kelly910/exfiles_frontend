@@ -4,24 +4,29 @@ import Style from './Sidebar.module.scss';
 import { Button, Typography } from '@mui/material';
 import Image from 'next/image';
 
-export default function SidebaarButton() {
+export default function SidebarButton({
+  btnTitle,
+  iconPath,
+  handleBtnClick,
+}: {
+  btnTitle: string;
+  iconPath: string;
+  handleBtnClick: () => void;
+}) {
   return (
     <Button
-      className={`${Style.customAccordionHeading} ${Style.active}`}
+      className={`${Style.customAccordionHeading}`}
       sx={{
+        marginBottom: '12px',
         '.MuiTouchRipple-root': {
           display: 'none !important',
         },
       }}
+      onClick={handleBtnClick}
     >
       <Typography component="span" className={Style['heading']}>
-        <Image
-          src="/images/document-text.svg"
-          alt="icon"
-          width={18}
-          height={18}
-        />
-        title
+        <Image src={iconPath} alt="icon" width={18} height={18} />
+        {btnTitle}
       </Typography>
       <Typography component="span" className={Style['heading-side-img']}>
         <Image

@@ -1,19 +1,25 @@
 import AIChatStyles from '@components/AI-Chat/styles/AIChatStyle.module.scss';
-import { Box, Button, Input, InputAdornment } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Input,
+  InputAdornment,
+} from '@mui/material';
 import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 import { SocketPayload } from '../../types/aiChat.types';
 import { QUESTION_TYPES } from '@/app/utils/constants';
-
 interface UserChatInputProps {
   handleOpenDocUploadModal: () => void;
   sendMessage: (payloadMsg: SocketPayload) => void;
+  isLoadingProp?: boolean;
 }
 
 export default function UserChatInput({
   handleOpenDocUploadModal,
   sendMessage,
+  isLoadingProp,
 }: UserChatInputProps) {
-  // const { sendMessage, selectedChatDropdownVal } = props;
   const [text, setText] = useState('');
 
   const handleKeyUp = useCallback(
@@ -36,7 +42,6 @@ export default function UserChatInput({
   }, []);
 
   const handleMessageSending = () => {
-    // const currentFile = store.getState().chat.selectedDocument;
     const message = {
       message_type: QUESTION_TYPES.QUESTION,
       message: text,
@@ -75,8 +80,13 @@ export default function UserChatInput({
         color="primary"
         fullWidth
         onClick={handleMessageSending}
+        disabled={isLoadingProp || false}
       >
-        <span className="arrow"></span>
+        {isLoadingProp ? (
+          <CircularProgress size={18} sx={{ color: '#fff' }} />
+        ) : (
+          <span className="arrow"></span>
+        )}
       </Button>
     </Box>
   );

@@ -131,8 +131,8 @@ export default function DialogBox() {
                 <Image
                   src="/images/Upload-img.png"
                   alt="Upload-img"
-                  width={148}
-                  height={117}
+                  width={88}
+                  height={94}
                 />
                 <Typography gutterBottom>
                   Drag your documents here to upload or <span>Click here</span>{' '}

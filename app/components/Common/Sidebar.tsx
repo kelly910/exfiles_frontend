@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Style from './Sidebar.module.scss';
 import ListItem from '@mui/material/ListItem';
-import { Box, Link, List, TextField } from '@mui/material';
+import { Box, List, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Image from 'next/image';
 import SidebarAccordion from './SidebarAccordion';
@@ -20,8 +20,9 @@ import {
 } from '@/app/redux/slices/Chat/chatTypes';
 import NoRecordFound from './NoRecordFound';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-// import SidebaarButton from '@components/Common/SidebaarButton';
+import SidebarButton from '@components/Common/SidebarButton';
 
 const Sidebar = ({
   isOpen,
@@ -119,14 +120,8 @@ const Sidebar = ({
         className={`${Style['sidebar']} ${!isOpen ? Style.closesidebar : ''}`}
       >
         <div className={Style['main-logo']}>
-          <Link href="#" className={Style['opensidebar-logo']}>
-            <Image
-              src="/images/logo.svg"
-              alt="logo"
-              width={200}
-              height={44}
-              onClick={() => router.push('/ai-chats')}
-            />
+          <Link href="/ai-chats" className={Style['opensidebar-logo']}>
+            <Image src="/images/logo.svg" alt="logo" width={200} height={44} />
           </Link>
           <Link href="#" className={Style['close-sidebar-logo']}>
             <Image
@@ -293,11 +288,7 @@ const Sidebar = ({
                 </div>
               ) : (
                 <ListItem>
-                  <Link
-                    href="/ai-chats"
-                    underline="none"
-                    className={Style['sidebar-btn']}
-                  >
+                  <Link href="/ai-chats" className={Style['sidebar-btn']}>
                     <span className={Style['btn-text']}>Start New Chat</span>{' '}
                     <span>
                       <Image
@@ -374,23 +365,17 @@ const Sidebar = ({
               )}
             </SidebarAccordion>
 
-            <SidebarAccordion
-              title={'Documents'}
-              icon="/images/document-text.svg"
-              expanded={expanded}
-              panelKey="panel3"
-              handleAccordionChange={handleAccordionChange}
-            ></SidebarAccordion>
+            <SidebarButton
+              btnTitle={'Documents'}
+              iconPath={'/images/document-text.svg'}
+              handleBtnClick={() => router.push('/documents')}
+            />
 
-            <SidebarAccordion
-              title={'Log Incident'}
-              icon="/images/log-incident-sidebar.svg"
-              expanded={expanded}
-              panelKey="panel4"
-              handleAccordionChange={handleAccordionChange}
-            ></SidebarAccordion>
-
-            {/* <SidebaarButton /> */}
+            <SidebarButton
+              btnTitle={'Log Incident'}
+              iconPath={'/images/log-incident-sidebar.svg'}
+              handleBtnClick={() => router.push('/ai-chats')}
+            />
           </div>
         </div>
         <div className={Style['sidebar-btm']}>

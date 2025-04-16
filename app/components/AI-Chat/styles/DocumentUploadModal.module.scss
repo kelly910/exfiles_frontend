@@ -22,7 +22,7 @@
       font-weight: var(--Medium);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
-      color: var(--Primary-Text-Color);
+      color: var(--Txt-On-Gradient);
     }
   }
 
@@ -50,13 +50,17 @@
         font-size: var(--SubTitle-3);
         line-height: 1.4;
         text-align: center;
-        color: #676972;
+        color: var(--Placeholder-Text);
         margin: 0 auto;
         margin-top: 9px;
-        max-width: 400px;
+        max-width: 240px;
+
+        &:last-child {
+          max-width: unset;
+        }
 
         span {
-          border-bottom: 1px solid #676972;
+          border-bottom: 1px solid transparent;
         }
       }
 
@@ -110,13 +114,23 @@
         line-height: 1.4;
         color: var(--Primary-Text-Color);
 
+        p {
+          line-clamp: 1;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          word-break: break-all;
+        }
+
         span {
           display: block;
           font-weight: var(--Lighter);
           font-size: var(--SubTitle-5);
           line-height: 140%;
           letter-spacing: 0%;
-          color: var(--Placeholder-Text);
+          color: var(--Subtext-Color);
         }
       }
 
