@@ -3,7 +3,6 @@
 import {
   Box,
   Container,
-  Link,
   TextField,
   Typography,
   CircularProgress,
@@ -20,6 +19,7 @@ import { forgotPassword } from '@/app/redux/slices/login';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { setLoader } from '@/app/redux/slices/loader';
+import Link from 'next/link';
 
 export interface ForgotPasswordFormValues {
   email: string;
@@ -184,7 +184,7 @@ const Page = () => {
                             href="#"
                             className="link-primary"
                             onClick={() => router.push('/login')}
-                            sx={{ textDecoration: 'none' }}
+                            style={{ textDecoration: 'none' }}
                           >
                             Back to Login
                           </Link>

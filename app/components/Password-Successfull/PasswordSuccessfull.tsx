@@ -1,11 +1,5 @@
 'use client';
-import {
-  Box,
-  Container,
-  Typography,
-  CircularProgress,
-  Link,
-} from '@mui/material';
+import { Box, Container, Typography, CircularProgress } from '@mui/material';
 import { Button } from '@mui/material';
 import styles from './passwordSuccess.module.scss';
 import Image from 'next/image';
@@ -13,6 +7,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { setLoader } from '@/app/redux/slices/loader';
 import { useAppDispatch } from '@/app/redux/hooks';
+import Link from 'next/link';
 
 const Page = () => {
   const router = useRouter();
@@ -26,7 +21,7 @@ const Page = () => {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <Link href=" https://exfiles.trooinbounddevs.com/">
+                <Link href="https://exfiles.trooinbounddevs.com/">
                   <Image
                     src="/images/logo.svg"
                     alt="logo"

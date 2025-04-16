@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Link,
   TextField,
   Typography,
 } from '@mui/material';
@@ -21,6 +20,7 @@ import { deleteAccount } from '@/app/redux/slices/profileSetting';
 import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
 import { sendOtp } from '@/app/redux/slices/register';
+import Link from 'next/link';
 
 const RESEND_TIME = 59;
 

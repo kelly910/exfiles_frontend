@@ -6,7 +6,6 @@ import {
   Container,
   IconButton,
   InputAdornment,
-  Link,
   TextField,
   Typography,
 } from '@mui/material';
@@ -23,6 +22,8 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { loginUser, socialGoogleLogin } from '@/app/redux/slices/login';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { setLoader } from '@/app/redux/slices/loader';
+import Link from 'next/link';
+
 export interface LoginFormValues {
   email: string;
   password: string;
@@ -100,7 +101,7 @@ const Page = () => {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <Link href=" https://exfiles.trooinbounddevs.com/">
+                <Link href="https://exfiles.trooinbounddevs.com/">
                   <Image
                     src="/images/logo.svg"
                     alt="logo"
