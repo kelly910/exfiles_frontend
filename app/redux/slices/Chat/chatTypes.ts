@@ -74,6 +74,12 @@ export interface UploadedDocument {
   };
   doc_type: string;
 }
+
+export interface CombineSummaryData {
+  id: string;
+  uuid: string;
+  summary: string;
+}
 export interface ChatMessage {
   id: number;
   uuid: string;
@@ -84,7 +90,7 @@ export interface ChatMessage {
   message: string;
   uploaded_documents: UploadedDocument[];
   summary_documents: UploadedDocument[] | null;
-  combined_summary_data: [] | null;
+  combined_summary_data: CombineSummaryData | null;
   all_doc_summarized: boolean;
 }
 

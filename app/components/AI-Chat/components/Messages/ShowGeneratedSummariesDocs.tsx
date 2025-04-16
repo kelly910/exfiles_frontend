@@ -9,10 +9,7 @@ import {
 import Image from 'next/image';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
-import {
-  formatFileSizeLabel,
-  formatTo12HourTimeManually,
-} from '@/app/utils/functions';
+import { formatTo12HourTimeManually } from '@/app/utils/functions';
 import { DOCUMENT_STATUS, QUESTION_TYPES } from '@/app/utils/constants';
 import { SocketPayload } from '../../types/aiChat.types';
 
@@ -99,7 +96,6 @@ export default function ShowGeneratedSummariesDocs({
                         className={chatMessagesStyles.chatAlText}
                       >
                         {file_data.file_name}{' '}
-                        {formatFileSizeLabel(file_data.file_size)}
                       </Typography>
                     </Box>
 
