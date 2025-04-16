@@ -6,7 +6,6 @@ import {
   InputAdornment,
   TextField,
   Typography,
-  Link,
   CircularProgress,
 } from '@mui/material';
 import { Button } from '@mui/material';
@@ -22,6 +21,7 @@ import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { resetPassword } from '@/app/redux/slices/login';
 import { setLoader } from '@/app/redux/slices/loader';
+import Link from 'next/link';
 
 export interface NewPasswordFormValues {
   email: string;
@@ -79,7 +79,7 @@ const Page = () => {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <Link href=" https://exfiles.trooinbounddevs.com/">
+                <Link href="https://exfiles.trooinbounddevs.com/">
                   <Image
                     src="/images/logo.svg"
                     alt="logo"

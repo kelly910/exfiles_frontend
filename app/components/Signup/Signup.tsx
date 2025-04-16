@@ -8,7 +8,6 @@ import {
   Select,
   TextField,
   Typography,
-  Link,
   CircularProgress,
 } from '@mui/material';
 import { Button } from '@mui/material';
@@ -26,6 +25,7 @@ import { showToast } from '@/app/shared/toast/ShowToast';
 import { useGoogleLogin } from '@react-oauth/google';
 import { socialGoogleLogin } from '@/app/redux/slices/login';
 import { setLoader } from '@/app/redux/slices/loader';
+import Link from 'next/link';
 
 export interface RegisterFormValues {
   first_name: string;
@@ -119,7 +119,7 @@ const Page = () => {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <Link href=" https://exfiles.trooinbounddevs.com/">
+                <Link href="https://exfiles.trooinbounddevs.com/">
                   <Image
                     src="/images/logo.svg"
                     alt="logo"

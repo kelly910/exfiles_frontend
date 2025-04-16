@@ -2,7 +2,6 @@
 import {
   Box,
   Container,
-  Link,
   TextField,
   CircularProgress,
   Typography,
@@ -18,6 +17,7 @@ import { showToast } from '@/app/shared/toast/ShowToast';
 import { Field, Form, Formik } from 'formik';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { setLoader } from '@/app/redux/slices/loader';
+import Link from 'next/link';
 
 export interface OtpVerificationFormValues {
   otp: number;
@@ -159,7 +159,7 @@ const Page = () => {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <Link href=" https://exfiles.trooinbounddevs.com/">
+                <Link href="https://exfiles.trooinbounddevs.com/">
                   <Image
                     src="/images/logo.svg"
                     alt="logo"
