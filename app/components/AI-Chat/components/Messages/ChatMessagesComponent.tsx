@@ -107,29 +107,16 @@ export default function ChatMessagesComponent({
 
   const jumpToLastMessage = () => {
     if (chatElementRef.current) {
-      chatElementRef.current.scrollTop = chatElementRef.current.scrollHeight;
+      chatElementRef.current.scrollTo({
+        top: chatElementRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   };
 
   useEffect(() => {
     jumpToLastMessage();
   }, [messagesList]);
-
-  const scrollToLastStreamingElement = () => {
-    const container = chatElementRef?.current?.lastElementChild;
-    if (!container) return;
-
-    const lastChild = container.querySelector(
-      '.streaming-container:last-child'
-    ) as HTMLElement | null;
-    if (lastChild && isStreamingMessages) {
-      lastChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }
-  };
-
-  useEffect(() => {
-    scrollToLastStreamingElement();
-  }, [messagesChunks]);
 
   return (
     <>

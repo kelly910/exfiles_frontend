@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-import { useMediaQuery } from '@mui/material';
 import PageHeader from '@components/Common/PageHeader';
 import Sidebar from '@components/Common/Sidebar';
 

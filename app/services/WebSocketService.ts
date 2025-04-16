@@ -6,7 +6,7 @@ import { getCookie } from 'cookies-next';
 import { AppDispatch } from '@store/store';
 import { setWebSocketMessage } from '../redux/slices/Chat';
 
-let socket: W3CWebSocket | null = null;
+export let socket: W3CWebSocket | null = null;
 let dispatch: AppDispatch;
 let reconnectAttempts = 0;
 let reconnectTimer: ReturnType<typeof setTimeout>;
@@ -18,7 +18,8 @@ export const initWebSocketStore = (storeDispatch: AppDispatch) => {
 };
 
 export const WebSocketService = (): void => {
-  if (socket) return;
+  if (socket && socket.readyState === socket.OPEN) return;
+
   const AUTH_TOKEN = getCookie('accessToken');
   const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
 
