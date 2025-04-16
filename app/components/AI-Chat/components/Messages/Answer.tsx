@@ -50,17 +50,61 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
           </Tooltip>
         </Box>
         <Box component="div" className={chatMessagesStyles.chatAlContent}>
-          <Typography
-            variant="body1"
-            className={chatMessagesStyles.chatAlContentText}
-          >
-            {/* {messageObj.message} */}
-            <div
-              dangerouslySetInnerHTML={{
-                __html: processText(messageObj.message),
-              }}
-            />
-          </Typography>
+          {(messageObj.message == 'Generating combined summary' ||
+            messageObj.message == 'Generating summaries for documents') &&
+          !messageObj.combined_summary_data ? (
+            <>
+              <Typography
+                variant="body1"
+                className={chatMessagesStyles.chatAlContentText}
+              >
+                Hold on a second...
+              </Typography>
+              <Box
+                component="div"
+                className={chatMessagesStyles.chatAlCategory}
+              >
+                <Box
+                  component="div"
+                  className={chatMessagesStyles.chatAlCategoryInner}
+                >
+                  <Image
+                    src="/images/category.svg"
+                    alt="category"
+                    width={14}
+                    height={14}
+                  />
+                  <Typography
+                    variant="body1"
+                    className={chatMessagesStyles.chatAlText}
+                  >
+                    {messageObj.message || 'Generating Summary Links'}
+                  </Typography>
+                </Box>
+              </Box>
+            </>
+          ) : (
+            <Typography
+              variant="body1"
+              className={chatMessagesStyles.chatAlContentText}
+            >
+              {messageObj.combined_summary_data ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: processText(
+                      messageObj.combined_summary_data.summary
+                    ),
+                  }}
+                />
+              ) : (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: processText(messageObj.message),
+                  }}
+                />
+              )}
+            </Typography>
+          )}
           <span className={chatMessagesStyles.chatTime}>
             {formatTo12HourTimeManually(messageObj.created)}
           </span>

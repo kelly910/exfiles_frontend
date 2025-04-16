@@ -241,69 +241,48 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     setWebSocketMessage: (state, action) => {
-      const threadId = action.payload.data.thread_uuid;
-      const msgId = action.payload.data.chat_message_uuid;
-      const newQuestionMsg = action.payload.data?.chat_message_data;
+      const { data } = action.payload;
+      const {
+        thread_uuid: threadId,
+        chat_message_uuid: msgId,
+        chat_message_data: newQuestionMsg,
+        message: newMsg,
+        is_streaming_finished: isStreamingCompleted,
+      } = data;
+      const targetData = [...state.messagesList.results];
+      console.log(threadId, msgId);
 
-      const newMsg = action.payload.data?.message;
-
+      // Handle newly asked user message
       if (newQuestionMsg) {
-        const targetData = [...state.messagesList.results];
         targetData.push(newQuestionMsg);
         state.messagesList.results = targetData;
+        return;
+      }
+
+      if (
+        state.isStreaming &&
+        typeof newMsg !== 'object' &&
+        (newMsg || newMsg == '')
+      ) {
+        // Case: streaming text chunks (string or tokens)
+        state.messageChunks = [...(state.messageChunks || []), newMsg];
+
+        if (isStreamingCompleted) {
+          state.isStreaming = false;
+          state.messageChunks = [];
+        }
       } else {
-        if (newMsg && threadId && msgId && state.isStreaming) {
-          if (typeof newMsg == 'object') {
-            const targetData = [...state.messagesList.results];
-
-            const messageExists = targetData.some(
-              (item) => item?.uuid == newMsg.uuid
-            );
-
-            if (messageExists) {
-              const index = targetData.findIndex(
-                (item) => item?.uuid == newMsg.uuid
-              );
-              if (index !== -1) {
-                targetData[index] = newMsg;
-                state.isStreaming = false;
-              } else {
-                state.isStreaming = false;
-                targetData.push(newMsg);
-                state.messagesList.results = targetData;
-                state.messageChunks = [];
-              }
-            }
-            // state.messageChunks = [];
-          } else {
-            state.messageChunks = [...(state.messageChunks || []), newMsg];
-          }
-        } else {
-          const targetData = [...state.messagesList.results];
-
-          const messageExists = targetData.some(
-            (item) => item?.uuid == newMsg.uuid
+        if (typeof newMsg === 'object') {
+          const index = targetData.findIndex(
+            (item) => item?.uuid === newMsg.uuid
           );
-          // Check if the message with the same uuid already exists
-          if (messageExists) {
-            const index = targetData.findIndex(
-              (item) => item?.uuid == newMsg.uuid
-            );
-            if (index !== -1) {
-              targetData[index] = newMsg;
-            }
+
+          if (index !== -1) {
+            targetData[index] = newMsg;
+          } else {
+            targetData.push(newMsg);
           }
 
-          if (!messageExists) {
-            targetData.push(action.payload);
-
-            // if (state.activeThreadId == state.streamingThreadId) {
-            //   // If the message does not exist, add the new message
-            //   targetData.push(action.payload);
-            // }
-          }
-
-          // Set the updated messages list to the state
           state.messagesList.results = targetData;
         }
       }
