@@ -21,7 +21,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
     margin: '0px',
     border: '1px solid #3a3948',
     borderRadius: '16px',
-    minWidth: '450px',
+    minWidth: '600px',
     maxWidth: '90vw',
     '@media (max-width: 500px)': {
       maxWidth: '80vw',

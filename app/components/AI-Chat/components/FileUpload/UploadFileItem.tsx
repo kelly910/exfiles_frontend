@@ -68,7 +68,7 @@ export default function UploadFileItem({
             />
           </span>
           <Typography variant="body1" className={DocUploadStyles.fileTitle}>
-            {fileName}
+            <Typography variant="body1">{fileName}</Typography>
             <span>{formatFileSizeLabel(fileSize)}</span>
           </Typography>
           {hasUploaded ? (

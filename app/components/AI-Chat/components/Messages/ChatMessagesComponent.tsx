@@ -205,7 +205,7 @@ export default function ChatMessagesComponent({
         </Container>
       </div>
       <div
-        style={{ padding: '0 10px 20px 10px', position: 'sticky', bottom: 0 }}
+        style={{ padding: '0 16px 20px 16px', position: 'sticky', bottom: 0 }}
       >
         <Container maxWidth="lg" disableGutters>
           <UserChatInput

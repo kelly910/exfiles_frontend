@@ -369,8 +369,8 @@ export default function DocumentUploadDialog({
               <Image
                 src="/images/Upload-img.png"
                 alt="Upload-img"
-                width={148}
-                height={117}
+                width={88}
+                height={94}
               />
               <Typography gutterBottom>
                 Drag your documents here to upload or <span>Click here</span> to
@@ -452,7 +452,7 @@ export default function DocumentUploadDialog({
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
-    backgroundColor: '#11101b',
+    backgroundColor: 'var(--Card-Color)',
     margin: '0px',
     minWidth: '650px',
     maxHeight: '550px',

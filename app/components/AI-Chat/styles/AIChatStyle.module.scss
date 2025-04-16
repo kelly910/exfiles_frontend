@@ -152,8 +152,11 @@
     border: 1px solid var(--Subtext-Color);
   }
 
+  textarea,
   input {
     color: var(--Primary-Text-Color);
+    font-size: var(--SubTitle-3);
+    font-weight: var(--Regular);
   }
 }
 
