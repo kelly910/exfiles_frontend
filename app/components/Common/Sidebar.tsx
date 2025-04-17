@@ -305,7 +305,7 @@ const Sidebar = ({
           </div>
           <div className={Style['sidebar-accordian']}>
             <SidebarAccordion
-              title={`Pinned Chats ${initialAllPinnedChatsData ? initialAllPinnedChatsData?.count : ''}`}
+              title={`Pinned Chats ${initialAllPinnedChatsData ? `(${initialAllPinnedChatsData?.count})` : ''}`}
               icon="/images/sidebar-Pin.svg"
               expanded={expanded}
               panelKey="panel1"

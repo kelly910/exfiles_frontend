@@ -7,10 +7,11 @@ import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import {
   fetchThreadMessagesByThreadId,
+  getThreadDetailsById,
   selectIsStreaming,
   selectMessageList,
   selectMessagesChunks,
-  setActiveThreadId,
+  setActiveThread,
   setIsStreaming,
 } from '@/app/redux/slices/Chat';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
@@ -91,12 +92,25 @@ export default function ChatMessagesComponent({
     // setIsMessagesLoading(false);
   };
 
+  const getThreadDetails = async (thread: string) => {
+    // setIsMessagesLoading(true);
+    const resultData = await dispatch(
+      getThreadDetailsById({
+        thread_uuid: thread,
+      })
+    );
+
+    if (getThreadDetailsById.fulfilled.match(resultData)) {
+      dispatch(setActiveThread(resultData.payload));
+    }
+  };
+
   const groupedData = groupByDate(messagesList?.results || []);
 
   useEffect(() => {
     if (threadId) {
       getThreadMessagesDetails(threadId);
-      setActiveThreadId(threadId);
+      getThreadDetails(threadId);
     }
   }, [threadId]);
 

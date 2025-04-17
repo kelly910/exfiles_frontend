@@ -23,9 +23,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import FeedbackDialog from '@components/FeedBackDialog/FeedBackDialog';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
-import { useAppDispatch } from '@/app/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import TemporaryDrawer from '@components/Drawer/Drawer';
 import { useRouter } from 'next/navigation';
+import { selectActiveThread } from '@/app/redux/slices/Chat';
 
 interface PageHeaderProps {
   toggleSidebar: () => void;
@@ -39,6 +40,9 @@ export default function PageHeader({
   isSidebarOpen,
 }: PageHeaderProps) {
   const router = useRouter();
+  const selectedActiveChat = useAppSelector(selectActiveThread);
+  console.log(selectedActiveChat, 'selectedActiveChat');
+
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
@@ -161,13 +165,24 @@ export default function PageHeader({
                     height={18}
                   />
                 )}
-                <Typography
-                  variant="body1"
-                  sx={{ display: 'flex' }}
-                  className={styles.documentTitle}
-                >
-                  {title}
-                </Typography>
+
+                {selectedActiveChat ? (
+                  <Typography
+                    variant="body1"
+                    sx={{ display: 'flex' }}
+                    className={styles.documentTitle}
+                  >
+                    {selectedActiveChat.name || 'New Thread'}
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="body1"
+                    sx={{ display: 'flex' }}
+                    className={styles.documentTitle}
+                  >
+                    {title}
+                  </Typography>
+                )}
                 <IconButton
                   size="small"
                   aria-label="account of current user"
