@@ -1,5 +1,8 @@
 .headerDialogBox {
-  background-color: var(--Card-Color);
+  // background-color: var(--Card-Color);
+  background: rgb(17 16 27 / 0%);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 
   .dialogHeader {
     border-bottom: 1px solid var(--Stroke-Color);
@@ -34,6 +37,60 @@
         line-height: 1.4;
         letter-spacing: 0%;
         color: var(--Subtext-Color);
+      }
+
+      .dialogSemiTitleTag {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        max-width: 460px;
+
+        @media (max-width: 768px) {
+          max-width: 400px;
+        }
+
+        @media (max-width: 580px) {
+          max-width: 300px;
+        }
+
+        @media (max-width: 400px) {
+          max-width: 200px;
+        }
+
+        span {
+          font-size: var(--SubTitle-4);
+          font-weight: var(--Regular);
+          color: var(--Subtext-Color);
+          border: 1px solid var(--Stroke-Color);
+          background-color: var(--Input-Box-Colors);
+          border-radius: 6px;
+          padding: 2px 8px;
+          margin-right: 6px;
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          @media (max-width: 580px) {
+            display: none;
+          }
+
+          &:first-child {
+            @media (max-width: 580px) {
+              display: block;
+            }
+          }
+
+          &:last-child {
+            border: none;
+            background: none;
+            padding: 0;
+            overflow: unset;
+            @media (max-width: 580px) {
+              display: block;
+            }
+          }
+        }
       }
     }
   }
