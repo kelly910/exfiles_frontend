@@ -1,7 +1,8 @@
 import { Thread } from '@/app/redux/slices/Chat/chatTypes';
-import { Fade, Menu, MenuItem } from '@mui/material';
+import { Fade, Menu, MenuItem, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import Style from './Sidebar.module.scss';
+import Image from 'next/image';
 
 interface threadMenuProps {
   anchorEl: null | HTMLElement;
@@ -44,10 +45,15 @@ export default function ThreadActionMenu(props: threadMenuProps) {
       }}
     >
       <MenuItem onClick={handleRename} className={Style.menuDropdown}>
-        Rename
+        <Image src="/images/edit-2.svg" alt="tras" width={18} height={18} />
+        <Typography>Rename Thread</Typography>
       </MenuItem>
-      <MenuItem onClick={handleDelete} className={Style.menuDropdown}>
-        Delete
+      <MenuItem
+        onClick={handleDelete}
+        className={`${Style.menuDropdown} ${Style.menuDropdownDelete}`}
+      >
+        <Image src="/images/trash.svg" alt="tras" width={18} height={18} />
+        <Typography>Delete Thread</Typography>
       </MenuItem>
     </Menu>
   );

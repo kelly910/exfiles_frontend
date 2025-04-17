@@ -212,7 +212,7 @@ export default function ShowGeneratedSummariesDocs({
         <span className={chatMessagesStyles.chatTime}>
           {formatTo12HourTimeManually(messageObj.created)}
         </span>
-        <Box component="div" className={chatMessagesStyles.chatAlIcon}>
+        {/* <Box component="div" className={chatMessagesStyles.chatAlIcon}>
           <Button>
             <Image
               src="/images/chat-like.svg"
@@ -229,7 +229,7 @@ export default function ShowGeneratedSummariesDocs({
               height={18}
             />
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

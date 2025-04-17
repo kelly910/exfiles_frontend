@@ -41,7 +41,11 @@ const BootstrapDialog = styled(Dialog)(() => ({
     borderRadius: '16px',
     minWidth: '600px',
     maxWidth: '90vw',
-    '@media (max-width: 500px)': {
+    '@media (max-width: 768px)': {
+      maxWidth: '80vw',
+      minWidth: '550px',
+    },
+    '@media (max-width: 580px)': {
       maxWidth: '80vw',
       minWidth: '450px',
     },
@@ -144,7 +148,7 @@ export default function RenameThreadModal(props: threadModalProps) {
             // label="Title"
             placeholder="Enter Category Name here"
             sx={{
-              marginTop: 2, // You can override or extend styles here
+              marginTop: 0, // You can override or extend styles here
             }}
           />
         </Box>

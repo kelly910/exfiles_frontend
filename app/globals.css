@@ -29,7 +29,7 @@
   --Heading-3: 20px;
   --Heading-4: 18px;
   --Heading-5: 16px;
-  /* --Heading-6: 16px; */
+  --Heading-6: 15px;
 
 
   --SubTitle-1: 18px;
@@ -224,6 +224,7 @@ input {
   background: var(--Main-Gradient);
   color: var(--Txt-On-Gradient);
   border: none;
+  outline: 0.5px solid transparent;
   font-weight: var(--Bold);
   min-width: 168px;
   width: max-content;
@@ -247,6 +248,12 @@ input {
   font-weight: var(--Regular);
   font-size: var(--SubTitle-5) !important;
   line-height: var(--SubTitle-5);
+  outline: 0.5px solid transparent;
+  transition: all 0.4s;
+}
+
+.btn.btn-primary-arrow:hover {
+  outline: 0.5px solid var(--Card-Border);
 }
 
 .btn.btn-primary-arrow span.incident,
@@ -287,7 +294,7 @@ input {
 .btn.btn-primary:hover,
 .btn.btn-primary:active,
 .btn.btn-primary:focus {
-  background: var(--Main-Gradient-hover);
+  outline: 0.5px solid var(--Card-Border);
   background-blend-mode: overlay;
   transition: all 0.2s linear;
 }
@@ -455,12 +462,13 @@ header {
     /* 30% reduction */
     border-radius: 8.4px;
     /* 30% reduction */
+    outline: 0.5px solid transparent;
   }
 
   .btn.btn-primary:hover,
   .btn.btn-primary:active,
   .btn.btn-primary:focus {
-    background: var(--Main-Gradient-hover);
+    outline: 0.5px solid var(--Card-Border);
     transition: all 0.2s linear;
   }
 
@@ -650,7 +658,7 @@ input::-webkit-inner-spin-button {
   width: 100%;
   position: sticky;
   bottom: 0px;
-  z-index: 99;
+  z-index: 98;
   background-color: var(--Background-Color);
 }
 
@@ -686,17 +694,24 @@ input::-webkit-inner-spin-button {
   fill: var(--Subtext-Color);
 }
 
+@media (max-width: 1440px) {
+  .pagination-box {
+    padding: 19px 24px 24px 24px !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .pagination-box {
+    padding: 19px 16px 24px 16px !important;
+  }
+}
+
 @media (max-width:768px) {
   .pagination ul {
     justify-content: center;
   }
 }
 
-@media (max-width: 992px) {
-  .pagination-box {
-    padding: 19px 16px 24px 16px !important;
-  }
-}
 
 /* pagination */
 
@@ -733,6 +748,7 @@ input::-webkit-inner-spin-button {
   object-fit: contain;
   width: 50px;
   height: 50px;
+  filter: brightness(0) invert(1) opacity(0.6);
 }
 
 /* toast start */

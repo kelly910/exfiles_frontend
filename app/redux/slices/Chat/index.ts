@@ -10,6 +10,8 @@ import {
   PinnedAnswerMessagesResponse,
   PinnedAnswerToggleParams,
   PinnedAnswerToggleResponse,
+  SaveUserAnswerReactionPayload,
+  SaveUserAnswerReactionResponse,
   ThreadCreationPayload,
   ThreadCreationResponse,
   ThreadEditPayload,
@@ -236,6 +238,31 @@ export const togglePinMessages = createAsyncThunk<
 
 /* ------------ Pinned Chat Messages Actions End ------------------ */
 
+/* ------------ Answer Chat Messages Actions Start ------------------ */
+export const saveUserAnswerReaction = createAsyncThunk<
+  SaveUserAnswerReactionResponse,
+  SaveUserAnswerReactionPayload,
+  { rejectValue: string }
+>('chat/saveUserAnswerReaction', async (payload, { rejectWithValue }) => {
+  try {
+    const response = await api.patch<SaveUserAnswerReactionResponse>(
+      `${urlMapper.chatAnswerReaction}${payload.message_uuid}/`,
+      { thumb_reaction: payload.thumb_reaction }
+    );
+    return response.data;
+  } catch (error: unknown) {
+    if (typeof error === 'object' && error !== null && 'response' in error) {
+      const err = error as { response?: { data?: string } };
+      return rejectWithValue(
+        err.response?.data || 'Something went wrong. Please try again.'
+      );
+    }
+    return rejectWithValue('Something went wrong. Please try again.');
+  }
+});
+
+/* ------------ Answer Chat Messages Actions End ------------------ */
+
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
@@ -287,6 +314,12 @@ const chatSlice = createSlice({
         }
       }
     },
+    setUpdateMessageList: (state, action) => {
+      const updatedMsgList = state.messagesList.results.map((item) =>
+        item.uuid === action.payload.uuid ? { ...action.payload } : item
+      );
+      state.messagesList.results = updatedMsgList;
+    },
     setActiveThreadId: (state, action) => {
       state.activeThreadId = action.payload;
     },
@@ -309,8 +342,12 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setWebSocketMessage, setActiveThreadId, setIsStreaming } =
-  chatSlice.actions;
+export const {
+  setWebSocketMessage,
+  setActiveThreadId,
+  setIsStreaming,
+  setUpdateMessageList,
+} = chatSlice.actions;
 
 export const selectMessageList = (state: RootState) => state.chat.messagesList;
 export const selectActiveThreadId = (state: RootState) =>
