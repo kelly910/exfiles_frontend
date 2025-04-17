@@ -53,6 +53,25 @@ export const fetchCategories = createAsyncThunk<
   }
 });
 
+export const renameCategory = createAsyncThunk<
+  CategoryListing,
+  { id: number; name: string },
+  { rejectValue: string }
+>('documents/renameCategory', async ({ id, name }, { rejectWithValue }) => {
+  try {
+    const response = await api.put<CategoryListing>(
+      `${urlMapper.getCategories}${id}/`,
+      { name }
+    );
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      (error as { response?: { data?: { messages?: string[] } } })?.response
+        ?.data?.messages?.[0] || 'Failed to rename category.';
+    return rejectWithValue(errorMessage);
+  }
+});
+
 const categoryListingSlice = createSlice({
   name: 'categoryListing',
   initialState,
@@ -85,6 +104,14 @@ const categoryListingSlice = createSlice({
       })
       .addCase(fetchCategories.rejected, (state) => {
         state.isFetching = false;
+      })
+      .addCase(renameCategory.fulfilled, (state, action) => {
+        const index = state.categories.findIndex(
+          (cat) => cat.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.categories[index].name = action.payload.name;
+        }
       });
   },
 });
