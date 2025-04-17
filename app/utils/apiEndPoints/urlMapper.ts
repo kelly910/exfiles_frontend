@@ -24,6 +24,7 @@ const urlMapper = {
   togglePinMessages: `${BASE_URL}pin-unpin-message/`,
   uploadActualDoc: `${BASE_URL}upload-actual-document/`,
   chatMessage: `${BASE_URL}chat-message/`,
+  chatAnswerReaction: `${BASE_URL}message-reaction/`,
 };
 
 export default urlMapper;

@@ -80,6 +80,16 @@ export interface CombineSummaryData {
   uuid: string;
   summary: string;
 }
+
+export type ThumbReaction = 'thumbs_up' | 'thumbs_down';
+
+export interface SaveUserAnswerReactionPayload {
+  message_uuid: string;
+  thumb_reaction: ThumbReaction;
+}
+export interface SaveUserAnswerReactionResponse {
+  messages: string[];
+}
 export interface ChatMessage {
   id: number;
   uuid: string;
@@ -92,6 +102,8 @@ export interface ChatMessage {
   summary_documents: UploadedDocument[] | null;
   combined_summary_data: CombineSummaryData | null;
   all_doc_summarized: boolean;
+  thumb_reaction?: ThumbReaction;
+  is_pinned: boolean;
 }
 
 export interface GetMessagesByThreadIdResponse {

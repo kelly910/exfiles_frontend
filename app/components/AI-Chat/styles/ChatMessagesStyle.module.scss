@@ -139,6 +139,25 @@
         span {
           display: none;
         }
+
+        svg {
+          fill: none;
+          stroke: #b948ff;
+
+          &.active {
+            fill: #b948ff;
+            stroke: none;
+          }
+        }
+        svg.pin {
+          fill: none;
+          stroke: #b948ff;
+
+          &.active {
+            fill: #b948ff;
+            // stroke: none;
+          }
+        }
       }
     }
 
