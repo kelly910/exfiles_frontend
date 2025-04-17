@@ -1,8 +1,6 @@
-'use client';
-
 import React, { useState } from 'react';
-import styles from './rename.module.scss';
 import Image from 'next/image';
+import styles from '../ReName/rename.module.scss';
 import {
   Box,
   Button,
@@ -38,7 +36,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
   },
 }));
 
-export default function RenameDialogs() {
+export default function EditSummaryModel() {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -51,7 +49,7 @@ export default function RenameDialogs() {
   return (
     <React.Fragment>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog
+        Edit dialog
       </Button>
       <BootstrapDialog
         onClose={handleClose}
@@ -71,18 +69,20 @@ export default function RenameDialogs() {
           >
             <Box component="div" className={styles.dialogIcon}>
               <Image
-                src="/images/logout.svg"
-                alt="logout"
+                src="/images/edit-model.svg"
+                alt="edit-model"
                 width={28}
                 height={28}
               />
             </Box>
             <Box>
               <Typography variant="h6" className={styles.dialogTitle}>
-                Log out
+                Editing Combined Summary
               </Typography>
-              <Typography variant="body1" className={styles.dialogSemiTitle}>
-                Are you sure you want to log out?
+              <Typography variant="body1" className={styles.dialogSemiTitleTag}>
+                <span>RekamanProspek.pdf</span>
+                <span>RekamanProspek.pdf</span>
+                <span>+2</span>
               </Typography>
             </Box>
           </DialogTitle>
@@ -108,50 +108,53 @@ export default function RenameDialogs() {
           <TextField
             // as={TextField}
             fullWidth
-            type="text"
-            id="email"
-            name="email"
-            placeholder="Enter Category Name here"
-            // error={Boolean(errors.email && touched.email)}
+            id="body"
+            name="body"
+            placeholder="Edit your Summary"
+            multiline
+            minRows={4}
+            maxRow={6}
+            // error={Boolean(errors.body && touched.body)}
             sx={{
-              marginTop: '5px',
+              marginTop: '0px',
+              padding: '0',
               '& .MuiOutlinedInput-root': {
                 borderRadius: '12px',
                 borderWidth: '0px',
-                color: 'var(--Primary-Text-Color)',
-                backgroundColor: 'var(--Input-Box-Colors)',
+                color: '#DADAE1',
+                backgroundColor: '#252431',
+                padding: '14px 16px',
                 '& .MuiOutlinedInput-notchedOutline': {
-                  top: '0 !important',
+                  top: '-10px !important',
                 },
                 '& .MuiOutlinedInput-input': {
-                  fontSize: 'var(--SubTitle-2)',
-                  color: 'var(--Primary-Text-Color)',
-                  padding: '14px 16px',
-                  fontWeight: 'var(--Medium)',
+                  fontSize: '14px',
+                  color: '#DADAE1',
+                  fontWeight: 500,
                   borderRadius: '12px',
+                  padding: '2px',
+                  maxHeight: '200px',
+                  overflowY: 'auto !important',
                   '&::placeholder': {
-                    color: 'var(Placeholder-Text)',
-                    fontWeight: 'var(--Regular)',
+                    color: '#888',
+                    fontWeight: 400,
                   },
                 },
                 '& fieldset': {
-                  borderColor: 'var(--Stroke-Color)',
+                  borderColor: '#3A3948',
                 },
                 '&:hover fieldset': {
-                  borderColor: 'var(--Primary-Text-Color)',
+                  borderColor: '#fff',
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: 'var(--Primary-Text-Color)',
+                  borderColor: '#fff',
                   borderWidth: '1px',
-                  color: 'var(--Primary-Text-Color)',
-                },
-                legend: {
-                  display: 'none',
+                  color: '#fff',
                 },
               },
-              '& .MuiFormHelperText-root': {
-                // color: errors.email && touched.email ? '#ff4d4d' : '#b0b0b0',
-              },
+              // '& .MuiFormHelperText-root': {
+              //   color: errors.body && touched.body ? '#ff4d4d' : '#b0b0b0',
+              // },
             }}
           />
         </Box>
@@ -160,7 +163,7 @@ export default function RenameDialogs() {
             <Button className={styles.formCancelBtn} onClick={handleClose}>
               Cancel
             </Button>
-            <Button className="btn btn-primary">Save</Button>
+            <Button className="btn btn-primary">Save Changes</Button>
           </Box>
         </DialogContent>
       </BootstrapDialog>

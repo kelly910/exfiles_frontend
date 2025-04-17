@@ -15,14 +15,14 @@ header {
   }
 
   .messageButton {
-    padding: 8px;
+    padding: 9px;
     border: 0.82px solid #3a3948;
     background-color: #2c2a38;
     min-width: unset;
     border-radius: 8px;
 
     @media (max-width: 768px) {
-      padding: 6px;
+      padding: 5px;
     }
 
     img {
@@ -38,7 +38,7 @@ header {
     border-radius: 6px;
     border: 1px solid var(--Stroke-Color);
     min-width: unset;
-    padding: 8px;
+    padding: 9px;
     display: none;
 
     @media (max-width: 1100px) {
@@ -46,7 +46,7 @@ header {
     }
 
     @media (max-width: 768px) {
-      padding: 6px;
+      padding: 5px;
     }
 
     img {

@@ -176,7 +176,7 @@ export default function FeedbackDialog({
                           fontWeight: 500,
                           borderRadius: '12px',
                           padding: '2px',
-                          maxHeight: '350px',
+                          maxHeight: '200px',
                           overflowY: 'auto !important',
                           '&::placeholder': {
                             color: '#888',

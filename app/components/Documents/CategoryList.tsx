@@ -235,7 +235,8 @@ const CategoryList: React.FC<CategoryListProps> = ({
             maxHeight: 'calc(100vh - 65px)',
             '& .MuiPaper-root': {
               top: '65px',
-              width: 'calc(100% - 64px)',
+              width: '400px',
+              maxWidth: 'calc(100% - 64px)',
               maxHeight: 'calc(100vh - 65px)',
               background: 'var(--Card-Color)',
               borderLeft: '1px solid  #3A3948',
@@ -243,6 +244,8 @@ const CategoryList: React.FC<CategoryListProps> = ({
             '& .MuiBackdrop-root': {
               top: '65px',
               maxHeight: 'calc(100vh - 65px)',
+              backdropFilter: 'blur(24px)',
+              backgroundColor: 'unset',
             },
           }}
         >
