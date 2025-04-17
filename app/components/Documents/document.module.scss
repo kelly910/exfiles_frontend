@@ -468,6 +468,42 @@
       padding: 16px 16px 24px 16px;
     }
 
+    * {
+      font-size: var(--SubTitle-2);
+    }
+    h1 {
+      font-size: var(--Heading-1);
+      font-weight: var(--Bold);
+    }
+    h2 {
+      font-size: var(--Heading-2);
+    }
+    h3 {
+      font-size: var(--Heading-3);
+    }
+    h4 {
+      font-size: var(--Heading-4);
+    }
+    h5 {
+      font-size: var(--Heading-5);
+    }
+    h6 {
+      font-size: var(--Heading-6);
+    }
+
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: var(--Medium);
+    }
+
+    p {
+      font-size: var(--SubTitle-2);
+      font-weight: var(--Lighter);
+    }
+
     .dialogFormButtonBox {
       width: 100%;
       display: flex;
