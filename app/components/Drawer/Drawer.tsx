@@ -84,8 +84,16 @@ export default function TemporaryDrawer() {
                 fontSize: '16px',
                 fontWeight: 600,
                 padding: '9px 10px',
-                lineHeight: '140%',
+                lineHeight: '16px',
                 textTransform: 'capitalize',
+                alignItems: 'center',
+                width: '40px',
+                height: '40px',
+                '@media (max-width: 768px)': {
+                  width: '32px',
+                  height: '32px',
+                  fontSize: '12px',
+                },
               }}
             >
               {firstName?.[0]}
@@ -104,7 +112,7 @@ export default function TemporaryDrawer() {
             maxHeight: 'calc(100vh - 65px)',
             '& .MuiPaper-root': {
               top: '65px',
-              width: 'calc(100% - 64px)',
+              width: '400px',
               maxHeight: 'calc(100vh - 65px)',
               background: 'var(--Card-Color)',
               borderLeft: '1px solid  #3A3948',
@@ -112,6 +120,8 @@ export default function TemporaryDrawer() {
             '& .MuiBackdrop-root': {
               top: '65px',
               maxHeight: 'calc(100vh - 65px)',
+              backdropFilter: 'blur(24px)',
+              backgroundColor: 'unset',
             },
           }}
         >
@@ -258,8 +268,8 @@ export default function TemporaryDrawer() {
               padding: '0',
               height: '100%',
               '&>div': {
-                height: 'calc(100% - 58px)',
-                padding: '24px 16px',
+                height: 'calc(100% - 59px)',
+                padding: '32px 16px',
               },
             }}
           >
@@ -270,7 +280,7 @@ export default function TemporaryDrawer() {
                 height: 'auto',
                 background: 'var(--Card-Color)',
                 border: '0 solid #3A3948',
-                borderTopWidth: '1px',
+                borderTopWidth: '0',
                 borderBottomWidth: '1px',
               }}
               className={styles.drawerSidebarHeader}

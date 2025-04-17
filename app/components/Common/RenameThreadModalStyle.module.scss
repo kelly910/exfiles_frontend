@@ -3,7 +3,7 @@
 
   .dialogHeader {
     border-bottom: 1px solid var(--Stroke-Color);
-    padding: 16px;
+    padding: 16px 24px;
 
     .dialogHeaderInner {
       display: flex;
@@ -40,6 +40,10 @@
 
   .dialogInput {
     padding: 16px 24px 0 24px;
+
+    @media (max-width: 500px) {
+      padding: 10px;
+    }
   }
 
   .dialogBody {
@@ -54,7 +58,7 @@
       justify-content: flex-end;
       align-items: center;
       gap: 32px;
-      padding: 16px;
+      padding: 16px 24px;
       padding-top: 24px;
 
       .formCancelBtn {

@@ -106,6 +106,13 @@ export default function PageHeader({
           top: '0',
           maxHeight: '65px',
           height: '65px',
+          padding: '0 24px 0 16px',
+          '@media (max-width: 1200px)': {
+            padding: '0 16px',
+          },
+          '.MuiContainer-root': {
+            padding: '0',
+          },
         }}
       >
         <Container maxWidth={false}>
@@ -122,8 +129,8 @@ export default function PageHeader({
                     : '/images/sidebar-hide-icon.svg' // Inactive state image
                 }
                 alt="menu"
-                width={24}
-                height={24}
+                width={20}
+                height={20}
               />
             </Button>
 
@@ -143,15 +150,15 @@ export default function PageHeader({
                   <Image
                     src="/images/document-text.svg"
                     alt="menu"
-                    width={20}
-                    height={20}
+                    width={18}
+                    height={18}
                   />
                 ) : (
                   <Image
                     src="/images/log-incident-sidebar.svg"
                     alt="menu"
-                    width={20}
-                    height={20}
+                    width={18}
+                    height={18}
                   />
                 )}
                 <Typography
@@ -248,8 +255,8 @@ export default function PageHeader({
               <Image
                 src="/images/message-question.svg"
                 alt="search"
-                width={24}
-                height={24}
+                width={20}
+                height={20}
               />
             </Button>
             <Box className="desktop-active" sx={{ flexGrow: 0 }}>
@@ -263,8 +270,16 @@ export default function PageHeader({
                       fontSize: '16px',
                       fontWeight: 600,
                       padding: '9px 10px',
-                      lineHeight: '140%',
+                      lineHeight: '16px',
                       textTransform: 'capitalize',
+                      alignItems: 'center',
+                      width: '40px',
+                      height: '40px',
+                      '@media (max-width: 768px)': {
+                        width: '32px',
+                        height: '32px',
+                        fontSize: '12px',
+                      },
                     }}
                   >
                     {firstName?.[0]}

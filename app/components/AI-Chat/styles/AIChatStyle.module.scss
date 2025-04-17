@@ -6,6 +6,18 @@
     margin-top: 28px;
 
     .gridBoxInner {
+      @media (min-width: 900px) {
+        &:last-child,
+        &:first-child {
+          order: 1;
+        }
+      }
+
+      &:last-child,
+      &:first-child {
+        order: 2;
+      }
+
       .chatBox {
         height: 100%;
         display: flex;
@@ -177,6 +189,12 @@
 
   button {
     margin-bottom: 5px;
+    outline: 0.5px solid transparent;
+    transition: all 0.4s;
+
+    &:hover {
+      outline: 0.5px solid var(--Card-Border);
+    }
   }
 }
 
@@ -240,19 +258,24 @@
     padding: 0 16px;
   }
 }
+
 @media (max-width: 500px) {
   .chatGridBox {
     padding: 18px 10px;
   }
+
   .chatLogIncident {
     padding: 1px;
+
     .chatBox {
       padding: 18px 10px;
     }
   }
+
   .chatHeading {
     .gridBox {
       margin-top: 20px;
+
       .gridBoxInner {
         .gridBoxButton {
           margin-top: 13px;
@@ -261,12 +284,14 @@
       }
     }
   }
+
   .chatHeader {
     .chatTitle {
       font-size: var(--Heading-2);
       margin-bottom: 8px;
     }
   }
+
   .chatBoard {
     padding: 16px 12px;
     margin-top: 32px;
