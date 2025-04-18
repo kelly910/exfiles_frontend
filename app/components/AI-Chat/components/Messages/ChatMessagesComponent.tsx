@@ -225,6 +225,7 @@ export default function ChatMessagesComponent({
           <UserChatInput
             handleOpenDocUploadModal={() => {}}
             sendMessage={(payloadData) => handleSendMessage(payloadData)}
+            isLoadingProp={isStreamingMessages}
           />
         </Container>
       </div>
