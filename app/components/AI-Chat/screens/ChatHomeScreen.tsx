@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { Box, Button, Grid, Typography } from '@mui/material';
@@ -8,9 +8,14 @@ import UserChatInput from '@components/AI-Chat/components/Input/UserChatInput';
 import { SocketPayload } from '@components/AI-Chat/types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import { useAppDispatch } from '@/app/redux/hooks';
-import { createNewThread } from '@/app/redux/slices/Chat';
+import {
+  createNewThread,
+  setActiveThread,
+  setIsStreaming,
+} from '@/app/redux/slices/Chat';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { useRouter } from 'next/navigation';
+import { clearPageHeaderData } from '@/app/redux/slices/login';
 
 // Dynamic Custom Component imports
 const DynamicDocUploadModal = dynamic(
@@ -52,9 +57,15 @@ export default function ChatHomeScreen() {
 
     if (!createdThreadID) return;
     sendSocketMessage({ ...payloadData, thread_uuid: createdThreadID });
-
+    dispatch(setIsStreaming(true));
     router.push(`/ai-chats/${createdThreadID}`);
   };
+
+  useEffect(() => {
+    // Clearing Page data and the thread details
+    dispatch(setActiveThread(null));
+    dispatch(clearPageHeaderData());
+  }, []);
 
   return (
     <div className={AIChatStyles.chatBoarbMain}>

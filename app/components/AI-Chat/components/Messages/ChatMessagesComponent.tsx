@@ -30,6 +30,7 @@ import { SocketPayload } from '../../types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import StreamingResponse from './StreamingResponse';
 import { setPageHeaderData } from '@/app/redux/slices/login';
+import MessageLoading from './MessageLoading';
 
 export default function ChatMessagesComponent({
   threadId,
@@ -207,12 +208,14 @@ export default function ChatMessagesComponent({
 
           {isStreamingMessages &&
             messagesChunks &&
-            messagesChunks.length > 2 && (
+            (messagesChunks.length > 2 ? (
               <StreamingResponse
                 isStreaming={isStreamingMessages}
                 inputText={messagesChunks.join('')}
               />
-            )}
+            ) : (
+              <MessageLoading />
+            ))}
         </Container>
       </div>
       <div

@@ -27,6 +27,7 @@ import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import TemporaryDrawer from '@components/Drawer/Drawer';
 import { usePathname, useRouter } from 'next/navigation';
 import { selectPageHeaderData } from '@/app/redux/slices/login';
+import { selectActiveThread } from '@/app/redux/slices/Chat';
 
 interface PageHeaderProps {
   toggleSidebar: () => void;
@@ -41,7 +42,7 @@ export default function PageHeader({
   const router = useRouter();
   const pathname = usePathname();
 
-  // const selectedActiveChat = useAppSelector(selectActiveThread);
+  const selectedActiveChat = useAppSelector(selectActiveThread);
   const selectedPageHeaderData = useAppSelector(selectPageHeaderData);
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
@@ -148,7 +149,7 @@ export default function PageHeader({
 
             <Box sx={{ width: '100%' }} className={styles.docsHeader}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                {isChatPage && (
+                {isChatPage && selectedActiveChat && (
                   <Image
                     src="/images/messages.svg"
                     alt="messages-icon"
@@ -172,13 +173,15 @@ export default function PageHeader({
                     height={18}
                   />
                 )}
-                <Typography
-                  variant="body1"
-                  sx={{ display: 'flex' }}
-                  className={styles.documentTitle}
-                >
-                  {selectedPageHeaderData.title}
-                </Typography>
+                {selectedPageHeaderData && selectedPageHeaderData.title && (
+                  <Typography
+                    variant="body1"
+                    sx={{ display: 'flex' }}
+                    className={styles.documentTitle}
+                  >
+                    {selectedPageHeaderData.title}
+                  </Typography>
+                )}
                 {/* <IconButton
                   size="small"
                   aria-label="account of current user"
@@ -205,9 +208,11 @@ export default function PageHeader({
               </Box>
               <Box>
                 {/* Sub title of the Header */}
-                <Typography variant="body1" className={styles.documentNo}>
-                  {selectedPageHeaderData.subTitle}
-                </Typography>
+                {selectedPageHeaderData && selectedPageHeaderData.subTitle && (
+                  <Typography variant="body1" className={styles.documentNo}>
+                    {selectedPageHeaderData.subTitle}
+                  </Typography>
+                )}
               </Box>
             </Box>
 

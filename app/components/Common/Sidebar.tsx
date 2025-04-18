@@ -10,6 +10,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import {
   fetchPinnedMessagesList,
   fetchThreadList,
+  setActiveThread,
 } from '@/app/redux/slices/Chat';
 import ThreadList from './ThreadsList';
 import PinnedMessagesList from './PinnedMessagesList';
@@ -23,6 +24,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 import SidebarButton from '@components/Common/SidebarButton';
+import { clearPageHeaderData } from '@/app/redux/slices/login';
 
 const Sidebar = ({
   isOpen,
@@ -110,6 +112,11 @@ const Sidebar = ({
     getPinnedMessagesList(1);
   }, []);
 
+  const handleStartNewChat = () => {
+    dispatch(setActiveThread(null));
+    dispatch(clearPageHeaderData());
+  };
+
   return (
     <>
       <span
@@ -120,10 +127,18 @@ const Sidebar = ({
         className={`${Style['sidebar']} ${!isOpen ? Style.closesidebar : ''}`}
       >
         <div className={Style['main-logo']}>
-          <Link href="/ai-chats" className={Style['opensidebar-logo']}>
+          <Link
+            href="/ai-chats"
+            className={Style['opensidebar-logo']}
+            onClick={handleStartNewChat}
+          >
             <Image src="/images/logo.svg" alt="logo" width={200} height={44} />
           </Link>
-          <Link href="/ai-chats" className={Style['close-sidebar-logo']}>
+          <Link
+            href="/ai-chats"
+            className={Style['close-sidebar-logo']}
+            onClick={handleStartNewChat}
+          >
             <Image
               src="/images/close-sidebar-logo.svg"
               alt="close-sidebar-logo"
@@ -288,7 +303,11 @@ const Sidebar = ({
                 </div>
               ) : (
                 <ListItem>
-                  <Link href="/ai-chats" className={Style['sidebar-btn']}>
+                  <Link
+                    href="/ai-chats"
+                    className={Style['sidebar-btn']}
+                    onClick={handleStartNewChat}
+                  >
                     <span className={Style['btn-text']}>Start New Chat</span>{' '}
                     <span>
                       <Image

@@ -310,8 +310,11 @@ const chatSlice = createSlice({
         typeof newMsg !== 'object' &&
         (newMsg || newMsg == '')
       ) {
-        // Case: streaming text chunks (string or tokens)
-        state.messageChunks = [...(state.messageChunks || []), newMsg];
+        const lastChunk = state.messageChunks[state.messageChunks.length - 1];
+
+        if (newMsg !== lastChunk) {
+          state.messageChunks.push(newMsg);
+        }
 
         if (isStreamingCompleted) {
           state.isStreaming = false;
