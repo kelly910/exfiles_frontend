@@ -178,7 +178,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
                 />
               </Button>
               <Typography variant="body1" className={styles.categoriesTitle}>
-                Categories
+                {findSelectedCategoryDocs?.name}
               </Typography>
             </Box>
             <Typography variant="body1" className={styles.categoriesSemiTitle}>

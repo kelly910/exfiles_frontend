@@ -124,13 +124,14 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
               >
                 <Box
                   component="div"
-                  className={chatMessagesStyles.chatAlCategoryInner}
+                  className={`${chatMessagesStyles.chatAlCategoryInner} ${chatMessagesStyles.bgAnimation}`}
                 >
                   <Image
-                    src="/images/category.svg"
+                    src="/gif/infinite-loader.gif"
                     alt="category"
                     width={14}
                     height={14}
+                    style={{ scale: 3 }}
                   />
                   <Typography
                     variant="body1"

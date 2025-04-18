@@ -87,7 +87,7 @@
 }
 
 .googleLogin p {
-  font-weight: var(--Medium);
+  font-weight: var(--Regular);
   font-size: var(--SubTitle-2);
   color: var(--Primary-Text-Color);
   margin-right: 10px;
@@ -136,7 +136,7 @@
   }
 
   h4 {
-    font-weight: var(--Medium);
+    font-weight: var(--Regular);
     font-size: var(--SubTitle-1);
     line-height: 1.4;
     color: var(--Txt-On-Gradient);
@@ -223,17 +223,4 @@
 
 .btnGroup {
   margin-top: 25px;
-
-  @media (max-width: 400px) {
-    flex-wrap: wrap;
-  }
-}
-
-.btnGroup a {
-  @media (max-width: 400px) {
-    order: 1;
-    text-align: end;
-    width: 100%;
-    margin-top: 20px;
-  }
 }

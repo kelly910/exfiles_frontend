@@ -175,19 +175,6 @@
 
 .btnGroup {
   margin-top: 25px;
-
-  @media (max-width: 400px) {
-    flex-wrap: wrap;
-  }
-}
-
-.btnGroup a {
-  @media (max-width: 400px) {
-    order: 1;
-    text-align: end;
-    width: 100%;
-    margin-top: 20px;
-  }
 }
 
 // new

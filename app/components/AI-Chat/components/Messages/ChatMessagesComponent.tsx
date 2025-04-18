@@ -15,7 +15,7 @@ import {
 } from '@/app/redux/slices/Chat';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import UploadFilesStatusMessage from './UploadFilesStatusMessage';
-import { Box, Container } from '@mui/material';
+import { Box, Button, Container, Typography } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import { RootState } from '@/app/redux/store';
 import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
@@ -28,6 +28,7 @@ import { useSelector } from 'react-redux';
 import { SocketPayload } from '../../types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import StreamingResponse from './StreamingResponse';
+import Image from 'next/image';
 
 export default function ChatMessagesComponent({
   threadId,
@@ -120,6 +121,33 @@ export default function ChatMessagesComponent({
 
   return (
     <>
+      <Box component="div" className={AIChatStyles.categoryBox}>
+        <Box className={AIChatStyles.categoryBoxInner}>
+          <Button
+            // onClick={() => handleOpenCategoryDrawer(true)}
+            className={AIChatStyles.backButton}
+            sx={{ marginBottom: '24px' }}
+          >
+            <Image
+              src="/images/arrow-left.svg"
+              alt="user"
+              width={16}
+              height={16}
+            />
+          </Button>
+          <Typography variant="body1" className={AIChatStyles.categoriesTitle}>
+            How to optimize images in WordPress for faster loading (complete
+            guide)
+            {/* {findSelectedCategoryDocs?.name} */}
+          </Typography>
+        </Box>
+        <Typography
+          variant="body1"
+          className={AIChatStyles.categoriesSemiTitle}
+        >
+          Created On : <span>25-02-2025</span>
+        </Typography>
+      </Box>
       <div className={AIChatStyles.chatContainer} ref={chatElementRef}>
         <Container maxWidth="lg" disableGutters>
           {groupedData &&

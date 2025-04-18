@@ -132,7 +132,10 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   return (
     <>
       {mobileView ? (
-        <Box component={'div'} className={styles.docsBoard}>
+        <Box
+          component={'div'}
+          className={docId ? styles.docsBoard : styles.docsBoardHide}
+        >
           {documentSummary && documentSummary.id && (
             <>
               <div className={styles.docsBoardHeader}>
@@ -348,7 +351,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
             left: 'auto',
             maxHeight: 'calc(100vh - 65px)',
             '& .MuiPaper-root': {
-              top: '65px',
+              top: '0',
               width: '100%',
               maxHeight: 'calc(100vh - 65px)',
               background: 'var(--Background-Color)',
@@ -360,7 +363,10 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
             },
           }}
         >
-          <Box component={'div'} className={styles.docsBoard}>
+          <Box
+            component={'div'}
+            className={docId ? styles.docsBoard : styles.docsBoardHide}
+          >
             {documentSummary && documentSummary.id && (
               <>
                 <div className={styles.docsBoardHeader}>

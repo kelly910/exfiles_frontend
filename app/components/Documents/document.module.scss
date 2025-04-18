@@ -152,7 +152,7 @@
         }
 
         .docTitle {
-          font-weight: var(--Medium);
+          font-weight: var(--Regular);
           font-size: var(--SubTitle-2);
           line-height: 19px;
           color: var(--Primary-Text-Color);
@@ -240,6 +240,23 @@
   padding-bottom: 24px;
   height: calc(100vh - 65px);
   overflow-y: auto;
+  // animation: slideCDown 0.6s ease-out forwards;
+
+  // @keyframes slideCDown {
+  //   0% {
+  //     width: 0;
+  //     min-width: 0;
+  //     opacity: 0;
+  //     visibility: hidden;
+  //   }
+  //   100% {
+  //     transform: translate3d(0, 0, 0);
+  //     width: 300px;
+  //     min-width: 300px;
+  //     opacity: 1;
+  //     visibility: visible;
+  //   }
+  // }
 
   @media (max-width: 1400px) {
     min-width: 250px;
@@ -259,7 +276,7 @@
     z-index: 2;
 
     .categoriesTitle {
-      font-weight: var(--Bold);
+      font-weight: var(--Regular);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
       letter-spacing: 0%;
@@ -309,7 +326,7 @@
         width: 100%;
 
         .folderTitle {
-          font-weight: var(--Bold);
+          font-weight: var(--Regular);
           font-size: var(--SubTitle-3);
           line-height: 1.4;
           letter-spacing: 0%;
@@ -351,6 +368,37 @@
   height: calc(100vh - 65px);
   overflow-y: auto;
   transition: all 0.4s;
+  animation: slideDown 0.4s ease-out forwards;
+
+  @keyframes slideDown {
+    0% {
+      transform: translate3d(100%, 0, 0);
+      opacity: 0;
+      visibility: hidden;
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  // * {
+  //   animation: slideDown 0.4s ease-out forwards;
+
+  //   @keyframes slideDown {
+  //     0% {
+  //       transform: translate3d(100%, 0, 0);
+  //       opacity: 0;
+  //       visibility: hidden;
+  //     }
+  //     100% {
+  //       transform: translate3d(0, 0, 0);
+  //       opacity: 1;
+  //       visibility: visible;
+  //     }
+  //   }
+  // }
 
   @media (max-width: 1400px) {
     min-width: 400px;
@@ -411,7 +459,7 @@
       max-width: calc(100% - 50px);
 
       .docsTitle {
-        font-weight: var(--Medium);
+        font-weight: var(--Regular);
         font-size: var(--SubTitle-2);
         line-height: 1.4;
         color: var(--Primary-Text-Color);
@@ -496,12 +544,20 @@
     h4,
     h5,
     h6 {
-      font-weight: var(--Medium);
+      font-weight: var(--Regular);
+      color: var(--Primary-Text-Color);
     }
 
     p {
       font-size: var(--SubTitle-2);
       font-weight: var(--Lighter);
+      color: var(--Primary-Text-Color);
+    }
+
+    b {
+      font-weight: var(--Regular);
+      font-size: var(--SubTitle-1);
+      color: var(--Primary-Text-Color);
     }
 
     .dialogFormButtonBox {
@@ -728,7 +784,7 @@
   }
 
   .categoryBox .categoriesTitle {
-    font-weight: var(--Bold);
+    font-weight: var(--Regular);
     font-size: var(--SubTitle-1);
     line-height: 1.4;
     letter-spacing: 0%;

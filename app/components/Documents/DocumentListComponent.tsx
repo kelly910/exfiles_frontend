@@ -15,7 +15,7 @@ import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useMediaQuery } from '@mui/material';
 
 export default function DocumentListComponent({ catId }: { catId: number }) {
-  const mobileView = useMediaQuery('(min-width:600px)');
+  const mobileView = useMediaQuery('(min-width:800px)');
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedDocId, setSelectedsDocId] = useState<string>('');
