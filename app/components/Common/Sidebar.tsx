@@ -123,7 +123,7 @@ const Sidebar = ({
           <Link href="/ai-chats" className={Style['opensidebar-logo']}>
             <Image src="/images/logo.svg" alt="logo" width={200} height={44} />
           </Link>
-          <Link href="#" className={Style['close-sidebar-logo']}>
+          <Link href="/ai-chats" className={Style['close-sidebar-logo']}>
             <Image
               src="/images/close-sidebar-logo.svg"
               alt="close-sidebar-logo"
@@ -374,7 +374,7 @@ const Sidebar = ({
             <SidebarButton
               btnTitle={'Log Incident'}
               iconPath={'/images/log-incident-sidebar.svg'}
-              handleBtnClick={() => router.push('/ai-chats')}
+              handleBtnClick={() => router.push('/log-incident')}
             />
           </div>
         </div>

@@ -13,6 +13,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useMediaQuery } from '@mui/material';
+import { setPageHeaderData } from '@/app/redux/slices/login';
 
 export default function DocumentListComponent({ catId }: { catId: number }) {
   const mobileView = useMediaQuery('(min-width:600px)');
@@ -36,6 +37,12 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
       .then((res) => {
         if (res?.count > 0) {
           setShowEmptyCategoryComponent(true);
+          dispatch(
+            setPageHeaderData({
+              title: 'Documents',
+              subTitle: `No. of Documents : ${res?.no_of_docs}`,
+            })
+          );
         }
       });
   }, [dispatch]);

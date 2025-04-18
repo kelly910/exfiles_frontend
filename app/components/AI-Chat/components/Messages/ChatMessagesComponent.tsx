@@ -29,6 +29,7 @@ import { useSelector } from 'react-redux';
 import { SocketPayload } from '../../types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import StreamingResponse from './StreamingResponse';
+import { setPageHeaderData } from '@/app/redux/slices/login';
 
 export default function ChatMessagesComponent({
   threadId,
@@ -102,6 +103,15 @@ export default function ChatMessagesComponent({
 
     if (getThreadDetailsById.fulfilled.match(resultData)) {
       dispatch(setActiveThread(resultData.payload));
+      const threadCreatedDate = dayjs(resultData.payload.created).format(
+        'DD-MM-YYYY'
+      );
+      dispatch(
+        setPageHeaderData({
+          title: resultData.payload.name,
+          subTitle: `Created On : ${threadCreatedDate}`,
+        })
+      );
     }
   };
 

@@ -25,24 +25,24 @@ import FeedbackDialog from '@components/FeedBackDialog/FeedBackDialog';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import TemporaryDrawer from '@components/Drawer/Drawer';
-import { useRouter } from 'next/navigation';
-import { selectActiveThread } from '@/app/redux/slices/Chat';
+import { usePathname, useRouter } from 'next/navigation';
+import { selectPageHeaderData } from '@/app/redux/slices/login';
 
 interface PageHeaderProps {
   toggleSidebar: () => void;
-  title: string;
+  title?: string;
   isSidebarOpen: boolean;
 }
 
 export default function PageHeader({
-  title,
   toggleSidebar,
   isSidebarOpen,
 }: PageHeaderProps) {
   const router = useRouter();
-  const selectedActiveChat = useAppSelector(selectActiveThread);
-  console.log(selectedActiveChat, 'selectedActiveChat');
+  const pathname = usePathname();
 
+  // const selectedActiveChat = useAppSelector(selectActiveThread);
+  const selectedPageHeaderData = useAppSelector(selectPageHeaderData);
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
@@ -57,6 +57,10 @@ export default function PageHeader({
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  const isChatPage = pathname?.includes('/ai-chats');
+  const isDocumentsPage = pathname?.includes('/documents');
+  const isLogIncidentPage = pathname?.includes('/log-incident');
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -88,12 +92,6 @@ export default function PageHeader({
   const firstName = loggedInUser?.data?.first_name;
   const lastName = loggedInUser?.data?.last_name;
   const dispatch = useAppDispatch();
-  const { no_of_docs } = useSelector(
-    (state: RootState) => state.categoryListing
-  );
-  const { no_of_incident } = useSelector(
-    (state: RootState) => state.logIncidents
-  );
 
   useEffect(() => {
     dispatch(fetchCategories({ page: 1 }));
@@ -150,40 +148,38 @@ export default function PageHeader({
 
             <Box sx={{ width: '100%' }} className={styles.docsHeader}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                {title === 'Documents' ? (
+                {isChatPage && (
+                  <Image
+                    src="/images/messages.svg"
+                    alt="messages-icon"
+                    width={18}
+                    height={18}
+                  />
+                )}
+                {isDocumentsPage && (
                   <Image
                     src="/images/document-text.svg"
-                    alt="menu"
+                    alt="Documents-icon"
                     width={18}
                     height={18}
                   />
-                ) : (
+                )}
+                {isLogIncidentPage && (
                   <Image
                     src="/images/log-incident-sidebar.svg"
-                    alt="menu"
+                    alt="Log-incidents-icon"
                     width={18}
                     height={18}
                   />
                 )}
-
-                {selectedActiveChat ? (
-                  <Typography
-                    variant="body1"
-                    sx={{ display: 'flex' }}
-                    className={styles.documentTitle}
-                  >
-                    {selectedActiveChat.name || 'New Thread'}
-                  </Typography>
-                ) : (
-                  <Typography
-                    variant="body1"
-                    sx={{ display: 'flex' }}
-                    className={styles.documentTitle}
-                  >
-                    {title}
-                  </Typography>
-                )}
-                <IconButton
+                <Typography
+                  variant="body1"
+                  sx={{ display: 'flex' }}
+                  className={styles.documentTitle}
+                >
+                  {selectedPageHeaderData.title}
+                </Typography>
+                {/* <IconButton
                   size="small"
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
@@ -205,19 +201,12 @@ export default function PageHeader({
                       </Typography>
                     </MenuItem>
                   ))}
-                </Menu>
+                </Menu> */}
               </Box>
               <Box>
+                {/* Sub title of the Header */}
                 <Typography variant="body1" className={styles.documentNo}>
-                  {title === 'Documents' ? (
-                    <>
-                      No. of Documents : <span>{no_of_docs || 0}</span>
-                    </>
-                  ) : (
-                    <>
-                      No. of Incidents : <span>{no_of_incident || 0}</span>
-                    </>
-                  )}
+                  {selectedPageHeaderData.subTitle}
                 </Typography>
               </Box>
             </Box>
