@@ -21,10 +21,16 @@ import {
 } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
+import RenameDialog from '../ReName/ReName';
 
 export type Category = {
   name: string;
   no_of_docs: number;
+  id: number;
+};
+
+export type CategoryRename = {
+  name: string;
   id: number;
 };
 
@@ -105,15 +111,30 @@ const CategoryList: React.FC<CategoryListProps> = ({
     });
   };
 
+  const [renameDialog, setRenameDialog] = useState(false);
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryRename | null>(null);
+  const [menuCategory, setMenuCategory] = useState<CategoryRename | null>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenUserMenu = (
+    event: React.MouseEvent<HTMLElement>,
+    category: CategoryRename
+  ) => {
+    event.preventDefault();
     setAnchorElUser(event.currentTarget);
+    setMenuCategory(category);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleOpenRenameDialog = () => {
+    handleCloseUserMenu();
+    setSelectedCategory(menuCategory);
+    setRenameDialog(true);
   };
 
   return (
@@ -162,7 +183,10 @@ const CategoryList: React.FC<CategoryListProps> = ({
                       No. of Docs : <span>{category?.no_of_docs || 0}</span>
                     </Typography>
                   </div>
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <IconButton
+                    onClick={(e) => handleOpenUserMenu(e, category)}
+                    sx={{ p: 0 }}
+                  >
                     <Image
                       src="/images/more.svg"
                       alt="more"
@@ -196,7 +220,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
                     }}
                   >
                     <MenuItem
-                      onClick={handleCloseUserMenu}
+                      onClick={handleOpenRenameDialog}
                       className={styles.menuDropdown}
                     >
                       <Image
@@ -304,7 +328,10 @@ const CategoryList: React.FC<CategoryListProps> = ({
                         No. of Docs : <span>{category?.no_of_docs}</span>
                       </Typography>
                     </div>
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <IconButton
+                      onClick={(e) => handleOpenUserMenu(e, category)}
+                      sx={{ p: 0 }}
+                    >
                       <Image
                         src="/images/more.svg"
                         alt="more"
@@ -338,7 +365,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
                       }}
                     >
                       <MenuItem
-                        onClick={handleCloseUserMenu}
+                        onClick={handleOpenRenameDialog}
                         className={styles.menuDropdown}
                       >
                         <Image
@@ -366,6 +393,11 @@ const CategoryList: React.FC<CategoryListProps> = ({
           </Box>
         </Drawer>
       )}
+      <RenameDialog
+        open={renameDialog}
+        category={selectedCategory}
+        onClose={() => setRenameDialog(false)}
+      />
     </>
   );
 };

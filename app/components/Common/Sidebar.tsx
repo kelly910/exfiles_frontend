@@ -22,9 +22,9 @@ import {
 import NoRecordFound from './NoRecordFound';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
 import SidebarButton from '@components/Common/SidebarButton';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
+import { fetchCategories } from '@/app/redux/slices/categoryListing';
 
 const Sidebar = ({
   isOpen,
@@ -105,6 +105,16 @@ const Sidebar = ({
       console.error('Error fetching thread list:', err);
       return { results: [], count: 0 };
     }
+  };
+
+  const handleDocumentClick = async () => {
+    dispatch(fetchCategories({ page: 1 }))
+      .unwrap()
+      .then((res) => {
+        if (res?.count) {
+          router.push(`/documents/${res?.results[0]?.id}`);
+        }
+      });
   };
 
   useEffect(() => {
@@ -387,7 +397,7 @@ const Sidebar = ({
             <SidebarButton
               btnTitle={'Documents'}
               iconPath={'/images/document-text.svg'}
-              handleBtnClick={() => router.push('/documents')}
+              handleBtnClick={handleDocumentClick}
             />
 
             <SidebarButton
