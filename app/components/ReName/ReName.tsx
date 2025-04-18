@@ -71,7 +71,7 @@ const RenameDialog = ({ open, onClose, category }: RenameProps) => {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string()
+    name: Yup.string().trim()
       .max(50, 'Category must be at most 50 characters')
       .required('Category is required'),
   });
