@@ -128,9 +128,10 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
                 >
                   <Image
                     src="/gif/infinite-loader.gif"
-                    alt="category"
-                    width={14}
-                    height={14}
+                    alt="loading-gif"
+                    width={35}
+                    height={35}
+                    unoptimized
                     style={{ scale: 3 }}
                   />
                   <Typography

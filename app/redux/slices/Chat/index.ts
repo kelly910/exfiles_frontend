@@ -12,6 +12,7 @@ import {
   PinnedAnswerToggleResponse,
   SaveUserAnswerReactionPayload,
   SaveUserAnswerReactionResponse,
+  Thread,
   ThreadCreationPayload,
   ThreadCreationResponse,
   ThreadEditPayload,
@@ -21,7 +22,7 @@ import {
 import { RootState } from '../../store';
 
 interface ChatState {
-  activeThreadId: string | null;
+  activeThread: Thread | null;
   isStreaming: boolean;
   messagesList: GetMessagesByThreadIdResponse;
   messagesListLoading: boolean;
@@ -29,7 +30,7 @@ interface ChatState {
 }
 
 const initialState: ChatState = {
-  activeThreadId: null,
+  activeThread: null,
   messagesList: {
     count: 0,
     results: [],
@@ -63,6 +64,24 @@ export const fetchThreadList = createAsyncThunk<
       `${urlMapper.thread}?${params.toString()}`
     );
 
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      (error as { response?: { data?: { messages?: string[] } } })?.response
+        ?.data?.messages?.[0] || 'Something went wrong. Please try again.';
+    return rejectWithValue(errorMessage);
+  }
+});
+
+export const getThreadDetailsById = createAsyncThunk<
+  ThreadCreationResponse,
+  GetMessagesByThreadIdPayload,
+  { rejectValue: string }
+>('chat/getThreadDetailsById', async (payload, { rejectWithValue }) => {
+  try {
+    const response = await api.get<ThreadCreationResponse>(
+      `${urlMapper.thread}${payload.thread_uuid}/`
+    );
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -291,8 +310,11 @@ const chatSlice = createSlice({
         typeof newMsg !== 'object' &&
         (newMsg || newMsg == '')
       ) {
-        // Case: streaming text chunks (string or tokens)
-        state.messageChunks = [...(state.messageChunks || []), newMsg];
+        const lastChunk = state.messageChunks[state.messageChunks.length - 1];
+
+        if (newMsg !== lastChunk) {
+          state.messageChunks.push(newMsg);
+        }
 
         if (isStreamingCompleted) {
           state.isStreaming = false;
@@ -320,8 +342,8 @@ const chatSlice = createSlice({
       );
       state.messagesList.results = updatedMsgList;
     },
-    setActiveThreadId: (state, action) => {
-      state.activeThreadId = action.payload;
+    setActiveThread: (state, action) => {
+      state.activeThread = action.payload;
     },
     setIsStreaming: (state, action) => {
       state.isStreaming = action.payload;
@@ -344,14 +366,13 @@ const chatSlice = createSlice({
 
 export const {
   setWebSocketMessage,
-  setActiveThreadId,
+  setActiveThread,
   setIsStreaming,
   setUpdateMessageList,
 } = chatSlice.actions;
 
 export const selectMessageList = (state: RootState) => state.chat.messagesList;
-export const selectActiveThreadId = (state: RootState) =>
-  state.chat.activeThreadId;
+export const selectActiveThread = (state: RootState) => state.chat.activeThread;
 export const selectMessagesChunks = (state: RootState) =>
   state.chat.messageChunks;
 export const selectIsStreaming = (state: RootState) => state.chat.isStreaming;
