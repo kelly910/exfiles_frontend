@@ -28,14 +28,15 @@ export default function MessageLoading() {
         <Box component="div" className={chatMessagesStyles.chatAlCategory}>
           <Box
             component="div"
-            className={chatMessagesStyles.chatAlCategoryInner}
+            className={`${chatMessagesStyles.chatAlCategoryInner} ${chatMessagesStyles.bgAnimation}`}
           >
             <Image
               src="/gif/infinite-loader.gif"
               alt="loading-gif"
-              width={35}
-              height={35}
+              width={18}
+              height={18}
               unoptimized
+              style={{ scale: 3 }}
             />
             <Typography
               variant="body1"

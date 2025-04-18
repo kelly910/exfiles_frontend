@@ -16,7 +16,7 @@ import {
 } from '@/app/redux/slices/Chat';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import UploadFilesStatusMessage from './UploadFilesStatusMessage';
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import { RootState } from '@/app/redux/store';
 import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
@@ -31,7 +31,6 @@ import { sendSocketMessage } from '@/app/services/WebSocketService';
 import StreamingResponse from './StreamingResponse';
 import { setPageHeaderData } from '@/app/redux/slices/login';
 import MessageLoading from './MessageLoading';
-import Image from 'next/image';
 
 export default function ChatMessagesComponent({
   threadId,
@@ -146,7 +145,7 @@ export default function ChatMessagesComponent({
 
   return (
     <>
-      <Box component="div" className={AIChatStyles.categoryBox}>
+      {/* <Box component="div" className={AIChatStyles.categoryBox}>
         <Box className={AIChatStyles.categoryBoxInner}>
           <Button
             // onClick={() => handleOpenCategoryDrawer(true)}
@@ -163,7 +162,6 @@ export default function ChatMessagesComponent({
           <Typography variant="body1" className={AIChatStyles.categoriesTitle}>
             How to optimize images in WordPress for faster loading (complete
             guide)
-            {/* {findSelectedCategoryDocs?.name} */}
           </Typography>
         </Box>
         <Typography
@@ -172,7 +170,7 @@ export default function ChatMessagesComponent({
         >
           Created On : <span>25-02-2025</span>
         </Typography>
-      </Box>
+      </Box> */}
       <div className={AIChatStyles.chatContainer} ref={chatElementRef}>
         <Container maxWidth="lg" disableGutters>
           {groupedData &&
