@@ -7,10 +7,11 @@ import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import {
   fetchThreadMessagesByThreadId,
+  getThreadDetailsById,
   selectIsStreaming,
   selectMessageList,
   selectMessagesChunks,
-  setActiveThreadId,
+  setActiveThread,
   setIsStreaming,
 } from '@/app/redux/slices/Chat';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
@@ -28,6 +29,8 @@ import { useSelector } from 'react-redux';
 import { SocketPayload } from '../../types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import StreamingResponse from './StreamingResponse';
+import { setPageHeaderData } from '@/app/redux/slices/login';
+import MessageLoading from './MessageLoading';
 
 export default function ChatMessagesComponent({
   threadId,
@@ -91,12 +94,34 @@ export default function ChatMessagesComponent({
     // setIsMessagesLoading(false);
   };
 
+  const getThreadDetails = async (thread: string) => {
+    // setIsMessagesLoading(true);
+    const resultData = await dispatch(
+      getThreadDetailsById({
+        thread_uuid: thread,
+      })
+    );
+
+    if (getThreadDetailsById.fulfilled.match(resultData)) {
+      dispatch(setActiveThread(resultData.payload));
+      const threadCreatedDate = dayjs(resultData.payload.created).format(
+        'DD-MM-YYYY'
+      );
+      dispatch(
+        setPageHeaderData({
+          title: resultData.payload.name,
+          subTitle: `Created On : ${threadCreatedDate}`,
+        })
+      );
+    }
+  };
+
   const groupedData = groupByDate(messagesList?.results || []);
 
   useEffect(() => {
     if (threadId) {
       getThreadMessagesDetails(threadId);
-      setActiveThreadId(threadId);
+      getThreadDetails(threadId);
     }
   }, [threadId]);
 
@@ -183,12 +208,14 @@ export default function ChatMessagesComponent({
 
           {isStreamingMessages &&
             messagesChunks &&
-            messagesChunks.length > 2 && (
+            (messagesChunks.length > 2 ? (
               <StreamingResponse
                 isStreaming={isStreamingMessages}
                 inputText={messagesChunks.join('')}
               />
-            )}
+            ) : (
+              <MessageLoading />
+            ))}
         </Container>
       </div>
       <div
@@ -198,6 +225,7 @@ export default function ChatMessagesComponent({
           <UserChatInput
             handleOpenDocUploadModal={() => {}}
             sendMessage={(payloadData) => handleSendMessage(payloadData)}
+            isLoadingProp={isStreamingMessages}
           />
         </Container>
       </div>

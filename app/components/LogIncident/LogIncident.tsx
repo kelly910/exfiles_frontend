@@ -29,6 +29,7 @@ import LogincidentEmpty from './LogincidentEmpty';
 import { convertDateFormatForIncident } from '@/app/utils/constants';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useRouter } from 'next/navigation';
+import { setPageHeaderData } from '@/app/redux/slices/login';
 
 export default function LogIncident() {
   const isMobile = useMediaQuery('(max-width:768px)');
@@ -70,7 +71,17 @@ export default function LogIncident() {
     dispatch(setLoader(true));
     setTimeout(async () => {
       try {
-        await dispatch(fetchLogIncidents({ search: searchParams }));
+        const resp = await dispatch(
+          fetchLogIncidents({ search: searchParams })
+        );
+        if (fetchLogIncidents.fulfilled.match(resp)) {
+          dispatch(
+            setPageHeaderData({
+              title: 'Log Incident',
+              subTitle: `No. of Incidents : ${resp.payload.no_of_incident}`,
+            })
+          );
+        }
       } catch (error) {
         handleError(error as ErrorResponse);
         dispatch(setLoader(false));
@@ -184,6 +195,10 @@ export default function LogIncident() {
     },
   ];
 
+  const handleThreadClick = (thread: string) => {
+    router.push(`/ai-chats/${thread}`); // Navigate to thread page
+  };
+
   const rows = incidents?.map((item) => ({
     id: item?.id,
     name: item?.name,
@@ -197,9 +212,7 @@ export default function LogIncident() {
         <Sidebar
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
-          handleThreadClick={(threadUUID: string) => {
-            console.log(`Thread clicked: ${threadUUID}`);
-          }}
+          handleThreadClick={handleThreadClick}
           handlePinnedAnswerClick={handlePinnedAnswerClick}
           title="Log Incident"
         />

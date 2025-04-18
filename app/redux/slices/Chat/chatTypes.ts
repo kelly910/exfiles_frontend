@@ -4,12 +4,15 @@ export interface UserData {
   email: string;
   user_type: string;
 }
+
+export type ThreadType = 'chat';
 export interface Thread {
   id: number;
   name: string;
   uuid: string;
   created: string;
   created_user_data?: UserData;
+  thread_type?: ThreadType;
 }
 export interface GetThreadListResponse {
   count: number;

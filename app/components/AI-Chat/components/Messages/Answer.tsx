@@ -127,10 +127,11 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
                   className={chatMessagesStyles.chatAlCategoryInner}
                 >
                   <Image
-                    src="/images/category.svg"
-                    alt="category"
-                    width={14}
-                    height={14}
+                    src="/gif/infinite-loader.gif"
+                    alt="loading-gif"
+                    width={35}
+                    height={35}
+                    unoptimized
                   />
                   <Typography
                     variant="body1"

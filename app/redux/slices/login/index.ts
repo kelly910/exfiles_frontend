@@ -5,11 +5,19 @@ import { NewPasswordFormValues } from '@/app/components/New-Password/NewPassword
 import { ForgotPasswordFormValues } from '@/app/components/Forgot-Password/ForgotPassword';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { UpdateUserFormValues } from '@/app/components/UserSetting/MyProfile';
+import { RootState } from '../../store';
 
+interface PageHeaderDataType {
+  title: string;
+  subTitle: string;
+  showButton?: boolean;
+  buttonText?: string;
+}
 interface ForgotPasswordState {
   forgotPasswordEmailSent: boolean;
   changePassword: boolean;
   loggedInUser: LoginResponse | null;
+  pageHeaderData: PageHeaderDataType;
 }
 
 export interface ForgotPasswordResponse {
@@ -24,6 +32,12 @@ const initialState: ForgotPasswordState = {
   forgotPasswordEmailSent: false,
   changePassword: false,
   loggedInUser: null,
+  pageHeaderData: {
+    title: '',
+    subTitle: '',
+    showButton: false,
+    buttonText: '',
+  },
 };
 
 interface SocialGoogleLoginPayload {
@@ -201,7 +215,20 @@ export const resetPassword = createAsyncThunk<
 const loginSlice = createSlice({
   name: 'login',
   initialState,
-  reducers: {},
+  reducers: {
+    setPageHeaderData(
+      state,
+      action: PayloadAction<Partial<PageHeaderDataType>>
+    ) {
+      state.pageHeaderData = {
+        ...state.pageHeaderData,
+        ...action.payload,
+      };
+    },
+    clearPageHeaderData(state) {
+      state.pageHeaderData = initialState.pageHeaderData;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(
       socialGoogleLogin.fulfilled,
@@ -246,5 +273,10 @@ const loginSlice = createSlice({
     );
   },
 });
+
+export const { setPageHeaderData, clearPageHeaderData } = loginSlice.actions;
+
+export const selectPageHeaderData = (state: RootState) =>
+  state.login.pageHeaderData;
 
 export default loginSlice.reducer;
