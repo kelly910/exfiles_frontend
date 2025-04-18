@@ -113,6 +113,7 @@ export default function TemporaryDrawer() {
             '& .MuiPaper-root': {
               top: '65px',
               width: '400px',
+              maxWidth: 'calc(100vw - 16px)',
               maxHeight: 'calc(100vh - 65px)',
               background: 'var(--Card-Color)',
               borderLeft: '1px solid  #3A3948',

@@ -16,7 +16,7 @@ import { useMediaQuery } from '@mui/material';
 import { setPageHeaderData } from '@/app/redux/slices/login';
 
 export default function DocumentListComponent({ catId }: { catId: number }) {
-  const mobileView = useMediaQuery('(min-width:600px)');
+  const mobileView = useMediaQuery('(min-width:800px)');
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedDocId, setSelectedsDocId] = useState<string>('');

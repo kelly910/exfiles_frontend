@@ -65,9 +65,9 @@
 
 /* Firefox Scrollbar */
 * {
-  scrollbar-width: auto;
+  scrollbar-width: thin;
   /* "auto" or "thin" */
-  scrollbar-color: black;
+  scrollbar-color: #3A3948 #11101b;
   /* thumb color & track color */
 }
 
@@ -83,8 +83,8 @@ main.chat-body {
 .main-body {
   width: 100%;
   max-width: 100%;
-  max-height: 100vh;
-  min-height: 100vh;
+  max-height: 100dvh;
+  min-height: 100dvh;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -225,7 +225,7 @@ input {
   color: var(--Txt-On-Gradient);
   border: none;
   outline: 0.5px solid transparent;
-  font-weight: var(--Bold);
+  font-weight: var(--Regular);
   min-width: 168px;
   width: max-content;
   padding: 10px 24px;
@@ -236,7 +236,7 @@ input {
   background: var(--Main-Gradient);
   color: var(--Txt-On-Gradient);
   border: none;
-  font-weight: var(--Bold);
+  font-weight: var(--Regular);
   width: max-content;
   min-width: 150px;
   padding: 5px 8px;
@@ -303,7 +303,8 @@ input {
 
 .btn.btn-tertiary {
   min-width: 163px;
-  font-weight: var(--Lighter);
+  font-weight: var(--Medium);
+  line-height: 22px;
   padding: 10px 24px;
   color: #000000;
   display: flex;
@@ -324,7 +325,7 @@ input {
   border: 1px solid var(--Txt-On-Gradient);
   background-color: transparent;
   text-decoration: none;
-  font-weight: var(--Medium);
+  font-weight: var(--Regular);
   width: max-content;
   padding: 12px 24px;
   color: var(--Txt-On-Gradient);
@@ -347,7 +348,7 @@ input {
   color: var(--Txt-On-Gradient);
   font-size: var(--SubTitle-3);
   line-height: var(--SubTitle-3);
-  font-weight: var(--Medium);
+  font-weight: var(--Regular);
   padding: 10px 16px;
   background: var(--Main-Gradient);
   border-radius: 12px;
@@ -517,7 +518,7 @@ header {
   }
 
   .btn.btn-primary {
-    width: 100%;
+    min-width: 100px;
   }
 }
 

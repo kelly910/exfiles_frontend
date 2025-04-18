@@ -6,16 +6,13 @@
     margin-top: 28px;
 
     .gridBoxInner {
-      @media (min-width: 900px) {
+      order: unset;
+
+      @media (max-width: 900px) {
         &:last-child,
         &:first-child {
           order: 1;
         }
-      }
-
-      &:last-child,
-      &:first-child {
-        order: 2;
       }
 
       .chatBox {
@@ -41,9 +38,13 @@
 }
 
 .chatContainer {
-  height: calc(100vh - 65px - 104px - 45px);
+  height: calc(100vh - 65px - 100px - 42px);
   margin: 20px 0;
   overflow-y: auto;
+
+  @media (max-width: 768px) {
+    height: calc(100vh - 65px - 100px - 42px - 77px);
+  }
 }
 
 .chatHeader {
@@ -296,4 +297,45 @@
     padding: 16px 12px;
     margin-top: 32px;
   }
+}
+
+.backButton {
+  background-color: var(--Input-Box-Colors) !important;
+  padding: 8px !important;
+  border: 1px solid #3a3948 !important;
+  min-width: fit-content !important;
+  margin: 0 !important;
+  margin-right: 12px !important;
+}
+.categoryBox {
+  padding: 8px 16px;
+  background-color: var(--Card-Color);
+  border-bottom: 1px solid var(--Stroke-Color);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  .categoryBoxInner {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .categoriesSemiTitle {
+    font-weight: var(--Regular);
+    font-size: var(--SubTitle-5);
+    line-height: 140%;
+    color: var(--Subtext-Color);
+    padding-left: 46px;
+  }
+}
+
+.categoryBox .categoriesTitle {
+  font-weight: var(--Regular);
+  font-size: var(--SubTitle-1);
+  line-height: 1.4;
+  letter-spacing: 0%;
+  color: var(--Primary-Text-Color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
