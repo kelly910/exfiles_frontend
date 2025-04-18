@@ -313,9 +313,8 @@ const Page = () => {
                           }}
                         >
                           <Link
-                            href="#"
+                            href="/forgot-password"
                             className="link-primary"
-                            onClick={() => router.push('/forgot-password')}
                           >
                             Back
                           </Link>

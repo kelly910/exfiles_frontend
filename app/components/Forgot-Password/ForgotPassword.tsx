@@ -181,9 +181,8 @@ const Page = () => {
                           }}
                         >
                           <Link
-                            href="#"
+                            href="/login"
                             className="link-primary"
-                            onClick={() => router.push('/login')}
                             style={{ textDecoration: 'none' }}
                           >
                             Back to Login
