@@ -4,8 +4,7 @@ import debounce from 'lodash.debounce';
 import DocUploadStyles from '@components/AI-Chat/styles/DocumentUploadModal.module.scss';
 import { Box, LinearProgress, TextField, Typography } from '@mui/material';
 import { ChangeEvent, useEffect, useMemo } from 'react';
-import { formatFileSizeLabel } from '@/app/utils/functions';
-import { documentType } from '@/app/utils/constants';
+import { formatFileSizeLabel, getDocumentImage } from '@/app/utils/functions';
 
 interface FileItemProps {
   fileName: string;
@@ -48,19 +47,6 @@ export default function UploadFileItem({
     [handleFileDesc]
   );
 
-  const getFileIcon = (fileName: string): string => {
-    const extension = fileName.split('.').pop()?.toLowerCase();
-
-    if (!extension) return '/images/doc.svg';
-    for (const doc of documentType) {
-      if (doc.type.includes(extension)) {
-        return doc.image;
-      }
-    }
-
-    return '/images/doc.svg';
-  };
-
   // Clean up the debounced function when component unmounts or handleFileDesc changes
   useEffect(() => {
     return () => {
@@ -73,13 +59,17 @@ export default function UploadFileItem({
       <div className={DocUploadStyles.fileGridBox}>
         <div className={DocUploadStyles.fileBox}>
           <span className={DocUploadStyles.fileIcon}>
-            <Image
-              src={getFileIcon(fileName)}
-              alt="pdf"
-              width={14}
-              height={16}
-              className={DocUploadStyles.pdfImg}
-            />
+            {fileName && (
+              <Image
+                src={getDocumentImage(
+                  fileName.split('.').pop()?.toLowerCase() || ''
+                )}
+                alt="pdf"
+                width={14}
+                height={16}
+                className={DocUploadStyles.pdfImg}
+              />
+            )}
           </span>
           <Typography variant="body1" className={DocUploadStyles.fileTitle}>
             <Typography variant="body1">{fileName}</Typography>
