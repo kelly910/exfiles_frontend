@@ -38,10 +38,19 @@ export const FILE_UPLOAD_CHUNK_SIZE = 500 * 1024;
 // Document Type Uploaded File
 export const documentType = [
   { image: '/images/pdf.svg', type: ['pdf'] },
-  { image: '/images/image.svg', type: ['png', 'jpg', 'jpeg', 'webp'] },
-  { image: '/images/txt.svg', type: ['txt', 'md'] },
-  { image: '/images/doc.svg', type: ['docx'] },
-  { image: '/images/excel.svg', type: ['xls', 'xlsx', 'csv'] },
+  {
+    image: '/images/image.svg',
+    type: ['png', 'jpg', 'jpeg', 'webp', 'gif', 'tiff', 'tif', 'bmp', 'heic'],
+  },
+  {
+    image: '/images/txt.svg',
+    type: ['txt', 'md', 'rtf', 'odt', 'html', 'htm', 'eml', 'msg'],
+  },
+  { image: '/images/doc.svg', type: ['docx', 'doc'] },
+  {
+    image: '/images/excel.svg',
+    type: ['xls', 'xlsx', 'csv', 'ods', 'tsv', 'xml'],
+  },
 ];
 
 // Convert DD-MM-YYYY To MM-DD-YYYY

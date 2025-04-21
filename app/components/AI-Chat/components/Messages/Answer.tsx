@@ -1,7 +1,7 @@
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
-
-import Image from 'next/image';
 import { ChatMessage, ThumbReaction } from '@store/slices/Chat/chatTypes';
 import { formatTo12HourTimeManually } from '@/app/utils/functions';
 import { processText } from '@/app/utils/constants';
@@ -14,9 +14,15 @@ import {
 } from '@/app/redux/slices/Chat';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { useState } from 'react';
+
+const DynamicEditCombineSummaryModal = dynamic(
+  () => import('@/app/components/AI-Chat/components/Modals/EditCombinedSummary')
+);
 
 export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
   const dispatch = useAppDispatch();
+  const [isOpenEditSummary, setIsOpenEditSummary] = useState(false);
 
   // Copy Message
   const handleCopyThread = async (messageObj: ChatMessage) => {
@@ -90,6 +96,14 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
         handleError(resultData.payload as ErrorResponse);
       }
     }
+  };
+
+  const handleClickOpenEditSummary = () => {
+    setIsOpenEditSummary(false);
+  };
+
+  const handleCloseEditSummary = () => {
+    setIsOpenEditSummary(false);
   };
 
   return (
@@ -188,7 +202,7 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
               </svg>
             </Button>
             <Button>
-              {/* delike */}
+              {/* dislike */}
               <svg
                 className={
                   messageObj.thumb_reaction == 'thumbs_down'
@@ -215,7 +229,7 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
             </Button>
             {messageObj.combined_summary_data &&
               messageObj.combined_summary_data.summary && (
-                <Button>
+                <Button onClick={handleClickOpenEditSummary}>
                   <Image
                     src="/images/chat-edit.svg"
                     alt="edit-combine-chat-icon"
@@ -245,6 +259,14 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
           </Box>
         </Box>
       </Box>
+      {isOpenEditSummary && (
+        <DynamicEditCombineSummaryModal
+          open={isOpenEditSummary}
+          handleClose={handleCloseEditSummary}
+          messageData={messageObj}
+          handleSubmit={() => {}}
+        />
+      )}
     </>
   );
 }

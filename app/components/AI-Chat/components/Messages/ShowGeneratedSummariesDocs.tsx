@@ -45,7 +45,8 @@ export default function ShowGeneratedSummariesDocs({
           variant="body1"
           className={chatMessagesStyles.chatAlContentText}
         >
-          {messageObj.message}
+          {messageObj.message ||
+            'Your summaries are ready! Click below to view them'}
         </Typography>
         <Grid
           container
