@@ -5,6 +5,7 @@ import DocUploadStyles from '@components/AI-Chat/styles/DocumentUploadModal.modu
 import { Box, LinearProgress, TextField, Typography } from '@mui/material';
 import { ChangeEvent, useEffect, useMemo } from 'react';
 import { formatFileSizeLabel } from '@/app/utils/functions';
+import { documentType } from '@/app/utils/constants';
 
 interface FileItemProps {
   fileName: string;
@@ -47,6 +48,19 @@ export default function UploadFileItem({
     [handleFileDesc]
   );
 
+  const getFileIcon = (fileName: string): string => {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+
+    if (!extension) return '/images/doc.svg';
+    for (const doc of documentType) {
+      if (doc.type.includes(extension)) {
+        return doc.image;
+      }
+    }
+
+    return '/images/doc.svg';
+  };
+
   // Clean up the debounced function when component unmounts or handleFileDesc changes
   useEffect(() => {
     return () => {
@@ -60,7 +74,7 @@ export default function UploadFileItem({
         <div className={DocUploadStyles.fileBox}>
           <span className={DocUploadStyles.fileIcon}>
             <Image
-              src="/images/pdf.svg"
+              src={getFileIcon(fileName)}
               alt="pdf"
               width={14}
               height={16}
