@@ -27,6 +27,8 @@ import { useRouter } from 'next/navigation';
 interface DocumentUploadModalProps {
   open: boolean;
   handleClose: () => void;
+  threadId?: string | null;
+  handleFileUploadSubmit?: () => void;
 }
 
 interface UploadFiles {
@@ -50,6 +52,8 @@ type successChunkResponseType = {
 export default function DocumentUploadDialog({
   open,
   handleClose,
+  threadId,
+  handleFileUploadSubmit,
 }: DocumentUploadModalProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -88,9 +92,12 @@ export default function DocumentUploadDialog({
       // Generate SHA-256 checksum for each chunk
       const checkSUM = await computeChecksum(chunk);
       const filename = file.name.split('.')[0];
+      const fileParts = file.name.split('.');
+      const fileExtension = (fileParts.pop() || '').toLowerCase();
+
       const formData = new FormData();
       formData.append('document', chunk);
-      formData.append('extension', 'pdf');
+      formData.append('extension', fileExtension);
       formData.append('file_name', filename);
       formData.append('chunk_index', chunkIndex.toString());
       formData.append('total_index', totalChunks.toString());
@@ -152,7 +159,7 @@ export default function DocumentUploadDialog({
     const newUploads: Array<UploadFiles> = newFiles.map((file) => {
       const fileParts = file.name.split('.');
       const isSingleExtension = fileParts.length === 2; // Ensures only one dot
-      const fileExtension = fileParts.pop()?.toLowerCase() || '';
+      const fileExtension = '.' + fileParts.pop()?.toLowerCase();
       const isValidExtension =
         isSingleExtension && ALLOWED_FILE_TYPES.includes(fileExtension);
 
@@ -270,8 +277,15 @@ export default function DocumentUploadDialog({
         'success',
         resultData.payload?.messages[0] || 'Document uploaded successfully.'
       );
-      // Need to redirect user to that Thread page
-      router.push(`/ai-chats/${threadUUID}`); // Navigate to thread page
+
+      if (threadId) {
+        if (handleFileUploadSubmit) {
+          handleFileUploadSubmit();
+        }
+      } else {
+        // Need to redirect user to that Thread page
+        router.push(`/ai-chats/${threadUUID}/`); // Navigate to thread page
+      }
 
       handleClose();
       return;
@@ -294,16 +308,23 @@ export default function DocumentUploadDialog({
 
     if (payloadDocs.length === 0) return false; // Exit early if no valid files
 
-    // Create New Thread
-    const resultData = await dispatch(createNewThread({}));
+    let createdThreadID;
 
-    if (createNewThread.rejected.match(resultData)) {
-      showToast('error', 'Something went wrong. Please try again!');
-      console.error('createNewThread failed:', resultData.payload);
-      return;
+    if (threadId) {
+      createdThreadID = threadId;
+    } else {
+      // Create New Thread
+      const resultData = await dispatch(createNewThread({}));
+
+      if (createNewThread.rejected.match(resultData)) {
+        showToast('error', 'Something went wrong. Please try again!');
+        console.error('createNewThread failed:', resultData.payload);
+        return;
+      }
+
+      createdThreadID = resultData.payload?.uuid;
     }
 
-    const createdThreadID = resultData.payload?.uuid;
     if (!createdThreadID) return;
 
     // Upload documents
@@ -387,7 +408,7 @@ export default function DocumentUploadDialog({
           id="chat-file-uploads"
           type="file"
           name="file-uploads"
-          accept=".pdf"
+          accept={ALLOWED_FILE_TYPES.join(',')}
           multiple
           ref={fileInputRef}
           onChange={handleFileChange}

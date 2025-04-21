@@ -6,19 +6,27 @@ import {
   Input,
   InputAdornment,
 } from '@mui/material';
-import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { SocketPayload } from '../../types/aiChat.types';
 import { QUESTION_TYPES } from '@/app/utils/constants';
 interface UserChatInputProps {
   handleOpenDocUploadModal: () => void;
   sendMessage: (payloadMsg: SocketPayload) => void;
   isLoadingProp?: boolean;
+  selectedPrompt?: string | null;
 }
 
 export default function UserChatInput({
   handleOpenDocUploadModal,
   sendMessage,
   isLoadingProp,
+  selectedPrompt,
 }: UserChatInputProps) {
   const [text, setText] = useState('');
 
@@ -49,6 +57,12 @@ export default function UserChatInput({
     sendMessage(message);
     setText('');
   };
+
+  useEffect(() => {
+    if (selectedPrompt) {
+      setText(selectedPrompt);
+    }
+  }, [selectedPrompt]);
 
   return (
     <Box component="div" className={AIChatStyles.chatBoard}>

@@ -1,6 +1,36 @@
 // Chat File Upload allowed file extensions
 // export const ALLOWED_FILE_TYPES = ['application/pdf', 'text/plain'];
-export const ALLOWED_FILE_TYPES = ['jpg', 'png', 'pdf', 'docx'];
+
+export const ALLOWED_FILE_TYPES = [
+  // Documents & Text Files
+  '.txt',
+  '.pdf',
+  '.docx',
+  '.rtf',
+  '.doc',
+  '.odt',
+  '.html',
+  '.htm',
+  '.eml',
+  '.msg',
+  // Spreadsheets & Data
+  '.csv',
+  '.xls',
+  '.xlsx',
+  '.ods',
+  '.tsv',
+  '.xml',
+  // Images
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.webp',
+  '.gif',
+  '.tiff',
+  '.tif',
+  '.bmp',
+  '.heic',
+];
 
 // Chat File Upload 1 mb chunk size
 export const FILE_UPLOAD_CHUNK_SIZE = 500 * 1024;
