@@ -296,43 +296,45 @@ const chatSlice = createSlice({
         is_streaming_finished: isStreamingCompleted,
       } = data;
       const targetData = [...state.messagesList.results];
-      console.log(threadId, msgId);
+      console.log(threadId, state.activeThread?.uuid, msgId);
 
-      // Handle newly asked user message
-      if (newQuestionMsg) {
-        targetData.push(newQuestionMsg);
-        state.messagesList.results = targetData;
-        return;
-      }
-
-      if (
-        state.isStreaming &&
-        typeof newMsg !== 'object' &&
-        (newMsg || newMsg == '')
-      ) {
-        const lastChunk = state.messageChunks[state.messageChunks.length - 1];
-
-        if (newMsg !== lastChunk) {
-          state.messageChunks.push(newMsg);
+      if (threadId == state.activeThread?.uuid) {
+        if (newQuestionMsg) {
+          // Handle newly asked user message
+          targetData.push(newQuestionMsg);
+          state.messagesList.results = targetData;
+          return;
         }
 
-        if (isStreamingCompleted) {
-          state.isStreaming = false;
-          state.messageChunks = [];
-        }
-      } else {
-        if (typeof newMsg === 'object') {
-          const index = targetData.findIndex(
-            (item) => item?.uuid === newMsg.uuid
-          );
+        if (
+          state.isStreaming &&
+          typeof newMsg !== 'object' &&
+          (newMsg || newMsg == '')
+        ) {
+          const lastChunk = state.messageChunks[state.messageChunks.length - 1];
 
-          if (index !== -1) {
-            targetData[index] = newMsg;
-          } else {
-            targetData.push(newMsg);
+          if (newMsg !== lastChunk) {
+            state.messageChunks.push(newMsg);
           }
 
-          state.messagesList.results = targetData;
+          if (isStreamingCompleted) {
+            state.isStreaming = false;
+            state.messageChunks = [];
+          }
+        } else {
+          if (typeof newMsg === 'object') {
+            const index = targetData.findIndex(
+              (item) => item?.uuid === newMsg.uuid
+            );
+
+            if (index !== -1) {
+              targetData[index] = newMsg;
+            } else {
+              targetData.push(newMsg);
+            }
+
+            state.messagesList.results = targetData;
+          }
         }
       }
     },
@@ -342,11 +344,17 @@ const chatSlice = createSlice({
       );
       state.messagesList.results = updatedMsgList;
     },
+    clearChunks: (state, action) => {
+      state.messageChunks = action.payload;
+    },
     setActiveThread: (state, action) => {
       state.activeThread = action.payload;
     },
     setIsStreaming: (state, action) => {
       state.isStreaming = action.payload;
+    },
+    clearMessagesList: (state) => {
+      state.messagesList = initialState.messagesList;
     },
   },
   extraReducers: (builder) => {
@@ -369,6 +377,8 @@ export const {
   setActiveThread,
   setIsStreaming,
   setUpdateMessageList,
+  clearChunks,
+  clearMessagesList,
 } = chatSlice.actions;
 
 export const selectMessageList = (state: RootState) => state.chat.messagesList;

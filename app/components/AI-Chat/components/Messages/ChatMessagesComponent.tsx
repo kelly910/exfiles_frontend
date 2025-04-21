@@ -1,11 +1,13 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-
+import React, { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import {
+  clearChunks,
+  clearMessagesList,
   fetchThreadMessagesByThreadId,
   getThreadDetailsById,
   selectIsStreaming,
@@ -30,7 +32,15 @@ import { SocketPayload } from '../../types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import StreamingResponse from './StreamingResponse';
 import { setPageHeaderData } from '@/app/redux/slices/login';
-import MessageLoading from './MessageLoading';
+
+// Dynamic Custom Component imports
+const DynamicMessageLoading = dynamic(
+  () => import('@/app/components/AI-Chat/components/Messages/MessageLoading')
+);
+const DynamicDocUploadModal = dynamic(
+  () =>
+    import('@/app/components/AI-Chat/components/Modals/DocumentUploadDialog')
+);
 
 export default function ChatMessagesComponent({
   threadId,
@@ -43,18 +53,13 @@ export default function ChatMessagesComponent({
   const isStreamingMessages = useSelector(selectIsStreaming);
   const messagesChunks = useSelector(selectMessagesChunks);
   const chatElementRef = useRef<HTMLInputElement>(null);
+  const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
   // const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   // const [isMessagesLoading, setIsMessagesLoading] = useState(true);
 
   const loggedInUser = useAppSelector(
     (state: RootState) => state.login.loggedInUser
   );
-
-  // const sidebarRef = useRef<HTMLInputElement>(null);
-
-  // const toggleSidebar = () => {
-  //   setIsSidebarOpen((prev) => !prev);
-  // };
 
   const groupByDate = (results: ChatMessage[] | []) => {
     if (results && results?.length > 0) {
@@ -127,6 +132,7 @@ export default function ChatMessagesComponent({
 
   const handleSendMessage = (payloadData: SocketPayload) => {
     dispatch(setIsStreaming(true));
+    dispatch(clearChunks([]));
     sendSocketMessage({ ...payloadData, thread_uuid: threadId });
   };
 
@@ -142,6 +148,26 @@ export default function ChatMessagesComponent({
   useEffect(() => {
     jumpToLastMessage();
   }, [messagesList]);
+
+  const handleClickOpen = () => {
+    setIsOpenDocUpload(true);
+  };
+
+  const handleClose = () => {
+    setIsOpenDocUpload(false);
+  };
+
+  const handleFileUploadSubmit = () => {
+    // need to call the messages list API to get the uplaoded document data
+    getThreadMessagesDetails(threadId);
+  };
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearChunks([]));
+      dispatch(clearMessagesList());
+    };
+  }, []);
 
   return (
     <>
@@ -241,7 +267,7 @@ export default function ChatMessagesComponent({
                   inputText={messagesChunks.join('')}
                 />
               ) : (
-                <MessageLoading />
+                <DynamicMessageLoading />
               ))}
           </Box>
         </Container>
@@ -251,12 +277,20 @@ export default function ChatMessagesComponent({
       >
         <Container maxWidth="lg" disableGutters>
           <UserChatInput
-            handleOpenDocUploadModal={() => {}}
+            handleOpenDocUploadModal={handleClickOpen}
             sendMessage={(payloadData) => handleSendMessage(payloadData)}
             isLoadingProp={isStreamingMessages}
           />
         </Container>
       </div>
+      {isOpenDocUpload && (
+        <DynamicDocUploadModal
+          open={isOpenDocUpload}
+          handleClose={handleClose}
+          threadId={threadId}
+          handleFileUploadSubmit={() => handleFileUploadSubmit()}
+        />
+      )}
     </>
   );
 }
