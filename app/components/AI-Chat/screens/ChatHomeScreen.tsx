@@ -27,8 +27,14 @@ export default function ChatHomeScreen() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const CHAT_PROMPS = [
+    'What did say as a kid when asked: What do you want to be when you grow up?',
+    'When is the last time you can remember feeling totally at peace?',
+  ];
+
   const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
 
   const handleClickOpen = () => {
     setIsOpenDocUpload(true);
@@ -59,6 +65,10 @@ export default function ChatHomeScreen() {
     sendSocketMessage({ ...payloadData, thread_uuid: createdThreadID });
     dispatch(setIsStreaming(true));
     router.push(`/ai-chats/${createdThreadID}`);
+  };
+
+  const handlePromptClick = (prompText: string) => {
+    setSelectedPrompt(prompText);
   };
 
   useEffect(() => {
@@ -95,16 +105,14 @@ export default function ChatHomeScreen() {
             >
               <div className={AIChatStyles.chatGridBox}>
                 <div className={AIChatStyles.chatBox}>
-                  <Typography variant="body1">
-                    What did say as a kid when asked: What do you want to be
-                    when you grow up?
-                  </Typography>
+                  <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
                   <Button
                     type="button"
                     variant="contained"
                     className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
                     color="primary"
                     fullWidth
+                    onClick={() => handlePromptClick(CHAT_PROMPS[0])}
                   >
                     Start with this question
                     <span className="arrow"></span>
@@ -133,7 +141,7 @@ export default function ChatHomeScreen() {
                     color="primary"
                     fullWidth
                   >
-                    Start with this question
+                    Log Incident
                     <span className="incident"></span>
                   </Button>
                 </div>
@@ -148,16 +156,14 @@ export default function ChatHomeScreen() {
             >
               <div className={AIChatStyles.chatGridBox}>
                 <div className={AIChatStyles.chatBox}>
-                  <Typography variant="body1">
-                    When is the last time you can remember feeling totally at
-                    peace?
-                  </Typography>
+                  <Typography variant="body1">{CHAT_PROMPS[1]}</Typography>
                   <Button
                     type="button"
                     variant="contained"
                     className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
                     color="primary"
                     fullWidth
+                    onClick={() => handlePromptClick(CHAT_PROMPS[1])}
                   >
                     Start with this question
                     <span className="arrow"></span>
@@ -204,6 +210,7 @@ export default function ChatHomeScreen() {
           handleOpenDocUploadModal={handleClickOpen}
           sendMessage={(payloadData) => handleNewSendMessage(payloadData)}
           isLoadingProp={isLoading}
+          selectedPrompt={selectedPrompt}
         />
       </Box>
 
