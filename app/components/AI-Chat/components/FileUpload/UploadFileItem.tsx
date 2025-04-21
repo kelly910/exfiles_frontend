@@ -62,7 +62,7 @@ export default function UploadFileItem({
             {fileName && (
               <Image
                 src={getDocumentImage(
-                  fileName.split('.').pop()?.toLowerCase() || ''
+                  fileName.split('.').pop()?.toLowerCase() || 'pdf'
                 )}
                 alt="pdf"
                 width={14}
