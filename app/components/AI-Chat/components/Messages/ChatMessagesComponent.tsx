@@ -232,16 +232,18 @@ export default function ChatMessagesComponent({
               );
             })}
 
-          {isStreamingMessages &&
-            messagesChunks &&
-            (messagesChunks.length > 2 ? (
-              <StreamingResponse
-                isStreaming={isStreamingMessages}
-                inputText={messagesChunks.join('')}
-              />
-            ) : (
-              <MessageLoading />
-            ))}
+          <Box sx={{ padding: '0 16px' }}>
+            {isStreamingMessages &&
+              messagesChunks &&
+              (messagesChunks.length > 2 ? (
+                <StreamingResponse
+                  isStreaming={isStreamingMessages}
+                  inputText={messagesChunks.join('')}
+                />
+              ) : (
+                <MessageLoading />
+              ))}
+          </Box>
         </Container>
       </div>
       <div

@@ -226,7 +226,24 @@ export default function ThreadList({
           </div>
         </div>
       ))}
-      {isFetching && <div className="p-4 text-center">Loading more...</div>}
+      {isFetching && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Image
+            src="/gif/infinite-loader.gif"
+            alt="loading-gif"
+            width={18}
+            height={18}
+            unoptimized
+            style={{ scale: 3 }}
+          />
+        </div>
+      )}
 
       {isOpenActionModal && (
         <ThreadActionMenu
