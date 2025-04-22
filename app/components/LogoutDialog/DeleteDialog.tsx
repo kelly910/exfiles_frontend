@@ -47,6 +47,7 @@ interface DeleteDialogProps {
   onClose: () => void;
   type: string;
   deletedId: number | string;
+  onConfirmDelete?: () => void;
 }
 
 export default function DeleteDialog({
@@ -54,6 +55,7 @@ export default function DeleteDialog({
   onClose,
   type,
   deletedId,
+  onConfirmDelete,
 }: DeleteDialogProps) {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
@@ -69,6 +71,11 @@ export default function DeleteDialog({
         await dispatch(deleteIncidentById(deletedId as number));
         await dispatch(fetchLogIncidents({ page: 1 }));
       }
+
+      if (onConfirmDelete) {
+        onConfirmDelete();
+      }
+
       onClose();
       dispatch(setLoader(false));
       setLoading(false);
