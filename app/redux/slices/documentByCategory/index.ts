@@ -15,6 +15,7 @@ interface Document {
   file_type: string;
   tags: Tag[];
   upload_on: string;
+  uuid: string;
 }
 
 interface DocumentListingResponse {

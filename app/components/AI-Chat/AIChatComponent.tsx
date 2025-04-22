@@ -12,6 +12,7 @@ import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 
 // import { useAppDispatch } from '@/app/redux/hooks';
 import WebSocketInitializer from '@services/WebSocketInitializer';
+// import LogIncidentHomeScreen from './screens/LogIncidentHomeScreen';
 
 // Dynamic Custom Component imports
 const DynamicChatHomeScreen = dynamic(
@@ -79,6 +80,7 @@ export default function AIChatComponent({ threadId }: { threadId?: string }) {
             title="New Thread"
           />
 
+          {/* <LogIncidentHomeScreen /> */}
           {!threadId ? (
             <DynamicChatHomeScreen />
           ) : (
