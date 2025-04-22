@@ -32,6 +32,7 @@ import { SocketPayload } from '../../types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import StreamingResponse from './StreamingResponse';
 import { setPageHeaderData } from '@/app/redux/slices/login';
+import Image from 'next/image';
 
 // Dynamic Custom Component imports
 const DynamicMessageLoading = dynamic(
@@ -54,6 +55,18 @@ export default function ChatMessagesComponent({
   const messagesChunks = useSelector(selectMessagesChunks);
   const chatElementRef = useRef<HTMLInputElement>(null);
   const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
+
+  const [page, setPage] = useState(1);
+
+  const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [isFetchingPreviousMessages, setIsFetchingPreviousMessages] =
+    useState(false);
+  const [hasMore, setHasMore] = useState(
+    messagesList.results?.length < messagesList.count
+  );
+  const previousScrollTopRef = useRef(0); // Ref to store the previous scroll position
+  const previousScrollHeightRef = useRef(0); // Store the scroll height before data append
+
   // const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   // const [isMessagesLoading, setIsMessagesLoading] = useState(true);
 
@@ -82,25 +95,35 @@ export default function ChatMessagesComponent({
     router.push(`/documents/${msgObj.category_data.id}?docId=${msgObj.uuid}`);
   };
 
-  const getThreadMessagesDetails = async (thread: string) => {
-    // setIsMessagesLoading(true);
+  const getThreadMessagesDetails = async (thread: string, pageVal: number) => {
+    if (pageVal === 1) {
+      setIsInitialLoading(true);
+    } else {
+      setIsFetchingPreviousMessages(true);
+    }
+
     const resultData = await dispatch(
       fetchThreadMessagesByThreadId({
         thread_uuid: thread,
+        page: pageVal,
       })
     );
 
     if (fetchThreadMessagesByThreadId.fulfilled.match(resultData)) {
       if (resultData.payload?.results?.length > 0) {
+        setIsFetchingPreviousMessages(false);
         // setMessagesList(resultData.payload);
       }
     }
 
-    // setIsMessagesLoading(false);
+    if (pageVal === 1) {
+      setIsInitialLoading(false);
+    } else {
+      setIsFetchingPreviousMessages(false);
+    }
   };
 
   const getThreadDetails = async (thread: string) => {
-    // setIsMessagesLoading(true);
     const resultData = await dispatch(
       getThreadDetailsById({
         thread_uuid: thread,
@@ -125,7 +148,7 @@ export default function ChatMessagesComponent({
 
   useEffect(() => {
     if (threadId) {
-      getThreadMessagesDetails(threadId);
+      getThreadMessagesDetails(threadId, page);
       getThreadDetails(threadId);
     }
   }, [threadId]);
@@ -145,10 +168,6 @@ export default function ChatMessagesComponent({
     }
   };
 
-  useEffect(() => {
-    jumpToLastMessage();
-  }, [messagesList]);
-
   const handleClickOpen = () => {
     setIsOpenDocUpload(true);
   };
@@ -159,7 +178,7 @@ export default function ChatMessagesComponent({
 
   const handleFileUploadSubmit = () => {
     // need to call the messages list API to get the uplaoded document data
-    getThreadMessagesDetails(threadId);
+    getThreadMessagesDetails(threadId, 1);
   };
 
   useEffect(() => {
@@ -168,6 +187,53 @@ export default function ChatMessagesComponent({
       dispatch(clearMessagesList());
     };
   }, []);
+
+  useEffect(() => {
+    setHasMore(messagesList.results.length < messagesList.count);
+    if (page === 1) {
+      jumpToLastMessage();
+    }
+  }, [messagesList.results.length, messagesList.count]);
+
+  const handleScroll = async () => {
+    const el = chatElementRef.current;
+    if (!el || isFetchingPreviousMessages || !hasMore) return;
+
+    if (el.scrollTop === 0) {
+      setIsFetchingPreviousMessages(true);
+
+      try {
+        const { scrollTop, scrollHeight } = chatElementRef.current;
+        // Save the current scroll position before making the API call
+        previousScrollTopRef.current = scrollTop;
+        previousScrollHeightRef.current = scrollHeight;
+
+        const nextPage = page + 1;
+        setPage(nextPage);
+        await getThreadMessagesDetails(threadId, nextPage);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsFetchingPreviousMessages(false);
+
+        // Scroll back to the previous position after the API call finishes
+        const container = chatElementRef.current;
+
+        if (container) {
+          // Wait until DOM updates to restore scroll position
+          setTimeout(() => {
+            const scrollHeightDifference =
+              container.scrollHeight - previousScrollHeightRef.current;
+
+            container.scrollTo({
+              top: previousScrollTopRef.current + scrollHeightDifference,
+              behavior: 'smooth',
+            });
+          }, 0); // This can be adjusted if necessary
+        }
+      }
+    }
+  };
 
   return (
     <>
@@ -197,8 +263,52 @@ export default function ChatMessagesComponent({
           Created On : <span>25-02-2025</span>
         </Typography>
       </Box> */}
-      <div className={AIChatStyles.chatContainer} ref={chatElementRef}>
+      <div
+        className={AIChatStyles.chatContainer}
+        ref={chatElementRef}
+        onScroll={handleScroll}
+      >
+        {isInitialLoading && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+              width: '100%',
+            }}
+          >
+            <Image
+              src="/gif/infinite-loader.gif"
+              alt="loading-gif"
+              width={18}
+              height={18}
+              unoptimized
+              style={{ scale: 10 }}
+            />
+          </div>
+        )}
         <Container maxWidth="lg" disableGutters>
+          {isFetchingPreviousMessages && !isInitialLoading && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '35px',
+                padding: '35px',
+              }}
+            >
+              <Image
+                src="/gif/infinite-loader.gif"
+                alt="loading-gif"
+                width={18}
+                height={18}
+                unoptimized
+                style={{ scale: 5 }}
+              />
+            </div>
+          )}
           {groupedData &&
             Object.keys(groupedData).map((date) => {
               return (

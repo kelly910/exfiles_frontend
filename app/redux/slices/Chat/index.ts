@@ -185,9 +185,24 @@ export const fetchThreadMessagesByThreadId = createAsyncThunk<
   'chat/fetchThreadMessagesByThreadId',
   async (payload, { rejectWithValue }) => {
     try {
+      const params = new URLSearchParams();
+
+      if (payload?.page !== undefined) {
+        params.append('page', payload.page.toString());
+      }
+
+      if (payload?.page_size !== undefined) {
+        params.append('page_size', payload.page_size.toString());
+      }
+
+      if (payload?.search) {
+        params.append('search', payload.search);
+      }
+
       const response = await api.get<GetMessagesByThreadIdResponse>(
-        `${urlMapper.chatMessage}${payload.thread_uuid}/`
+        `${urlMapper.chatMessage}${payload.thread_uuid}/?${params.toString()}`
       );
+
       return response.data;
     } catch (error) {
       const errorMessage =
@@ -385,8 +400,23 @@ const chatSlice = createSlice({
         state.messagesListLoading = true;
       })
       .addCase(fetchThreadMessagesByThreadId.fulfilled, (state, action) => {
+        const { page } = action.meta.arg;
+        const { count, results } = action.payload;
+
+        state.messagesList.count = count;
+
+        if (page === 1) {
+          // Initial load or refresh
+          state.messagesList.results = results;
+        } else {
+          // Append older messages (infinite scroll)
+          state.messagesList.results = [
+            ...results,
+            ...state.messagesList.results,
+          ];
+        }
+
         state.messagesListLoading = false;
-        state.messagesList = action.payload;
       })
       .addCase(fetchThreadMessagesByThreadId.rejected, (state) => {
         state.messagesListLoading = false;

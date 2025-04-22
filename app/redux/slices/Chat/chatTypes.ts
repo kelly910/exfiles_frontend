@@ -62,6 +62,9 @@ export interface UploadDocsResponse {
 
 export interface GetMessagesByThreadIdPayload {
   thread_uuid: string;
+  page?: number;
+  page_size?: number;
+  search?: string;
 }
 
 export interface UploadedDocument {
