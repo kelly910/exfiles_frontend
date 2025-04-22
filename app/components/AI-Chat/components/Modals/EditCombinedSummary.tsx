@@ -64,6 +64,7 @@ export default function EditCombinedSummary({
   handleClose,
   messageData,
 }: EditCombineSummaryModalProps) {
+  console.log(messageData);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -159,7 +160,7 @@ export default function EditCombinedSummary({
             />
           </Box>
           {messageData.combined_summary_data &&
-            messageData.combined_summary_data?.file_names?.length > 2 && (
+            messageData.combined_summary_data?.file_names?.length >= 2 && (
               <Box>
                 <Typography
                   variant="h6"
@@ -172,14 +173,14 @@ export default function EditCombinedSummary({
                   className={EditCombinedSummaryStyles.dialogSemiTitleTag}
                 >
                   {messageData.combined_summary_data?.file_names
-                    ?.slice(0, 2)
+                    ?.slice(0, 1)
                     ?.map((fileItem: string, index: number) => (
                       <span key={index}>{fileItem}</span>
                     ))}
                   {messageData.combined_summary_data?.file_names?.length >
-                    2 && (
+                    1 && (
                     <span>
-                      +{messageData.combined_summary_data.file_names.length - 2}
+                      +{messageData.combined_summary_data.file_names.length - 1}
                     </span>
                   )}
                 </Typography>
