@@ -264,7 +264,6 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
           open={isOpenEditSummary}
           handleClose={handleCloseEditSummary}
           messageData={messageObj}
-          handleSubmit={() => {}}
         />
       )}
     </>
