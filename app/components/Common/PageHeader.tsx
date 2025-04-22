@@ -220,7 +220,12 @@ export default function PageHeader({
               sx={{
                 flexGrow: 1,
                 width: '100%',
-                display: { xs: 'flex', md: 'none' },
+                display: {
+                  xs: 'none',
+                  '@media (max-width:800px)': {
+                    display: 'flex',
+                  },
+                },
               }}
             >
               <IconButton
@@ -230,6 +235,7 @@ export default function PageHeader({
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
                 color="inherit"
+                sx={{ padding: '0' }}
               >
                 {/* <MenuIcon /> */}
               </IconButton>

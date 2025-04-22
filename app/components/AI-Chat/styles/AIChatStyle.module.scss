@@ -39,11 +39,13 @@
 
 .chatContainer {
   height: calc(100vh - 65px - 100px - 42px);
+  flex-grow: 1;
   margin: 20px 0;
   overflow-y: auto;
+  width: 100%;
 
-  @media (max-width: 768px) {
-    height: calc(100vh - 65px - 100px - 42px - 77px);
+  @media (max-width: 800px) {
+    height: calc(100vh - 65px - 97px - 42px - 70px);
   }
 }
 
@@ -135,13 +137,14 @@
 .chatBoarbMain {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 100px;
   min-height: calc(100vh - 65px);
   padding: 100px 0;
   max-width: 1000px;
   margin: 0 auto;
+  flex: 0 0 auto;
 }
 
 .fileInput {
@@ -151,7 +154,7 @@
   border-radius: 10px;
   color: var(--Subtext-Color) !important;
   border: 1px solid var(--Stroke-Color);
-  align-items: end;
+  align-items: flex-end !important;
 
   &::after {
     content: none !important;
@@ -173,8 +176,9 @@
   }
 }
 
+.fileInput:has(textarea:focus),
 .fileInput:has(input:focus) {
-  border: 1px solid var(--Subtext-Color);
+  border: 1px solid var(--Subtext-Color) !important;
 }
 
 .chatBoard {
@@ -307,19 +311,25 @@
   margin: 0 !important;
   margin-right: 12px !important;
 }
-.categoryBox {
+.chatResBox {
   padding: 8px 16px;
   background-color: var(--Card-Color);
   border-bottom: 1px solid var(--Stroke-Color);
   position: sticky;
-  top: 0;
+  top: 65px;
   z-index: 2;
-  .categoryBoxInner {
+  display: none;
+  width: 100%;
+
+  @media (max-width: 800px) {
+    display: block;
+  }
+  .chatResBoxInner {
     display: flex;
     justify-content: flex-start;
     align-items: center;
   }
-  .categoriesSemiTitle {
+  .chatResSemiTitle {
     font-weight: var(--Regular);
     font-size: var(--SubTitle-5);
     line-height: 140%;
@@ -328,7 +338,7 @@
   }
 }
 
-.categoryBox .categoriesTitle {
+.chatResBox .chatResTitle {
   font-weight: var(--Regular);
   font-size: var(--SubTitle-1);
   line-height: 1.4;
