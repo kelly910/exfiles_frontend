@@ -34,7 +34,8 @@ api.interceptors.request.use(
       (config.url?.includes(urlMapper.register) && config?.method === 'post') ||
       config.url?.includes(urlMapper.googleLogin) ||
       config.url?.includes(urlMapper.forgotPassword) ||
-      config.url?.includes(urlMapper.resetPassword)
+      config.url?.includes(urlMapper.resetPassword) ||
+      config.url?.includes(urlMapper.verifyOtp)
     ) {
       delete config.headers.Authorization;
     }

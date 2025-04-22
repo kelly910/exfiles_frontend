@@ -191,7 +191,7 @@ const Sidebar = ({
                   id="email"
                   name="email"
                   value={search}
-                  placeholder="Enter Email Address here"
+                  placeholder="Search here"
                   onChange={(e) => setSearch(e.target.value)}
                   // error={Boolean(errors.email && touched.email)}
                   sx={{
@@ -261,7 +261,7 @@ const Sidebar = ({
                       type="text"
                       id="email"
                       name="email"
-                      placeholder="Enter Email Address here"
+                      placeholder="Search here"
                       // error={Boolean(errors.email && touched.email)}
                       sx={{
                         marginTop: '0',

@@ -99,7 +99,7 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
   };
 
   const handleClickOpenEditSummary = () => {
-    setIsOpenEditSummary(false);
+    setIsOpenEditSummary(true);
   };
 
   const handleCloseEditSummary = () => {
@@ -264,7 +264,6 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
           open={isOpenEditSummary}
           handleClose={handleCloseEditSummary}
           messageData={messageObj}
-          handleSubmit={() => {}}
         />
       )}
     </>
