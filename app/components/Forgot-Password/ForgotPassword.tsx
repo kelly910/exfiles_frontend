@@ -180,11 +180,7 @@ const Page = () => {
                             mt: 2,
                           }}
                         >
-                          <Link
-                            href="/login"
-                            className="link-primary"
-                            style={{ textDecoration: 'none' }}
-                          >
+                          <Link href="/login" className="link-primary">
                             Back to Login
                           </Link>
                           <Button
