@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -12,8 +13,17 @@ import {
   Typography,
 } from '@mui/material';
 import EditCombinedSummaryStyles from '@components/ReName/rename.module.scss';
-// import { useAppDispatch } from '@/app/redux/hooks';
+import { useAppDispatch } from '@/app/redux/hooks';
 import { ChatMessage } from '@/app/redux/slices/Chat/chatTypes';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from 'react-hook-form';
+import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import {
+  editCombinedSummaryData,
+  setUpdateMessageList,
+} from '@/app/redux/slices/Chat';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -42,25 +52,35 @@ interface EditCombineSummaryModalProps {
   open: boolean;
   handleClose: () => void;
   threadId?: string | null;
-  handleSubmit?: () => void;
   messageData: ChatMessage;
+}
+
+interface IFormSubmit {
+  summary: string;
 }
 
 export default function EditCombinedSummary({
   open,
   handleClose,
-  handleSubmit,
   messageData,
 }: EditCombineSummaryModalProps) {
-  // const dispatch = useAppDispatch();
-  // const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchSelectedDocSummary = async () => {
-    // const resultData = await dispatch(
-    //   fetchDocumentSummaryById(messageData.combined_summary_data.uuid)
-    // );
-    // console.log('dhfh', resultData);
-  };
+  const schema = Yup.object().shape({
+    summary: Yup.string().trim().required().label('Summary'),
+  });
+
+  const [defaultValues, setDefaultValues] = useState<IFormSubmit>({
+    summary: '',
+  });
+
+  const { handleSubmit, reset, control } = useForm({
+    defaultValues: defaultValues,
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    resolver: yupResolver(schema),
+  });
 
   useEffect(() => {
     if (
@@ -68,9 +88,50 @@ export default function EditCombinedSummary({
       messageData.combined_summary_data &&
       messageData.combined_summary_data
     ) {
-      fetchSelectedDocSummary();
+      setDefaultValues({
+        summary: messageData.combined_summary_data.summary || '',
+      });
+      reset({ summary: messageData.combined_summary_data.summary || '' });
     }
   }, [messageData]);
+
+  const handleSubmitEditSummary = async (values: IFormSubmit) => {
+    const { summary } = values;
+    if (
+      messageData.combined_summary_data &&
+      messageData.combined_summary_data.uuid
+    ) {
+      setIsLoading(true);
+      const payload = {
+        combined_summary_uuid: messageData.combined_summary_data.uuid,
+        summary,
+      };
+
+      const resultData = await dispatch(editCombinedSummaryData(payload));
+
+      if (editCombinedSummaryData.fulfilled.match(resultData)) {
+        const changedMsgObj = {
+          ...messageData,
+          combined_summary_data: {
+            ...messageData.combined_summary_data,
+            summary,
+          },
+        };
+        dispatch(setUpdateMessageList(changedMsgObj));
+
+        handleClose();
+        showToast(
+          'success',
+          'Generated Combined summary successfully updated.'
+        );
+      }
+      if (editCombinedSummaryData.rejected.match(resultData)) {
+        handleError(resultData.payload as ErrorResponse);
+      }
+
+      setIsLoading(false);
+    }
+  };
 
   return (
     <BootstrapDialog
@@ -97,22 +158,33 @@ export default function EditCombinedSummary({
               height={28}
             />
           </Box>
-          <Box>
-            <Typography
-              variant="h6"
-              className={EditCombinedSummaryStyles.dialogTitle}
-            >
-              Editing Combined Summary
-            </Typography>
-            <Typography
-              variant="body1"
-              className={EditCombinedSummaryStyles.dialogSemiTitleTag}
-            >
-              <span>RekamanProspek.pdf</span>
-              <span>RekamanProspek.pdf</span>
-              <span>+2</span>
-            </Typography>
-          </Box>
+          {messageData.combined_summary_data &&
+            messageData.combined_summary_data?.file_names?.length > 2 && (
+              <Box>
+                <Typography
+                  variant="h6"
+                  className={EditCombinedSummaryStyles.dialogTitle}
+                >
+                  Editing Combined Summary
+                </Typography>
+                <Typography
+                  variant="body1"
+                  className={EditCombinedSummaryStyles.dialogSemiTitleTag}
+                >
+                  {messageData.combined_summary_data?.file_names
+                    ?.slice(0, 2)
+                    ?.map((fileItem: string, index: number) => (
+                      <span key={index}>{fileItem}</span>
+                    ))}
+                  {messageData.combined_summary_data?.file_names?.length >
+                    2 && (
+                    <span>
+                      +{messageData.combined_summary_data.file_names.length - 2}
+                    </span>
+                  )}
+                </Typography>
+              </Box>
+            )}
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -132,76 +204,97 @@ export default function EditCombinedSummary({
           />
         </IconButton>
       </Box>
-      <Box component="div" className={EditCombinedSummaryStyles.dialogInput}>
-        <TextField
-          // as={TextField}
-          fullWidth
-          id="body"
-          name="body"
-          placeholder="Edit your Summary"
-          multiline
-          minRows={4}
-          maxRows={6}
-          // error={Boolean(errors.body && touched.body)}
-          sx={{
-            marginTop: '0px',
-            padding: '0',
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '12px',
-              borderWidth: '0px',
-              color: '#DADAE1',
-              backgroundColor: '#252431',
-              padding: '14px 16px',
-              '& .MuiOutlinedInput-notchedOutline': {
-                top: '-10px !important',
-              },
-              '& .MuiOutlinedInput-input': {
-                fontSize: '14px',
-                color: '#DADAE1',
-                fontWeight: 500,
-                borderRadius: '12px',
-                padding: '2px',
-                maxHeight: '200px',
-                overflowY: 'auto !important',
-                '&::placeholder': {
-                  color: '#888',
-                  fontWeight: 400,
-                },
-              },
-              '& fieldset': {
-                borderColor: '#3A3948',
-              },
-              '&:hover fieldset': {
-                borderColor: '#fff',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#fff',
-                borderWidth: '1px',
-                color: '#fff',
-              },
-            },
-            // '& .MuiFormHelperText-root': {
-            //   color: errors.body && touched.body ? '#ff4d4d' : '#b0b0b0',
-            // },
-          }}
-        />
-      </Box>
-      <DialogContent dividers className={EditCombinedSummaryStyles.dialogBody}>
-        <Box
-          component="div"
-          className={EditCombinedSummaryStyles.dialogFormButtonBox}
-        >
-          <Button
-            className={EditCombinedSummaryStyles.formCancelBtn}
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-          <Button className="btn btn-primary" onClick={handleSubmit}>
-            Save Changes
-          </Button>
+      <form
+        name="Edit combine summary Form"
+        onSubmit={handleSubmit(handleSubmitEditSummary)}
+      >
+        <Box component="div" className={EditCombinedSummaryStyles.dialogInput}>
+          <Controller
+            name="summary"
+            control={control}
+            defaultValue=""
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                fullWidth
+                id="summary"
+                placeholder="Edit your Summary"
+                multiline
+                minRows={4}
+                maxRows={6}
+                error={!!error}
+                helperText={error?.message}
+                sx={{
+                  marginTop: '0px',
+                  padding: '0',
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '12px',
+                    borderWidth: '0px',
+                    color: '#DADAE1',
+                    backgroundColor: '#252431',
+                    padding: '14px 16px',
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      top: '-10px !important',
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      fontSize: '14px',
+                      color: '#DADAE1',
+                      fontWeight: 500,
+                      borderRadius: '12px',
+                      padding: '2px',
+                      maxHeight: '200px',
+                      overflowY: 'auto !important',
+                      '&::placeholder': {
+                        color: '#888',
+                        fontWeight: 400,
+                      },
+                    },
+                    '& fieldset': {
+                      borderColor: '#3A3948',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#fff',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#fff',
+                      borderWidth: '1px',
+                      color: '#fff',
+                    },
+                  },
+                }}
+              />
+            )}
+          />
         </Box>
-      </DialogContent>
+        <DialogContent
+          dividers
+          className={EditCombinedSummaryStyles.dialogBody}
+        >
+          <Box
+            component="div"
+            className={EditCombinedSummaryStyles.dialogFormButtonBox}
+          >
+            <Button
+              className={EditCombinedSummaryStyles.formCancelBtn}
+              onClick={handleClose}
+              disabled={isLoading}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="btn btn-primary"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <CircularProgress size={18} sx={{ color: '#fff' }} />
+              ) : (
+                'Save Changes'
+              )}
+            </Button>
+          </Box>
+        </DialogContent>
+      </form>
     </BootstrapDialog>
   );
 }

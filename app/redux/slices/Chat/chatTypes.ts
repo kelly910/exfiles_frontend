@@ -35,6 +35,12 @@ export interface ThreadEditPayload {
   name?: string | null;
   thread_uuid: string;
 }
+
+export interface EditCombinedSummaryPayload {
+  combined_summary_uuid: string;
+  summary: string;
+}
+
 export interface ThreadCreationResponse {
   id: number;
   uuid: string;
@@ -82,6 +88,7 @@ export interface CombineSummaryData {
   id: string;
   uuid: string;
   summary: string;
+  file_names: string[] | [];
 }
 
 export type ThumbReaction = 'thumbs_up' | 'thumbs_down';

@@ -99,7 +99,7 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
   };
 
   const handleClickOpenEditSummary = () => {
-    setIsOpenEditSummary(false);
+    setIsOpenEditSummary(true);
   };
 
   const handleCloseEditSummary = () => {

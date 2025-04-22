@@ -3,6 +3,7 @@ import api from '@/app/utils/axiosConfig';
 import urlMapper from '@/app/utils/apiEndPoints/urlMapper';
 
 import {
+  EditCombinedSummaryPayload,
   FetchThreadListParams,
   GetMessagesByThreadIdPayload,
   GetMessagesByThreadIdResponse,
@@ -280,6 +281,27 @@ export const saveUserAnswerReaction = createAsyncThunk<
   }
 });
 
+export const editCombinedSummaryData = createAsyncThunk<
+  unknown,
+  EditCombinedSummaryPayload,
+  { rejectValue: string }
+>('chat/editCombinedSummaryData', async (payload, { rejectWithValue }) => {
+  try {
+    const response = await api.patch<unknown>(
+      `${urlMapper.combinedSummary}${payload.combined_summary_uuid}/`,
+      { summary: payload.summary }
+    );
+    return response.data;
+  } catch (error: unknown) {
+    if (typeof error === 'object' && error !== null && 'response' in error) {
+      const err = error as { response?: { data?: string } };
+      return rejectWithValue(
+        err.response?.data || 'Something went wrong. Please try again.'
+      );
+    }
+    return rejectWithValue('Something went wrong. Please try again.');
+  }
+});
 /* ------------ Answer Chat Messages Actions End ------------------ */
 
 const chatSlice = createSlice({

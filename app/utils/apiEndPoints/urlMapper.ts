@@ -25,6 +25,7 @@ const urlMapper = {
   uploadActualDoc: `${BASE_URL}upload-actual-document/`,
   chatMessage: `${BASE_URL}chat-message/`,
   chatAnswerReaction: `${BASE_URL}message-reaction/`,
+  combinedSummary: `${BASE_URL}combined-summary/`,
 };
 
 export default urlMapper;
