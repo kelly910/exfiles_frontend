@@ -272,6 +272,7 @@
 
       &:hover {
         border: 1px solid var(--Stroke-Color);
+        background-color: none;
       }
 
       &.active,
@@ -584,6 +585,7 @@
 
   &:hover {
     border: 1px solid var(--Stroke-Color) !important;
+    background: none;
   }
 
   &.active,

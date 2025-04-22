@@ -4,6 +4,11 @@ header {
     font-size: var(--Heading-4);
     line-height: 1.4;
     color: var(--Primary-Text-Color);
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
   }
 
   .documentNo {
@@ -178,8 +183,13 @@ header {
 
 .docsHeader {
   display: block;
+  max-width: calc(100% - 40px - 40px - 32px);
 
-  @media (max-width: 768px) {
+  @media (max-width: 1100px) {
+    max-width: calc(100% - 40px - 40px - 40px - 40px - 32px - 32px);
+  }
+
+  @media (max-width: 800px) {
     display: none;
   }
 }
