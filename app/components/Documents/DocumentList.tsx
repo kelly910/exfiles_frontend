@@ -35,7 +35,7 @@ type Tag = {
 type Document = {
   id: number;
   file_name: string;
-  // file_path: string;
+  file_path: string;
   file_type: string;
   description?: string;
   tags: Tag[];
@@ -180,6 +180,15 @@ const DocumentList: React.FC<DocumentListProps> = ({
     setOpenDeleteDialog(false);
   };
 
+  const handleViewDocument = () => {
+    const doc = documents.find((doc) => doc.uuid === menuDocUUID);
+    if (doc?.file_path) {
+      window.open(doc.file_path, '_blank');
+    }
+    handleCloseUserMenu();
+  };
+  
+
   return (
     <>
       <div className={styles.docsListing}>
@@ -312,6 +321,18 @@ const DocumentList: React.FC<DocumentListProps> = ({
                               height={18}
                             />
                             <Typography>Delete Document</Typography>
+                          </MenuItem>
+                          <MenuItem
+                            onClick={handleViewDocument}
+                            className={`${styles.menuDropdown} `}
+                          >
+                            <Image
+                              src="/images/document-text.svg"
+                              alt="tras"
+                              width={18}
+                              height={18}
+                            />
+                            <Typography>View Document</Typography>
                           </MenuItem>
                         </Menu>
                       </div>
