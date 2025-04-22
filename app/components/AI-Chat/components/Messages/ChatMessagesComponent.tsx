@@ -18,7 +18,7 @@ import {
 } from '@/app/redux/slices/Chat';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import UploadFilesStatusMessage from './UploadFilesStatusMessage';
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import { RootState } from '@/app/redux/store';
 import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
