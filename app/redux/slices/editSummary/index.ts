@@ -11,7 +11,7 @@ interface Tag {
 interface EditSummaryResponse {
   id?: number;
   file_name: string;
-  file_path: string;
+  // file_path: string;
   file_type: string;
   description: string;
   upload_on: string;

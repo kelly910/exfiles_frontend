@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import styles from './document.module.scss';
-import { convertDateFormat, documentType } from '@/app/utils/constants';
+import { convertDateFormat } from '@/app/utils/constants';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { fetchDocumentsByCategory } from '@/app/redux/slices/documentByCategory';
@@ -25,6 +25,7 @@ import { setLoader } from '@/app/redux/slices/loader';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import DeleteDialog from '../LogoutDialog/DeleteDialog';
 import DocumentsEmpty from '../DocumentsEmpty/DocumentsEmpty';
+import { getDocumentImage } from '@/app/utils/functions';
 
 type Tag = {
   id: number;
@@ -34,7 +35,7 @@ type Tag = {
 type Document = {
   id: number;
   file_name: string;
-  file_path: string;
+  // file_path: string;
   file_type: string;
   description?: string;
   tags: Tag[];
@@ -72,6 +73,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const [page, setPage] = useState(1);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleletDocId, setDeleletDocId] = useState<string>('');
+  const [menuDocUUID, setMenuDocUUID] = useState<string | null>(null);
 
   useEffect(() => {
     if (catId) {
@@ -93,11 +95,6 @@ const DocumentList: React.FC<DocumentListProps> = ({
       }, 1000);
     }
   }, [dispatch, catId]);
-
-  const getDocumentImage = (fileType: string) => {
-    const docType = documentType.find((doc) => doc.type.includes(fileType));
-    return docType ? docType.image : '/images/pdf.svg';
-  };
 
   const handleSearchInput = (inputValue: string) => {
     setSearchParams(inputValue.length > 3 ? inputValue : '');
@@ -145,18 +142,42 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenUserMenu = (
+    event: React.MouseEvent<HTMLElement>,
+    uuid: string
+  ) => {
     setAnchorElUser(event.currentTarget);
+    setMenuDocUUID(uuid);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    setMenuDocUUID(null);
+  };
+  const handleDeleteOption = () => {
+    if (menuDocUUID) {
+      setDeleletDocId(menuDocUUID);
+      console.log('Deleting:', menuDocUUID);
+      setOpenDeleteDialog(true);
+    }
+    handleCloseUserMenu();
   };
 
-  const handleDeleteOption = (documentId: string) => {
-    setDeleletDocId(documentId);
-    handleCloseUserMenu();
-    setOpenDeleteDialog(true);
+  const handleDeleteConfirmed = () => {
+    if (selectedDoc === deleletDocId) {
+      handleOpenDocumentSummary('');
+    }
+    if (catId) {
+      dispatch(
+        fetchDocumentsByCategory({
+          categoryId: catId,
+          search: searchParams,
+          page: page,
+        })
+      );
+    }
+
+    setOpenDeleteDialog(false);
   };
 
   return (
@@ -242,7 +263,12 @@ const DocumentList: React.FC<DocumentListProps> = ({
                         >
                           {doc?.file_name}
                         </Typography>
-                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                        <IconButton
+                          onClick={(e) =>
+                            handleOpenUserMenu(e, String(doc?.uuid))
+                          }
+                          sx={{ p: 0 }}
+                        >
                           <Image
                             src="/images/more.svg"
                             alt="more"
@@ -276,9 +302,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
                           }}
                         >
                           <MenuItem
-                            onClick={() =>
-                              handleDeleteOption(String(doc?.uuid))
-                            }
+                            onClick={handleDeleteOption}
                             className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
                           >
                             <Image
@@ -347,6 +371,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
         onClose={() => setOpenDeleteDialog(false)}
         type="Document"
         deletedId={deleletDocId}
+        onConfirmDelete={handleDeleteConfirmed}
       />
     </>
   );

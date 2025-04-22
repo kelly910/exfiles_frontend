@@ -12,6 +12,7 @@ import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
 import { formatTo12HourTimeManually } from '@/app/utils/functions';
 import { DOCUMENT_STATUS, QUESTION_TYPES } from '@/app/utils/constants';
 import { SocketPayload } from '../../types/aiChat.types';
+import { getDocumentImage } from '@/app/utils/functions';
 
 export default function ShowGeneratedSummariesDocs({
   handleDocCategoryClick,
@@ -85,7 +86,7 @@ export default function ShowGeneratedSummariesDocs({
                         className={chatMessagesStyles.chatAlFileIcon}
                       >
                         <Image
-                          src="/images/pdf.svg"
+                          src={getDocumentImage(file_data?.file_extension)}
                           alt="pdf"
                           width={13}
                           height={16}

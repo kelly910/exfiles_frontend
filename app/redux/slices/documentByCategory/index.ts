@@ -11,7 +11,7 @@ interface Tag {
 interface Document {
   id: number;
   file_name: string;
-  file_path: string;
+  // file_path: string;
   file_type: string;
   tags: Tag[];
   upload_on: string;
