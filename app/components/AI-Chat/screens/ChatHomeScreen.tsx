@@ -53,6 +53,8 @@ export default function ChatHomeScreen() {
     );
 
     if (createNewThread.rejected.match(resultData)) {
+      setIsLoading(false);
+
       showToast('error', 'Something went wrong. Please try again!');
       console.error('createNewThread failed:', resultData.payload);
       return;
