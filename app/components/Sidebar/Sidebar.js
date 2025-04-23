@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Style from './style.module.scss';
 import ListItem from '@mui/material/ListItem';
-import { Link, List } from '@mui/material';
+import { Box, IconButton, InputAdornment, Link, List } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -11,6 +11,116 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import Image from 'next/image';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
+import { BorderBottom, Padding } from '@mui/icons-material';
+import zIndex from '@mui/material/styles/zIndex';
+
+const newTheme = (theme) =>
+  createTheme({
+    ...theme,
+    components: {
+      MuiPickersCalendarHeader: {
+        styleOverrides: {
+          root: {
+            backgroundColor: 'none',
+            color: 'var(--Primary-Text-Color)',
+            borderBottom: '1px solid var(--Stroke-Color)',
+            '& button': {
+              svg: {
+                color: 'var(--Primary-Text-Color)',
+              },
+            },
+          },
+          label: {
+            fontSize: 'var(--SubTitle-2)',
+            fontWeight: 'var(--Medium)',
+          },
+        },
+      },
+      MuiPickersFadeTransitionGroup: {
+        styleOverrides: {
+          root: {
+            '& .MuiDayCalendar-header': {
+              span: {
+                color: 'var(--Primary-Text-Color)',
+              },
+            },
+          },
+        },
+      },
+      MuiPickersDay: {
+        styleOverrides: {
+          root: {
+            color: 'var(--Primary-Text-Color)',
+            fontWeight: 'bold',
+            '&:hover': {
+              border: '1px solid var(--Card-Border)',
+              color: 'var(--Primary-Text-Color)',
+            },
+            '&.Mui-selected': {
+              backgroundColor: 'var(--Card-Border)',
+              color: 'var(--Primary-Text-Color)',
+              '&:hover': {
+                backgroundColor: 'var(--Card-Border)',
+                border: '1px solid var(--Card-Border)',
+                color: 'var(--Primary-Text-Color)',
+              },
+            },
+            '&.MuiPickersDay-today': {
+              border: '1px solid var(--Card-Border)',
+              backgroundColor: 'var(--Card-Border)',
+              color: 'var(--Primary-Text-Color)',
+            },
+          },
+        },
+      },
+      MuiDateCalendar: {
+        styleOverrides: {
+          root: {
+            color: 'unet',
+            borderRadius: 12,
+            border: '1px solid var(--Stroke-Color)',
+            backgroundColor: 'var(--Card-Color)',
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            // Target only the Paper used by PickerPopper
+            '&.MuiPickerPopper-paper': {
+              backgroundColor: 'transparent', // or 'none'
+            },
+          },
+        },
+      },
+      MuiPickerPopper: {
+        styleOverrides: {
+          root: {
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            backdropFilter: 'none',
+            inset: '-56px auto auto 300px !important',
+            backdropFilter: 'blur(10px)',
+            inset: '0 auto auto 300px !important',
+            width: '100vw',
+            height: '100vh',
+            paddingTop: '130px',
+            paddingLeft: '20px',
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            transform: 'unset !important',
+          },
+        },
+      },
+    },
+  });
 
 const Sidebar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -77,25 +187,146 @@ const Sidebar = () => {
             </div>
           </div>
           <div className={Style['sidebar-list']}>
-            <List className={Style['sidebar-list-details']}>
-              <ListItem>
-                <Link
-                  href="#"
-                  underline="none"
-                  className={Style['sidebar-btn']}
-                >
-                  <span className={Style['btn-text']}>Start New Chat</span>{' '}
-                  <span>
-                    <Image
-                      src="/images/add-icon.svg"
-                      alt="icon"
-                      width={20}
-                      height={20}
+            <Box style={{ marginBottom: '10px' }}>
+              <ThemeProvider theme={newTheme}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'stretch',
+                      border: '1px solid #444',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      backgroundColor: '#1c1c28',
+                      width: '100%',
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        padding: '8px 12px',
+                        backgroundColor: '#1c1c28',
+                        color: '#fff',
+                        borderRight: '1px solid #444',
+                        display: 'flex',
+                        alignItems: 'center',
+                        fontSize: '16px',
+                        whiteSpace: 'nowrap',
+                        width: '63px',
+                        flex: '0 0 auto',
+                      }}
+                    >
+                      From
+                    </Box>
+                    <DesktopDatePicker
+                      className={Style['data-input']}
+                      slotProps={{
+                        textField: {
+                          placeholder: 'Select date',
+                          sx: {
+                            '& .MuiPickersInputBase-root': {
+                              padding: '4px',
+                            },
+                            '& .MuiPickersSectionList-root': {
+                              backgroundColor: '#1e1e1e',
+                              color: 'var(--Subtext-Color)',
+                              borderRadius: '8px',
+                              padding: '5px 0 5px 8px',
+                            },
+                            '& .MuiInputAdornment-root': {
+                              padding: '7px',
+                              backgroundColor: 'var(--Card-Color)',
+                              color: 'var(--Primary-Text-Color)',
+                              borderRadius: '8px',
+                              border: '0.72px solid var(--Stroke-Color)',
+                              maxHeight: 'unset',
+                              width: '40px',
+                              flex: '0 0 auto',
+                            },
+                            '& .MuiInputAdornment-root button': {
+                              padding: '0',
+                              color: 'var(--Primary-Text-Color)',
+                            },
+                            '& fieldset': {
+                              display: 'none',
+                            },
+                          },
+                        },
+                      }}
                     />
-                  </span>{' '}
-                </Link>
-              </ListItem>
-            </List>
+                  </Box>
+                </LocalizationProvider>
+              </ThemeProvider>
+            </Box>
+            <Box style={{ marginBottom: '10px' }}>
+              <ThemeProvider theme={newTheme}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'stretch',
+                      border: '1px solid #444',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      backgroundColor: '#1c1c28',
+                      width: '100%',
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        padding: '8px 12px',
+                        backgroundColor: '#1c1c28',
+                        color: '#fff',
+                        borderRight: '1px solid #444',
+                        display: 'flex',
+                        alignItems: 'center',
+                        fontSize: '16px',
+                        whiteSpace: 'nowrap',
+                        width: '63px',
+                        flex: '0 0 auto',
+                      }}
+                    >
+                      To
+                    </Box>
+                    <DesktopDatePicker
+                      className={Style['data-input']}
+                      slotProps={{
+                        textField: {
+                          placeholder: 'Select date',
+                          sx: {
+                            '& .MuiPickersInputBase-root': {
+                              padding: '4px',
+                            },
+                            '& .MuiPickersSectionList-root': {
+                              backgroundColor: '#1e1e1e',
+                              color: 'var(--Subtext-Color)',
+                              borderRadius: '8px',
+                              padding: '5px 0 5px 8px',
+                            },
+                            '& .MuiInputAdornment-root': {
+                              padding: '7px',
+                              backgroundColor: 'var(--Card-Color)',
+                              color: 'var(--Primary-Text-Color)',
+                              borderRadius: '8px',
+                              border: '0.72px solid var(--Stroke-Color)',
+                              maxHeight: 'unset',
+                              width: '40px',
+                              flex: '0 0 auto',
+                            },
+                            '& .MuiInputAdornment-root button': {
+                              padding: '0',
+                              color: 'var(--Primary-Text-Color)',
+                            },
+                            '& fieldset': {
+                              display: 'none',
+                            },
+                          },
+                        },
+                      }}
+                    />
+                  </Box>
+                </LocalizationProvider>
+              </ThemeProvider>
+            </Box>
           </div>
           <div className={Style['sidebar-accordian']}>
             <Accordion
