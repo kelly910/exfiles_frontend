@@ -14,9 +14,9 @@ import {
   setActiveThread,
   setIsStreaming,
 } from '@/app/redux/slices/Chat';
-import { showToast } from '@/app/shared/toast/ShowToast';
 import { useRouter } from 'next/navigation';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
+import { ErrorResponse, handleError } from '@/app/utils/handleError';
 
 // Dynamic Custom Component imports
 const DynamicDocUploadModal = dynamic(
@@ -55,8 +55,7 @@ export default function ChatHomeScreen() {
 
     if (createNewThread.rejected.match(resultData)) {
       setIsLoading(false);
-
-      showToast('error', 'Something went wrong. Please try again!');
+      handleError(resultData.payload as ErrorResponse);
       console.error('createNewThread failed:', resultData.payload);
       return;
     }
