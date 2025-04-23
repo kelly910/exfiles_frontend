@@ -348,11 +348,12 @@ const chatSlice = createSlice({
           typeof newMsg !== 'object' &&
           (newMsg || newMsg == '')
         ) {
-          const lastChunk = state.messageChunks[state.messageChunks.length - 1];
+          state.messageChunks = [...state.messageChunks, newMsg];
+          // const lastChunk = state.messageChunks[state.messageChunks.length - 1];
 
-          if (newMsg !== lastChunk) {
-            state.messageChunks.push(newMsg);
-          }
+          // if (newMsg !== lastChunk) {
+          //   state.messageChunks.push(newMsg);
+          // }
 
           if (isStreamingCompleted) {
             state.isStreaming = false;

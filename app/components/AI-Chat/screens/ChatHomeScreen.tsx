@@ -9,13 +9,14 @@ import { SocketPayload } from '@components/AI-Chat/types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import { useAppDispatch } from '@/app/redux/hooks';
 import {
+  clearChunks,
   createNewThread,
   setActiveThread,
   setIsStreaming,
 } from '@/app/redux/slices/Chat';
-import { showToast } from '@/app/shared/toast/ShowToast';
 import { useRouter } from 'next/navigation';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
+import { ErrorResponse, handleError } from '@/app/utils/handleError';
 
 // Dynamic Custom Component imports
 const DynamicDocUploadModal = dynamic(
@@ -53,7 +54,8 @@ export default function ChatHomeScreen() {
     );
 
     if (createNewThread.rejected.match(resultData)) {
-      showToast('error', 'Something went wrong. Please try again!');
+      setIsLoading(false);
+      handleError(resultData.payload as ErrorResponse);
       console.error('createNewThread failed:', resultData.payload);
       return;
     }
@@ -64,7 +66,7 @@ export default function ChatHomeScreen() {
     if (!createdThreadID) return;
     sendSocketMessage({ ...payloadData, thread_uuid: createdThreadID });
     dispatch(setIsStreaming(true));
-    router.push(`/ai-chats/${createdThreadID}`);
+    router.push(`/ai-chats/${createdThreadID}/`);
   };
 
   const handlePromptClick = (prompText: string) => {
@@ -75,6 +77,8 @@ export default function ChatHomeScreen() {
     // Clearing Page data and the thread details
     dispatch(setActiveThread(null));
     dispatch(clearPageHeaderData());
+    dispatch(setIsStreaming(false));
+    dispatch(clearChunks([]));
   }, []);
 
   return (

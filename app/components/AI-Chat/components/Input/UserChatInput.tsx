@@ -29,6 +29,7 @@ export default function UserChatInput({
   selectedPrompt,
 }: UserChatInputProps) {
   const [text, setText] = useState('');
+  const isSendDisabled = isLoadingProp || !text?.trim();
 
   const handleKeyUp = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
@@ -94,7 +95,7 @@ export default function UserChatInput({
         color="primary"
         fullWidth
         onClick={handleMessageSending}
-        disabled={isLoadingProp || false}
+        disabled={isSendDisabled}
       >
         {isLoadingProp ? (
           <CircularProgress size={18} sx={{ color: '#fff' }} />
