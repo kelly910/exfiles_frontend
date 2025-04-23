@@ -11,7 +11,6 @@ import dynamic from 'next/dynamic';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 
 // import { useAppDispatch } from '@/app/redux/hooks';
-import WebSocketInitializer from '@services/WebSocketInitializer';
 // import LogIncidentHomeScreen from './screens/LogIncidentHomeScreen';
 
 // Dynamic Custom Component imports
@@ -65,7 +64,6 @@ export default function AIChatComponent({ threadId }: { threadId?: string }) {
   return (
     <>
       <main className="chat-body">
-        <WebSocketInitializer />
         <Sidebar
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}

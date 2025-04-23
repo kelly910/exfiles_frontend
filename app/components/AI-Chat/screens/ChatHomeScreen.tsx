@@ -9,6 +9,7 @@ import { SocketPayload } from '@components/AI-Chat/types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import { useAppDispatch } from '@/app/redux/hooks';
 import {
+  clearChunks,
   createNewThread,
   setActiveThread,
   setIsStreaming,
@@ -66,7 +67,7 @@ export default function ChatHomeScreen() {
     if (!createdThreadID) return;
     sendSocketMessage({ ...payloadData, thread_uuid: createdThreadID });
     dispatch(setIsStreaming(true));
-    router.push(`/ai-chats/${createdThreadID}`);
+    router.push(`/ai-chats/${createdThreadID}/`);
   };
 
   const handlePromptClick = (prompText: string) => {
@@ -77,6 +78,8 @@ export default function ChatHomeScreen() {
     // Clearing Page data and the thread details
     dispatch(setActiveThread(null));
     dispatch(clearPageHeaderData());
+    dispatch(setIsStreaming(false));
+    dispatch(clearChunks([]));
   }, []);
 
   return (

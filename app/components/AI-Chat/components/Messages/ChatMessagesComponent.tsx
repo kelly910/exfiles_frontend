@@ -183,6 +183,8 @@ export default function ChatMessagesComponent({
 
   useEffect(() => {
     return () => {
+      dispatch(setActiveThread(null));
+      dispatch(setIsStreaming(false));
       dispatch(clearChunks([]));
       dispatch(clearMessagesList());
     };
