@@ -5,6 +5,7 @@ import styles from './style.module.scss';
 // import Header from '@components/Header/Header';
 import ChatWindows from '@/app/components/Chat-Windows/ChatWindows';
 import Header from '@/app/components/Header/Header';
+// import Sidebar from '@/app/components/Common/Sidebar';
 
 export default function Page() {
   return (
