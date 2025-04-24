@@ -3,6 +3,7 @@ import {
   Button,
   Grid,
   IconButton,
+  Skeleton,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -13,6 +14,54 @@ import { formatTo12HourTimeManually } from '@/app/utils/functions';
 import { DOCUMENT_STATUS, QUESTION_TYPES } from '@/app/utils/constants';
 import { SocketPayload } from '../../types/aiChat.types';
 import { getDocumentImage } from '@/app/utils/functions';
+
+const FileSummarySkeleton = () => {
+  return (
+    <>
+      {/* Category Block Skeleton */}
+      <Box component="div" className={chatMessagesStyles.chatAlFileSummary}>
+        <Skeleton
+          variant="circular"
+          width={14}
+          height={14}
+          sx={{ bgcolor: 'rgba(255, 255, 255, 0.1)' }}
+        />
+        <Skeleton
+          variant="text"
+          width={120}
+          height={20}
+          sx={{
+            mx: 1,
+            bgcolor: 'rgba(255, 255, 255, 0.1)',
+            borderRadius: '4px',
+          }}
+        />
+        <Skeleton
+          variant="circular"
+          width={12}
+          height={12}
+          sx={{ bgcolor: 'rgba(255, 255, 255, 0.1)' }}
+        />
+      </Box>
+
+      {/* Summary Block Skeleton */}
+      <Box component="div" className={chatMessagesStyles.chatAlFileSummary}>
+        <Skeleton
+          variant="text"
+          width={100}
+          height={20}
+          sx={{ bgcolor: 'rgba(255, 255, 255, 0.1)' }}
+        />
+        <Skeleton
+          variant="circular"
+          width={12}
+          height={12}
+          sx={{ ml: 1, bgcolor: 'rgba(255, 255, 255, 0.1)' }}
+        />
+      </Box>
+    </>
+  );
+};
 
 export default function ShowGeneratedSummariesDocs({
   handleDocCategoryClick,
@@ -141,6 +190,9 @@ export default function ShowGeneratedSummariesDocs({
                             </Button>
                           </Box>
                         </Box>
+                      )}
+                      {trained_status === DOCUMENT_STATUS.PENDING && (
+                        <FileSummarySkeleton />
                       )}
                       {trained_status === DOCUMENT_STATUS.SUCCESS &&
                         category_data && (
