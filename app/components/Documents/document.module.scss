@@ -518,35 +518,9 @@
     }
 
     * {
-      font-size: var(--SubTitle-2);
-    }
-    h1 {
-      font-size: var(--Heading-1);
-      font-weight: var(--Bold);
-    }
-    h2 {
-      font-size: var(--Heading-2);
-    }
-    h3 {
-      font-size: var(--Heading-3);
-    }
-    h4 {
-      font-size: var(--Heading-4);
-    }
-    h5 {
-      font-size: var(--Heading-5);
-    }
-    h6 {
-      font-size: var(--Heading-6);
-    }
-
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-weight: var(--Regular);
-      color: var(--Primary-Text-Color);
+      font-weight: var(--Lighter);
+      font-size: var(--SubTitle-3);
+      line-height: 1.4;
     }
 
     p {
@@ -556,8 +530,42 @@
     }
 
     b {
-      font-weight: var(--Regular);
-      font-size: var(--SubTitle-1);
+      font-weight: var(--Lighter);
+      font-size: var(--SubTitle-2);
+      color: var(--Primary-Text-Color);
+    }
+    h1 > *,
+    h1 {
+      font-size: var(--Heading-1);
+      font-weight: var(--Bold);
+    }
+    h2 > *,
+    h2 {
+      font-size: var(--Heading-2);
+    }
+    h3 > *,
+    h3 {
+      font-size: var(--Heading-3);
+    }
+    h4 > *,
+    h4 {
+      font-size: var(--Heading-4);
+    }
+    h5 > *,
+    h5 {
+      font-size: var(--Heading-5);
+    }
+    h6 > *,
+    h6 {
+      font-size: var(--Heading-6);
+    }
+
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: var(--Bold);
       color: var(--Primary-Text-Color);
     }
 

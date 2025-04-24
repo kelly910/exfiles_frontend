@@ -367,7 +367,10 @@ export default function ChatMessagesComponent({
               );
             })}
 
-          <Box sx={{ padding: '0 16px' }}>
+          <Box
+            sx={{ padding: '0 16px' }}
+            className={chatMessagesStyles.chatWindow}
+          >
             {isStreamingMessages &&
               messagesChunks &&
               (messagesChunks.length > 2 ? (
