@@ -522,6 +522,18 @@
       font-size: var(--SubTitle-3);
       line-height: 1.4;
     }
+
+    p {
+      font-size: var(--SubTitle-2);
+      font-weight: var(--Lighter);
+      color: var(--Primary-Text-Color);
+    }
+
+    b {
+      font-weight: var(--Lighter);
+      font-size: var(--SubTitle-2);
+      color: var(--Primary-Text-Color);
+    }
     h1 > *,
     h1 {
       font-size: var(--Heading-1);
@@ -554,18 +566,6 @@
     h5,
     h6 {
       font-weight: var(--Bold);
-      color: var(--Primary-Text-Color);
-    }
-
-    p {
-      font-size: var(--SubTitle-2);
-      font-weight: var(--Lighter);
-      color: var(--Primary-Text-Color);
-    }
-
-    b {
-      font-weight: var(--Lighter);
-      font-size: var(--SubTitle-2);
       color: var(--Primary-Text-Color);
     }
 
