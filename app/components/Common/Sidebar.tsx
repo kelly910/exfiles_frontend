@@ -379,7 +379,8 @@ const Sidebar = ({
               panelKey="panel1"
               handleAccordionChange={handleAccordionChange}
             >
-              {!initialAllPinnedChatsData && (
+              {(!initialAllPinnedChatsData ||
+                initialAllPinnedChatsData?.count === 0) && (
                 <NoRecordFound title={'No Chats are pinned yet.'} />
               )}
 
@@ -413,7 +414,7 @@ const Sidebar = ({
               panelKey="panel2"
               handleAccordionChange={handleAccordionChange}
             >
-              {!initialAllChatsData && (
+              {(!initialAllChatsData || initialAllChatsData?.count === 0) && (
                 <NoRecordFound title={'Your chats will show up here.'} />
               )}
 
