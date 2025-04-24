@@ -35,12 +35,17 @@ export default function PinnedMessagesList(props: PinnedMessagesListProps) {
     useState<PinnedAnswerMessage[]>(initialAllChatsData);
   const [page, setPage] = useState(2); // already loaded page 1
   const [hasMore, setHasMore] = useState(
-    initialAllChatsData?.length < totalCount
+    pinnedChats?.length < totalCount
   );
   const [isFetching, setIsFetching] = useState(false);
   const pageRef = useRef(page);
   const containerRef = useRef<HTMLDivElement>(null);
   const fetchingRef = useRef(isFetching);
+
+  useEffect(() => {
+    setPinnedChats(initialAllChatsData);
+    setPage(2);
+  }, [initialAllChatsData]);
 
   useEffect(() => {
     pageRef.current = page;
