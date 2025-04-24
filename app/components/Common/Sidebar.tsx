@@ -383,7 +383,7 @@ const Sidebar = ({
                 <NoRecordFound title={'No Chats are pinned yet.'} />
               )}
 
-              {initialAllPinnedChatsData?.count === 0 && (
+              {initialAllPinnedChatsData?.count === 0 && search && (
                 <NoRecordFound title={'No Match Found'} />
               )}
               {initialAllPinnedChatsData &&
@@ -420,7 +420,7 @@ const Sidebar = ({
                 <NoRecordFound title={'Your chats will show up here.'} />
               )}
 
-              {initialAllChatsData?.count === 0 && (
+              {initialAllChatsData?.count === 0 && search && (
                 <NoRecordFound title={'No Match Found'} />
               )}
 
