@@ -1,5 +1,5 @@
 // .docsPageMain {
-//   height: calc(100vh - 65px);
+//   height: calc(100dvh - 65px);
 //   overflow-y: auto;
 // }
 
@@ -8,12 +8,12 @@
   justify-content: space-between;
   align-items: stretch;
   width: 100%;
-  height: calc(100vh - 65px);
+  height: calc(100dvh - 65px);
 }
 
 .docsListing {
   position: relative;
-  // height: calc(100vh - 65px);
+  // height: calc(100dvh - 65px);
   height: unset;
   width: 100%;
   overflow-y: auto;
@@ -108,7 +108,7 @@
       align-items: center;
       color: var(--Subtext-Color);
       font-size: var(--SubTitle-2);
-      min-height: calc(100vh - 65px - 74px - 91px - 36px);
+      min-height: calc(100dvh - 65px - 74px - 91px - 36px);
     }
 
     .docGridBox {
@@ -239,7 +239,7 @@
   flex: 0 0 auto;
   border-right: 1px solid var(--Stroke-Color);
   padding-bottom: 24px;
-  height: calc(100vh - 65px);
+  height: calc(100dvh - 65px);
   overflow-y: auto;
   // animation: slideCDown 0.6s ease-out forwards;
 
@@ -366,7 +366,7 @@
   width: 500px;
   border-left: 1px solid var(--Stroke-Color);
   position: relative;
-  height: calc(100vh - 65px);
+  height: calc(100dvh - 65px);
   overflow-y: auto;
   transition: all 0.4s;
   animation: slideDown 0.4s ease-out forwards;
@@ -522,51 +522,55 @@
       font-size: var(--SubTitle-3);
       line-height: 1.4;
     }
-
     p {
-      font-size: var(--SubTitle-2);
+      font-size: var(--SubTitle-3);
       font-weight: var(--Lighter);
       color: var(--Primary-Text-Color);
     }
-
     b {
       font-weight: var(--Lighter);
-      font-size: var(--SubTitle-2);
+      font-size: var(--SubTitle-3);
       color: var(--Primary-Text-Color);
     }
-    h1 > *,
-    h1 {
-      font-size: var(--Heading-1);
-      font-weight: var(--Bold);
-    }
-    h2 > *,
-    h2 {
-      font-size: var(--Heading-2);
-    }
-    h3 > *,
-    h3 {
-      font-size: var(--Heading-3);
-    }
-    h4 > *,
-    h4 {
-      font-size: var(--Heading-4);
-    }
-    h5 > *,
-    h5 {
-      font-size: var(--Heading-5);
-    }
-    h6 > *,
-    h6 {
-      font-size: var(--Heading-6);
-    }
-
+    // h1 > *,
+    // h1 {
+    //   font-size: var(--Heading-1);
+    //   font-weight: var(--Bold);
+    // }
+    // h2 > *,
+    // h2 {
+    //   font-size: var(--Heading-2);
+    // }
+    // h3 > *,
+    // h3 {
+    //   font-size: var(--Heading-3);
+    // }
+    // h4 > *,
+    // h4 {
+    //   font-size: var(--Heading-4);
+    // }
+    // h5 > *,
+    // h5 {
+    //   font-size: var(--Heading-5);
+    // }
+    // h6 > *,
+    // h6 {
+    //   font-size: var(--Heading-6);
+    // }
+    h1,
     h2,
     h3,
     h4,
     h5,
     h6 {
-      font-weight: var(--Bold);
+      font-weight: var(--Medium);
       color: var(--Primary-Text-Color);
+      font-size: var(--SubTitle-3);
+      b {
+        font-weight: var(--Medium);
+        color: var(--Primary-Text-Color);
+        font-size: var(--SubTitle-3);
+      }
     }
 
     .dialogFormButtonBox {
@@ -672,6 +676,62 @@
         font-size: var(--SubTitle-2);
         line-height: 1.4;
         color: var(--Primary-Text-Color);
+      }
+
+      * {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-3);
+        line-height: 1.4;
+      }
+      p {
+        font-size: var(--SubTitle-3);
+        font-weight: var(--Lighter);
+        color: var(--Primary-Text-Color);
+      }
+      b {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-3);
+        color: var(--Primary-Text-Color);
+      }
+      // h1 > *,
+      // h1 {
+      //   font-size: var(--Heading-1);
+      //   font-weight: var(--Bold);
+      // }
+      // h2 > *,
+      // h2 {
+      //   font-size: var(--Heading-2);
+      // }
+      // h3 > *,
+      // h3 {
+      //   font-size: var(--Heading-3);
+      // }
+      // h4 > *,
+      // h4 {
+      //   font-size: var(--Heading-4);
+      // }
+      // h5 > *,
+      // h5 {
+      //   font-size: var(--Heading-5);
+      // }
+      // h6 > *,
+      // h6 {
+      //   font-size: var(--Heading-6);
+      // }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-weight: var(--Medium);
+        color: var(--Primary-Text-Color);
+        font-size: var(--SubTitle-3);
+        b {
+          font-weight: var(--Medium);
+          color: var(--Primary-Text-Color);
+          font-size: var(--SubTitle-3);
+        }
       }
     }
   }
