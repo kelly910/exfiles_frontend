@@ -2,7 +2,6 @@
 import styles from './logincident.module.scss';
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef, GridRowClassNameParams } from '@mui/x-data-grid';
 import {
   Button,
   IconButton,
@@ -26,10 +25,52 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import LogincidentEmpty from './LogincidentEmpty';
-import { convertDateFormatForIncident } from '@/app/utils/constants';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useRouter } from 'next/navigation';
 import { setPageHeaderData } from '@/app/redux/slices/login';
+import LogDetailsModel from '../LogModel/LogDetailsModel';
+
+export interface Tag {
+  id: number;
+  name: string;
+}
+
+export interface FileData {
+  file_name: string;
+  file_size: number;
+  file_url: string;
+  file_extension: string;
+}
+
+export interface CategoryData {
+  id: number;
+  name: string;
+}
+
+export interface DocumentData {
+  id: number;
+  uuid: string;
+  file_data: FileData;
+  category_data: CategoryData;
+}
+
+export interface UserData {
+  id: number;
+  first_name: string;
+  last_name: string;
+}
+
+export interface LogIncidentDetails {
+  id: string | number;
+  description: string;
+  incident_time: string;
+  location: string | null;
+  involved_person_name: string | null;
+  evidence: string | null;
+  tags_data: Tag[];
+  user_data?: UserData;
+  document_data?: DocumentData;
+}
 
 export default function LogIncident() {
   const isMobile = useMediaQuery('(max-width:768px)');
@@ -37,15 +78,20 @@ export default function LogIncident() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedRowId, setSelectedRowId] = useState<string>('');
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openDetailDialog, setOpenDetailDialog] = useState(false);
+  const [detailsItem, setDetailsItem] = useState<LogIncidentDetails | null>(
+    null
+  );
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useState('');
   const [page, setPage] = useState(1);
-  const { incidents, count, no_of_incident } = useSelector(
+  const { incidents, count } = useSelector(
     (state: RootState) => state.logIncidents
   );
   const router = useRouter();
+  const open = Boolean(anchorEl);
 
-  const handleOpenMenu = (
+  const handleClick = (
     event: React.MouseEvent<HTMLButtonElement>,
     id: string
   ) => {
@@ -53,7 +99,7 @@ export default function LogIncident() {
     setSelectedRowId(id);
   };
 
-  const handleCloseMenu = () => {
+  const handleClose = () => {
     setAnchorEl(null);
     setSelectedRowId('');
   };
@@ -78,7 +124,7 @@ export default function LogIncident() {
           dispatch(
             setPageHeaderData({
               title: 'Log Incident',
-              subTitle: `No. of Incidents : ${resp.payload.no_of_incident}`,
+              subTitle: `No. of Incidents : ${resp.payload.count}`,
             })
           );
         }
@@ -137,74 +183,32 @@ export default function LogIncident() {
     }
   };
 
-  const columns: GridColDef[] = [
-    {
-      field: 'id',
-      headerName: '#',
-      width: 90,
-    },
-    {
-      field: 'name',
-      headerName: 'DESCRIPTION',
-      flex: 1,
-      minWidth: 500,
-    },
-    {
-      field: 'created',
-      headerName: 'DATE CREATED',
-      width: 150,
-    },
-    {
-      field: 'actions',
-      headerName: '',
-      width: 70,
-      sortable: false,
-      renderCell: (params) => (
-        <>
-          <IconButton
-            onClick={(event) => handleOpenMenu(event, params.row.uuid)}
-          >
-            <Image src="/images/more.svg" alt="more" width={20} height={20} />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl) && selectedRowId === params.row.uuid}
-            onClose={handleCloseMenu}
-            className={styles.mainDropdown}
-            sx={{
-              '& .MuiPaper-root': {
-                backgroundColor: 'transparent',
-              },
-            }}
-          >
-            <MenuItem
-              className={styles.menuDropdown}
-              onClick={deleteDialogOpen}
-            >
-              <Image
-                src="/images/trash.svg"
-                alt="delet"
-                width={18}
-                height={18}
-              />
-              <Typography>Delete</Typography>
-            </MenuItem>
-          </Menu>
-        </>
-      ),
-    },
-  ];
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date
+      .toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      })
+      .replace(',', '');
+  };
 
   const handleThreadClick = (thread: string) => {
     router.push(`/ai-chats/${thread}`); // Navigate to thread page
   };
 
-  const rows = incidents?.map((item) => ({
-    id: item?.id,
-    name: item?.name,
-    uuid: item?.uuid,
-    created: convertDateFormatForIncident(item?.created?.split('T')[0]),
-  }));
+  const viewDetails = (item: LogIncidentDetails) => {
+    const detailsItem: LogIncidentDetails = {
+      ...item,
+      id: Number(item.id),
+    };
+    setOpenDetailDialog(true);
+    setDetailsItem(detailsItem);
+  };
 
   return (
     <>
@@ -222,7 +226,7 @@ export default function LogIncident() {
             toggleSidebar={toggleSidebar}
             title="Log Incident"
           />
-          {no_of_incident ? (
+          {count ? (
             <Box
               sx={{
                 height: 'calc(100vh - 65px)',
@@ -326,62 +330,108 @@ export default function LogIncident() {
                     width={20}
                     height={20}
                   />
-                  Add Incident{' '}
+                  Add Incident
                 </Button>
               </Box>
-              <DataGrid
-                rows={rows}
-                columns={columns}
-                getRowClassName={(params: GridRowClassNameParams) =>
-                  selectedRowId === params.id ? 'active-menu-row' : ''
-                }
-                sx={{
-                  '.MuiDataGrid-row': {
-                    border: '1px solid transparent',
-                    height: 'unset !important',
-                    maxHeight: 'unset !important',
-                  },
-                  '.active-menu-row': {
-                    border: '1px solid var(--Stroke-Color)',
-                  },
-                  '.MuiDataGrid-footerContainer': { display: 'none' },
-                  '.MuiDataGrid-filler': { display: 'none' },
-                  '.MuiDataGrid-columnHeader:focus': { outline: 'none' },
-                  '.MuiDataGrid-columnHeader::focus-within': {
-                    outline: 'none',
-                  },
-                  '.MuiDataGrid-columnHeader:focus-within': { outline: 'none' },
-                  '.MuiDataGrid-cell:focus-within': { outline: 'none' },
-                  '.MuiDataGrid-cell::focus': { outline: 'none' },
-                  '.MuiDataGrid-row .MuiDataGrid-cell': {
-                    fontSize: 'var(--SubTitle-3)',
-                    fontWeight: 'var(--Regular)',
-                    color: 'var(--Primary-Text-Color)',
-                  },
-                  '.MuiDataGrid-sortIcon': {
-                    fill: 'var(--Subtext-Color)',
-                  },
-                  '.MuiDataGrid-columnHeaderTitle': {
-                    fontSize: 'var(--SubTitle-5)',
-                    fontWeight: 'var(--Regular)',
-                    color: 'var(--Subtext-Color)',
-                  },
-                  '.MuiDataGrid-overlay': {
-                    backgroundColor: 'var(--Background-Color)',
-                    color: 'var(--Subtext-Color)',
-                    fontSize: 'var(--SubTitle-2)',
-                  },
-                }}
-                localeText={{
-                  noRowsLabel: 'No Logs found',
-                }}
-                className={styles.loIncidentTable}
-                sortingOrder={['asc', 'desc']}
-                disableVirtualization={true}
-                disableColumnResize={true}
-                disableColumnMenu={true}
-                disableRowSelectionOnClick={true}
-              />
+              <Box component="div" className={styles.logListingBox}>
+                {incidents.map((item, index) => (
+                  <Box
+                    component="div"
+                    className={styles.logListing}
+                    key={index}
+                  >
+                    <Box component="div" className={styles.logListHeader}>
+                      <Typography
+                        variant="body1"
+                        className={styles.logTitle}
+                        onClick={() => viewDetails(item)}
+                      >
+                        {item.description}
+                      </Typography>
+                      <>
+                        <IconButton
+                          onClick={(event) => handleClick(event, item.id)}
+                        >
+                          <Image
+                            src="/images/more.svg"
+                            alt="more"
+                            width={20}
+                            height={20}
+                          />
+                        </IconButton>
+                        <Menu
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                          }}
+                          className={styles.mainDropdown}
+                          sx={{
+                            '& .MuiPaper-root': {
+                              backgroundColor: 'transparent',
+                            },
+                          }}
+                        >
+                          <MenuItem className={styles.menuDropdown}>
+                            <Image
+                              src="/images/edit-2.svg"
+                              alt="edit"
+                              width={18}
+                              height={18}
+                            />
+                            <Typography>Edit Incident</Typography>
+                          </MenuItem>
+                          <MenuItem
+                            className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
+                            onClick={deleteDialogOpen}
+                          >
+                            <Image
+                              src="/images/trash.svg"
+                              alt="delet"
+                              width={18}
+                              height={18}
+                            />
+                            <Typography>Delete Incident</Typography>
+                          </MenuItem>
+                        </Menu>
+                      </>
+                    </Box>
+                    <Box component="div" className={styles.logListBody}>
+                      {item?.tags_data.map((tag, index) => (
+                        <Box className={styles.logListBodyTag} key={index}>
+                          <Image
+                            src="/images/missed-visit.svg"
+                            alt="Log-success"
+                            width={16}
+                            height={16}
+                          />
+                          <Typography
+                            variant="body1"
+                            className={styles.logListBodyTagTitle}
+                          >
+                            {tag?.name}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Box>
+                    <Box component="div" className={styles.logListFooter}>
+                      <Typography
+                        variant="body1"
+                        className={styles.logListFooterTitle}
+                      >
+                        Date & Time
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        className={styles.logListFooterDetails}
+                      >
+                        {formatDate(item.incident_time) || '-'}
+                      </Typography>
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
               <Box
                 component="div"
                 className="pagination-box"
@@ -391,7 +441,7 @@ export default function LogIncident() {
                 }}
               >
                 <Pagination
-                  count={Math.ceil(count / 12)}
+                  count={Math.ceil(count / 16)}
                   page={page}
                   onChange={handlePageChange}
                   shape="rounded"
@@ -414,6 +464,11 @@ export default function LogIncident() {
         onClose={() => setOpenDeleteDialog(false)}
         type="LogIncident"
         deletedId={selectedRowId}
+      />
+      <LogDetailsModel
+        openDetailDialogProps={openDetailDialog}
+        onClose={() => setOpenDetailDialog(false)}
+        itemDetails={detailsItem}
       />
     </>
   );

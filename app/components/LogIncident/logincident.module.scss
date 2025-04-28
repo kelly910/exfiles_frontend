@@ -133,6 +133,8 @@
 .logListingBox {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  padding-left: 24px;
+  padding-right: 24px;
   gap: 16px;
 
   @media (max-width: 1024px) {
@@ -161,6 +163,7 @@
     gap: 8px;
 
     .logTitle {
+      cursor: pointer;
       font-weight: 600;
       font-size: 16px;
       color: var(--Primary-Text-Color);

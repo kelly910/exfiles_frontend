@@ -129,6 +129,10 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     }
   };
 
+  const downloadSummary = async () => {
+    console.log(documentSummary?.summary, ':htmlContent');
+  };
+
   return (
     <>
       {mobileView ? (
@@ -323,6 +327,19 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       height={24}
                     />
                     Copy
+                  </Button>
+                  <span className={styles.docsDas}></span>
+                  <Button
+                    className={styles.docsButton}
+                    onClick={downloadSummary}
+                  >
+                    <Image
+                      src="/images/download_summary.svg"
+                      alt="Download"
+                      width={24}
+                      height={24}
+                    />
+                    Download Summary
                   </Button>
                   <span className={styles.docsDas}></span>
                   <Button className={styles.docsButton} onClick={editSummary}>
@@ -571,6 +588,19 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         height={24}
                       />
                       Copy
+                    </Button>
+                    <span className={styles.docsDas}></span>
+                    <Button
+                      className={styles.docsButton}
+                      onClick={downloadSummary}
+                    >
+                      <Image
+                        src="/images/download_summary.svg"
+                        alt="Download"
+                        width={24}
+                        height={24}
+                      />
+                      Download Summary
                     </Button>
                     <span className={styles.docsDas}></span>
                     <Button className={styles.docsButton} onClick={editSummary}>

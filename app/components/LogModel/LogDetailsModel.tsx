@@ -1,27 +1,18 @@
-import React, { useState } from 'react';
+'use client';
+
+import React from 'react';
 import LogStyle from './logmodel.module.scss';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
-  MenuItem,
-  Select,
   styled,
-  TextField,
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
-import { DesktopDateTimePicker } from '@mui/x-date-pickers';
+import { LogIncidentDetails } from '../LogIncident/LogIncident';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -31,47 +22,53 @@ const BootstrapDialog = styled(Dialog)(() => ({
     borderRadius: '16px',
     minWidth: '606px',
     maxHeight: '95dvh',
-
-    // '@media (max-width: 1024px)': {
-    //   maxWidth: '80vw',
-    //   minWidth: '700px',
-    //   minHeight: '500px',
-    // },
     '@media (max-width: 768px)': {
       maxWidth: '80vw',
-      minWidth: '480px', // 90% of the viewport width
+      minWidth: '480px',
     },
     '@media (max-width: 500px)': {
       maxWidth: '80vw',
-      minWidth: '450px', // 90% of the viewport width
+      minWidth: '450px',
     },
     '@media (max-width: 480px)': {
       maxWidth: '95vw',
-      minWidth: '100%', // Almost full width
+      minWidth: '100%',
     },
   },
 }));
 
-export default function LogDetailsModel() {
-  const [open, setOpen] = React.useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [selectedPerson, setSelectedPerson] = useState('');
+interface DetailsDialogProps {
+  openDetailDialogProps: boolean;
+  onClose: () => void;
+  itemDetails: LogIncidentDetails | null;
+}
 
-  const handleClickOpen = () => {
-    setOpen(true);
+export default function LogDetailsModel({
+  openDetailDialogProps,
+  onClose,
+  itemDetails,
+}: DetailsDialogProps) {
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    return date
+      .toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      })
+      .replace(',', '');
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog Incident Details
-      </Button>
       <BootstrapDialog
-        onClose={handleClose}
+        onClose={onClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        open={openDetailDialogProps}
         className={LogStyle.headerDialogBox}
         sx={{
           background: 'rgb(17 16 27 / 0%)',
@@ -103,7 +100,7 @@ export default function LogDetailsModel() {
           </DialogTitle>
           <IconButton
             aria-label="close"
-            onClick={handleClose}
+            onClick={onClose}
             sx={(theme) => ({
               position: 'absolute',
               right: 8,
@@ -122,52 +119,25 @@ export default function LogDetailsModel() {
 
         <DialogContent className={LogStyle.dialogFormContentDetailsBox}>
           <Typography variant="body1" className={LogStyle.logTitle}>
-            Corporate card products can help businesses of all sizes manage
-            their finances more effectively.
+            {itemDetails?.description || '-'}
           </Typography>
           <Box component="div" className={LogStyle.logListBody}>
-            <Box className={LogStyle.logListBodyTag}>
-              <Image
-                src="/images/missed-visit.svg"
-                alt="Log-success"
-                width={16}
-                height={16}
-              />
-              <Typography
-                variant="body1"
-                className={LogStyle.logListBodyTagTitle}
-              >
-                Missed Visit
-              </Typography>
-            </Box>
-            <Box className={LogStyle.logListBodyTag}>
-              <Image
-                src="/images/late-visit.svg"
-                alt="Log-success"
-                width={16}
-                height={16}
-              />
-              <Typography
-                variant="body1"
-                className={LogStyle.logListBodyTagTitle}
-              >
-                Late Visit
-              </Typography>
-            </Box>
-            <Box className={LogStyle.logListBodyTag}>
-              <Image
-                src="/images/late-visit.svg"
-                alt="Log-success"
-                width={16}
-                height={16}
-              />
-              <Typography
-                variant="body1"
-                className={LogStyle.logListBodyTagTitle}
-              >
-                No Response
-              </Typography>
-            </Box>
+            {itemDetails?.tags_data?.map((tag, index) => (
+              <Box className={LogStyle.logListBodyTag} key={index}>
+                <Image
+                  src="/images/missed-visit.svg"
+                  alt="Log-success"
+                  width={16}
+                  height={16}
+                />
+                <Typography
+                  variant="body1"
+                  className={LogStyle.logListBodyTagTitle}
+                >
+                  {tag.name}
+                </Typography>
+              </Box>
+            ))}
           </Box>
           <Box component="div" className={LogStyle.logListFooter}>
             <Typography variant="body1" className={LogStyle.logListFooterTitle}>
@@ -177,7 +147,7 @@ export default function LogDetailsModel() {
               variant="body1"
               className={LogStyle.logListFooterDetails}
             >
-              04-25-2025 10:30 AM
+              {formatDate(itemDetails?.incident_time)}
             </Typography>
           </Box>
           <Box component="div" className={LogStyle.logDetailsList}>
@@ -193,13 +163,7 @@ export default function LogDetailsModel() {
                   variant="body1"
                   className={LogStyle.logDetailsListDetailsInner}
                 >
-                  4517 Washington Ave. Manchester, Kentucky 39495
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={LogStyle.logDetailsListDetailsInner}
-                >
-                  4517 Washington Ave. Manchester, Kentucky 39495
+                  {itemDetails?.location || '-'}
                 </Typography>
               </Box>
             </Box>
@@ -216,7 +180,8 @@ export default function LogDetailsModel() {
                   variant="body1"
                   className={LogStyle.logDetailsListDetailsInner}
                 >
-                  Jonathan Weak, Winston Churchil
+                  {itemDetails?.user_data?.first_name}{' '}
+                  {itemDetails?.user_data?.last_name}
                 </Typography>
               </Box>
             </Box>
@@ -233,7 +198,7 @@ export default function LogDetailsModel() {
                   variant="body1"
                   className={LogStyle.logDetailsListDetailsInner}
                 >
-                  Jonathan Weak, Winston Churchil
+                  {itemDetails?.document_data?.category_data?.name || '-'}
                 </Typography>
               </Box>
             </Box>
@@ -250,7 +215,7 @@ export default function LogDetailsModel() {
                   variant="body1"
                   className={LogStyle.logDetailsListDetailsInner}
                 >
-                  Conflict-With-Jonathan-Report.pdf
+                  {itemDetails?.document_data?.file_data?.file_name || '-'}
                 </Typography>
               </Box>
             </Box>
@@ -267,25 +232,7 @@ export default function LogDetailsModel() {
                   variant="body1"
                   className={LogStyle.logDetailsListDetailsInner}
                 >
-                  Conflict-With-Jonathan-Report.pdf
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={LogStyle.logDetailsListDetailsInner}
-                >
-                  Conflict-With-Jonathan-Report.jpeg
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={LogStyle.logDetailsListDetailsInner}
-                >
-                  Conflict-With-Jonathan-Report.png
-                </Typography>
-                <Typography
-                  variant="body1"
-                  className={LogStyle.logDetailsListDetailsInner}
-                >
-                  Conflict-With-Jonathan-Report.docs
+                  {itemDetails?.evidence?.split('log_incidents/')[1] || '-'}
                 </Typography>
               </Box>
             </Box>

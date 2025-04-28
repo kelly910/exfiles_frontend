@@ -20,23 +20,21 @@ const BootstrapDialog = styled(Dialog)(() => ({
     maxHeight: '95dvh',
     '@media (max-width: 768px)': {
       maxWidth: '80vw',
-      minWidth: '480px', // 90% of the viewport width
+      minWidth: '480px',
     },
     '@media (max-width: 500px)': {
       maxWidth: '80vw',
-      minWidth: '450px', // 90% of the viewport width
+      minWidth: '450px',
     },
     '@media (max-width: 480px)': {
       maxWidth: '95vw',
-      minWidth: '100%', // Almost full width
+      minWidth: '100%',
     },
   },
 }));
 
 export default function LogSuccessfully() {
-  const [open, setOpen] = React.useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [selectedPerson, setSelectedPerson] = useState('');
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -74,7 +72,7 @@ export default function LogSuccessfully() {
               variant="body1"
               className={LogStyle.dialogIncidentDetails}
             >
-              Let's keep the momentum going to resolve this together.
+              Let&rsquo;s keep the momentum going to resolve this together.
             </Typography>
           </Box>
           <Box className={LogStyle.dialogIncidentBtnBox}>
