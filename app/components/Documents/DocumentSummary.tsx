@@ -349,17 +349,17 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
             top: '65px',
             right: '0',
             left: 'auto',
-            maxHeight: 'calc(100vh - 65px)',
+            maxHeight: 'calc(100dvh - 65px)',
             '& .MuiPaper-root': {
               top: '0',
               width: '100%',
-              maxHeight: 'calc(100vh - 65px)',
+              maxHeight: 'calc(100dvh - 65px)',
               background: 'var(--Background-Color)',
               borderLeft: '1px solid  #3A3948',
             },
             '& .MuiBackdrop-root': {
               top: '65px',
-              maxHeight: 'calc(100vh - 65px)',
+              maxHeight: 'calc(100dvh - 65px)',
             },
           }}
         >
