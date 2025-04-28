@@ -462,6 +462,10 @@
           margin: 0;
         }
       }
+
+      &:last-child {
+        display: none;
+      }
     }
   }
   .sidebar-accordian {
