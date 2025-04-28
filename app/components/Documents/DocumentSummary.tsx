@@ -129,6 +129,10 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     }
   };
 
+  const downloadSummary = async () => {
+    console.log(documentSummary?.summary, ':htmlContent');
+  };
+
   return (
     <>
       {mobileView ? (
@@ -325,6 +329,19 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     Copy
                   </Button>
                   <span className={styles.docsDas}></span>
+                  <Button
+                    className={styles.docsButton}
+                    onClick={downloadSummary}
+                  >
+                    <Image
+                      src="/images/download_summary.svg"
+                      alt="Download"
+                      width={24}
+                      height={24}
+                    />
+                    Download Summary
+                  </Button>
+                  <span className={styles.docsDas}></span>
                   <Button className={styles.docsButton} onClick={editSummary}>
                     <Image
                       src="/images/edit.svg"
@@ -349,17 +366,17 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
             top: '65px',
             right: '0',
             left: 'auto',
-            maxHeight: 'calc(100vh - 65px)',
+            maxHeight: 'calc(100dvh - 65px)',
             '& .MuiPaper-root': {
               top: '0',
               width: '100%',
-              maxHeight: 'calc(100vh - 65px)',
+              maxHeight: 'calc(100dvh - 65px)',
               background: 'var(--Background-Color)',
               borderLeft: '1px solid  #3A3948',
             },
             '& .MuiBackdrop-root': {
               top: '65px',
-              maxHeight: 'calc(100vh - 65px)',
+              maxHeight: 'calc(100dvh - 65px)',
             },
           }}
         >
@@ -571,6 +588,19 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         height={24}
                       />
                       Copy
+                    </Button>
+                    <span className={styles.docsDas}></span>
+                    <Button
+                      className={styles.docsButton}
+                      onClick={downloadSummary}
+                    >
+                      <Image
+                        src="/images/download_summary.svg"
+                        alt="Download"
+                        width={24}
+                        height={24}
+                      />
+                      Download Summary
                     </Button>
                     <span className={styles.docsDas}></span>
                     <Button className={styles.docsButton} onClick={editSummary}>

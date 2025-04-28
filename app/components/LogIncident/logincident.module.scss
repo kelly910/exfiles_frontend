@@ -84,11 +84,17 @@
     }
 
     p {
-      font-weight: var(--Medium);
+      font-weight: var(--Reular);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
-      color: #e72240;
+      color: var(--Txt-On-Gradient);
       width: 100%;
+    }
+
+    &.menuDropdownDelete {
+      p {
+        color: #e72240;
+      }
     }
   }
 }
@@ -121,3 +127,94 @@
     color: var(--Placeholder-Text);
   }
 }
+
+// Listing
+
+.logListingBox {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding-left: 24px;
+  padding-right: 24px;
+  gap: 16px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.logListing {
+  background-color: var(--Background-Color);
+  border-radius: 10px;
+  padding: 8px;
+  border: 1px solid var(--Stroke-Color);
+
+  .logListHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 8px;
+
+    .logTitle {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--Primary-Text-Color);
+    }
+  }
+
+  .logListBody {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    .logListBodyTag {
+      width: fit-content;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      background: var(--Stroke-Color);
+      border-radius: 500px;
+
+      .logListBodyTagTitle {
+        font-weight: 400;
+        font-size: 13px;
+        color: var(--Subtext-Color);
+      }
+    }
+  }
+
+  .logListFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+
+    .logListFooterTitle {
+      font-weight: 400;
+      font-size: 12px;
+      color: #898b94;
+    }
+
+    .logListFooterDetails {
+      font-weight: 400;
+      font-size: 12px;
+      color: #898b94;
+    }
+  }
+}
+
+// Listing

@@ -13,7 +13,7 @@ const urlMapper = {
   updateUser: `${BASE_URL}users/`,
   changePassword: `${BASE_URL}change-password/`,
   feedback: `${BASE_URL}feedback/`,
-  logIncidents: `${BASE_URL}incident-list/`,
+  logIncidents: `${BASE_URL}log-incidents/`,
   // Documents Module
   getCategories: `${BASE_URL}categories/`,
   getDocumentByCategory: `${BASE_URL}category-document/`,

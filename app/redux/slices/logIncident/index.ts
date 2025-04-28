@@ -2,12 +2,28 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import api from '../../../utils/axiosConfig';
 import urlMapper from '@/app/utils/apiEndPoints/urlMapper';
 import { showToast } from '@/app/shared/toast/ShowToast';
+import {
+  DocumentData,
+  UserData,
+} from '@/app/components/LogIncident/LogIncident';
 
-export interface LogIncident {
+interface Tag {
   id: number;
   name: string;
+}
+
+export interface LogIncident {
+  id: string;
+  name: string;
   created: string;
-  uuid: string;
+  description: string;
+  incident_time: string;
+  tags_data: Tag[];
+  user_data?: UserData;
+  document_data?: DocumentData;
+  location: string | null;
+  involved_person_name: string | null;
+  evidence: string | null;
 }
 
 export interface LogIncidentResponse {
@@ -15,7 +31,6 @@ export interface LogIncidentResponse {
   next: string | null;
   page: number;
   results: LogIncident[];
-  no_of_incident: number;
 }
 
 interface LogIncidentState {
@@ -23,7 +38,6 @@ interface LogIncidentState {
   count: number;
   next: string | null;
   page: number;
-  no_of_incident: number;
 }
 
 const initialState: LogIncidentState = {
@@ -31,7 +45,6 @@ const initialState: LogIncidentState = {
   count: 0,
   next: null,
   page: 1,
-  no_of_incident: 0,
 };
 
 export const fetchLogIncidents = createAsyncThunk<
@@ -42,7 +55,7 @@ export const fetchLogIncidents = createAsyncThunk<
   'logIncidents/fetch',
   async ({ search = '', page = 1 }, { rejectWithValue }) => {
     try {
-      const searchQuery = `?search=${encodeURIComponent(search)}&page=${page}&page_size=12`;
+      const searchQuery = `?search=${encodeURIComponent(search)}&page=${page}&page_size=16`;
       const response = await api.get<LogIncidentResponse>(
         `${urlMapper.logIncidents}${searchQuery}`
       );
@@ -63,7 +76,7 @@ export const deleteIncidentById = createAsyncThunk<
 >('logIncidents/delete', async (uuid, { rejectWithValue }) => {
   try {
     const response = await api.delete<{ message: string[] }>(
-      `${urlMapper.thread}${uuid}/`
+      `${urlMapper.logIncidents}${uuid}/`
     );
     const successMessage =
       response.data.message?.[0] || 'Log incident deleted successfully.';
@@ -92,11 +105,10 @@ const logIncidentSlice = createSlice({
         state.count = action.payload.count;
         state.next = action.payload.next;
         state.page = action.payload.page;
-        state.no_of_incident = action.payload.no_of_incident;
       })
       .addCase(deleteIncidentById.fulfilled, (state, action) => {
         state.incidents = state.incidents.filter(
-          (incident) => incident.id !== action.payload
+          (incident) => incident.id !== String(action.payload)
         );
         state.count -= 1;
       });
