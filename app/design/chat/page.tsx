@@ -8,7 +8,7 @@ import Header from '@/app/components/Header/Header';
 import LogModel from '@/app/components/LogModel/LogModel';
 import LogSuccessfully from '@/app/components/LogModel/LogSuccessfully';
 import LogListing from '@/app/components/LogModel/LogListing';
-import LogDetailsModel from '@/app/components/LogModel/LogDetailsModel';
+// import LogDetailsModel from '@/app/components/LogModel/LogDetailsModel';
 // import Sidebar from '@/app/components/Common/Sidebar';
 
 export default function Page() {
@@ -21,7 +21,7 @@ export default function Page() {
           <LogModel />
           <LogSuccessfully />
           <LogListing />
-          <LogDetailsModel />
+          {/* <LogDetailsModel /> */}
           <Container maxWidth="lg" disableGutters>
             <ChatWindows />
           </Container>
