@@ -22,6 +22,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
 import { DesktopDateTimePicker } from '@mui/x-date-pickers';
+import '@mui/x-date-pickers/themeAugmentation';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
