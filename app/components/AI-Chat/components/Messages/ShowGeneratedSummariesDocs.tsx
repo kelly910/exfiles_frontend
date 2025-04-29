@@ -12,7 +12,11 @@ import Image from 'next/image';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
 import { formatTo12HourTimeManually } from '@/app/utils/functions';
-import { DOCUMENT_STATUS, QUESTION_TYPES } from '@/app/utils/constants';
+import {
+  DOCUMENT_STATUS,
+  processText,
+  QUESTION_TYPES,
+} from '@/app/utils/constants';
 import { SocketPayload } from '../../types/aiChat.types';
 import { getDocumentImage } from '@/app/utils/functions';
 import { useState } from 'react';
@@ -155,8 +159,13 @@ export default function ShowGeneratedSummariesDocs({
           {summaryGeneratedDocList &&
             summaryGeneratedDocList?.length > 0 &&
             summaryGeneratedDocList.map((documentItem: UploadedDocument) => {
-              const { file_data, trained_status, category_data, uuid } =
-                documentItem;
+              const {
+                file_data,
+                trained_status,
+                category_data,
+                uuid,
+                summary,
+              } = documentItem;
               return (
                 <Grid
                   item
@@ -274,51 +283,71 @@ export default function ShowGeneratedSummariesDocs({
                             />
                           </Box>
                         )}
-                      {trained_status === DOCUMENT_STATUS.SUCCESS && (
-                        <Box
-                          component="div"
-                          className={chatMessagesStyles.chatAlFileSummary}
-                          onClick={() => handleDocSummaryClick(documentItem)}
-                        >
-                          <Typography>View Summary</Typography>
-                          <Image
-                            src="/images/open-new.svg"
-                            alt="pdf"
-                            width={12}
-                            height={12}
-                            className={chatMessagesStyles.pdfImg}
-                          />
-                        </Box>
-                      )}
+                      {trained_status === DOCUMENT_STATUS.SUCCESS &&
+                        !summary && (
+                          <Box
+                            component="div"
+                            className={chatMessagesStyles.chatAlFileSummary}
+                            onClick={() => handleDocSummaryClick(documentItem)}
+                          >
+                            <Typography>View Summary</Typography>
+                            <Image
+                              src="/images/open-new.svg"
+                              alt="pdf"
+                              width={12}
+                              height={12}
+                              className={chatMessagesStyles.pdfImg}
+                            />
+                          </Box>
+                        )}
                     </Box>
                   </Box>
                 </Grid>
               );
             })}
         </Grid>
-        {messageObj.all_doc_summarized && (
-          <Box className={chatMessagesStyles.chatAlSummaryButtonMain}>
-            <Button
-              className={chatMessagesStyles.chatAlSummaryButton}
-              onClick={() =>
-                handleGenerateCombinedSummary({
-                  thread_uuid: '',
-                  message_type: QUESTION_TYPES.COMBINED_SUMMARY,
-                  chat_msg_uuid: messageObj.uuid,
-                  message: 'Generating combined summary',
-                })
-              }
+
+        {summaryGeneratedDocList &&
+          summaryGeneratedDocList?.length == 1 &&
+          summaryGeneratedDocList[0]?.summary && (
+            <Typography
+              variant="body1"
+              className={chatMessagesStyles.chatAlContentText}
             >
-              <Image
-                src="/images/combined.svg"
-                alt="combined"
-                width={18}
-                height={18}
-              />
-              Generate Combined Summary
-            </Button>
-          </Box>
-        )}
+              {summaryGeneratedDocList[0].summary && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: processText(summaryGeneratedDocList[0].summary),
+                  }}
+                />
+              )}
+            </Typography>
+          )}
+        {messageObj.all_doc_summarized &&
+          summaryGeneratedDocList &&
+          summaryGeneratedDocList?.length > 1 && (
+            <Box className={chatMessagesStyles.chatAlSummaryButtonMain}>
+              <Button
+                className={chatMessagesStyles.chatAlSummaryButton}
+                onClick={() =>
+                  handleGenerateCombinedSummary({
+                    thread_uuid: '',
+                    message_type: QUESTION_TYPES.COMBINED_SUMMARY,
+                    chat_msg_uuid: messageObj.uuid,
+                    message: 'Generating combined summary',
+                  })
+                }
+              >
+                <Image
+                  src="/images/combined.svg"
+                  alt="combined"
+                  width={18}
+                  height={18}
+                />
+                Generate Combined Summary
+              </Button>
+            </Box>
+          )}
         <span className={chatMessagesStyles.chatTime}>
           {formatTo12HourTimeManually(messageObj.created)}
         </span>
