@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LogStyle from './logmodel.module.scss';
 import {
   Accordion,
@@ -23,6 +23,24 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
 import { DesktopDateTimePicker } from '@mui/x-date-pickers';
 import '@mui/x-date-pickers/themeAugmentation';
+import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { fetchCategories } from '@/app/redux/slices/categoryListing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
+import * as Yup from 'yup';
+import { fetchDocumentsByCategory } from '@/app/redux/slices/documentByCategory';
+import { fetchTagList } from '@/app/redux/slices/tagListing';
+import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { setLoader } from '@/app/redux/slices/loader';
+import {
+  addIncident,
+  fetchLogIncidents,
+  updateIncident,
+} from '@/app/redux/slices/logIncident';
+import { LogIncidentDetails } from '../LogIncident/LogIncident';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -32,23 +50,17 @@ const BootstrapDialog = styled(Dialog)(() => ({
     borderRadius: '16px',
     minWidth: '650px',
     maxHeight: '95dvh',
-
-    // '@media (max-width: 1024px)': {
-    //   maxWidth: '80vw',
-    //   minWidth: '700px',
-    //   minHeight: '500px',
-    // },
     '@media (max-width: 768px)': {
       maxWidth: '80vw',
-      minWidth: '480px', // 90% of the viewport width
+      minWidth: '480px',
     },
     '@media (max-width: 500px)': {
       maxWidth: '80vw',
-      minWidth: '450px', // 90% of the viewport width
+      minWidth: '450px',
     },
     '@media (max-width: 480px)': {
       maxWidth: '95vw',
-      minWidth: '100%', // Almost full width
+      minWidth: '100%',
     },
   },
 }));
@@ -221,9 +233,8 @@ const newTheme = (theme: Theme) =>
       MuiPaper: {
         styleOverrides: {
           root: {
-            // Target only the Paper used by PickerPopper
             '&.MuiPickerPopper-paper': {
-              backgroundColor: 'transparent', // or 'none'
+              backgroundColor: 'transparent',
             },
           },
         },
@@ -239,24 +250,135 @@ const newTheme = (theme: Theme) =>
     },
   });
 
-const peopleOptions = ['John Doe', 'Jane Smith', 'Other'];
+interface LogIncidentDialogProps {
+  open: boolean;
+  handleClose: () => void;
+  editedData: LogIncidentDetails | null;
+}
 
-export default function LogModel() {
-  const [open, setOpen] = React.useState(false);
+export interface LogIncidentFormValues {
+  description: string;
+  incident_time: string;
+  location: string;
+  involved_person_name: string;
+  category: string;
+  document: string;
+  other_tag: string;
+  tags: string[];
+  // evidence: string;
+}
+
+export default function LogModel({
+  open,
+  handleClose,
+  editedData,
+}: LogIncidentDialogProps) {
   const [isChecked, setIsChecked] = useState(false);
-  const [selectedPerson, setSelectedPerson] = useState('');
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { categories } = useSelector(
+    (state: RootState) => state.categoryListing
+  );
+  const { documents } = useSelector(
+    (state: RootState) => state.documentListing
+  );
+  const { tags } = useSelector((state: RootState) => state.tagList);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const initialValues: LogIncidentFormValues = {
+    description: editedData?.description || '',
+    incident_time: editedData?.incident_time
+      ? dayjs(editedData.incident_time).format('YYYY-MM-DD HH:mm')
+      : '',
+    location: editedData?.location || '',
+    involved_person_name: editedData?.involved_person_name || '',
+    category: editedData?.category_id?.toString() || '',
+    document: editedData?.document?.toString() || '',
+    other_tag: editedData?.other_tag_name || '',
+    tags: Array.isArray(editedData?.tags) ? editedData.tags : [],
+    // evidence: editedData?.evidence || '',
   };
-  const handleClose = () => {
-    setOpen(false);
+
+  useEffect(() => {
+    dispatch(fetchCategories({ page: 1 }));
+    dispatch(fetchTagList());
+  }, [dispatch]);
+
+  const handleFetchCategoryDocuments = (categoryId: number) => {
+    dispatch(
+      fetchDocumentsByCategory({
+        categoryId: categoryId,
+      })
+    );
   };
+
+  useEffect(() => {
+    if (editedData?.category_id) {
+      dispatch(
+        fetchDocumentsByCategory({ categoryId: Number(editedData.category_id) })
+      );
+    }
+    // if (editedData?.other_tag_name) {
+    //   setIsChecked(true);
+    // }
+  }, [dispatch, editedData?.category_id]);
+
+  const addUpdateLogIncident = async (
+    values: LogIncidentFormValues
+  ): Promise<void> => {
+    try {
+      const formData = new FormData();
+      formData.append('description', values.description);
+      formData.append('incident_time', values.incident_time);
+      formData.append('location', values.location || '');
+      formData.append(
+        'involved_person_name',
+        values.involved_person_name || ''
+      );
+      formData.append('category', String(values.category));
+      formData.append('document', String(values.document));
+      formData.append('other_tag', values.other_tag || '');
+
+      values.tags.forEach((tagId) => {
+        formData.append('tags', String(tagId));
+      });
+      // if (values.evidence instanceof File) {
+      //   formData.append('evidence', values.evidence);
+      // }
+
+      dispatch(setLoader(true));
+
+      if (editedData?.id) {
+        await dispatch(
+          updateIncident({ id: Number(editedData.id), formData })
+        ).unwrap();
+      } else {
+        await dispatch(addIncident(formData)).unwrap();
+      }
+      dispatch(fetchLogIncidents({ page: 1 }));
+      router.push('/log-incident');
+      handleClose();
+    } catch (error) {
+      handleError(error as ErrorResponse);
+    } finally {
+      dispatch(setLoader(false));
+    }
+  };
+
+  const logIncidentValidationSchema = Yup.object().shape({
+    description: Yup.string()
+      .max(200, 'Description must be at most 200 characters')
+      .required('Description is required'),
+    incident_time: Yup.string().required('Incident time is required'),
+    location: Yup.string().max(200, 'Location must be at most 200 characters'),
+    involved_person_name: Yup.string().max(
+      200,
+      'Involved person name must be at most 200 characters'
+    ),
+    tags: Yup.array().min(1, 'Please select at least one tag'),
+  });
+
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog Log as Incident
-      </Button>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -308,656 +430,684 @@ export default function LogModel() {
             />
           </IconButton>
         </Box>
-
-        <DialogContent className={LogStyle.dialogFormContentBox}>
-          <Box>
-            <div className={LogStyle.dialogFormGroup}>
-              <Typography
-                variant="body2"
-                component="label"
-                htmlFor="description"
-                className={LogStyle.dialogFormLabel}
-                sx={
-                  {
-                    // color:
-                    //   errors.first_name && touched.first_name
-                    //     ? '#ff4d4d'
-                    //     : '#676972',
-                  }
-                }
-              >
-                Description
-              </Typography>
-              <TextField
-                // as={TextField}
-                fullWidth
-                type="text"
-                id="description"
-                name="description"
-                placeholder="Enter the incident description"
-                // error={Boolean(errors.first_name && touched.first_name)}
-                sx={{
-                  marginTop: '4px',
-                  padding: '0',
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '12px',
-                    borderWidth: '0px',
-                    color: 'var(--Primary-Text-Color)',
-                    backgroundColor: '#252431',
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      top: '-10px !important',
-                    },
-                    '& .MuiOutlinedInput-input': {
-                      fontSize: 'var(--SubTitle-2)',
-                      color: 'var(--Primary-Text-Color)',
-                      padding: '14px 16px',
-                      fontWeight: 'var(--Regular)',
-                      borderRadius: '12px',
-                      '&::placeholder': {
-                        color: '#888',
-                        fontWeight: 400,
-                      },
-                    },
-                    '& fieldset': {
-                      borderColor: '#3A3948',
-                    },
-                    '&:hover fieldset': {
-                      borderColor: '#fff',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#fff',
-                      borderWidth: '1px',
-                      color: '#fff',
-                    },
-                  },
-                  // '& .MuiFormHelperText-root': {
-                  //   color:
-                  //     errors.first_name && touched.first_name
-                  //       ? '#ff4d4d'
-                  //       : '#b0b0b0',
-                  // },
-                }}
-              />
-            </div>
-            <div className={LogStyle.dialogFormGroup}>
-              <Typography
-                variant="body2"
-                component="label"
-                htmlFor="date"
-                className={LogStyle.dialogFormLabel}
-                sx={
-                  {
-                    // color:
-                    //   errors.first_name && touched.first_name
-                    //     ? '#ff4d4d'
-                    //     : '#676972',
-                  }
-                }
-              >
-                Date & Time
-              </Typography>
-              <ThemeProvider theme={newTheme}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'stretch',
-                      border: '1px solid #444',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      backgroundColor: 'var(--Input-Box-Colors)',
-                      width: '100%',
-                    }}
-                  >
-                    <DesktopDateTimePicker
-                      className={LogStyle['data-input']}
-                      format="MM/DD/YYYY HH:mm:ss"
-                      slotProps={{
-                        textField: {
-                          placeholder: 'MM/DD/YYYY & HH:MM:SS',
-                          sx: {
-                            width: '100%',
-                            textTransform: 'uppercase',
-                            '& .MuiPickersInputBase-root': {
-                              padding: '4px',
-                            },
-                            '& .MuiPickersSectionList-root': {
-                              color: 'var(--Primary-Text-Color)',
-                              borderRadius: '8px',
-                              padding: '10px 0 10px 8px',
-                              fontSize: 'var(--SubTitle-2)',
-                              fontWeight: 'var(--Regular)',
-
-                              '& span': {
-                                fontFamily: 'var(--font-fustat)',
-                              },
-                            },
-                            '& .MuiInputAdornment-root': {
-                              padding: '6px',
-                              backgroundColor: 'var(--Card-Color)',
-                              color: 'var(--Primary-Text-Color)',
-                              borderRadius: '8px',
-                              border: '0.72px solid var(--Stroke-Color)',
-                              maxHeight: 'unset',
-                              width: '28px',
-                              height: '28px',
-                              flex: '0 0 auto',
-                            },
-                            '& .MuiInputAdornment-root button': {
-                              padding: '0',
-                              color: 'var(--Primary-Text-Color)',
-                              backgroundImage:
-                                'url(/images/calendar_month.svg)',
-                              backgroundSize: 'contain',
-                              backgroundRepeat: 'no-repeat',
-                              backgroundPosition: 'center center',
-                              borderRadius: '0',
-                              width: '13px',
-                              height: '14px',
-                              flex: '0 0 auto',
-                            },
-                            '& .MuiInputAdornment-root button svg': {
-                              display: 'none',
-                            },
-                            '& fieldset': {
-                              display: 'none',
+        <Formik
+          initialValues={initialValues}
+          enableReinitialize={true}
+          validationSchema={logIncidentValidationSchema}
+          onSubmit={addUpdateLogIncident}
+        >
+          {({ values, errors, touched, handleSubmit, setFieldValue }) => (
+            <Form onSubmit={handleSubmit}>
+              <DialogContent className={LogStyle.dialogFormContentBox}>
+                <Box>
+                  <div className={LogStyle.dialogFormGroup}>
+                    <Typography
+                      variant="body2"
+                      component="label"
+                      htmlFor="description"
+                      className={LogStyle.dialogFormLabel}
+                      sx={{
+                        color:
+                          errors.description && touched.description
+                            ? '#ff4d4d'
+                            : '#676972',
+                      }}
+                    >
+                      Description
+                    </Typography>
+                    <Field
+                      as={TextField}
+                      fullWidth
+                      type="text"
+                      id="description"
+                      name="description"
+                      placeholder="Enter the incident description"
+                      error={Boolean(errors.description && touched.description)}
+                      sx={{
+                        marginTop: '4px',
+                        padding: '0',
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '12px',
+                          borderWidth: '0px',
+                          color: 'var(--Primary-Text-Color)',
+                          backgroundColor: '#252431',
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            top: '-10px !important',
+                          },
+                          '& .MuiOutlinedInput-input': {
+                            fontSize: 'var(--SubTitle-2)',
+                            color: 'var(--Primary-Text-Color)',
+                            padding: '14px 16px',
+                            fontWeight: 'var(--Regular)',
+                            borderRadius: '12px',
+                            '&::placeholder': {
+                              color: '#888',
+                              fontWeight: 400,
                             },
                           },
+                          '& fieldset': {
+                            borderColor: '#3A3948',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#fff',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#fff',
+                            borderWidth: '1px',
+                            color: '#fff',
+                          },
+                        },
+                        '& .MuiFormHelperText-root': {
+                          color:
+                            errors.description && touched.description
+                              ? '#ff4d4d'
+                              : '#b0b0b0',
                         },
                       }}
                     />
-                  </Box>
-                </LocalizationProvider>
-              </ThemeProvider>
-            </div>
-            <div className={LogStyle.dialogFormGroup}>
-              <Typography
-                variant="body2"
-                component="label"
-                htmlFor="first_name"
-                className={LogStyle.dialogFormLabel}
-                sx={{
-                  display: 'block',
-                  fontSize: 'var(--SubTitle-3)',
-                  fontWeight: 'var(--Regular)',
-                }}
-              >
-                Quick Tags
-              </Typography>
-              <Box className={LogStyle['card-options']}>
-                <div className={LogStyle['checkbox-card']}>
-                  <input type="checkbox" id="Mobile" />
-                  <label htmlFor="Mobile">
-                    <Image
-                      src="/images/missed-visit.svg"
-                      alt="Missed Visit"
-                      width={20}
-                      height={20}
-                      className={LogStyle['checkbox-icon']}
+                    <ErrorMessage
+                      name="description"
+                      component="div"
+                      className="error-input-field"
                     />
-                    <div>Missed Visit</div>
-                  </label>
-                </div>
-                <div className={LogStyle['checkbox-card']}>
-                  <input type="checkbox" id="Visit" />
-                  <label htmlFor="Visit">
-                    <Image
-                      src="/images/late-visit.svg"
-                      alt="Late Visit"
-                      width={20}
-                      height={20}
-                      className={LogStyle['checkbox-icon']}
-                    />
-                    <div>Late Visit</div>
-                  </label>
-                </div>
-                <div className={LogStyle['checkbox-card']}>
-                  <input type="checkbox" id="Response" />
-                  <label htmlFor="Response">
-                    <Image
-                      src="/images/late-visit.svg"
-                      alt="No Response"
-                      width={20}
-                      height={20}
-                      className={LogStyle['checkbox-icon']}
-                    />
-                    <div>No Response</div>
-                  </label>
-                </div>
-                <div className={LogStyle['checkbox-card']}>
-                  <input type="checkbox" id="Denied" />
-                  <label htmlFor="Denied">
-                    <Image
-                      src="/images/denied-call.svg"
-                      alt="Denied Call"
-                      width={20}
-                      height={20}
-                      className={LogStyle['checkbox-icon']}
-                    />
-                    <div>Denied Call</div>
-                  </label>
-                </div>
-                <div className={LogStyle['checkbox-card']}>
-                  <input type="checkbox" id="Safety" />
-                  <label htmlFor="Safety">
-                    <Image
-                      src="/images/safety-concerns.svg"
-                      alt="Safety Concerns"
-                      width={20}
-                      height={20}
-                      className={LogStyle['checkbox-icon']}
-                    />
-                    <div>Safety Concerns</div>
-                  </label>
-                </div>
-                <div
-                  className={LogStyle['checkbox-card']}
-                  onChange={(e) =>
-                    setIsChecked((e.target as HTMLInputElement).checked)
-                  }
-                >
-                  <input type="checkbox" id="Other" />
-                  <label htmlFor="Other">
-                    <Image
-                      src="/images/other.svg"
-                      alt="close icon"
-                      width={20}
-                      height={20}
-                      className={LogStyle['checkbox-icon']}
-                    />
-                    <div>Other</div>
-                  </label>
-                </div>
-                {/* {isChecked && ( */}
-                <div
-                  className={`${LogStyle['specify-input']} ${
-                    isChecked ? LogStyle['specify-input-show'] : ''
-                  }`}
-                >
-                  <TextField
-                    // as={TextField}
-                    fullWidth
-                    type="text"
-                    id="other"
-                    name="other"
-                    placeholder="Please Specify"
-                    // error={Boolean(errors.first_name && touched.first_name)}
-                    sx={{
-                      marginTop: '4px',
-                      padding: '0',
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        borderWidth: '0px',
-                        color: 'var(--Primary-Text-Color)',
-                        backgroundColor: '#252431',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          top: '-10px !important',
-                        },
-                        '& .MuiOutlinedInput-input': {
-                          fontSize: 'var(--SubTitle-3)',
-                          color: 'var(--Primary-Text-Color)',
-                          padding: '14px 16px',
-                          fontWeight: 'var(--Regular)',
-                          borderRadius: '12px',
-                          '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
-                          },
-                        },
-                        '& fieldset': {
-                          borderColor: '#3A3948',
-                        },
-                        '&:hover fieldset': {
-                          borderColor: '#fff',
-                        },
-                        '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
-                          borderWidth: '1px',
-                          color: '#fff',
-                        },
-                      },
-                      // '& .MuiFormHelperText-root': {
-                      //   color:
-                      //     errors.first_name && touched.first_name
-                      //       ? '#ff4d4d'
-                      //       : '#b0b0b0',
-                      // },
-                    }}
-                  />
-                </div>
-                {/* )} */}
-              </Box>
-            </div>
-          </Box>
-          <Accordion className={LogStyle.accordionBox}>
-            <AccordionSummary
-              expandIcon={
-                <Image
-                  className={LogStyle['img-none']}
-                  src="/images/arrow-down.svg"
-                  alt="expand-collapse"
-                  width={16}
-                  height={16}
-                />
-              }
-              aria-controls="panel1-content"
-              id="panel1-header"
-            >
-              <Typography component="span">Optional Details</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <div className={LogStyle.dialogFormGroup}>
-                <Typography
-                  variant="body2"
-                  component="label"
-                  htmlFor="first_name"
-                  className={LogStyle.dialogFormLabel}
-                  sx={
-                    {
-                      // color:
-                      //   errors.first_name && touched.first_name
-                      //     ? '#ff4d4d'
-                      //     : '#676972',
-                    }
-                  }
-                >
-                  Location
-                </Typography>
-                <TextField
-                  // as={TextField}
-                  fullWidth
-                  type="text"
-                  id="first_name"
-                  name="first_name"
-                  placeholder="Enter Location "
-                  // error={Boolean(errors.first_name && touched.first_name)}
-                  sx={{
-                    marginTop: '4px',
-                    padding: '0',
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '12px',
-                      borderWidth: '0px',
-                      color: 'var(--Primary-Text-Color)',
-                      backgroundColor: '#252431',
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        top: '-10px !important',
-                      },
-                      '& .MuiOutlinedInput-input': {
-                        fontSize: 'var(--SubTitle-3)',
-                        color: 'var(--Primary-Text-Color)',
-                        padding: '14px 16px',
-                        fontWeight: 'var(--Regular)',
-                        borderRadius: '12px',
-                        '&::placeholder': {
-                          color: '#888',
-                          fontWeight: 400,
-                        },
-                      },
-                      '& fieldset': {
-                        borderColor: '#3A3948',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#fff',
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#fff',
-                        borderWidth: '1px',
-                        color: '#fff',
-                      },
-                    },
-                    // '& .MuiFormHelperText-root': {
-                    //   color:
-                    //     errors.first_name && touched.first_name
-                    //       ? '#ff4d4d'
-                    //       : '#b0b0b0',
-                    // },
-                  }}
-                />
-              </div>
-              <div className={LogStyle.dialogFormGroup}>
-                <Typography
-                  variant="body2"
-                  component="label"
-                  htmlFor="involved"
-                  className={LogStyle.dialogFormLabel}
-                  sx={
-                    {
-                      // color:
-                      //   errors.first_name && touched.first_name
-                      //     ? '#ff4d4d'
-                      //     : '#676972',
-                    }
-                  }
-                >
-                  Person Involved
-                </Typography>
-                <TextField
-                  // as={TextField}
-                  fullWidth
-                  type="text"
-                  id="involved"
-                  name="involved"
-                  placeholder="Enter Names of persons involved in this incident "
-                  // error={Boolean(errors.first_name && touched.first_name)}
-                  sx={{
-                    marginTop: '4px',
-                    padding: '0',
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '12px',
-                      borderWidth: '0px',
-                      color: 'var(--Primary-Text-Color)',
-                      backgroundColor: '#252431',
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        top: '-10px !important',
-                      },
-                      '& .MuiOutlinedInput-input': {
-                        fontSize: 'var(--SubTitle-3)',
-                        color: 'var(--Primary-Text-Color)',
-                        padding: '14px 16px',
-                        fontWeight: 'var(--Regular)',
-                        borderRadius: '12px',
-                        '&::placeholder': {
-                          color: '#888',
-                          fontWeight: 400,
-                        },
-                      },
-                      '& fieldset': {
-                        borderColor: '#3A3948',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#fff',
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#fff',
-                        borderWidth: '1px',
-                        color: '#fff',
-                      },
-                    },
-                    // '& .MuiFormHelperText-root': {
-                    //   color:
-                    //     errors.first_name && touched.first_name
-                    //       ? '#ff4d4d'
-                    //       : '#b0b0b0',
-                    // },
-                  }}
-                />
-              </div>
-              <div className={LogStyle.dialogFormGroupMain}>
-                <div className={LogStyle.dialogFormGroup}>
-                  <Typography
-                    variant="body2"
-                    component="label"
-                    htmlFor="category"
-                    className={LogStyle.dialogFormLabel}
-                    sx={
-                      {
-                        // color:
-                        //   errors.first_name && touched.first_name
-                        //     ? '#ff4d4d'
-                        //     : '#676972',
-                      }
-                    }
-                  >
-                    Document Category
-                  </Typography>
-                  <Select
-                    id="category"
-                    name="category"
-                    value={selectedPerson}
-                    onChange={(e) => setSelectedPerson(e.target.value)}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Person Involved' }}
-                    sx={{
-                      backgroundColor: '#252431',
-                      borderRadius: '12px',
-                      fontSize: 'var(--SubTitle-3)',
-                      fontWeight: 'var(--Regular)',
-                      color: 'var(--Primary-Text-Color)',
-                      width: '100%',
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        top: '-10px !important',
-                        borderColor: '#3A3948',
-                      },
-                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#fff',
-                      },
-                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#fff',
-                        borderWidth: '1px',
-                      },
-                      '& .MuiSelect-select': {
-                        padding: '14px 16px',
-                        display: 'flex',
-                        alignItems: 'center',
-                      },
-                      '& .MuiSelect-placeholder': {
-                        color: '#888',
-                        fontWeight: 400,
-                      },
-                    }}
-                  >
-                    <MenuItem value="" disabled>
-                      Choose Category
-                    </MenuItem>
-                    {peopleOptions.map((person, idx) => (
-                      <MenuItem key={idx} value={person}>
-                        {person}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
-                <div className={LogStyle.dialogFormGroup}>
-                  <Typography
-                    variant="body2"
-                    component="label"
-                    htmlFor="category"
-                    className={LogStyle.dialogFormLabel}
-                    sx={
-                      {
-                        // color:
-                        //   errors.first_name && touched.first_name
-                        //     ? '#ff4d4d'
-                        //     : '#676972',
-                      }
-                    }
-                  >
-                    Document Category
-                  </Typography>
-                  <Select
-                    id="category"
-                    name="category"
-                    value={selectedPerson}
-                    onChange={(e) => setSelectedPerson(e.target.value)}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Person Involved' }}
-                    sx={{
-                      backgroundColor: '#252431',
-                      borderRadius: '12px',
-                      fontSize: 'var(--SubTitle-3)',
-                      fontWeight: 'var(--Regular)',
-                      color: 'var(--Primary-Text-Color)',
-                      width: '100%',
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        top: '-10px !important',
-                        borderColor: '#3A3948',
-                      },
-                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#fff',
-                      },
-                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#fff',
-                        borderWidth: '1px',
-                      },
-                      '& .MuiSelect-select': {
-                        padding: '14px 16px',
-                        display: 'flex',
-                        alignItems: 'center',
-                      },
-                      '& .MuiSelect-placeholder': {
-                        color: '#888',
-                        fontWeight: 400,
-                      },
-                    }}
-                  >
-                    <MenuItem value="" disabled>
-                      Choose Category
-                    </MenuItem>
-                    {peopleOptions.map((person, idx) => (
-                      <MenuItem key={idx} value={person}>
-                        {person}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
-              </div>
-              <div className={LogStyle.dialogFormGroup}>
-                <Typography
-                  variant="body2"
-                  className={LogStyle.dialogFormLabel}
-                  sx={{
-                    display: 'block',
-                    fontSize: 'var(--SubTitle-3)',
-                    fontWeight: 'var(--Regular)',
-                  }}
-                >
-                  Support Evidence
-                </Typography>
-                <Box
-                  className={`${LogStyle.dialogContent}`}
-                  role="button"
-                  tabIndex={0}
-                  style={{
-                    cursor: 'pointer',
-                    userSelect: 'none',
-                  }}
-                >
-                  <Box>
-                    <Image
-                      src="/images/Upload-img.png"
-                      alt="Upload-img"
-                      width={51}
-                      height={55}
-                    />
-                    <Typography gutterBottom>
-                      Click here to upload Supported Evidences
+                  </div>
+                  <div className={LogStyle.dialogFormGroup}>
+                    <Typography
+                      variant="body2"
+                      component="label"
+                      htmlFor="incident_time"
+                      className={LogStyle.dialogFormLabel}
+                      sx={{
+                        color:
+                          errors.incident_time && touched.incident_time
+                            ? '#ff4d4d'
+                            : '#676972',
+                      }}
+                    >
+                      Date & Time
                     </Typography>
-                  </Box>
-                </Box>
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        </DialogContent>
+                    <ThemeProvider theme={newTheme}>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'stretch',
+                            border: '1px solid #444',
+                            borderRadius: '12px',
+                            overflow: 'hidden',
+                            backgroundColor: 'var(--Input-Box-Colors)',
+                            width: '100%',
+                          }}
+                        >
+                          <DesktopDateTimePicker
+                            className={LogStyle['data-input']}
+                            format="MM/DD/YYYY HH:mm:ss"
+                            name="incident_time"
+                            value={dayjs(values.incident_time)}
+                            onChange={(newValue) => {
+                              const formattedDate = newValue
+                                ? newValue.format('YYYY-MM-DD HH:mm')
+                                : '';
+                              setFieldValue('incident_time', formattedDate);
+                            }}
+                            slotProps={{
+                              textField: {
+                                placeholder: 'MM/DD/YYYY & HH:MM:SS',
+                                sx: {
+                                  width: '100%',
+                                  textTransform: 'uppercase',
+                                  '& .MuiPickersInputBase-root': {
+                                    padding: '4px',
+                                  },
+                                  '& .MuiPickersSectionList-root': {
+                                    color: 'var(--Primary-Text-Color)',
+                                    borderRadius: '8px',
+                                    padding: '10px 0 10px 8px',
+                                    fontSize: 'var(--SubTitle-2)',
+                                    fontWeight: 'var(--Regular)',
 
-        <DialogActions className={LogStyle.dialogFormButtonBoxMain}>
-          <Box component="div" className={LogStyle.dialogFormButtonBox}>
-            <Button className={LogStyle.formCancelBtn} onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button className="btn btn-primary" type="submit">
-              Save
-            </Button>
-          </Box>
-        </DialogActions>
+                                    '& span': {
+                                      fontFamily: 'var(--font-fustat)',
+                                    },
+                                  },
+                                  '& .MuiInputAdornment-root': {
+                                    padding: '6px',
+                                    backgroundColor: 'var(--Card-Color)',
+                                    color: 'var(--Primary-Text-Color)',
+                                    borderRadius: '8px',
+                                    border: '0.72px solid var(--Stroke-Color)',
+                                    maxHeight: 'unset',
+                                    width: '28px',
+                                    height: '28px',
+                                    flex: '0 0 auto',
+                                  },
+                                  '& .MuiInputAdornment-root button': {
+                                    padding: '0',
+                                    color: 'var(--Primary-Text-Color)',
+                                    backgroundImage:
+                                      'url(/images/calendar_month.svg)',
+                                    backgroundSize: 'contain',
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundPosition: 'center center',
+                                    borderRadius: '0',
+                                    width: '13px',
+                                    height: '14px',
+                                    flex: '0 0 auto',
+                                  },
+                                  '& .MuiInputAdornment-root button svg': {
+                                    display: 'none',
+                                  },
+                                  '& fieldset': {
+                                    display: 'none',
+                                  },
+                                },
+                              },
+                            }}
+                          />
+                        </Box>
+                        <ErrorMessage
+                          name="incident_time"
+                          component="div"
+                          className="error-input-field"
+                        />
+                      </LocalizationProvider>
+                    </ThemeProvider>
+                  </div>
+                  <div className={LogStyle.dialogFormGroup}>
+                    <Typography
+                      variant="body2"
+                      component="label"
+                      htmlFor="tags"
+                      className={LogStyle.dialogFormLabel}
+                      sx={{
+                        display: 'block',
+                        fontSize: 'var(--SubTitle-3)',
+                        fontWeight: 'var(--Regular)',
+                      }}
+                    >
+                      Quick Tags
+                    </Typography>
+                    <Box className={LogStyle['card-options']}>
+                      <FieldArray name="tags">
+                        {({ push, remove, form }) => (
+                          <>
+                            {tags.map((tag, index) => {
+                              const isChecked = form.values.tags.includes(
+                                tag.id
+                              );
+                              const checkboxId = `tag-${index}`;
+
+                              return (
+                                <div
+                                  className={LogStyle['checkbox-card']}
+                                  key={index}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    id={checkboxId}
+                                    name="tags"
+                                    value={tag.name}
+                                    checked={isChecked}
+                                    onChange={() => {
+                                      if (isChecked) {
+                                        remove(
+                                          form.values.tags.indexOf(tag.id)
+                                        );
+                                      } else {
+                                        push(tag.id);
+                                      }
+                                    }}
+                                  />
+                                  <label htmlFor={checkboxId}>
+                                    {tag.file_data?.file_url && (
+                                      <Image
+                                        src={tag.file_data.file_url}
+                                        alt={tag.name}
+                                        width={20}
+                                        height={20}
+                                        className={LogStyle['checkbox-icon']}
+                                      />
+                                    )}
+                                    <div>{tag.name}</div>
+                                  </label>
+                                </div>
+                              );
+                            })}
+                          </>
+                        )}
+                      </FieldArray>
+                      <div
+                        className={LogStyle['checkbox-card']}
+                        onChange={(e) => {
+                          setIsChecked((e.target as HTMLInputElement).checked);
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          id="Other"
+                          // checked={isChecked}
+                          // onChange={(e) => setIsChecked(e.target.checked)}
+                        />
+                        <label htmlFor="Other">
+                          <Image
+                            src="/images/other.svg"
+                            alt="close icon"
+                            width={20}
+                            height={20}
+                            className={LogStyle['checkbox-icon']}
+                          />
+                          <div>Other</div>
+                        </label>
+                      </div>
+                      <ErrorMessage
+                        name="tags"
+                        component="div"
+                        className="error-input-field"
+                      />
+                      <div
+                        className={`${LogStyle['specify-input']} ${
+                          isChecked || editedData?.other_tag_name
+                            ? LogStyle['specify-input-show']
+                            : ''
+                        }`}
+                      >
+                        <Field
+                          as={TextField}
+                          fullWidth
+                          type="text"
+                          id="other_tag"
+                          name="other_tag"
+                          placeholder="Please Specify"
+                          error={Boolean(errors.other_tag && touched.other_tag)}
+                          sx={{
+                            marginTop: '4px',
+                            padding: '0',
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: '12px',
+                              borderWidth: '0px',
+                              color: 'var(--Primary-Text-Color)',
+                              backgroundColor: '#252431',
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                top: '-10px !important',
+                              },
+                              '& .MuiOutlinedInput-input': {
+                                fontSize: 'var(--SubTitle-3)',
+                                color: 'var(--Primary-Text-Color)',
+                                padding: '14px 16px',
+                                fontWeight: 'var(--Regular)',
+                                borderRadius: '12px',
+                                '&::placeholder': {
+                                  color: '#888',
+                                  fontWeight: 400,
+                                },
+                              },
+                              '& fieldset': {
+                                borderColor: '#3A3948',
+                              },
+                              '&:hover fieldset': {
+                                borderColor: '#fff',
+                              },
+                              '&.Mui-focused fieldset': {
+                                borderColor: '#fff',
+                                borderWidth: '1px',
+                                color: '#fff',
+                              },
+                            },
+                            '& .MuiFormHelperText-root': {
+                              color:
+                                errors.other_tag && touched.other_tag
+                                  ? '#ff4d4d'
+                                  : '#b0b0b0',
+                            },
+                          }}
+                        />
+                      </div>
+                    </Box>
+                  </div>
+                </Box>
+                <Accordion className={LogStyle.accordionBox}>
+                  <AccordionSummary
+                    expandIcon={
+                      <Image
+                        className={LogStyle['img-none']}
+                        src="/images/arrow-down.svg"
+                        alt="expand-collapse"
+                        width={16}
+                        height={16}
+                      />
+                    }
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                  >
+                    <Typography component="span">Optional Details</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <div className={LogStyle.dialogFormGroup}>
+                      <Typography
+                        variant="body2"
+                        component="label"
+                        htmlFor="location"
+                        className={LogStyle.dialogFormLabel}
+                        sx={{
+                          color:
+                            errors.location && touched.location
+                              ? '#ff4d4d'
+                              : '#676972',
+                        }}
+                      >
+                        Location
+                      </Typography>
+                      <Field
+                        as={TextField}
+                        fullWidth
+                        type="text"
+                        id="location"
+                        name="location"
+                        placeholder="Enter Location"
+                        error={Boolean(errors.location && touched.location)}
+                        sx={{
+                          marginTop: '4px',
+                          padding: '0',
+                          '& .MuiOutlinedInput-root': {
+                            borderRadius: '12px',
+                            borderWidth: '0px',
+                            color: 'var(--Primary-Text-Color)',
+                            backgroundColor: '#252431',
+                            '& .MuiOutlinedInput-notchedOutline': {
+                              top: '-10px !important',
+                            },
+                            '& .MuiOutlinedInput-input': {
+                              fontSize: 'var(--SubTitle-3)',
+                              color: 'var(--Primary-Text-Color)',
+                              padding: '14px 16px',
+                              fontWeight: 'var(--Regular)',
+                              borderRadius: '12px',
+                              '&::placeholder': {
+                                color: '#888',
+                                fontWeight: 400,
+                              },
+                            },
+                            '& fieldset': {
+                              borderColor: '#3A3948',
+                            },
+                            '&:hover fieldset': {
+                              borderColor: '#fff',
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: '#fff',
+                              borderWidth: '1px',
+                              color: '#fff',
+                            },
+                          },
+                          '& .MuiFormHelperText-root': {
+                            color:
+                              errors.location && touched.location
+                                ? '#ff4d4d'
+                                : '#b0b0b0',
+                          },
+                        }}
+                      />
+                      <ErrorMessage
+                        name="location"
+                        component="div"
+                        className="error-input-field"
+                      />
+                    </div>
+                    <div className={LogStyle.dialogFormGroup}>
+                      <Typography
+                        variant="body2"
+                        component="label"
+                        htmlFor="involved_person_name"
+                        className={LogStyle.dialogFormLabel}
+                        sx={{
+                          color:
+                            errors.involved_person_name &&
+                            touched.involved_person_name
+                              ? '#ff4d4d'
+                              : '#676972',
+                        }}
+                      >
+                        Person Involved
+                      </Typography>
+                      <Field
+                        as={TextField}
+                        fullWidth
+                        type="text"
+                        id="involved_person_name"
+                        name="involved_person_name"
+                        placeholder="Enter Names of persons involved in this incident "
+                        error={Boolean(
+                          errors.involved_person_name &&
+                            touched.involved_person_name
+                        )}
+                        sx={{
+                          marginTop: '4px',
+                          padding: '0',
+                          '& .MuiOutlinedInput-root': {
+                            borderRadius: '12px',
+                            borderWidth: '0px',
+                            color: 'var(--Primary-Text-Color)',
+                            backgroundColor: '#252431',
+                            '& .MuiOutlinedInput-notchedOutline': {
+                              top: '-10px !important',
+                            },
+                            '& .MuiOutlinedInput-input': {
+                              fontSize: 'var(--SubTitle-3)',
+                              color: 'var(--Primary-Text-Color)',
+                              padding: '14px 16px',
+                              fontWeight: 'var(--Regular)',
+                              borderRadius: '12px',
+                              '&::placeholder': {
+                                color: '#888',
+                                fontWeight: 400,
+                              },
+                            },
+                            '& fieldset': {
+                              borderColor: '#3A3948',
+                            },
+                            '&:hover fieldset': {
+                              borderColor: '#fff',
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: '#fff',
+                              borderWidth: '1px',
+                              color: '#fff',
+                            },
+                          },
+                          '& .MuiFormHelperText-root': {
+                            color:
+                              errors.involved_person_name &&
+                              touched.involved_person_name
+                                ? '#ff4d4d'
+                                : '#b0b0b0',
+                          },
+                        }}
+                      />
+                      <ErrorMessage
+                        name="involved_person_name"
+                        component="div"
+                        className="error-input-field"
+                      />
+                    </div>
+                    <div className={LogStyle.dialogFormGroupMain}>
+                      <div className={LogStyle.dialogFormGroup}>
+                        <Typography
+                          variant="body2"
+                          component="label"
+                          htmlFor="category"
+                          className={LogStyle.dialogFormLabel}
+                        >
+                          Document Category
+                        </Typography>
+                        <Field
+                          as={Select}
+                          id="category"
+                          name="category"
+                          onChange={(
+                            e: React.ChangeEvent<HTMLSelectElement>
+                          ) => {
+                            setFieldValue('category', e.target.value);
+                            setFieldValue('document', '');
+                            handleFetchCategoryDocuments(
+                              Number(e.target.value)
+                            );
+                          }}
+                          displayEmpty
+                          inputProps={{ 'aria-label': 'Person Involved' }}
+                          sx={{
+                            backgroundColor: '#252431',
+                            borderRadius: '12px',
+                            fontSize: 'var(--SubTitle-3)',
+                            fontWeight: 'var(--Regular)',
+                            color: 'var(--Primary-Text-Color)',
+                            width: '100%',
+                            '& .MuiOutlinedInput-notchedOutline': {
+                              top: '-10px !important',
+                              borderColor: '#3A3948',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#fff',
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#fff',
+                              borderWidth: '1px',
+                            },
+                            '& .MuiSelect-select': {
+                              padding: '14px 16px',
+                              display: 'flex',
+                              alignItems: 'center',
+                            },
+                            '& .MuiSelect-placeholder': {
+                              color: '#888',
+                              fontWeight: 400,
+                            },
+                          }}
+                        >
+                          <MenuItem value="" disabled>
+                            Choose Category
+                          </MenuItem>
+                          {categories?.map((cat, index) => (
+                            <MenuItem key={index} value={cat.id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Field>
+                      </div>
+                      <div className={LogStyle.dialogFormGroup}>
+                        <Typography
+                          variant="body2"
+                          component="label"
+                          htmlFor="document"
+                          className={LogStyle.dialogFormLabel}
+                        >
+                          Document
+                        </Typography>
+                        <Field
+                          as={Select}
+                          id="document"
+                          name="document"
+                          // value={initialValues.document}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLSelectElement>
+                          ) => {
+                            setFieldValue('document', e.target.value);
+                          }}
+                          displayEmpty
+                          inputProps={{ 'aria-label': 'Person Involved' }}
+                          sx={{
+                            backgroundColor: '#252431',
+                            borderRadius: '12px',
+                            fontSize: 'var(--SubTitle-3)',
+                            fontWeight: 'var(--Regular)',
+                            color: 'var(--Primary-Text-Color)',
+                            width: '100%',
+                            '& .MuiOutlinedInput-notchedOutline': {
+                              top: '-10px !important',
+                              borderColor: '#3A3948',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#fff',
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#fff',
+                              borderWidth: '1px',
+                            },
+                            '& .MuiSelect-select': {
+                              padding: '14px 16px',
+                              display: 'flex',
+                              alignItems: 'center',
+                            },
+                            '& .MuiSelect-placeholder': {
+                              color: '#888',
+                              fontWeight: 400,
+                            },
+                          }}
+                        >
+                          <MenuItem value="" disabled>
+                            Choose Document
+                          </MenuItem>
+                          {documents?.map((doc, index) => (
+                            <MenuItem key={index} value={doc.id}>
+                              {doc.file_name}
+                            </MenuItem>
+                          ))}
+                        </Field>
+                      </div>
+                    </div>
+                    <div className={LogStyle.dialogFormGroup}>
+                      <Typography
+                        variant="body2"
+                        className={LogStyle.dialogFormLabel}
+                        sx={{
+                          display: 'block',
+                          fontSize: 'var(--SubTitle-3)',
+                          fontWeight: 'var(--Regular)',
+                        }}
+                      >
+                        Support Evidence
+                      </Typography>
+                      <Box
+                        className={`${LogStyle.dialogContent}`}
+                        role="button"
+                        tabIndex={0}
+                        style={{
+                          cursor: 'pointer',
+                          userSelect: 'none',
+                        }}
+                      >
+                        <Box>
+                          <Image
+                            src="/images/Upload-img.png"
+                            alt="Upload-img"
+                            width={51}
+                            height={55}
+                          />
+                          <Typography gutterBottom>
+                            Click here to upload Supported Evidences
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </div>
+                  </AccordionDetails>
+                </Accordion>
+              </DialogContent>
+
+              <DialogActions className={LogStyle.dialogFormButtonBoxMain}>
+                <Box component="div" className={LogStyle.dialogFormButtonBox}>
+                  <Button
+                    className={LogStyle.formCancelBtn}
+                    onClick={handleClose}
+                  >
+                    Cancel
+                  </Button>
+                  <Button className="btn btn-primary" type="submit">
+                    Save
+                  </Button>
+                </Box>
+              </DialogActions>
+            </Form>
+          )}
+        </Formik>
       </BootstrapDialog>
     </React.Fragment>
   );

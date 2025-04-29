@@ -17,6 +17,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import LogModel from '../../LogModel/LogModel';
 
 // Dynamic Custom Component imports
 const DynamicDocUploadModal = dynamic(
@@ -36,6 +37,11 @@ export default function ChatHomeScreen() {
   const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
+  const [openModel, setOpenModel] = useState(false);
+
+  const openLogIncidentModel = () => {
+    setOpenModel(true);
+  };
 
   const handleClickOpen = () => {
     setIsOpenDocUpload(true);
@@ -82,103 +88,105 @@ export default function ChatHomeScreen() {
   }, []);
 
   return (
-    <div className={AIChatStyles.chatBoarbMain}>
-      <Box component="section" className={AIChatStyles.chatHeading}>
-        <div className={AIChatStyles.chatHeader}>
-          <Typography variant="h2" className={AIChatStyles.chatTitle}>
-            Wondering What is ExFiles?
-          </Typography>
-          <Typography variant="body1" className={AIChatStyles.chatSubtitle}>
-            Try clicking on below examples to get things going
-          </Typography>
-        </div>
+    <>
+      <div className={AIChatStyles.chatBoarbMain}>
+        <Box component="section" className={AIChatStyles.chatHeading}>
+          <div className={AIChatStyles.chatHeader}>
+            <Typography variant="h2" className={AIChatStyles.chatTitle}>
+              Wondering What is ExFiles?
+            </Typography>
+            <Typography variant="body1" className={AIChatStyles.chatSubtitle}>
+              Try clicking on below examples to get things going
+            </Typography>
+          </div>
 
-        <Box className={AIChatStyles.gridBox} component="div">
-          <Grid
-            container
-            spacing={{ xs: 2, md: 4 }}
-            justifyContent="center"
-            alignItems="stretch"
-          >
+          <Box className={AIChatStyles.gridBox} component="div">
             <Grid
-              item
-              xs={12}
-              sm={12}
-              md={4}
-              className={AIChatStyles.gridBoxInner}
+              container
+              spacing={{ xs: 2, md: 4 }}
+              justifyContent="center"
+              alignItems="stretch"
             >
-              <div className={AIChatStyles.chatGridBox}>
-                <div className={AIChatStyles.chatBox}>
-                  <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
-                  <Button
-                    type="button"
-                    variant="contained"
-                    className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
-                    color="primary"
-                    fullWidth
-                    onClick={() => handlePromptClick(CHAT_PROMPS[0])}
-                  >
-                    Start with this question
-                    <span className="arrow"></span>
-                  </Button>
-                </div>
-              </div>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={4}
-              className={AIChatStyles.gridBoxInner}
-            >
-              <div
-                className={`${AIChatStyles.chatGridBox} ${AIChatStyles.chatLogIncident}`} //${AIChatStyles.chatLogIncident} use only Log Incident
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={4}
+                className={AIChatStyles.gridBoxInner}
               >
-                <div className={AIChatStyles.chatBox}>
-                  <Typography variant="body1">
-                    Something Unexpected Happened?
-                  </Typography>
-                  <Button
-                    type="button"
-                    variant="contained"
-                    className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
-                    color="primary"
-                    fullWidth
-                  >
-                    Log Incident
-                    <span className="incident"></span>
-                  </Button>
+                <div className={AIChatStyles.chatGridBox}>
+                  <div className={AIChatStyles.chatBox}>
+                    <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
+                      color="primary"
+                      fullWidth
+                      onClick={() => handlePromptClick(CHAT_PROMPS[0])}
+                    >
+                      Start with this question
+                      <span className="arrow"></span>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={4}
-              className={AIChatStyles.gridBoxInner}
-            >
-              <div className={AIChatStyles.chatGridBox}>
-                <div className={AIChatStyles.chatBox}>
-                  <Typography variant="body1">{CHAT_PROMPS[1]}</Typography>
-                  <Button
-                    type="button"
-                    variant="contained"
-                    className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
-                    color="primary"
-                    fullWidth
-                    onClick={() => handlePromptClick(CHAT_PROMPS[1])}
-                  >
-                    Start with this question
-                    <span className="arrow"></span>
-                  </Button>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={4}
+                className={AIChatStyles.gridBoxInner}
+              >
+                <div
+                  className={`${AIChatStyles.chatGridBox} ${AIChatStyles.chatLogIncident}`} //${AIChatStyles.chatLogIncident} use only Log Incident
+                  onClick={openLogIncidentModel}
+                >
+                  <div className={AIChatStyles.chatBox}>
+                    <Typography variant="body1">
+                      Something Unexpected Happened?
+                    </Typography>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
+                      color="primary"
+                      fullWidth
+                    >
+                      Log Incident
+                      <span className="incident"></span>
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={4}
+                className={AIChatStyles.gridBoxInner}
+              >
+                <div className={AIChatStyles.chatGridBox}>
+                  <div className={AIChatStyles.chatBox}>
+                    <Typography variant="body1">{CHAT_PROMPS[1]}</Typography>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
+                      color="primary"
+                      fullWidth
+                      onClick={() => handlePromptClick(CHAT_PROMPS[1])}
+                    >
+                      Start with this question
+                      <span className="arrow"></span>
+                    </Button>
+                  </div>
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
+          </Box>
 
-        {/* <div className={AIChatStyles.chatHeader}>
+          {/* <div className={AIChatStyles.chatHeader}>
           <Image
             src="/images/new-incident.svg"
             alt="new-incident"
@@ -194,36 +202,42 @@ export default function ChatHomeScreen() {
             typing your incident below.
           </Typography>
         </div> */}
-      </Box>
-      <Box component="section" className={AIChatStyles.chatHeading}>
-        <div className={AIChatStyles.chatHeader}>
-          <Typography variant="h2" className={AIChatStyles.chatTitle}>
-            How can I help you with?
-          </Typography>
-          <Typography
-            variant="body1"
-            className={AIChatStyles.chatSubtitle}
-            sx={{ maxWidth: '500px' }}
-          >
-            Ask me anything. Enter the queries you get in textbox below, and see
-            the magic of ExFiles.
-          </Typography>
-        </div>
+        </Box>
+        <Box component="section" className={AIChatStyles.chatHeading}>
+          <div className={AIChatStyles.chatHeader}>
+            <Typography variant="h2" className={AIChatStyles.chatTitle}>
+              How can I help you with?
+            </Typography>
+            <Typography
+              variant="body1"
+              className={AIChatStyles.chatSubtitle}
+              sx={{ maxWidth: '500px' }}
+            >
+              Ask me anything. Enter the queries you get in textbox below, and
+              see the magic of ExFiles.
+            </Typography>
+          </div>
 
-        <UserChatInput
-          handleOpenDocUploadModal={handleClickOpen}
-          sendMessage={(payloadData) => handleNewSendMessage(payloadData)}
-          isLoadingProp={isLoading}
-          selectedPrompt={selectedPrompt}
-        />
-      </Box>
+          <UserChatInput
+            handleOpenDocUploadModal={handleClickOpen}
+            sendMessage={(payloadData) => handleNewSendMessage(payloadData)}
+            isLoadingProp={isLoading}
+            selectedPrompt={selectedPrompt}
+          />
+        </Box>
 
-      {isOpenDocUpload && (
-        <DynamicDocUploadModal
-          open={isOpenDocUpload}
-          handleClose={handleClose}
-        />
-      )}
-    </div>
+        {isOpenDocUpload && (
+          <DynamicDocUploadModal
+            open={isOpenDocUpload}
+            handleClose={handleClose}
+          />
+        )}
+      </div>
+      <LogModel
+        open={openModel}
+        handleClose={() => setOpenModel(false)}
+        editedData={null}
+      />
+    </>
   );
 }
