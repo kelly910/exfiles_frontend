@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Style from './Sidebar.module.scss';
 import ListItem from '@mui/material/ListItem';
 import { Box, List, TextField } from '@mui/material';
@@ -25,6 +25,8 @@ import Link from 'next/link';
 import SidebarButton from '@components/Common/SidebarButton';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
+import debounce from 'lodash.debounce';
+import { ErrorResponse, handleError } from '@/app/utils/handleError';
 
 const Sidebar = ({
   isOpen,
@@ -42,7 +44,6 @@ const Sidebar = ({
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
 
   if (isSearchOpen && !isOpen) {
     setIsSearchOpen(false);
@@ -127,6 +128,48 @@ const Sidebar = ({
     dispatch(clearPageHeaderData());
   };
 
+  const handleSearch = async (inputValue: string) => {
+    try {
+      const [threadsRes, pinnedRes] = await Promise.all([
+        dispatch(fetchThreadList({ page: 1, search: inputValue })),
+        dispatch(fetchPinnedMessagesList({ page: 1, search: inputValue })),
+      ]);
+      if (fetchThreadList.fulfilled.match(threadsRes)) {
+        setInitialAllChatsData(threadsRes.payload);
+      }
+      if (fetchPinnedMessagesList.fulfilled.match(pinnedRes)) {
+        setInitialAllPinnedChatsData(pinnedRes.payload);
+      }
+    } catch (error) {
+      handleError(error as ErrorResponse);
+    }
+  };
+
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((inputValue: string) => {
+        handleSearch(inputValue);
+      }, 300),
+    []
+  );
+
+  const handleTextInput = (inputValue: string) => {
+    const trimmed = inputValue.trim();
+    setSearch(trimmed);
+    debouncedSearch(trimmed);
+  };
+
+  const clearSearch = async () => {
+    setSearch('');
+    const [defaultThreads, defaultPinned] = await Promise.all([
+      getThreadList(1),
+      getPinnedMessagesList(1),
+    ]);
+    setInitialAllChatsData(defaultThreads);
+    setInitialAllPinnedChatsData(defaultPinned);
+    setIsSearchOpen(false);
+  };
+
   return (
     <>
       <span
@@ -192,7 +235,7 @@ const Sidebar = ({
                   name="email"
                   value={search}
                   placeholder="Search here"
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => handleTextInput(e.target.value)}
                   // error={Boolean(errors.email && touched.email)}
                   sx={{
                     marginTop: '0',
@@ -229,13 +272,7 @@ const Sidebar = ({
                     },
                   }}
                 />
-                <Button
-                  className={Style['search-btn']}
-                  onClick={() => {
-                    setSearch('');
-                    inputRef.current?.focus();
-                  }}
-                >
+                <Button className={Style['search-btn']} onClick={clearSearch}>
                   <Image
                     src={
                       search.trim()
@@ -262,6 +299,7 @@ const Sidebar = ({
                       id="email"
                       name="email"
                       placeholder="Search here"
+                      onChange={(e) => handleTextInput(e.target.value)}
                       // error={Boolean(errors.email && touched.email)}
                       sx={{
                         marginTop: '0',
@@ -307,6 +345,7 @@ const Sidebar = ({
                         alt="sidebar-hide-icon"
                         width={16}
                         height={16}
+                        onClick={clearSearch}
                       />
                     </Button>
                   </Box>
@@ -344,6 +383,9 @@ const Sidebar = ({
                 <NoRecordFound title={'No Chats are pinned yet.'} />
               )}
 
+              {initialAllPinnedChatsData?.count === 0 && search && (
+                <NoRecordFound title={'No Match Found'} />
+              )}
               {initialAllPinnedChatsData &&
                 initialAllPinnedChatsData?.count > 0 && (
                   <PinnedMessagesList
@@ -376,6 +418,10 @@ const Sidebar = ({
             >
               {!initialAllChatsData && (
                 <NoRecordFound title={'Your chats will show up here.'} />
+              )}
+
+              {initialAllChatsData?.count === 0 && search && (
+                <NoRecordFound title={'No Match Found'} />
               )}
 
               {initialAllChatsData && initialAllChatsData?.count > 0 && (
