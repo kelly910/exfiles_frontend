@@ -49,7 +49,7 @@ export default function ChatHomeScreen() {
     // Before sending a message we will create a new thread
     const resultData = await dispatch(
       createNewThread({
-        name: payloadData.message.trim(),
+        // name: payloadData.message.trim().slice(0, 200),
       })
     );
 

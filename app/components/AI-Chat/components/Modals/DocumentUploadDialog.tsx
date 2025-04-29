@@ -158,10 +158,11 @@ export default function DocumentUploadDialog({
 
     const newUploads: Array<UploadFiles> = newFiles.map((file) => {
       const fileParts = file.name.split('.');
-      const isSingleExtension = fileParts.length === 2; // Ensures only one dot
+      // const isSingleExtension = fileParts.length === 2; // Ensures only one dot
       const fileExtension = '.' + fileParts.pop()?.toLowerCase();
-      const isValidExtension =
-        isSingleExtension && ALLOWED_FILE_TYPES.includes(fileExtension);
+      // const isValidExtension =
+      //   isSingleExtension && ALLOWED_FILE_TYPES.includes(fileExtension);
+      const isValidExtension = ALLOWED_FILE_TYPES.includes(fileExtension);
 
       return {
         file,
