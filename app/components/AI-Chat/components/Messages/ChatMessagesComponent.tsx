@@ -137,7 +137,7 @@ export default function ChatMessagesComponent({
       );
       dispatch(
         setPageHeaderData({
-          title: resultData.payload.name,
+          title: resultData.payload.name || 'New Thread',
           subTitle: `Created On : ${threadCreatedDate}`,
         })
       );
