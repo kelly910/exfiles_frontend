@@ -26,6 +26,7 @@ const urlMapper = {
   chatMessage: `${BASE_URL}chat-message/`,
   chatAnswerReaction: `${BASE_URL}message-reaction/`,
   combinedSummary: `${BASE_URL}combined-summary/`,
+  tagList: `${BASE_URL}default-tags-list/`,
 };
 
 export default urlMapper;

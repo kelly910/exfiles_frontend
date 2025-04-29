@@ -10,6 +10,15 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'api.exfiles.trootechproducts.com',
+        pathname: '/media/icons/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
