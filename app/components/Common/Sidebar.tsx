@@ -27,6 +27,7 @@ import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import debounce from 'lodash.debounce';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import LogModel from '../LogModel/LogModel';
 
 const Sidebar = ({
   isOpen,
@@ -44,6 +45,11 @@ const Sidebar = ({
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const [openModel, setOpenModel] = useState(false);
+
+  const openLogIncidentModel = () => {
+    setOpenModel(true);
+  };
 
   if (isSearchOpen && !isOpen) {
     setIsSearchOpen(false);
@@ -454,7 +460,10 @@ const Sidebar = ({
           </div>
         </div>
         <div className={Style['sidebar-btm']}>
-          <div className={Style['sidebar-btm-card']}>
+          <div
+            className={Style['sidebar-btm-card']}
+            onClick={openLogIncidentModel}
+          >
             <p>Something Unexpected Happened?</p>
             <p>
               <Link href="">Click Here</Link> to Log Incident
@@ -470,6 +479,11 @@ const Sidebar = ({
           </Link>
         </div>
       </div>
+      <LogModel
+        open={openModel}
+        handleClose={() => setOpenModel(false)}
+        editedData={null}
+      />
     </>
   );
 };

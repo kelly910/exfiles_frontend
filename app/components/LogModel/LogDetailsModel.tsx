@@ -124,12 +124,21 @@ export default function LogDetailsModel({
           <Box component="div" className={LogStyle.logListBody}>
             {itemDetails?.tags_data?.map((tag, index) => (
               <Box className={LogStyle.logListBodyTag} key={index}>
-                <Image
-                  src="/images/missed-visit.svg"
-                  alt="Log-success"
-                  width={16}
-                  height={16}
-                />
+                {tag?.file_data?.file_url ? (
+                  <Image
+                    src={tag?.file_data?.file_url}
+                    alt="Log-success"
+                    width={16}
+                    height={16}
+                  />
+                ) : (
+                  <Image
+                    src="/images/other.svg"
+                    alt="close icon"
+                    width={16}
+                    height={16}
+                  />
+                )}
                 <Typography
                   variant="body1"
                   className={LogStyle.logListBodyTagTitle}

@@ -29,10 +29,16 @@ import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useRouter } from 'next/navigation';
 import { setPageHeaderData } from '@/app/redux/slices/login';
 import LogDetailsModel from '../LogModel/LogDetailsModel';
+import LogModel from '../LogModel/LogModel';
+
+export interface FileDataImage {
+  file_url: string;
+}
 
 export interface Tag {
   id: number;
   name: string;
+  file_data: FileDataImage | null;
 }
 
 export interface FileData {
@@ -70,6 +76,10 @@ export interface LogIncidentDetails {
   tags_data: Tag[];
   user_data?: UserData;
   document_data?: DocumentData;
+  document?: string | number;
+  category_id?: string | number;
+  tags?: string[];
+  other_tag_name?: string;
 }
 
 export default function LogIncident() {
@@ -90,6 +100,19 @@ export default function LogIncident() {
   );
   const router = useRouter();
   const open = Boolean(anchorEl);
+  const [openAddIncident, setOpenAddIncident] = useState(false);
+  const [editLogIncidentData, setEditLogIncidentData] =
+    useState<LogIncidentDetails | null>(null);
+
+  const handleOpenAddIncident = () => {
+    setOpenAddIncident(true);
+  };
+
+  const editLogIncident = (item: LogIncidentDetails) => {
+    handleOpenAddIncident();
+    setEditLogIncidentData(item);
+    setAnchorEl(null);
+  };
 
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -227,233 +250,250 @@ export default function LogIncident() {
             title="Log Incident"
           />
           {count ? (
-            <Box
-              sx={{
-                height: 'calc(100vh - 65px)',
-                position: 'relative',
-                overflowY: 'auto',
-                width: '100%',
-                backgroundColor: '#11101B',
-                borderRadius: '8px',
-                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-                '& .MuiDataGrid-root': {
-                  backgroundColor: '#11101B',
-                  color: '#DADAE1',
-                  borderRadius: '8px',
-                  border: 'none',
-                },
-                '& .MuiDataGrid-row:nth-of-type(even)': {
-                  backgroundColor: '#11101B',
-                  color: '#DADAE1',
-                },
-                '& .MuiDataGrid-row:nth-of-type(odd)': {
-                  backgroundColor: '#1B1A25',
-                  color: '#DADAE1',
-                  borderRadius: '10px',
-                },
-                '& .MuiDataGrid-columnHeaders': {
-                  backgroundColor: '#11101B',
-                  color: '#DADAE1',
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  borderBottom: 'none !important',
-                },
-                '& .MuiDataGrid-columnHeader': {
-                  borderBottom: 'none !important',
-                },
-                '& .MuiDataGrid-filler': {
-                  borderBottom: 'none !important',
-                },
-                '& .MuiDataGrid-columnSeparator': {
-                  display: 'none !important',
-                },
-                '& .MuiDataGrid-cell': {
-                  border: 'none',
-                  borderTop: 'none !important',
-                  fontSize: '14px',
-                },
-                '& .MuiDataGrid-footerContainer': {
-                  backgroundColor: '#1B1A25',
-                  borderTop: 'none',
-                  color: '#DADAE1',
-                  borderRadius: '10px',
-                },
-                '& .MuiTablePagination-root': {
-                  color: '#DADAE1',
-                },
-                '& .MuiSelect-select': {
-                  color: '#DADAE1',
-                  backgroundColor: '#11101B',
-                  borderRadius: '8px',
-                },
-                '& .MuiTablePagination-actions button': {
-                  color: '#DADAE1',
-                },
-                '& .Mui-disabled': {
-                  color: '#666',
-                },
-                '& .MuiDataGrid-container': {
-                  backgroundColor: '#11101B',
-                },
-                '& .MuiDataGrid-row': {
-                  backgroundColor: '#11101B',
-                },
-                '& .MuiDataGrid-container--top [role=row]': {
-                  backgroundColor: '#11101B !important',
-                  color: '#FFF',
-                  fontWeight: 'bold',
-                },
-              }}
-            >
-              <Box component="div" className={styles.logIncidentSearch}>
-                <Input
-                  id="input-with-icon-adornment"
-                  className={styles.searchInput}
-                  placeholder="Search here..."
-                  onChange={(e) => handleSearchInput(e.target.value)}
-                  endAdornment={
-                    <InputAdornment
-                      position="end"
-                      className={styles.searchIcon}
-                    >
-                      <span
-                        className={styles.search}
-                        onClick={handleSearch}
-                      ></span>
-                    </InputAdornment>
-                  }
-                />
-                <Button className="btn btn-pluse">
-                  <Image
-                    src="/images/add-icon.svg"
-                    alt="re"
-                    width={20}
-                    height={20}
-                  />
-                  Add Incident
-                </Button>
-              </Box>
-              <Box component="div" className={styles.logListingBox}>
-                {incidents.map((item, index) => (
-                  <Box
-                    component="div"
-                    className={styles.logListing}
-                    key={index}
-                  >
-                    <Box component="div" className={styles.logListHeader}>
-                      <Typography
-                        variant="body1"
-                        className={styles.logTitle}
-                        onClick={() => viewDetails(item)}
-                      >
-                        {item.description}
-                      </Typography>
-                      <>
-                        <IconButton
-                          onClick={(event) => handleClick(event, item.id)}
-                        >
-                          <Image
-                            src="/images/more.svg"
-                            alt="more"
-                            width={20}
-                            height={20}
-                          />
-                        </IconButton>
-                        <Menu
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                          }}
-                          className={styles.mainDropdown}
-                          sx={{
-                            '& .MuiPaper-root': {
-                              backgroundColor: 'transparent',
-                            },
-                          }}
-                        >
-                          <MenuItem className={styles.menuDropdown}>
-                            <Image
-                              src="/images/edit-2.svg"
-                              alt="edit"
-                              width={18}
-                              height={18}
-                            />
-                            <Typography>Edit Incident</Typography>
-                          </MenuItem>
-                          <MenuItem
-                            className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
-                            onClick={deleteDialogOpen}
-                          >
-                            <Image
-                              src="/images/trash.svg"
-                              alt="delet"
-                              width={18}
-                              height={18}
-                            />
-                            <Typography>Delete Incident</Typography>
-                          </MenuItem>
-                        </Menu>
-                      </>
-                    </Box>
-                    <Box component="div" className={styles.logListBody}>
-                      {item?.tags_data.map((tag, index) => (
-                        <Box className={styles.logListBodyTag} key={index}>
-                          <Image
-                            src="/images/missed-visit.svg"
-                            alt="Log-success"
-                            width={16}
-                            height={16}
-                          />
-                          <Typography
-                            variant="body1"
-                            className={styles.logListBodyTagTitle}
-                          >
-                            {tag?.name}
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Box>
-                    <Box component="div" className={styles.logListFooter}>
-                      <Typography
-                        variant="body1"
-                        className={styles.logListFooterTitle}
-                      >
-                        Date & Time
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        className={styles.logListFooterDetails}
-                      >
-                        {formatDate(item.incident_time) || '-'}
-                      </Typography>
-                    </Box>
-                  </Box>
-                ))}
-              </Box>
+            <>
               <Box
-                component="div"
-                className="pagination-box"
                 sx={{
-                  padding: '19px 24px 28px 24px',
-                  marginBottom: '-28px',
+                  height: 'calc(100vh - 65px)',
+                  position: 'relative',
+                  overflowY: 'auto',
+                  width: '100%',
+                  backgroundColor: '#11101B',
+                  borderRadius: '8px',
+                  boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                  '& .MuiDataGrid-root': {
+                    backgroundColor: '#11101B',
+                    color: '#DADAE1',
+                    borderRadius: '8px',
+                    border: 'none',
+                  },
+                  '& .MuiDataGrid-row:nth-of-type(even)': {
+                    backgroundColor: '#11101B',
+                    color: '#DADAE1',
+                  },
+                  '& .MuiDataGrid-row:nth-of-type(odd)': {
+                    backgroundColor: '#1B1A25',
+                    color: '#DADAE1',
+                    borderRadius: '10px',
+                  },
+                  '& .MuiDataGrid-columnHeaders': {
+                    backgroundColor: '#11101B',
+                    color: '#DADAE1',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    borderBottom: 'none !important',
+                  },
+                  '& .MuiDataGrid-columnHeader': {
+                    borderBottom: 'none !important',
+                  },
+                  '& .MuiDataGrid-filler': {
+                    borderBottom: 'none !important',
+                  },
+                  '& .MuiDataGrid-columnSeparator': {
+                    display: 'none !important',
+                  },
+                  '& .MuiDataGrid-cell': {
+                    border: 'none',
+                    borderTop: 'none !important',
+                    fontSize: '14px',
+                  },
+                  '& .MuiDataGrid-footerContainer': {
+                    backgroundColor: '#1B1A25',
+                    borderTop: 'none',
+                    color: '#DADAE1',
+                    borderRadius: '10px',
+                  },
+                  '& .MuiTablePagination-root': {
+                    color: '#DADAE1',
+                  },
+                  '& .MuiSelect-select': {
+                    color: '#DADAE1',
+                    backgroundColor: '#11101B',
+                    borderRadius: '8px',
+                  },
+                  '& .MuiTablePagination-actions button': {
+                    color: '#DADAE1',
+                  },
+                  '& .Mui-disabled': {
+                    color: '#666',
+                  },
+                  '& .MuiDataGrid-container': {
+                    backgroundColor: '#11101B',
+                  },
+                  '& .MuiDataGrid-row': {
+                    backgroundColor: '#11101B',
+                  },
+                  '& .MuiDataGrid-container--top [role=row]': {
+                    backgroundColor: '#11101B !important',
+                    color: '#FFF',
+                    fontWeight: 'bold',
+                  },
                 }}
               >
-                <Pagination
-                  count={Math.ceil(count / 16)}
-                  page={page}
-                  onChange={handlePageChange}
-                  shape="rounded"
-                  className="pagination"
-                  siblingCount={isMobile ? 0 : 2}
-                  boundaryCount={1}
+                <Box component="div" className={styles.logIncidentSearch}>
+                  <Input
+                    id="input-with-icon-adornment"
+                    className={styles.searchInput}
+                    placeholder="Search here..."
+                    onChange={(e) => handleSearchInput(e.target.value)}
+                    endAdornment={
+                      <InputAdornment
+                        position="end"
+                        className={styles.searchIcon}
+                      >
+                        <span
+                          className={styles.search}
+                          onClick={handleSearch}
+                        ></span>
+                      </InputAdornment>
+                    }
+                  />
+                  <Button
+                    className="btn btn-pluse"
+                    onClick={handleOpenAddIncident}
+                  >
+                    <Image
+                      src="/images/add-icon.svg"
+                      alt="re"
+                      width={20}
+                      height={20}
+                    />
+                    Add Incident
+                  </Button>
+                </Box>
+                <Box component="div" className={styles.logListingBox}>
+                  {incidents.map((item, index) => (
+                    <Box
+                      component="div"
+                      className={styles.logListing}
+                      key={index}
+                    >
+                      <Box component="div" className={styles.logListHeader}>
+                        <Typography
+                          variant="body1"
+                          className={styles.logTitle}
+                          onClick={() => viewDetails(item)}
+                        >
+                          {item.description}
+                        </Typography>
+                        <>
+                          <IconButton
+                            onClick={(event) => handleClick(event, item.id)}
+                          >
+                            <Image
+                              src="/images/more.svg"
+                              alt="more"
+                              width={20}
+                              height={20}
+                            />
+                          </IconButton>
+                          <Menu
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleClose}
+                            MenuListProps={{
+                              'aria-labelledby': 'basic-button',
+                            }}
+                            className={styles.mainDropdown}
+                            sx={{
+                              '& .MuiPaper-root': {
+                                backgroundColor: 'transparent',
+                              },
+                            }}
+                          >
+                            <MenuItem
+                              className={styles.menuDropdown}
+                              onClick={() => editLogIncident(item)}
+                            >
+                              <Image
+                                src="/images/edit-2.svg"
+                                alt="edit"
+                                width={18}
+                                height={18}
+                              />
+                              <Typography>Edit Incident</Typography>
+                            </MenuItem>
+                            <MenuItem
+                              className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
+                              onClick={deleteDialogOpen}
+                            >
+                              <Image
+                                src="/images/trash.svg"
+                                alt="delet"
+                                width={18}
+                                height={18}
+                              />
+                              <Typography>Delete Incident</Typography>
+                            </MenuItem>
+                          </Menu>
+                        </>
+                      </Box>
+                      <Box component="div" className={styles.logListBody}>
+                        {item?.tags_data.map((tag, index) => (
+                          <Box className={styles.logListBodyTag} key={index}>
+                            {tag?.file_data?.file_url ? (
+                              <Image
+                                src={tag?.file_data?.file_url}
+                                alt={tag.name}
+                                width={16}
+                                height={16}
+                              />
+                            ) : (
+                              <Image
+                                src="/images/other.svg"
+                                alt="close icon"
+                                width={16}
+                                height={16}
+                              />
+                            )}
+                            <Typography
+                              variant="body1"
+                              className={styles.logListBodyTagTitle}
+                            >
+                              {tag?.name}
+                            </Typography>
+                          </Box>
+                        ))}
+                      </Box>
+                      <Box component="div" className={styles.logListFooter}>
+                        <Typography
+                          variant="body1"
+                          className={styles.logListFooterTitle}
+                        >
+                          Date & Time
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          className={styles.logListFooterDetails}
+                        >
+                          {formatDate(item.incident_time) || '-'}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+                <Box
+                  component="div"
+                  className="pagination-box"
                   sx={{
-                    padding: '8px 24px',
+                    padding: '19px 24px 28px 24px',
+                    marginBottom: '-28px',
                   }}
-                />
+                >
+                  <Pagination
+                    count={Math.ceil(count / 16)}
+                    page={page}
+                    onChange={handlePageChange}
+                    shape="rounded"
+                    className="pagination"
+                    siblingCount={isMobile ? 0 : 2}
+                    boundaryCount={1}
+                    sx={{
+                      padding: '8px 24px',
+                    }}
+                  />
+                </Box>
               </Box>
-            </Box>
+            </>
           ) : (
             <LogincidentEmpty />
           )}
@@ -469,6 +509,11 @@ export default function LogIncident() {
         openDetailDialogProps={openDetailDialog}
         onClose={() => setOpenDetailDialog(false)}
         itemDetails={detailsItem}
+      />
+      <LogModel
+        open={openAddIncident}
+        handleClose={() => setOpenAddIncident(false)}
+        editedData={editLogIncidentData}
       />
     </>
   );

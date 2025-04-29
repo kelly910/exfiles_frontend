@@ -7,9 +7,14 @@ import {
   UserData,
 } from '@/app/components/LogIncident/LogIncident';
 
+export interface FileData {
+  file_url: string;
+}
+
 interface Tag {
   id: number;
   name: string;
+  file_data: FileData | null;
 }
 
 export interface LogIncident {
@@ -68,6 +73,54 @@ export const fetchLogIncidents = createAsyncThunk<
     }
   }
 );
+
+export const addIncident = createAsyncThunk<
+  void,
+  FormData,
+  { rejectValue: string }
+>('logIncidents/add', async (formData, { rejectWithValue }) => {
+  try {
+    const response = await api.post(`${urlMapper.logIncidents}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    showToast('success', 'Incident logged successfully.');
+    console.log(response, 'response');
+    return;
+  } catch (error) {
+    const errorMessage =
+      (error as { response?: { data?: { messages?: string[] } } })?.response
+        ?.data?.messages?.[0] || 'Failed to log the incident.';
+    return rejectWithValue(errorMessage);
+  }
+});
+
+export const updateIncident = createAsyncThunk<
+  void,
+  { id: number; formData: FormData },
+  { rejectValue: string }
+>('logIncidents/update', async ({ id, formData }, { rejectWithValue }) => {
+  try {
+    const response = await api.patch(
+      `${urlMapper.logIncidents}${id}/`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    showToast('success', 'Incident updated successfully.');
+    console.log(response, 'response');
+    return;
+  } catch (error) {
+    const errorMessage =
+      (error as { response?: { data?: { messages?: string[] } } })?.response
+        ?.data?.messages?.[0] || 'Failed to update the incident.';
+    return rejectWithValue(errorMessage);
+  }
+});
 
 export const deleteIncidentById = createAsyncThunk<
   number,

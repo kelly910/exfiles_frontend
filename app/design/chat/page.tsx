@@ -5,7 +5,7 @@ import styles from './style.module.scss';
 // import Header from '@components/Header/Header';
 import ChatWindows from '@/app/components/Chat-Windows/ChatWindows';
 import Header from '@/app/components/Header/Header';
-import LogModel from '@/app/components/LogModel/LogModel';
+// import LogModel from '@/app/components/LogModel/LogModel';
 import LogSuccessfully from '@/app/components/LogModel/LogSuccessfully';
 import LogListing from '@/app/components/LogModel/LogListing';
 // import LogDetailsModel from '@/app/components/LogModel/LogDetailsModel';
@@ -18,7 +18,7 @@ export default function Page() {
       <Header />
       <main>
         <div className="chat-container">
-          <LogModel />
+          {/* <LogModel /> */}
           <LogSuccessfully />
           <LogListing />
           {/* <LogDetailsModel /> */}
