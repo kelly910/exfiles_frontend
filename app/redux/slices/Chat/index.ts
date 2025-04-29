@@ -176,6 +176,28 @@ export const uploadActualDocs = createAsyncThunk<
   }
 });
 
+export const failedDocRetrain = createAsyncThunk<
+  UploadDocsResponse,
+  { document_uuid: string },
+  { rejectValue: string }
+>('chat/failedDocRetrain', async (payload, { rejectWithValue }) => {
+  try {
+    const response = await api.post<UploadDocsResponse>(
+      `${urlMapper.getDocumentSummary}${payload.document_uuid}/retry-failed-document/`
+    );
+
+    return response.data;
+  } catch (error: unknown) {
+    if (typeof error === 'object' && error !== null && 'response' in error) {
+      const err = error as { response?: { data?: string } };
+      return rejectWithValue(
+        err.response?.data || 'Something went wrong. Please try again.'
+      );
+    }
+    return rejectWithValue('Something went wrong. Please try again.');
+  }
+});
+
 /* ------------ Chat Messages Actions Start ------------------ */
 export const fetchThreadMessagesByThreadId = createAsyncThunk<
   GetMessagesByThreadIdResponse,

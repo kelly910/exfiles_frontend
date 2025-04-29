@@ -85,6 +85,7 @@ export interface UploadedDocument {
     name: string;
   };
   doc_type: string;
+  summary?: string;
 }
 
 export interface CombineSummaryData {
