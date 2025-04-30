@@ -177,8 +177,7 @@ export default function LogDetailsModel({
                   variant="body1"
                   className={LogStyle.logDetailsListDetailsInner}
                 >
-                  {itemDetails?.user_data?.first_name}{' '}
-                  {itemDetails?.user_data?.last_name}
+                  {itemDetails?.involved_person_name}
                 </Typography>
               </Box>
             </Box>

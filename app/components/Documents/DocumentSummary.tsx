@@ -129,9 +129,9 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     }
   };
 
-  const downloadSummary = async () => {
-    console.log(documentSummary?.summary, ':htmlContent');
-  };
+  // const downloadSummary = async () => {
+  //   console.log(documentSummary?.summary, ':htmlContent');
+  // };
 
   return (
     <>
@@ -329,7 +329,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     Copy
                   </Button>
                   <span className={styles.docsDas}></span>
-                  <Button
+                  {/* <Button
                     className={styles.docsButton}
                     onClick={downloadSummary}
                   >
@@ -341,7 +341,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     />
                     Download Summary
                   </Button>
-                  <span className={styles.docsDas}></span>
+                  <span className={styles.docsDas}></span> */}
                   <Button className={styles.docsButton} onClick={editSummary}>
                     <Image
                       src="/images/edit.svg"
@@ -590,7 +590,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       Copy
                     </Button>
                     <span className={styles.docsDas}></span>
-                    <Button
+                    {/* <Button
                       className={styles.docsButton}
                       onClick={downloadSummary}
                     >
@@ -602,7 +602,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       />
                       Download Summary
                     </Button>
-                    <span className={styles.docsDas}></span>
+                    <span className={styles.docsDas}></span> */}
                     <Button className={styles.docsButton} onClick={editSummary}>
                       <Image
                         src="/images/edit.svg"
