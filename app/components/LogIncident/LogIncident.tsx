@@ -30,6 +30,7 @@ import { useRouter } from 'next/navigation';
 import { setPageHeaderData } from '@/app/redux/slices/login';
 import LogDetailsModel from '../LogModel/LogDetailsModel';
 import LogModel from '../LogModel/LogModel';
+import dayjs from 'dayjs';
 
 export interface FileDataImage {
   file_url: string;
@@ -108,18 +109,19 @@ export default function LogIncident() {
     setOpenAddIncident(true);
   };
 
-  const editLogIncident = (item: LogIncidentDetails) => {
+  const editLogIncident = () => {
     handleOpenAddIncident();
-    setEditLogIncidentData(item);
     setAnchorEl(null);
   };
 
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement>,
-    id: string
+    id: string,
+    item: LogIncidentDetails
   ) => {
     setAnchorEl(event.currentTarget);
     setSelectedRowId(id);
+    setEditLogIncidentData(item);
   };
 
   const handleClose = () => {
@@ -204,20 +206,6 @@ export default function LogIncident() {
         }
       }, 1000);
     }
-  };
-
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date
-      .toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      })
-      .replace(',', '');
   };
 
   const handleThreadClick = (thread: string) => {
@@ -377,7 +365,9 @@ export default function LogIncident() {
                         </Typography>
                         <>
                           <IconButton
-                            onClick={(event) => handleClick(event, item.id)}
+                            onClick={(event) =>
+                              handleClick(event, item.id, item)
+                            }
                           >
                             <Image
                               src="/images/more.svg"
@@ -402,7 +392,7 @@ export default function LogIncident() {
                           >
                             <MenuItem
                               className={styles.menuDropdown}
-                              onClick={() => editLogIncident(item)}
+                              onClick={editLogIncident}
                             >
                               <Image
                                 src="/images/edit-2.svg"
@@ -465,7 +455,11 @@ export default function LogIncident() {
                           variant="body1"
                           className={styles.logListFooterDetails}
                         >
-                          {formatDate(item.incident_time) || '-'}
+                          {item.incident_time
+                            ? dayjs(item.incident_time).format(
+                                'MM/DD/YYYY hh:mm A'
+                              )
+                            : '-'}
                         </Typography>
                       </Box>
                     </Box>

@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { LogIncidentDetails } from '../LogIncident/LogIncident';
+import dayjs from 'dayjs';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -48,21 +49,6 @@ export default function LogDetailsModel({
   onClose,
   itemDetails,
 }: DetailsDialogProps) {
-  const formatDate = (dateString?: string): string => {
-    if (!dateString) return '-';
-    const date = new Date(dateString);
-    return date
-      .toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      })
-      .replace(',', '');
-  };
-
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -156,7 +142,9 @@ export default function LogDetailsModel({
               variant="body1"
               className={LogStyle.logListFooterDetails}
             >
-              {formatDate(itemDetails?.incident_time)}
+              {itemDetails?.incident_time
+                ? dayjs(itemDetails?.incident_time).format('MM/DD/YYYY hh:mm A')
+                : '-'}
             </Typography>
           </Box>
           <Box component="div" className={LogStyle.logDetailsList}>
