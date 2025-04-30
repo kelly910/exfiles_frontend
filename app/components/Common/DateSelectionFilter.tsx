@@ -93,6 +93,10 @@ export default function DateSelectionFilter({
                   color: 'var(--Primary-Text-Color)',
                 },
               },
+              '& .Mui-disabled:not(.Mui-selected)': {
+                color: 'var(--Primary-Text-Color) !important',
+                opacity: '0.3',
+              },
             },
           },
         },
@@ -394,14 +398,15 @@ export default function DateSelectionFilter({
               </LocalizationProvider>
             </ThemeProvider>
           </Box>
-          {!isDisabledFilter && (
-            <Button
-              className={Style['apply-btn']}
-              onClick={handleApplyDateFilter}
-            >
-              Apply
-            </Button>
-          )}
+          {/* {!isDisabledFilter && ( */}
+          <Button
+            className={Style['apply-btn']}
+            onClick={handleApplyDateFilter}
+            disabled={isDisabledFilter}
+          >
+            Apply
+          </Button>
+          {/* // )} */}
         </Box>
       </div>
       <div
