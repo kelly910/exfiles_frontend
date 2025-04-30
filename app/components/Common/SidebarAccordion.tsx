@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import Image from 'next/image';
 // import Style from './Sidebar.module.scss';
-import Style from '@/app/components/AI-Chat/sidebar/DynamicSidebarStyle.module.scss';
+import Style from '@components/Common/Sidebar.module.scss';
 
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Accordion from '@mui/material/Accordion';
