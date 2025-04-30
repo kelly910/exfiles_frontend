@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import LogStyle from './logmodel.module.scss';
 import {
   Accordion,
@@ -41,6 +41,8 @@ import {
 import { LogIncidentDetails } from '../LogIncident/LogIncident';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
+import { ALLOWED_FILE_TYPES } from '@/app/utils/constants';
+import UploadFileItem from '../AI-Chat/components/FileUpload/UploadFileItem';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -64,6 +66,18 @@ const BootstrapDialog = styled(Dialog)(() => ({
     },
   },
 }));
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 
 const newTheme = (theme: Theme) =>
   createTheme({
@@ -304,7 +318,7 @@ export interface LogIncidentFormValues {
   document: string;
   other_tag: string;
   tags: string[];
-  // evidence: string;
+  evidence: string | null;
 }
 
 export default function LogModel({
@@ -322,6 +336,43 @@ export default function LogModel({
     (state: RootState) => state.documentListing
   );
   const { tags } = useSelector((state: RootState) => state.tagList);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleOpenUserFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  useEffect(() => {
+    if (editedData?.evidence && editedData?.id) {
+      setSelectedFile(null);
+    }
+  }, [editedData?.evidence, editedData?.id]);
+
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setFieldValue: (field: string, value: string | File) => void
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFieldValue('evidence', file);
+      setSelectedFile(file);
+    }
+  };
+
+  const handleDrop = (
+    event: React.DragEvent<HTMLElement>,
+    setFieldValue: (field: string, value: string | File) => void
+  ) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files?.[0];
+    if (file) {
+      setFieldValue('evidence', file);
+      setSelectedFile(file);
+    }
+  };
 
   const initialValues: LogIncidentFormValues = {
     description: editedData?.description || '',
@@ -334,7 +385,7 @@ export default function LogModel({
     document: editedData?.document?.toString() || '',
     other_tag: editedData?.other_tag_name || '',
     tags: Array.isArray(editedData?.tags) ? editedData.tags : [],
-    // evidence: editedData?.evidence || '',
+    evidence: editedData?.evidence || '',
   };
 
   useEffect(() => {
@@ -389,9 +440,9 @@ export default function LogModel({
       values.tags.forEach((tagId) => {
         formData.append('tags', String(tagId));
       });
-      // if (values.evidence instanceof File) {
-      //   formData.append('evidence', values.evidence);
-      // }
+      if (values.evidence) {
+        formData.append('evidence', values.evidence);
+      }
 
       dispatch(setLoader(true));
 
@@ -1124,26 +1175,71 @@ export default function LogModel({
                       >
                         Support Evidence
                       </Typography>
-                      <Box
-                        className={`${LogStyle.dialogContent}`}
-                        role="button"
-                        tabIndex={0}
-                        style={{
-                          cursor: 'pointer',
-                          userSelect: 'none',
-                        }}
-                      >
-                        <Box>
-                          <Image
-                            src="/images/Upload-img.png"
-                            alt="Upload-img"
-                            width={51}
-                            height={55}
+                      {!values?.evidence && (
+                        <Box
+                          className={`${LogStyle.dialogContent}`}
+                          role="button"
+                          tabIndex={0}
+                          style={{
+                            cursor: 'pointer',
+                            userSelect: 'none',
+                          }}
+                          onClick={handleOpenUserFileInput}
+                          onDrop={(e) => handleDrop(e, setFieldValue)}
+                          onDragOver={(e) => e.preventDefault()}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              handleOpenUserFileInput();
+                            }
+                          }}
+                        >
+                          <Box>
+                            <Image
+                              src="/images/Upload-img.png"
+                              alt="Upload-img"
+                              width={51}
+                              height={55}
+                            />
+                            <Typography gutterBottom>
+                              Click here to upload Supported Evidences
+                            </Typography>
+                          </Box>
+
+                          <VisuallyHiddenInput
+                            id="chat-file-uploads"
+                            type="file"
+                            name="file-uploads"
+                            accept={ALLOWED_FILE_TYPES.join(',')}
+                            multiple
+                            ref={fileInputRef}
+                            onChange={(e) => handleFileChange(e, setFieldValue)}
                           />
-                          <Typography gutterBottom>
-                            Click here to upload Supported Evidences
-                          </Typography>
                         </Box>
+                      )}
+                      <Box component="div" className={LogStyle.fileBoxBody}>
+                        {values?.evidence && (
+                          <UploadFileItem
+                            fileName={
+                              selectedFile
+                                ? selectedFile.name
+                                : editedData?.evidence?.split('/').pop() ||
+                                  'Uploaded_File'
+                            }
+                            fileId={''}
+                            fileSize={selectedFile ? selectedFile.size : 0}
+                            progress={100}
+                            isUploading={false}
+                            hasUploaded={true}
+                            fileErrorMsg={''}
+                            hasError={false}
+                            onRemove={() => {
+                              setSelectedFile(null);
+                              setFieldValue('evidence', '');
+                            }}
+                            type={'LogIncident'}
+                            handleFileDesc={() => {}}
+                          />
+                        )}
                       </Box>
                     </div>
                   </AccordionDetails>

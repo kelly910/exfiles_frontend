@@ -16,6 +16,7 @@ interface FileItemProps {
   hasError: boolean;
   fileId: string;
   onRemove: (fileId: string) => void;
+  type?: string;
   handleFileDesc: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     fileId: string
@@ -31,6 +32,7 @@ export default function UploadFileItem({
   hasError,
   fileId,
   onRemove,
+  type,
   handleFileDesc,
 }: FileItemProps) {
   const debouncedHandleFileDesc = useMemo(
@@ -73,7 +75,9 @@ export default function UploadFileItem({
           </span>
           <Typography variant="body1" className={DocUploadStyles.fileTitle}>
             <Typography variant="body1">{fileName}</Typography>
-            <span>{formatFileSizeLabel(fileSize)}</span>
+            {type !== 'LogIncident' && (
+              <span>{formatFileSizeLabel(fileSize)}</span>
+            )}
           </Typography>
           {hasUploaded ? (
             <Image
@@ -104,7 +108,7 @@ export default function UploadFileItem({
         )}
 
         {/* Show Description field if the file is uploaded successfully */}
-        {hasUploaded && (
+        {hasUploaded && type !== 'LogIncident' && (
           <TextField
             fullWidth
             placeholder="Add Description of this file"
