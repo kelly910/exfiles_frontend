@@ -139,7 +139,7 @@ export default function PageHeader({
 
             <Box className={styles.mobileLogo}>
               <Image
-                src="/images/mobileLogo.png"
+                src="/images/close-sidebar-logo.svg"
                 alt="logo"
                 width={40}
                 height={38}

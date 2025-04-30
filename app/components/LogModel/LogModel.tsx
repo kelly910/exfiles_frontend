@@ -60,7 +60,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
     },
     '@media (max-width: 480px)': {
       maxWidth: '95vw',
-      minWidth: '100%',
+      minWidth: '90%', // Almost full width
     },
   },
 }));
@@ -255,6 +255,45 @@ interface LogIncidentDialogProps {
   handleClose: () => void;
   editedData: LogIncidentDetails | null;
 }
+const newThemeSelect = createTheme({
+  components: {
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontSize: '14px',
+          padding: '8px 16px',
+          color: 'var(--Primary-Text-Color)',
+          borderRadius: '12px',
+          margin: '4px 0',
+          '&:hover': {
+            backgroundColor: 'var(--Stroke-Color)',
+          },
+          '&[aria-selected="true"]': {
+            background: 'var(--Stroke-Color)',
+          },
+        },
+      },
+    },
+    MuiMenu: {
+      styleOverrides: {
+        list: {
+          padding: '5px',
+          backgroundColor: 'var(--Card-Color)',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'transparent',
+          borderRadius: '12px',
+          marginTop: '4px',
+          border: '1px solid var(--Stroke-Color)',
+        },
+      },
+    },
+  },
+});
 
 export interface LogIncidentFormValues {
   description: string;
@@ -288,7 +327,7 @@ export default function LogModel({
     description: editedData?.description || '',
     incident_time: editedData?.incident_time
       ? dayjs(editedData.incident_time).format('YYYY-MM-DD HH:mm')
-      : '',
+      : dayjs().format('YYYY-MM-DD HH:mm'),
     location: editedData?.location || '',
     involved_person_name: editedData?.involved_person_name || '',
     category: editedData?.category_id?.toString() || '',
@@ -321,10 +360,15 @@ export default function LogModel({
         })
       );
     }
-    if (editedData?.other_tag_name) {
+  }, [dispatch, editedData?.category_id]);
+
+  useEffect(() => {
+    if (editedData?.other_tag_name && editedData.other_tag_name !== '') {
       setIsChecked(true);
+    } else {
+      setIsChecked(false);
     }
-  }, [dispatch, editedData?.category_id, editedData?.other_tag_name]);
+  }, [editedData?.other_tag_name]);
 
   const addUpdateLogIncident = async (
     values: LogIncidentFormValues
@@ -462,6 +506,8 @@ export default function LogModel({
                     <Field
                       as={TextField}
                       fullWidth
+                      rows={3}
+                      multiline
                       type="text"
                       id="description"
                       name="description"
@@ -481,7 +527,7 @@ export default function LogModel({
                           '& .MuiOutlinedInput-input': {
                             fontSize: 'var(--SubTitle-2)',
                             color: 'var(--Primary-Text-Color)',
-                            padding: '14px 16px',
+                            padding: '0',
                             fontWeight: 'var(--Regular)',
                             borderRadius: '12px',
                             '&::placeholder': {
@@ -545,7 +591,7 @@ export default function LogModel({
                         >
                           <DesktopDateTimePicker
                             className={LogStyle['data-input']}
-                            format="MM/DD/YYYY HH:mm:ss"
+                            format="MM/DD/YYYY & HH:mm:ss"
                             name="incident_time"
                             value={dayjs(values.incident_time)}
                             onChange={(newValue) => {
@@ -710,7 +756,7 @@ export default function LogModel({
                       />
                       <div
                         className={`${LogStyle['specify-input']} ${
-                          isChecked || editedData?.other_tag_name
+                          isChecked || editedData?.other_tag_name !== ''
                             ? LogStyle['specify-input-show']
                             : ''
                         }`}
@@ -943,59 +989,65 @@ export default function LogModel({
                         >
                           Document Category
                         </Typography>
-                        <Field
-                          as={Select}
-                          id="category"
-                          name="category"
-                          onChange={(
-                            e: React.ChangeEvent<HTMLSelectElement>
-                          ) => {
-                            setFieldValue('category', e.target.value);
-                            setFieldValue('document', '');
-                            handleFetchCategoryDocuments(
-                              Number(e.target.value)
-                            );
-                          }}
-                          displayEmpty
-                          inputProps={{ 'aria-label': 'Person Involved' }}
-                          sx={{
-                            backgroundColor: '#252431',
-                            borderRadius: '12px',
-                            fontSize: 'var(--SubTitle-3)',
-                            fontWeight: 'var(--Regular)',
-                            color: 'var(--Primary-Text-Color)',
-                            width: '100%',
-                            '& .MuiOutlinedInput-notchedOutline': {
-                              top: '-10px !important',
-                              borderColor: '#3A3948',
-                            },
-                            '&:hover .MuiOutlinedInput-notchedOutline': {
-                              borderColor: '#fff',
-                            },
-                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                              borderColor: '#fff',
-                              borderWidth: '1px',
-                            },
-                            '& .MuiSelect-select': {
-                              padding: '14px 16px',
-                              display: 'flex',
-                              alignItems: 'center',
-                            },
-                            '& .MuiSelect-placeholder': {
-                              color: '#888',
-                              fontWeight: 400,
-                            },
-                          }}
-                        >
-                          <MenuItem value="" disabled>
-                            Choose Category
-                          </MenuItem>
-                          {categories?.map((cat, index) => (
-                            <MenuItem key={index} value={cat.id}>
-                              {cat.name}
+                        <ThemeProvider theme={newThemeSelect}>
+                          <Field
+                            as={Select}
+                            id="category"
+                            name="category"
+                            onChange={(
+                              e: React.ChangeEvent<HTMLSelectElement>
+                            ) => {
+                              setFieldValue('category', e.target.value);
+                              setFieldValue('document', '');
+                              handleFetchCategoryDocuments(
+                                Number(e.target.value)
+                              );
+                            }}
+                            displayEmpty
+                            inputProps={{ 'aria-label': 'Person Involved' }}
+                            sx={{
+                              backgroundColor: '#252431',
+                              borderRadius: '12px',
+                              fontSize: 'var(--SubTitle-3)',
+                              fontWeight: 'var(--Regular)',
+                              color: 'var(--Primary-Text-Color)',
+                              width: '100%',
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                top: '-8px !important',
+                                borderColor: '#3A3948',
+                              },
+                              '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: '#fff',
+                              },
+                              '&.Mui-focused .MuiOutlinedInput-notchedOutline':
+                                {
+                                  borderColor: '#fff',
+                                  borderWidth: '1px',
+                                },
+                              '& .MuiSelect-select': {
+                                padding: '14px 16px',
+                                display: 'block',
+                              },
+                              '& .MuiSelect-placeholder': {
+                                color: '#888',
+                                fontWeight: 400,
+                              },
+                            }}
+                          >
+                            <MenuItem
+                              value=""
+                              disabled
+                              style={{ opacity: '0.38' }}
+                            >
+                              Choose Category
                             </MenuItem>
-                          ))}
-                        </Field>
+                            {categories?.map((cat, index) => (
+                              <MenuItem key={index} value={cat.id}>
+                                {cat.name}
+                              </MenuItem>
+                            ))}
+                          </Field>
+                        </ThemeProvider>
                       </div>
                       <div className={LogStyle.dialogFormGroup}>
                         <Typography
@@ -1006,56 +1058,58 @@ export default function LogModel({
                         >
                           Document
                         </Typography>
-                        <Field
-                          as={Select}
-                          id="document"
-                          name="document"
-                          // value={initialValues.document}
-                          onChange={(
-                            e: React.ChangeEvent<HTMLSelectElement>
-                          ) => {
-                            setFieldValue('document', e.target.value);
-                          }}
-                          displayEmpty
-                          inputProps={{ 'aria-label': 'Person Involved' }}
-                          sx={{
-                            backgroundColor: '#252431',
-                            borderRadius: '12px',
-                            fontSize: 'var(--SubTitle-3)',
-                            fontWeight: 'var(--Regular)',
-                            color: 'var(--Primary-Text-Color)',
-                            width: '100%',
-                            '& .MuiOutlinedInput-notchedOutline': {
-                              top: '-10px !important',
-                              borderColor: '#3A3948',
-                            },
-                            '&:hover .MuiOutlinedInput-notchedOutline': {
-                              borderColor: '#fff',
-                            },
-                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                              borderColor: '#fff',
-                              borderWidth: '1px',
-                            },
-                            '& .MuiSelect-select': {
-                              padding: '14px 16px',
-                              display: 'flex',
-                              alignItems: 'center',
-                            },
-                            '& .MuiSelect-placeholder': {
-                              color: '#888',
-                              fontWeight: 400,
-                            },
-                          }}
-                        >
-                          <MenuItem value="" disabled>
-                            Choose Document
-                          </MenuItem>
-                          {documents?.map((doc, index) => (
-                            <MenuItem key={index} value={doc.id}>
-                              {doc.file_name}
+                        <ThemeProvider theme={newThemeSelect}>
+                          <Field
+                            as={Select}
+                            id="document"
+                            name="document"
+                            // value={initialValues.document}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLSelectElement>
+                            ) => {
+                              setFieldValue('document', e.target.value);
+                            }}
+                            displayEmpty
+                            inputProps={{ 'aria-label': 'Person Involved' }}
+                            sx={{
+                              backgroundColor: '#252431',
+                              borderRadius: '12px',
+                              fontSize: 'var(--SubTitle-3)',
+                              fontWeight: 'var(--Regular)',
+                              color: 'var(--Primary-Text-Color)',
+                              width: '100%',
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                top: '-8px !important',
+                                borderColor: '#3A3948',
+                              },
+                              '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: '#fff',
+                              },
+                              '&.Mui-focused .MuiOutlinedInput-notchedOutline':
+                                {
+                                  borderColor: '#fff',
+                                  borderWidth: '1px',
+                                },
+                              '& .MuiSelect-select': {
+                                padding: '14px 16px',
+                                display: 'block',
+                              },
+                              '& .MuiSelect-placeholder': {
+                                color: '#888',
+                                fontWeight: 400,
+                              },
+                            }}
+                          >
+                            <MenuItem value="" disabled>
+                              Choose Document
                             </MenuItem>
-                          ))}
-                        </Field>
+                            {documents?.map((doc, index) => (
+                              <MenuItem key={index} value={doc.id}>
+                                {doc.file_name}
+                              </MenuItem>
+                            ))}
+                          </Field>
+                        </ThemeProvider>
                       </div>
                     </div>
                     <div className={LogStyle.dialogFormGroup}>

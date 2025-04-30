@@ -478,6 +478,8 @@ const BootstrapDialog = styled(Dialog)(() => ({
     margin: '0px',
     minWidth: '650px',
     maxHeight: '550px',
+    border: '1px solid var(--Stroke-Color)',
+    borderRadius: '12px',
     // Responsive styles
     '@media (max-width: 768px)': {
       width: '90vw', // Use width instead of minWidth for better responsiveness
