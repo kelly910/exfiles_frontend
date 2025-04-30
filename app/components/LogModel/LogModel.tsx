@@ -295,8 +295,6 @@ const newThemeSelect = createTheme({
   },
 });
 
-const peopleOptions = ['John Doe', 'Jane Smith', 'Other'];
-
 export interface LogIncidentFormValues {
   description: string;
   incident_time: string;
@@ -329,7 +327,7 @@ export default function LogModel({
     description: editedData?.description || '',
     incident_time: editedData?.incident_time
       ? dayjs(editedData.incident_time).format('YYYY-MM-DD HH:mm')
-      : '',
+      : dayjs().format('YYYY-MM-DD HH:mm'),
     location: editedData?.location || '',
     involved_person_name: editedData?.involved_person_name || '',
     category: editedData?.category_id?.toString() || '',
@@ -362,10 +360,15 @@ export default function LogModel({
         })
       );
     }
-    if (editedData?.other_tag_name) {
+  }, [dispatch, editedData?.category_id]);
+
+  useEffect(() => {
+    if (editedData?.other_tag_name && editedData.other_tag_name !== '') {
       setIsChecked(true);
+    } else {
+      setIsChecked(false);
     }
-  }, [dispatch, editedData?.category_id, editedData?.other_tag_name]);
+  }, [editedData?.other_tag_name]);
 
   const addUpdateLogIncident = async (
     values: LogIncidentFormValues
@@ -503,6 +506,8 @@ export default function LogModel({
                     <Field
                       as={TextField}
                       fullWidth
+                      rows={3}
+                      multiline
                       type="text"
                       id="description"
                       name="description"
@@ -522,7 +527,7 @@ export default function LogModel({
                           '& .MuiOutlinedInput-input': {
                             fontSize: 'var(--SubTitle-2)',
                             color: 'var(--Primary-Text-Color)',
-                            padding: '14px 16px',
+                            padding: '0',
                             fontWeight: 'var(--Regular)',
                             borderRadius: '12px',
                             '&::placeholder': {
@@ -751,7 +756,7 @@ export default function LogModel({
                       />
                       <div
                         className={`${LogStyle['specify-input']} ${
-                          isChecked || editedData?.other_tag_name
+                          isChecked || editedData?.other_tag_name !== ''
                             ? LogStyle['specify-input-show']
                             : ''
                         }`}
