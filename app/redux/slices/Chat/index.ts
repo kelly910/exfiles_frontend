@@ -61,6 +61,18 @@ export const fetchThreadList = createAsyncThunk<
       params.append('search', payload.search);
     }
 
+    if (payload?.thread_type) {
+      params.append('thread_type', payload.thread_type);
+    }
+
+    if (payload?.created_after) {
+      params.append('created_after', payload.created_after);
+    }
+
+    if (payload?.created_before) {
+      params.append('created_before', payload.created_before);
+    }
+
     const response = await api.get<GetThreadListResponse>(
       `${urlMapper.thread}?${params.toString()}`
     );
@@ -256,6 +268,14 @@ export const fetchPinnedMessagesList = createAsyncThunk<
 
     if (payload?.search) {
       params.append('search', payload.search);
+    }
+
+    if (payload?.created_after) {
+      params.append('created_after', payload.created_after);
+    }
+
+    if (payload?.created_before) {
+      params.append('created_before', payload.created_before);
     }
 
     const response = await api.get<PinnedAnswerMessagesResponse>(

@@ -3,12 +3,13 @@
 import { useEffect, useState } from 'react';
 
 import PageHeader from '@components/Common/PageHeader';
-import Sidebar from '@components/Common/Sidebar';
+// import Sidebar from '@components/Common/Sidebar';
 
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
+import DynamicSidebar from './sidebar/DynamicSidebar';
 
 // import { useAppDispatch } from '@/app/redux/hooks';
 // import LogIncidentHomeScreen from './screens/LogIncidentHomeScreen';
@@ -64,7 +65,14 @@ export default function AIChatComponent({ threadId }: { threadId?: string }) {
   return (
     <>
       <main className="chat-body">
-        <Sidebar
+        {/* <Sidebar
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          handleThreadClick={handleThreadClick}
+          handlePinnedAnswerClick={handlePinnedAnswerClick}
+          title=""
+        /> */}
+        <DynamicSidebar
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
           handleThreadClick={handleThreadClick}

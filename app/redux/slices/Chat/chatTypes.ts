@@ -25,6 +25,9 @@ export type FetchThreadListParams = {
   page?: number;
   page_size?: number;
   search?: string;
+  thread_type?: ThreadType;
+  created_after?: string;
+  created_before?: string;
 };
 
 export interface ThreadCreationPayload {
