@@ -33,7 +33,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
     },
     '@media (max-width: 480px)': {
       maxWidth: '95vw',
-      minWidth: '100%',
+      minWidth: '90%',
     },
   },
 }));

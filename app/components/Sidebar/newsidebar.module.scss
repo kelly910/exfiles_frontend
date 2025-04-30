@@ -395,10 +395,10 @@
       }
       a {
         color: var(--Primary-Text-Color);
-        text-decoration: none;
-        transition: 0.5s ease-in-out;
+        text-decoration: underline;
+        transition: all 0.4s;
         &:hover {
-          color: var(--Background-Color);
+          color: var(--Card-Border);
         }
       }
     }
