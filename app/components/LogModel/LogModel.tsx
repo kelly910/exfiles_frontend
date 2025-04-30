@@ -299,7 +299,7 @@ export default function LogModel({
   };
 
   useEffect(() => {
-    dispatch(fetchCategories({ page: 1 }));
+    dispatch(fetchCategories({ page: 1, page_size: 30 }));
     dispatch(fetchTagList());
   }, [dispatch]);
 
@@ -307,6 +307,7 @@ export default function LogModel({
     dispatch(
       fetchDocumentsByCategory({
         categoryId: categoryId,
+        page_size: 50,
       })
     );
   };
@@ -314,13 +315,16 @@ export default function LogModel({
   useEffect(() => {
     if (editedData?.category_id) {
       dispatch(
-        fetchDocumentsByCategory({ categoryId: Number(editedData.category_id) })
+        fetchDocumentsByCategory({
+          categoryId: Number(editedData.category_id),
+          page_size: 50,
+        })
       );
     }
-    // if (editedData?.other_tag_name) {
-    //   setIsChecked(true);
-    // }
-  }, [dispatch, editedData?.category_id]);
+    if (editedData?.other_tag_name) {
+      setIsChecked(true);
+    }
+  }, [dispatch, editedData?.category_id, editedData?.other_tag_name]);
 
   const addUpdateLogIncident = async (
     values: LogIncidentFormValues
@@ -685,8 +689,8 @@ export default function LogModel({
                         <input
                           type="checkbox"
                           id="Other"
-                          // checked={isChecked}
-                          // onChange={(e) => setIsChecked(e.target.checked)}
+                          checked={isChecked}
+                          onChange={(e) => setIsChecked(e.target.checked)}
                         />
                         <label htmlFor="Other">
                           <Image

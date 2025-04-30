@@ -33,25 +33,29 @@ interface DocumentListingResponse {
 
 interface FetchCategoriesArgs {
   page: number;
+  page_size?: number | 'all';
 }
 
 export const fetchCategories = createAsyncThunk<
   DocumentListingResponse,
   FetchCategoriesArgs,
   { rejectValue: string }
->('documents/fetchCategories', async ({ page }, { rejectWithValue }) => {
-  try {
-    const response = await api.get<DocumentListingResponse>(
-      `${urlMapper.getCategories}?page=${page}&page_size=20`
-    );
-    return response.data;
-  } catch (error) {
-    const errorMessage =
-      (error as { response?: { data?: { messages?: string[] } } })?.response
-        ?.data?.messages?.[0] || 'Something went wrong. Please try again.';
-    return rejectWithValue(errorMessage);
+>(
+  'documents/fetchCategories',
+  async ({ page, page_size }, { rejectWithValue }) => {
+    try {
+      const response = await api.get<DocumentListingResponse>(
+        `${urlMapper.getCategories}?page=${page}&page_size=${page_size ?? 20}`
+      );
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        (error as { response?: { data?: { messages?: string[] } } })?.response
+          ?.data?.messages?.[0] || 'Something went wrong. Please try again.';
+      return rejectWithValue(errorMessage);
+    }
   }
-});
+);
 
 export const renameCategory = createAsyncThunk<
   CategoryListing,
