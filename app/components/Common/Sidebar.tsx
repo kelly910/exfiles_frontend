@@ -1,31 +1,48 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import Style from './Sidebar.module.scss';
+import React, { useEffect, useMemo, useState } from 'react';
+
+// css
+import Style from '@components/Common/Sidebar.module.scss';
+
+// Third party imports
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import debounce from 'lodash.debounce';
+import { Dayjs } from 'dayjs';
+
+// MUI Components
 import ListItem from '@mui/material/ListItem';
 import { Box, List, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import Image from 'next/image';
-import SidebarAccordion from './SidebarAccordion';
+import SidebarAccordion from '@components/Common/SidebarAccordion';
+
+// Custom Components
+import ThreadList from '@components/Common/ThreadsList';
+import PinnedMessagesList from '@components/Common/PinnedMessagesList';
+import SidebarButton from '@components/Common/SidebarButton';
+import NoRecordFound from '@components/Common/NoRecordFound';
+import DateSelectionFilter from '@components/Common/DateSelectionFilter';
+import LogModel from '@components/LogModel/LogModel';
+
+// Others
+import { ErrorResponse, handleError } from '@/app/utils/handleError';
+
+// Redux imports
 import { useAppDispatch } from '@/app/redux/hooks';
 import {
   fetchPinnedMessagesList,
   fetchThreadList,
   setActiveThread,
 } from '@/app/redux/slices/Chat';
-import ThreadList from './ThreadsList';
-import PinnedMessagesList from './PinnedMessagesList';
 import {
   GetThreadListResponse,
   PinnedAnswerMessage,
   PinnedAnswerMessagesResponse,
+  ThreadType,
 } from '@/app/redux/slices/Chat/chatTypes';
-import NoRecordFound from './NoRecordFound';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import SidebarButton from '@components/Common/SidebarButton';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
-import LogModel from '../LogModel/LogModel';
 
 const Sidebar = ({
   isOpen,
@@ -43,19 +60,23 @@ const Sidebar = ({
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [openModel, setOpenModel] = useState(false);
+  const [openIncidentModel, setOpenIncidentModel] = useState(false);
+
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [isFilterSelected, setIsFilterSelected] = useState(false);
+  const [fromDate, setFromDate] = useState<Dayjs | null>(null);
+  const [toDate, setToDate] = useState<Dayjs | null>(null);
 
   const openLogIncidentModel = () => {
-    setOpenModel(true);
+    setOpenIncidentModel(true);
   };
 
   if (isSearchOpen && !isOpen) {
     setIsSearchOpen(false);
   }
 
-  const handleToggleSearch = () => {
-    setIsSearchOpen((prev) => !prev);
+  const handleToggleFilter = () => {
+    setIsFilterVisible((prev) => !prev);
   };
   const [expanded, setExpanded] = useState<boolean | string>(''); // Track which accordion is expanded
 
@@ -70,17 +91,29 @@ const Sidebar = ({
       setExpanded(isExpanded ? panel : false); // Only expand the clicked panel
     };
 
-  const getThreadList = async (page = 1) => {
+  const getThreadList = async (
+    page = 1,
+    search = '',
+    created_after = '',
+    created_before = '',
+    thread_type: ThreadType = 'chat'
+  ) => {
     try {
-      const resultData = await dispatch(fetchThreadList({ page }));
+      const resultData = await dispatch(
+        fetchThreadList({
+          page,
+          search,
+          created_after,
+          created_before,
+          thread_type,
+        })
+      );
 
       if (fetchThreadList.fulfilled.match(resultData)) {
         const payload = resultData.payload;
-
-        if (payload?.results?.length > 0) {
-          if (page === 1) {
-            setInitialAllChatsData(payload); // Only set on initial fetch
-          }
+        if (page == 1) {
+          setInitialAllChatsData(payload); // Only set on initial fetch
+        } else {
           return payload;
         }
       }
@@ -92,16 +125,27 @@ const Sidebar = ({
     }
   };
 
-  const getPinnedMessagesList = async (page = 1) => {
+  const getPinnedMessagesList = async (
+    page = 1,
+    search = '',
+    created_after = '',
+    created_before = ''
+  ) => {
     try {
-      const resultData = await dispatch(fetchPinnedMessagesList({ page }));
+      const resultData = await dispatch(
+        fetchPinnedMessagesList({
+          page,
+          search,
+          created_after,
+          created_before,
+        })
+      );
 
       if (fetchPinnedMessagesList.fulfilled.match(resultData)) {
         const payload = resultData.payload;
-        if (payload?.results?.length > 0) {
-          if (page === 1) {
-            setInitialAllPinnedChatsData(payload); // Only set on initial fetch
-          }
+        if (page == 1) {
+          setInitialAllPinnedChatsData(payload); // Only set on initial fetch
+        } else {
           return payload;
         }
       }
@@ -131,6 +175,65 @@ const Sidebar = ({
   const handleStartNewChat = () => {
     dispatch(setActiveThread(null));
     dispatch(clearPageHeaderData());
+  };
+
+  const handleFilterApply = () => {
+    const createdAfter = fromDate?.format('YYYY-MM-DD');
+    const createdBefore = toDate?.format('YYYY-MM-DD');
+
+    if (createdAfter && createdBefore) {
+      getThreadList(1, search, createdAfter, createdBefore);
+      getPinnedMessagesList(1, search, createdAfter, createdBefore);
+    }
+  };
+
+  const handleClearFilter = () => {
+    setFromDate(null);
+    setToDate(null);
+    getThreadList(1, search);
+    getPinnedMessagesList(1, search);
+  };
+
+  const handleSearch = async (inputValue: string) => {
+    try {
+      const createdAfter = fromDate?.format('YYYY-MM-DD');
+      const createdBefore = toDate?.format('YYYY-MM-DD');
+      getThreadList(1, inputValue, createdAfter ?? '', createdBefore ?? '');
+      getPinnedMessagesList(
+        1,
+        inputValue,
+        createdAfter ?? '',
+        createdBefore ?? ''
+      );
+    } catch (error) {
+      handleError(error as ErrorResponse);
+    }
+  };
+
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((inputValue: string) => {
+        handleSearch(inputValue);
+      }, 300),
+    []
+  );
+
+  const handleTextInput = (inputValue: string) => {
+    const trimmed = inputValue.trim();
+    setSearch(trimmed);
+    if (inputValue == '') {
+      handleClearSearch();
+    } else {
+      debouncedSearch(trimmed);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearch('');
+    const createdAfter = fromDate?.format('YYYY-MM-DD');
+    const createdBefore = toDate?.format('YYYY-MM-DD');
+    getThreadList(1, '', createdAfter ?? '', createdBefore ?? '');
+    getPinnedMessagesList(1, '', createdAfter ?? '', createdBefore ?? '');
   };
 
   return (
@@ -175,114 +278,53 @@ const Sidebar = ({
                 />
               </Link>
             </Button>
-            <Button
-              className={`${Style['right']} ${isSearchOpen ? Style['active'] : ''}`}
-              onClick={handleToggleSearch}
-            >
-              <Link href="#">
-                <Image
-                  src="/images/search-sidebar.svg"
-                  alt="sidebar-hide-icon"
-                  width={16}
-                  height={16}
-                />
-              </Link>
-            </Button>
-            <div className={Style['search']}>
-              <Box>
-                <TextField
-                  // as={TextField}
-                  fullWidth
-                  type="text"
-                  id="email"
-                  name="email"
-                  value={search}
-                  placeholder="Search here"
-                  onChange={(e) => setSearch(e.target.value)}
-                  // error={Boolean(errors.email && touched.email)}
-                  sx={{
-                    marginTop: '0',
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '10px',
-                      borderWidth: '0px',
-                      color: 'var(--Primary-Text-Color)',
-                      backgroundColor: 'var(--Input-Box-Colors)',
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        top: '-10px !important',
-                      },
-                      '& .MuiOutlinedInput-input': {
-                        fontSize: 'var(--SubTitle-3)',
-                        color: 'var(--Primary-Text-Color)',
-                        padding: '8px 40px 8px 12px',
-                        fontWeight: 'var(--Regular)',
-                        borderRadius: '10px',
-                        '&::placeholder': {
-                          color: 'var(Placeholder-Text)',
-                          fontWeight: 'var(--Regular)',
-                        },
-                      },
-                      '& fieldset': {
-                        borderColor: 'var(--Stroke-Color)',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: 'var(--Primary-Text-Color)',
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: 'var(--Primary-Text-Color)',
-                        borderWidth: '1px',
-                        color: 'var(--Primary-Text-Color)',
-                      },
-                    },
-                  }}
-                />
-                <Button
-                  className={Style['search-btn']}
-                  onClick={() => {
-                    setSearch('');
-                    inputRef.current?.focus();
-                  }}
-                >
-                  <Image
-                    src={
-                      search.trim()
-                        ? '/images/close.svg'
-                        : '/images/search-sidebar.svg'
-                    }
-                    alt="sidebar-hide-icon"
-                    width={12}
-                    height={12}
-                  />
-                </Button>
-              </Box>
-            </div>
           </div>
           <div className={Style['sidebar-list']}>
             <List className={Style['sidebar-list-details']}>
-              {isSearchOpen ? (
+              <ListItem>
+                <Link
+                  href="/ai-chats"
+                  className={Style['sidebar-btn']}
+                  onClick={handleStartNewChat}
+                >
+                  <span className={Style['btn-text']}>Start New Chat</span>{' '}
+                  <span>
+                    <Image
+                      src="/images/add-icon.svg"
+                      alt="icon"
+                      width={20}
+                      height={20}
+                    />
+                  </span>{' '}
+                </Link>
+              </ListItem>
+              <ListItem style={{ display: 'block' }}>
                 <div className={Style['search']}>
-                  <Box>
+                  <Box className={Style['search-box']}>
                     <TextField
                       // as={TextField}
                       fullWidth
                       type="text"
-                      id="email"
-                      name="email"
+                      id="search-input"
+                      name="search"
+                      value={search}
                       placeholder="Search here"
+                      onChange={(e) => handleTextInput(e.target.value)}
                       // error={Boolean(errors.email && touched.email)}
                       sx={{
                         marginTop: '0',
                         '& .MuiOutlinedInput-root': {
-                          borderRadius: '10px',
+                          borderRadius: 'unset',
                           borderWidth: '0px',
                           color: 'var(--Primary-Text-Color)',
-                          backgroundColor: 'var(--Input-Box-Colors)',
+                          backgroundColor: 'unset',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
                           '& .MuiOutlinedInput-input': {
                             fontSize: 'var(--SubTitle-3)',
                             color: 'var(--Primary-Text-Color)',
-                            padding: '10px 40px 10px 12px',
+                            padding: '6px 6px 6px 12px',
                             fontWeight: 'var(--Regular)',
                             borderRadius: '10px',
                             '&::placeholder': {
@@ -291,51 +333,54 @@ const Sidebar = ({
                             },
                           },
                           '& fieldset': {
-                            borderColor: 'var(--Stroke-Color)',
-                          },
-                          '&:hover fieldset': {
-                            borderColor: 'var(--Primary-Text-Color)',
-                          },
-                          '&.Mui-focused fieldset': {
-                            borderColor: 'var(--Primary-Text-Color)',
-                            borderWidth: '1px',
-                            color: 'var(--Primary-Text-Color)',
+                            display: 'none',
                           },
                         },
                       }}
                     />
                     <Button
                       className={Style['search-btn']}
-                      onClick={handleToggleSearch}
+                      onClick={() => search?.length > 0 && handleClearSearch()}
                     >
                       <Image
-                        src="/images/close.svg"
+                        src={
+                          search.trim()
+                            ? '/images/close.svg'
+                            : '/images/search-sidebar.svg'
+                        }
                         alt="sidebar-hide-icon"
-                        width={16}
-                        height={16}
+                        width={12}
+                        height={12}
                       />
                     </Button>
+                    <Box className={Style['filter-btn-box']}>
+                      <Button
+                        className={`${Style['search-btn']} ${Style['filter-btn']} ${isSearchOpen ? Style['active'] : ''}`}
+                        onClick={handleToggleFilter}
+                      >
+                        <Image
+                          src="/images/filter_list.svg"
+                          alt="filter_list"
+                          width={12}
+                          height={8}
+                        />
+                      </Button>
+                    </Box>
                   </Box>
                 </div>
-              ) : (
-                <ListItem>
-                  <Link
-                    href="/ai-chats"
-                    className={Style['sidebar-btn']}
-                    onClick={handleStartNewChat}
-                  >
-                    <span className={Style['btn-text']}>Start New Chat</span>{' '}
-                    <span>
-                      <Image
-                        src="/images/add-icon.svg"
-                        alt="icon"
-                        width={20}
-                        height={20}
-                      />
-                    </span>{' '}
-                  </Link>
-                </ListItem>
-              )}
+                <DateSelectionFilter
+                  isFilterVisible={isFilterVisible}
+                  setIsFilterVisible={setIsFilterVisible}
+                  isFilterSelected={isFilterSelected}
+                  setIsFilterSelected={setIsFilterSelected}
+                  fromDate={fromDate}
+                  toDate={toDate}
+                  setFromDate={setFromDate}
+                  setToDate={setToDate}
+                  onApply={handleFilterApply}
+                  onClear={handleClearFilter}
+                />
+              </ListItem>
             </List>
           </div>
           <div className={Style['sidebar-accordian']}>
@@ -350,14 +395,26 @@ const Sidebar = ({
                 <NoRecordFound title={'No Chats are pinned yet.'} />
               )}
 
+              {(search || isFilterSelected) &&
+                initialAllPinnedChatsData?.count == 0 && (
+                  <NoRecordFound title={'No Match Found'} />
+                )}
+
               {initialAllPinnedChatsData &&
                 initialAllPinnedChatsData?.count > 0 && (
                   <PinnedMessagesList
                     initialAllChatsData={initialAllPinnedChatsData?.results}
                     totalCount={initialAllPinnedChatsData?.count}
-                    fetchPinnedAnswerList={(pageVal) =>
-                      getPinnedMessagesList(pageVal)
-                    }
+                    fetchPinnedAnswerList={(pageVal) => {
+                      const createdAfter = fromDate?.format('YYYY-MM-DD');
+                      const createdBefore = toDate?.format('YYYY-MM-DD');
+                      return getPinnedMessagesList(
+                        pageVal,
+                        search,
+                        createdAfter ?? '',
+                        createdBefore ?? ''
+                      );
+                    }}
                     handlePinnedAnswerClick={handlePinnedAnswerClick}
                     updateTotalCount={(count: number) =>
                       setInitialAllPinnedChatsData((prev) => ({
@@ -384,11 +441,25 @@ const Sidebar = ({
                 <NoRecordFound title={'Your chats will show up here.'} />
               )}
 
+              {(search || isFilterSelected) &&
+                initialAllChatsData?.count == 0 && (
+                  <NoRecordFound title={'No Match Found'} />
+                )}
+
               {initialAllChatsData && initialAllChatsData?.count > 0 && (
                 <ThreadList
                   initialAllChatsData={initialAllChatsData?.results}
                   totalCount={initialAllChatsData?.count}
-                  fetchChats={(pageVal) => getThreadList(pageVal)}
+                  fetchChats={(pageVal) => {
+                    const createdAfter = fromDate?.format('YYYY-MM-DD');
+                    const createdBefore = toDate?.format('YYYY-MM-DD');
+                    return getThreadList(
+                      pageVal,
+                      search,
+                      createdAfter ?? '',
+                      createdBefore ?? ''
+                    );
+                  }}
                   handleThreadClick={handleThreadClick}
                   updateTotalCount={(count: number) =>
                     setInitialAllChatsData((prev) => ({
@@ -433,11 +504,13 @@ const Sidebar = ({
           </Link>
         </div>
       </div>
-      <LogModel
-        open={openModel}
-        handleClose={() => setOpenModel(false)}
-        editedData={null}
-      />
+      {openIncidentModel && (
+        <LogModel
+          open={openIncidentModel}
+          handleClose={() => setOpenIncidentModel(false)}
+          editedData={null}
+        />
+      )}
     </>
   );
 };

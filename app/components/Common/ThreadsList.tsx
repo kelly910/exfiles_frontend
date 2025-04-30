@@ -46,13 +46,15 @@ export default function ThreadList({
 
   const [chats, setChats] = useState<Thread[]>(initialAllChatsData);
   const [page, setPage] = useState(2); // already loaded page 1
-  const [hasMore, setHasMore] = useState(
-    initialAllChatsData?.length < totalCount
-  );
+  const [hasMore, setHasMore] = useState(chats?.length < totalCount);
   const [isFetching, setIsFetching] = useState(false);
   const pageRef = useRef(page);
   const containerRef = useRef<HTMLDivElement>(null);
   const fetchingRef = useRef(isFetching);
+  useEffect(() => {
+    setChats(initialAllChatsData);
+    setPage(2);
+  }, [initialAllChatsData]);
 
   useEffect(() => {
     pageRef.current = page;

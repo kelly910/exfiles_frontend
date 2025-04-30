@@ -61,8 +61,6 @@
     .close-sidebar-logo {
       display: none;
       height: 44px;
-      max-width: 41px;
-
       img {
         height: 100%;
         width: 100%;
@@ -385,8 +383,6 @@
     background-repeat: no-repeat;
     border-radius: 12px;
     padding: 20px 12px 10px 12px;
-    cursor: pointer;
-
     p {
       color: var(--Primary-Text-Color);
       font-weight: var(--Regular);
@@ -399,8 +395,8 @@
       }
       a {
         color: var(--Primary-Text-Color);
-        text-decoration: none;
-        transition: 0.5s ease-in-out;
+        text-decoration: underline;
+        transition: all 0.4s;
         &:hover {
           color: var(--Card-Border);
         }
@@ -465,6 +461,10 @@
         span {
           margin: 0;
         }
+      }
+
+      &:last-child {
+        display: none;
       }
     }
   }
