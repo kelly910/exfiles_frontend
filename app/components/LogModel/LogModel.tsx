@@ -442,6 +442,8 @@ export default function LogModel({
       });
       if (values.evidence) {
         formData.append('evidence', values.evidence);
+      } else {
+        formData.append('evidence', '');
       }
 
       dispatch(setLoader(true));
