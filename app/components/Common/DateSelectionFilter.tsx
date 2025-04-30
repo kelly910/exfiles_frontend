@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { deepmerge } from '@mui/utils';
 import { Box, Button, Typography } from '@mui/material';
-import Style from '@/app/components/AI-Chat/sidebar/DynamicSidebarStyle.module.scss';
+import Style from '@components/Common/Sidebar.module.scss';
 import Image from 'next/image';
 import { Dayjs } from 'dayjs';
 

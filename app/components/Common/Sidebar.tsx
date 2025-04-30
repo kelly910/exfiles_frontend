@@ -111,13 +111,11 @@ const Sidebar = ({
 
       if (fetchThreadList.fulfilled.match(resultData)) {
         const payload = resultData.payload;
-        setInitialAllChatsData(payload);
-        // if (payload?.results?.length > 0) {
-        //   if (page === 1) {
-        //     setInitialAllChatsData(payload); // Only set on initial fetch
-        //   }
-        //   return payload;
-        // }
+        if (page == 1) {
+          setInitialAllChatsData(payload); // Only set on initial fetch
+        } else {
+          return payload;
+        }
       }
 
       return { results: [], count: 0 };
@@ -145,13 +143,11 @@ const Sidebar = ({
 
       if (fetchPinnedMessagesList.fulfilled.match(resultData)) {
         const payload = resultData.payload;
-        setInitialAllPinnedChatsData(payload);
-        // if (payload?.results?.length > 0) {
-        //   if (page === 1) {
-        //     setInitialAllPinnedChatsData(payload); // Only set on initial fetch
-        //   }
-        //   return payload;
-        // }
+        if (page == 1) {
+          setInitialAllPinnedChatsData(payload); // Only set on initial fetch
+        } else {
+          return payload;
+        }
       }
 
       return { results: [], count: 0 };
@@ -225,7 +221,11 @@ const Sidebar = ({
   const handleTextInput = (inputValue: string) => {
     const trimmed = inputValue.trim();
     setSearch(trimmed);
-    debouncedSearch(trimmed);
+    if (inputValue == '') {
+      handleClearSearch();
+    } else {
+      debouncedSearch(trimmed);
+    }
   };
 
   const handleClearSearch = () => {
@@ -405,9 +405,16 @@ const Sidebar = ({
                   <PinnedMessagesList
                     initialAllChatsData={initialAllPinnedChatsData?.results}
                     totalCount={initialAllPinnedChatsData?.count}
-                    fetchPinnedAnswerList={(pageVal) =>
-                      getPinnedMessagesList(pageVal)
-                    }
+                    fetchPinnedAnswerList={(pageVal) => {
+                      const createdAfter = fromDate?.format('YYYY-MM-DD');
+                      const createdBefore = toDate?.format('YYYY-MM-DD');
+                      return getPinnedMessagesList(
+                        pageVal,
+                        search,
+                        createdAfter ?? '',
+                        createdBefore ?? ''
+                      );
+                    }}
                     handlePinnedAnswerClick={handlePinnedAnswerClick}
                     updateTotalCount={(count: number) =>
                       setInitialAllPinnedChatsData((prev) => ({
@@ -446,7 +453,7 @@ const Sidebar = ({
                   fetchChats={(pageVal) => {
                     const createdAfter = fromDate?.format('YYYY-MM-DD');
                     const createdBefore = toDate?.format('YYYY-MM-DD');
-                    getThreadList(
+                    return getThreadList(
                       pageVal,
                       search,
                       createdAfter ?? '',
