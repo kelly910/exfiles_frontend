@@ -28,5 +28,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/ai-chats/:path*', '/login', '/documents/:path*'], // Define which routes should trigger the middleware
+  matcher: ['/ai-chats/:path*', '/login', '/documents/:path*', '/log-incident'], // Define which routes should trigger the middleware
 };
