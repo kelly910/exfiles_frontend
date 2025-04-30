@@ -117,7 +117,6 @@
       border-radius: 10px;
       border: 1px solid transparent;
       height: 100%;
-      cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -150,6 +149,7 @@
           padding: 7px;
           flex: 0 0 auto;
           border: 1px solid var(--Stroke-Color);
+          cursor: pointer;
         }
 
         .docTitle {
@@ -165,6 +165,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
+          cursor: pointer;
 
           span {
             display: block;
@@ -740,7 +741,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 0;
     background-color: var(--Card-Color);
     border-radius: 12px;
     width: fit-content;
@@ -885,7 +886,7 @@
     }
 
     p {
-      font-weight: var(--Medium);
+      font-weight: var(--Regular);
       font-size: var(--SubTitle-4);
       line-height: 1.4;
       color: var(--Primary-Text-Color);

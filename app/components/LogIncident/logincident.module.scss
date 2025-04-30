@@ -84,7 +84,7 @@
     }
 
     p {
-      font-weight: var(--Reular);
+      font-weight: var(--Regular);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
       color: var(--Txt-On-Gradient);
@@ -133,8 +133,6 @@
 .logListingBox {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding-left: 24px;
-  padding-right: 24px;
   gap: 16px;
 
   @media (max-width: 1024px) {
@@ -151,22 +149,42 @@
 }
 
 .logListing {
-  background-color: var(--Background-Color);
+  background-color: var(--Card-Color);
   border-radius: 10px;
   padding: 8px;
-  border: 1px solid var(--Stroke-Color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  border: 1px solid transparent;
+
+  &:hover {
+    border: 1px solid var(--Stroke-Color);
+  }
+
+  &:active {
+    border: 1px solid var(--Card-Border);
+  }
 
   .logListHeader {
     display: flex;
     justify-content: space-between;
     align-items: start;
     gap: 8px;
+    flex-grow: 1;
 
     .logTitle {
       cursor: pointer;
       font-weight: 600;
       font-size: 16px;
       color: var(--Primary-Text-Color);
+      line-clamp: 3;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      word-break: break-all;
     }
   }
 

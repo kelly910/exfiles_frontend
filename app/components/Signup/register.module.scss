@@ -177,16 +177,17 @@
   padding: 80px 0;
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  max-height: 100dvh;
+  overflow-y: auto;
 
   @media (max-width: 550px) {
     padding: 48px 0;
-    padding-bottom: 150px;
+    padding-bottom: 0;
   }
 
-  @media (max-width: 550px) {
-    padding-bottom: 210px;
-  }
+  // @media (max-width: 550px) {
+  //   padding-bottom: 210px;
+  // }
 }
 
 .authContainer {

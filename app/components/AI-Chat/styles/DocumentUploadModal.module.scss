@@ -4,10 +4,10 @@
 
   .dialogHeader {
     background-color: var(--Card-Color);
-    border: 1px solid var(--Stroke-Color);
-    border-bottom: 0;
+    border-bottom: 1px solid var(--Stroke-Color);
+    // border-bottom: 0;
     padding: 16px 24px;
-    border-radius: 12px 12px 0 0;
+    // border-radius: 12px 12px 0 0;
     min-width: 600px;
     max-width: 700px;
 
@@ -29,8 +29,8 @@
   .dialogBody {
     background-color: var(--Card-Color);
     padding: 0 24px;
-    border-radius: 0 0 12px 12px;
-    border: 1px solid var(--Stroke-Color);
+    // border-radius: 0 0 12px 12px;
+    // border: 1px solid var(--Stroke-Color);
     padding-top: 24px;
 
     @media (max-width: 768px) {
