@@ -697,6 +697,13 @@
     background-blend-mode: overlay !important;
     transition: all 0.2s linear !important;
   }
+
+  &:disabled {
+    background: var(--Input-Box-Colors) !important;
+    color: var(--Stroke-Color) !important;
+    cursor: not-allowed !important;
+    border: 1px solid var(--Stroke-Color) !important;
+  }
 }
 
 .search-box {
