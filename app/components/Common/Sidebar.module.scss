@@ -327,6 +327,10 @@
     background-color: var(--Card-Image);
     border-radius: 10px;
   }
+  &.active {
+    background-color: var(--Card-Image);
+    border-radius: 10px;
+  }
 
   .left {
     width: 80%;
