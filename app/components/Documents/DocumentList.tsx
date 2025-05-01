@@ -259,6 +259,11 @@ const DocumentList: React.FC<DocumentListProps> = ({
                   className={styles.searchInput}
                   placeholder="Search your documents"
                   onChange={(e) => handleSearchInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearch();
+                    }
+                  }}
                   endAdornment={
                     <InputAdornment
                       position="end"
