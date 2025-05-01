@@ -55,9 +55,11 @@ export default function ThreadList({
   const pageRef = useRef(page);
   const containerRef = useRef<HTMLDivElement>(null);
   const fetchingRef = useRef(isFetching);
+
   useEffect(() => {
     setChats(initialAllChatsData);
     setPage(2);
+    setHasMore(initialAllChatsData?.length < totalCount);
   }, [initialAllChatsData]);
 
   useEffect(() => {
@@ -192,7 +194,7 @@ export default function ThreadList({
           (thread) => thread.uuid !== currentSelectedItem.uuid
         );
         setChats(updatedThreadList);
-        updateTotalCount(updatedThreadList.length);
+        updateTotalCount(totalCount - 1);
 
         setIsOpenDeleteModal(false);
         handleActionMenuClose();
