@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 // css
 import Style from '@components/Common/Sidebar.module.scss';
@@ -65,7 +65,10 @@ const Sidebar = ({
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [isFilterSelected, setIsFilterSelected] = useState(false);
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
+  const fromDateRef = useRef(fromDate);
+
   const [toDate, setToDate] = useState<Dayjs | null>(null);
+  const toDateRef = useRef(toDate);
 
   const openLogIncidentModel = () => {
     setOpenIncidentModel(true);
@@ -112,6 +115,7 @@ const Sidebar = ({
       if (fetchThreadList.fulfilled.match(resultData)) {
         const payload = resultData.payload;
         if (page == 1) {
+          console.log('Handle Page 1');
           setInitialAllChatsData(payload); // Only set on initial fetch
         } else {
           return payload;
@@ -194,10 +198,16 @@ const Sidebar = ({
     getPinnedMessagesList(1, search);
   };
 
+  // keep refs updated
+  useEffect(() => {
+    fromDateRef.current = fromDate;
+    toDateRef.current = toDate;
+  }, [fromDate, toDate]);
+
   const handleSearch = async (inputValue: string) => {
     try {
-      const createdAfter = fromDate?.format('YYYY-MM-DD');
-      const createdBefore = toDate?.format('YYYY-MM-DD');
+      const createdAfter = fromDateRef.current?.format('YYYY-MM-DD');
+      const createdBefore = toDateRef.current?.format('YYYY-MM-DD');
       getThreadList(1, inputValue, createdAfter ?? '', createdBefore ?? '');
       getPinnedMessagesList(
         1,

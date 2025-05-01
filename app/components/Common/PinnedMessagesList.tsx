@@ -34,9 +34,7 @@ export default function PinnedMessagesList(props: PinnedMessagesListProps) {
   const [pinnedChats, setPinnedChats] =
     useState<PinnedAnswerMessage[]>(initialAllChatsData);
   const [page, setPage] = useState(2); // already loaded page 1
-  const [hasMore, setHasMore] = useState(
-    pinnedChats?.length < totalCount
-  );
+  const [hasMore, setHasMore] = useState(pinnedChats?.length < totalCount);
   const [isFetching, setIsFetching] = useState(false);
   const pageRef = useRef(page);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,6 +43,7 @@ export default function PinnedMessagesList(props: PinnedMessagesListProps) {
   useEffect(() => {
     setPinnedChats(initialAllChatsData);
     setPage(2);
+    setHasMore(initialAllChatsData?.length < totalCount);
   }, [initialAllChatsData]);
 
   useEffect(() => {
@@ -122,7 +121,7 @@ export default function PinnedMessagesList(props: PinnedMessagesListProps) {
           (thread) => thread.uuid !== selectedPinnedAns.uuid
         );
         setPinnedChats(updatedThreadList);
-        updateTotalCount(updatedThreadList.length);
+        updateTotalCount(totalCount - 1);
         showToast(
           'success',
           resultData.payload.messages[0] ||
