@@ -31,7 +31,10 @@ import { useSelector } from 'react-redux';
 import { SocketPayload } from '../../types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import StreamingResponse from './StreamingResponse';
-import { setPageHeaderData } from '@/app/redux/slices/login';
+import {
+  clearPageHeaderData,
+  setPageHeaderData,
+} from '@/app/redux/slices/login';
 import Image from 'next/image';
 
 // Dynamic Custom Component imports
@@ -187,6 +190,7 @@ export default function ChatMessagesComponent({
       dispatch(setIsStreaming(false));
       dispatch(clearChunks([]));
       dispatch(clearMessagesList());
+      dispatch(clearPageHeaderData());
     };
   }, []);
 
