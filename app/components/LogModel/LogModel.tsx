@@ -440,8 +440,22 @@ export default function LogModel({
       values.tags.forEach((tagId) => {
         formData.append('tags', String(tagId));
       });
+
       if (values.evidence) {
-        formData.append('evidence', values.evidence);
+        if (typeof values.evidence === 'string') {
+          try {
+            const response = await fetch(values.evidence);
+            const blob = await response.blob();
+            const fileName = values.evidence.split('/').pop() || 'evidence';
+            const file = new File([blob], fileName, { type: blob.type });
+            formData.append('evidence', file);
+          } catch (error) {
+            console.log(error, 'error');
+            formData.append('evidence', '');
+          }
+        } else {
+          formData.append('evidence', values.evidence);
+        }
       } else {
         formData.append('evidence', '');
       }
