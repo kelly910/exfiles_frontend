@@ -1,4 +1,3 @@
-import { useAppDispatch } from '@/app/redux/hooks';
 import Image from 'next/image';
 import Style from './Sidebar.module.scss';
 import { Button } from '@mui/material';
@@ -14,6 +13,9 @@ import { showToast } from '@/app/shared/toast/ShowToast';
 const ThreadActionMenu = dynamic(() => import('./ThreadActionMenu'));
 const DynamicRenameModal = dynamic(() => import('./RenameThreadModal'));
 const DynamicConfirmDeleteModal = dynamic(() => import('./ConfirmationDialog'));
+import { selectActiveThread } from '@/app/redux/slices/Chat';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
+import { useRouter } from 'next/navigation';
 
 interface ThreadListProps {
   initialAllChatsData: Thread[];
@@ -31,7 +33,9 @@ export default function ThreadList({
   handleThreadClick,
 }: ThreadListProps) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const selectedActiveChat = useAppSelector(selectActiveThread);
 
   const isOpenActionModal = Boolean(anchorEl);
   const [currentSelectedItem, setCurrentSelectedItem] = useState<Thread | null>(
@@ -181,6 +185,9 @@ export default function ThreadList({
       const resultData = await dispatch(deleteThread(payload));
 
       if (deleteThread.fulfilled.match(resultData)) {
+        if (selectedActiveChat?.uuid == currentSelectedItem?.uuid) {
+          router.push('/ai-chats');
+        }
         const updatedThreadList = chats.filter(
           (thread) => thread.uuid !== currentSelectedItem.uuid
         );
