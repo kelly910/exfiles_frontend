@@ -373,6 +373,7 @@ const chatSlice = createSlice({
         chat_message_data: newQuestionMsg,
         message: newMsg,
         is_streaming_finished: isStreamingCompleted,
+        thread_title: threadTitle,
       } = data;
       const targetData = [...state.messagesList.results];
       console.log(threadId, state.activeThread?.uuid, msgId);
@@ -403,6 +404,12 @@ const chatSlice = createSlice({
           }
         } else {
           if (typeof newMsg === 'object') {
+            if (threadTitle) {
+              state.activeThread = {
+                ...state.activeThread,
+                name: threadTitle,
+              } as Thread;
+            }
             const index = targetData.findIndex(
               (item) => item?.uuid === newMsg.uuid
             );

@@ -26,7 +26,10 @@ import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import TemporaryDrawer from '@components/Drawer/Drawer';
 import { usePathname, useRouter } from 'next/navigation';
-import { selectPageHeaderData } from '@/app/redux/slices/login';
+import {
+  selectPageHeaderData,
+  setPageHeaderData,
+} from '@/app/redux/slices/login';
 import { selectActiveThread } from '@/app/redux/slices/Chat';
 
 interface PageHeaderProps {
@@ -43,6 +46,7 @@ export default function PageHeader({
   const pathname = usePathname();
 
   const selectedActiveChat = useAppSelector(selectActiveThread);
+
   const selectedPageHeaderData = useAppSelector(selectPageHeaderData);
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
@@ -62,6 +66,16 @@ export default function PageHeader({
   const isChatPage = pathname?.includes('/ai-chats');
   const isDocumentsPage = pathname?.includes('/documents');
   const isLogIncidentPage = pathname?.includes('/log-incident');
+
+  useEffect(() => {
+    if (selectedActiveChat?.name) {
+      dispatch(
+        setPageHeaderData({
+          title: selectedActiveChat.name,
+        })
+      );
+    }
+  }, [selectedActiveChat]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
