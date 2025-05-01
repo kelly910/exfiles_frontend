@@ -398,7 +398,6 @@ export default function DateSelectionFilter({
               </LocalizationProvider>
             </ThemeProvider>
           </Box>
-          {/* {!isDisabledFilter && ( */}
           <Button
             className={Style['apply-btn']}
             onClick={handleApplyDateFilter}
@@ -406,7 +405,6 @@ export default function DateSelectionFilter({
           >
             Apply
           </Button>
-          {/* // )} */}
         </Box>
       </div>
       <div
