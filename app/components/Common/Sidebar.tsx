@@ -43,6 +43,7 @@ import {
 } from '@/app/redux/slices/Chat/chatTypes';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
+import DynamicThreadsList from './DynamicThreadsList';
 
 const Sidebar = ({
   isOpen,
@@ -172,8 +173,8 @@ const Sidebar = ({
   };
 
   useEffect(() => {
-    getThreadList(1);
-    getPinnedMessagesList(1);
+    // getThreadList(1);
+    // getPinnedMessagesList(1);
   }, []);
 
   const handleStartNewChat = () => {
@@ -447,11 +448,17 @@ const Sidebar = ({
               panelKey="panel2"
               handleAccordionChange={handleAccordionChange}
             >
-              {!initialAllChatsData && (
+              <DynamicThreadsList
+                searchVal={search}
+                fromDateVal={fromDate}
+                toDateVal={toDate}
+                handleThreadClick={handleThreadClick}
+              />
+              {/* {!initialAllChatsData && (
                 <NoRecordFound title={'Your chats will show up here.'} />
-              )}
+              )} */}
 
-              {(search || isFilterSelected) &&
+              {/* {(search || isFilterSelected) &&
                 initialAllChatsData?.count == 0 && (
                   <NoRecordFound title={'No Match Found'} />
                 )}
@@ -478,7 +485,7 @@ const Sidebar = ({
                     }))
                   }
                 />
-              )}
+              )} */}
             </SidebarAccordion>
 
             <SidebarButton

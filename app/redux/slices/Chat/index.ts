@@ -28,6 +28,8 @@ interface ChatState {
   messagesList: GetMessagesByThreadIdResponse;
   messagesListLoading: boolean;
   messageChunks: string[];
+  threadsList: GetThreadListResponse;
+  threadsListLoading: boolean;
 }
 
 const initialState: ChatState = {
@@ -39,11 +41,16 @@ const initialState: ChatState = {
   isStreaming: false,
   messagesListLoading: true,
   messageChunks: [],
+  threadsList: {
+    count: 0,
+    results: [],
+  },
+  threadsListLoading: false,
 };
 
 export const fetchThreadList = createAsyncThunk<
   GetThreadListResponse,
-  FetchThreadListParams | undefined,
+  FetchThreadListParams,
   { rejectValue: string }
 >('chat/fetchThreadList', async (payload, { rejectWithValue }) => {
   try {
@@ -470,6 +477,31 @@ const chatSlice = createSlice({
       })
       .addCase(fetchThreadMessagesByThreadId.rejected, (state) => {
         state.messagesListLoading = false;
+      })
+      .addCase(fetchThreadList.pending, (state) => {
+        state.threadsListLoading = true;
+      })
+      .addCase(fetchThreadList.fulfilled, (state, action) => {
+        const { page } = action.meta.arg;
+        const { count, results } = action.payload;
+
+        state.threadsList.count = count;
+
+        if (page === 1) {
+          // Initial load or refresh
+          state.threadsList.results = results;
+        } else {
+          // Append older messages (infinite scroll)
+          state.threadsList.results = [
+            ...results,
+            ...state.threadsList.results,
+          ];
+        }
+
+        state.threadsListLoading = false;
+      })
+      .addCase(fetchThreadList.rejected, (state) => {
+        state.threadsListLoading = false;
       });
   },
 });
@@ -482,6 +514,10 @@ export const {
   clearChunks,
   clearMessagesList,
 } = chatSlice.actions;
+
+export const selectThreadsList = (state: RootState) => state.chat.threadsList;
+export const selectThreadListLoading = (state: RootState) =>
+  state.chat.threadsListLoading;
 
 export const selectMessageList = (state: RootState) => state.chat.messagesList;
 export const selectActiveThread = (state: RootState) => state.chat.activeThread;
