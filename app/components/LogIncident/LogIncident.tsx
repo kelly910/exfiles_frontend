@@ -395,6 +395,7 @@ export default function LogIncident() {
                                 sx={{
                                   '& .MuiPaper-root': {
                                     backgroundColor: 'transparent',
+                                    borderRadius: '12px',
                                   },
                                 }}
                               >

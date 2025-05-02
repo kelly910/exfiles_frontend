@@ -51,7 +51,8 @@ const BootstrapDialog = styled(Dialog)(() => ({
     border: '1px solid #3a3948',
     borderRadius: '16px',
     minWidth: '650px',
-    maxHeight: '95dvh',
+    maxHeight: '100%',
+
     '@media (max-width: 768px)': {
       maxWidth: '80vw',
       minWidth: '480px',
@@ -139,6 +140,10 @@ const newTheme = (theme: Theme) =>
                 color: 'var(--Primary-Text-Color)',
               },
             },
+            '& .Mui-disabled:not(.Mui-selected)': {
+              color: 'var(--Primary-Text-Color) !important',
+              opacity: '0.3',
+            },
           },
         },
       },
@@ -172,9 +177,9 @@ const newTheme = (theme: Theme) =>
         styleOverrides: {
           root: {
             color: 'inset',
-            borderRadius: '12px 0 0 0',
-            border: '1px solid var(--Stroke-Color)',
-            borderBottom: '0',
+            // borderRadius: '12px 0 0 0',
+            // border: '1px solid var(--Stroke-Color)',
+            borderRight: '1px solid var(--Stroke-Color)',
             backgroundColor: 'var(--Card-Color)',
             maxWidth: '100%',
           },
@@ -184,8 +189,9 @@ const newTheme = (theme: Theme) =>
         styleOverrides: {
           root: {
             color: 'inset',
-            borderRadius: '0 0 12px 12px',
-            border: '1px solid var(--Stroke-Color)',
+            // borderRadius: '0 0 12px 12px',
+            // border: '1px solid var(--Stroke-Color)',
+            borderTop: '1px solid var(--Stroke-Color)',
             backgroundColor: 'var(--Card-Color)',
             maxWidth: '100%',
             button: {
@@ -204,10 +210,7 @@ const newTheme = (theme: Theme) =>
         styleOverrides: {
           root: {
             color: 'inset',
-            borderRadius: '0 12px 0 0',
-            border: '1px solid var(--Stroke-Color)',
-            borderLeft: '0',
-            borderBottom: '0',
+            // borderRadius: '0 12px 0 0',
             backgroundColor: 'var(--Card-Color)',
             maxWidth: '100%',
             ul: {
@@ -249,6 +252,16 @@ const newTheme = (theme: Theme) =>
           root: {
             '&.MuiPickerPopper-paper': {
               backgroundColor: 'transparent',
+              maxWidth: '100%',
+              overflowX: 'auto',
+              border: '1px solid var(--Stroke-Color)',
+              borderRadius: '12px',
+            },
+            '&.MuiPickersLayout-contentWrapper': {
+              backgroundColor: 'var(--Card-Color)',
+              borderRadius: '120px',
+              padding: '0px',
+              margin: '0px',
             },
           },
         },
@@ -258,6 +271,28 @@ const newTheme = (theme: Theme) =>
           root: {
             backgroundColor: 'transparent',
             boxShadow: 'none',
+            backdropFilter: 'blur(10px)',
+            inset: '0 auto auto 0 !important',
+            width: '100vw',
+            height: '100vh',
+            paddingTop: '20px',
+            paddingBottom: '20px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            transform: 'unset !important',
+
+            [theme.breakpoints.down('md')]: {
+              inset: 'auto 0 0 0px !important',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px',
+              height: '100dvh',
+              maxHeight: '100dvh',
+              overflowY: 'auto',
+              maxWidth: '100%',
+              overflowX: 'auto',
+            },
           },
         },
       },
@@ -618,7 +653,7 @@ export default function LogModel({
                             color: 'var(--Primary-Text-Color)',
                             padding: '0',
                             fontWeight: 'var(--Regular)',
-                            borderRadius: '12px',
+                            borderRadius: '0',
                             '&::placeholder': {
                               color: '#888',
                               fontWeight: 400,

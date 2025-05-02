@@ -45,6 +45,7 @@ function LisData() {
             sx={{
               '& .MuiPaper-root': {
                 backgroundColor: 'transparent',
+                borderRadius: '12px',
               },
             }}
           >
