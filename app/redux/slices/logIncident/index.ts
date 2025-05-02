@@ -36,6 +36,7 @@ export interface LogIncidentResponse {
   next: string | null;
   page: number;
   results: LogIncident[];
+  no_of_incident: number;
 }
 
 interface LogIncidentState {
@@ -43,6 +44,7 @@ interface LogIncidentState {
   count: number;
   next: string | null;
   page: number;
+  no_of_incident: number;
 }
 
 const initialState: LogIncidentState = {
@@ -50,6 +52,7 @@ const initialState: LogIncidentState = {
   count: 0,
   next: null,
   page: 1,
+  no_of_incident: 0,
 };
 
 export const fetchLogIncidents = createAsyncThunk<
@@ -156,6 +159,7 @@ const logIncidentSlice = createSlice({
       .addCase(fetchLogIncidents.fulfilled, (state, action) => {
         state.incidents = action.payload.results;
         state.count = action.payload.count;
+        state.no_of_incident = action.payload.no_of_incident;
         state.next = action.payload.next;
         state.page = action.payload.page;
       })
