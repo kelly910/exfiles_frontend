@@ -320,11 +320,12 @@
   align-items: start;
   justify-content: space-between;
   padding: 8px;
-  transition: 0.5s ease-in-out;
+  transition: all 0.4s;
   margin-bottom: 4px;
+  border: 1px solid transparent;
 
   &:hover {
-    background-color: var(--Card-Image);
+    border: 1px solid var(--Stroke-Color);
     border-radius: 10px;
   }
   &.active {
@@ -476,8 +477,17 @@
     .accordian {
       .customAccordionHeading {
         background-color: unset;
+        width: fit-content;
+        display: block;
         &:hover {
-          background-color: var(--Card-Image);
+          border: 1px solid var(--Stroke-Color);
+          background-color: none;
+        }
+
+        &.active,
+        &:active {
+          border: 1px solid var(--Stroke-Color);
+          background-color: var(--Input-Box-Colors);
         }
         .customAccordionContent {
           .heading {
@@ -521,7 +531,7 @@
 
 .mainDropdown {
   ul {
-    border-radius: 12px;
+    // border-radius: 12px;
     padding: 0;
     background-color: var(--Input-Box-Colors);
     color: var(--Primary-Text-Color);
@@ -631,8 +641,17 @@
 .closesidebar {
   .customAccordionHeading {
     background-color: unset;
+    width: fit-content;
+    display: block;
     &:hover {
-      background-color: var(--Card-Image);
+      border: 1px solid var(--Stroke-Color);
+      background-color: none;
+    }
+
+    &.active,
+    &:active {
+      border: 1px solid var(--Stroke-Color);
+      background-color: var(--Input-Box-Colors);
     }
     .heading {
       font-size: 0;

@@ -335,6 +335,7 @@ export default function PageHeader({
                   '& .MuiPaper-root': {
                     backgroundColor: '#11101b',
                     top: '69px !important',
+                    borderRadius: '12px',
                   },
                 }}
               >

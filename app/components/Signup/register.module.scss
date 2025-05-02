@@ -44,7 +44,7 @@
 }
 
 .formHeader {
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 
   @media (max-width: 550px) {
     margin-bottom: 32px;
@@ -111,7 +111,8 @@
     max-width: 100%;
     width: 100%;
     border-radius: 24px 24px 0 0;
-    position: fixed;
+    position: sticky;
+    z-index: 999;
     bottom: 0;
     right: 0;
   }
@@ -221,18 +222,6 @@
 
 .btnGroup {
   margin-top: 25px;
-  @media (max-width: 400px) {
-    flex-wrap: wrap;
-  }
-}
-
-.btnGroup a {
-  @media (max-width: 400px) {
-    order: 1;
-    text-align: end;
-    width: 100%;
-    margin-top: 20px;
-  }
 }
 
 .select-new {
