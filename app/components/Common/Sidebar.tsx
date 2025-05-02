@@ -80,6 +80,7 @@ const Sidebar = ({
 
   const handleToggleFilter = () => {
     setIsFilterVisible((prev) => !prev);
+    setIsSearchOpen((prev) => !prev);
   };
   const [expanded, setExpanded] = useState<boolean | string>(''); // Track which accordion is expanded
 
