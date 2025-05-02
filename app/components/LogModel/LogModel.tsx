@@ -353,7 +353,7 @@ export default function LogModel({
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setFieldValue: (field: string, value: string | File) => void
+    setFieldValue: (field: string, value: string | File | null) => void
   ) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -393,13 +393,20 @@ export default function LogModel({
     dispatch(fetchTagList());
   }, [dispatch]);
 
-  const handleFetchCategoryDocuments = (categoryId: number) => {
+  const handleFetchCategoryDocuments = (
+    categoryId: number,
+    setFieldValue: (
+      field: string,
+      value: string | number | boolean | null
+    ) => void
+  ) => {
     dispatch(
       fetchDocumentsByCategory({
         categoryId: categoryId,
         page_size: 50,
       })
     );
+    setFieldValue('document', '');
   };
 
   useEffect(() => {
@@ -420,6 +427,21 @@ export default function LogModel({
       setIsChecked(false);
     }
   }, [editedData?.other_tag_name]);
+
+  const handleOtherCheckboxChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setFieldValue: (
+      field: string,
+      value: string | number | boolean | null
+    ) => void
+  ) => {
+    const newCheckedState = e.target.checked;
+    setIsChecked(newCheckedState);
+
+    if (!newCheckedState) {
+      setFieldValue('other_tag', '');
+    }
+  };
 
   const addUpdateLogIncident = async (
     values: LogIncidentFormValues
@@ -495,7 +517,7 @@ export default function LogModel({
   return (
     <React.Fragment>
       <BootstrapDialog
-        onClose={handleClose}
+        onClose={() => handleClose()}
         aria-labelledby="customized-dialog-title"
         open={open}
         className={LogStyle.headerDialogBox}
@@ -658,9 +680,10 @@ export default function LogModel({
                         >
                           <DesktopDateTimePicker
                             className={LogStyle['data-input']}
-                            format="MM/DD/YYYY & HH:mm:ss"
+                            format="MM/DD/YYYY - hh:mm A"
                             name="incident_time"
                             value={dayjs(values.incident_time)}
+                            closeOnSelect={true}
                             onChange={(newValue) => {
                               const formattedDate = newValue
                                 ? newValue.format('YYYY-MM-DD HH:mm')
@@ -669,7 +692,7 @@ export default function LogModel({
                             }}
                             slotProps={{
                               textField: {
-                                placeholder: 'MM/DD/YYYY & HH:MM:SS',
+                                placeholder: 'MM/DD/YYYY - hh:mm AM/PM',
                                 sx: {
                                   width: '100%',
                                   textTransform: 'uppercase',
@@ -793,17 +816,14 @@ export default function LogModel({
                           </>
                         )}
                       </FieldArray>
-                      <div
-                        className={LogStyle['checkbox-card']}
-                        onChange={(e) => {
-                          setIsChecked((e.target as HTMLInputElement).checked);
-                        }}
-                      >
+                      <div className={LogStyle['checkbox-card']}>
                         <input
                           type="checkbox"
                           id="Other"
                           checked={isChecked}
-                          onChange={(e) => setIsChecked(e.target.checked)}
+                          onChange={(e) =>
+                            handleOtherCheckboxChange(e, setFieldValue)
+                          }
                         />
                         <label htmlFor="Other">
                           <Image
@@ -823,9 +843,7 @@ export default function LogModel({
                       />
                       <div
                         className={`${LogStyle['specify-input']} ${
-                          isChecked || editedData?.other_tag_name !== ''
-                            ? LogStyle['specify-input-show']
-                            : ''
+                          isChecked ? LogStyle['specify-input-show'] : ''
                         }`}
                       >
                         <Field
@@ -836,6 +854,12 @@ export default function LogModel({
                           name="other_tag"
                           placeholder="Please Specify"
                           error={Boolean(errors.other_tag && touched.other_tag)}
+                          value={values.other_tag}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            setFieldValue('other_tag', e.target.value);
+                          }}
                           sx={{
                             marginTop: '4px',
                             padding: '0',
@@ -1065,11 +1089,12 @@ export default function LogModel({
                               e: React.ChangeEvent<HTMLSelectElement>
                             ) => {
                               setFieldValue('category', e.target.value);
-                              setFieldValue('document', '');
                               handleFetchCategoryDocuments(
-                                Number(e.target.value)
+                                Number(e.target.value),
+                                setFieldValue
                               );
                             }}
+                            value={values.category}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Person Involved' }}
                             sx={{
@@ -1130,12 +1155,12 @@ export default function LogModel({
                             as={Select}
                             id="document"
                             name="document"
-                            // value={initialValues.document}
                             onChange={(
                               e: React.ChangeEvent<HTMLSelectElement>
                             ) => {
                               setFieldValue('document', e.target.value);
                             }}
+                            value={values.document}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Person Involved' }}
                             sx={{

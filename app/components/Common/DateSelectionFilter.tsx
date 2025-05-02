@@ -7,6 +7,7 @@ import { Box, Button, Typography } from '@mui/material';
 import Style from '@components/Common/Sidebar.module.scss';
 import Image from 'next/image';
 import { Dayjs } from 'dayjs';
+import { useState } from 'react';
 
 export default function DateSelectionFilter({
   isFilterVisible,
@@ -33,6 +34,8 @@ export default function DateSelectionFilter({
 }) {
   const baseTheme = createTheme();
   const isDisabledFilter = !(fromDate && toDate);
+  const [isFromDatePickerOpen, setIsFromDatePickerOpen] = useState(false);
+  const [isToDatePickerOpen, setIsToDatePickerOpen] = useState(false);
   const newTheme = (theme: Theme) =>
     createTheme({
       ...theme,
@@ -249,6 +252,8 @@ export default function DateSelectionFilter({
                   <DesktopDatePicker
                     value={fromDate}
                     onChange={(newValue) => setFromDate(newValue)}
+                    onOpen={() => setIsFromDatePickerOpen(true)}
+                    onClose={() => setIsFromDatePickerOpen(false)}
                     disableFuture
                     className={Style['data-input']}
                     slotProps={{
@@ -271,7 +276,9 @@ export default function DateSelectionFilter({
                           },
                           '& .MuiInputAdornment-root': {
                             padding: '6px',
-                            backgroundColor: 'var(--Card-Color)',
+                            backgroundColor: isFromDatePickerOpen
+                              ? 'var(--Main-Gradient) !important'
+                              : 'var(--Card-Color)',
                             color: 'var(--Primary-Text-Color)',
                             borderRadius: '8px',
                             border: '0.72px solid var(--Stroke-Color)',
@@ -339,6 +346,8 @@ export default function DateSelectionFilter({
                   <DesktopDatePicker
                     value={toDate}
                     onChange={(newValue) => setToDate(newValue)}
+                    onOpen={() => setIsToDatePickerOpen(true)}
+                    onClose={() => setIsToDatePickerOpen(false)}
                     minDate={fromDate || undefined}
                     disableFuture
                     disabled={!fromDate}
@@ -363,7 +372,9 @@ export default function DateSelectionFilter({
                           },
                           '& .MuiInputAdornment-root': {
                             padding: '6px',
-                            backgroundColor: 'var(--Card-Color)',
+                            backgroundColor: isToDatePickerOpen
+                              ? 'var(--Main-Gradient) !important'
+                              : 'var(--Card-Color)',
                             color: 'var(--Primary-Text-Color)',
                             borderRadius: '8px',
                             border: '0.72px solid var(--Stroke-Color)',
