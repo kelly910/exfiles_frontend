@@ -480,7 +480,7 @@ export default function LogIncident() {
                         variant="body1"
                         className={styles.noDataFound}
                       >
-                        No Data Found.
+                        No records found.
                       </Typography>
                     )}
                   </Box>
