@@ -493,8 +493,8 @@ const chatSlice = createSlice({
         } else {
           // Append older messages (infinite scroll)
           state.threadsList.results = [
-            ...results,
             ...state.threadsList.results,
+            ...results,
           ];
         }
 

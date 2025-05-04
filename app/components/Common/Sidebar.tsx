@@ -29,10 +29,11 @@ import LogModel from '@components/LogModel/LogModel';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 
 // Redux imports
-import { useAppDispatch } from '@/app/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import {
   fetchPinnedMessagesList,
   fetchThreadList,
+  selectThreadsList,
   setActiveThread,
 } from '@/app/redux/slices/Chat';
 import {
@@ -61,8 +62,11 @@ const Sidebar = ({
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
-  const [openIncidentModel, setOpenIncidentModel] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
+  const [openIncidentModel, setOpenIncidentModel] = useState(false);
+  const threadList = useAppSelector(selectThreadsList);
+  const [resetTrigger, setResetTrigger] = useState(0);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [isFilterSelected, setIsFilterSelected] = useState(false);
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
@@ -172,11 +176,6 @@ const Sidebar = ({
       });
   };
 
-  useEffect(() => {
-    // getThreadList(1);
-    // getPinnedMessagesList(1);
-  }, []);
-
   const handleStartNewChat = () => {
     dispatch(setActiveThread(null));
     dispatch(clearPageHeaderData());
@@ -187,23 +186,15 @@ const Sidebar = ({
     const createdBefore = toDate?.format('YYYY-MM-DD');
 
     if (createdAfter && createdBefore) {
-      getThreadList(1, search, createdAfter, createdBefore);
-      getPinnedMessagesList(1, search, createdAfter, createdBefore);
+      setResetTrigger((prev) => prev + 1);
     }
   };
 
   const handleClearFilter = () => {
     setFromDate(null);
     setToDate(null);
-    getThreadList(1, search);
-    getPinnedMessagesList(1, search);
+    setResetTrigger((prev) => prev + 1);
   };
-
-  // keep refs updated
-  useEffect(() => {
-    fromDateRef.current = fromDate;
-    toDateRef.current = toDate;
-  }, [fromDate, toDate]);
 
   const handleSearch = async (inputValue: string) => {
     try {
@@ -224,7 +215,8 @@ const Sidebar = ({
   const debouncedSearch = useMemo(
     () =>
       debounce((inputValue: string) => {
-        handleSearch(inputValue);
+        setSearchValue(inputValue);
+        setResetTrigger((prev) => prev + 1);
       }, 300),
     []
   );
@@ -241,10 +233,8 @@ const Sidebar = ({
 
   const handleClearSearch = () => {
     setSearch('');
-    const createdAfter = fromDate?.format('YYYY-MM-DD');
-    const createdBefore = toDate?.format('YYYY-MM-DD');
-    getThreadList(1, '', createdAfter ?? '', createdBefore ?? '');
-    getPinnedMessagesList(1, '', createdAfter ?? '', createdBefore ?? '');
+    setSearchValue('');
+    setResetTrigger((prev) => prev + 1);
   };
 
   return (
@@ -442,17 +432,18 @@ const Sidebar = ({
             </SidebarAccordion>
 
             <SidebarAccordion
-              title={`All Chats ${initialAllChatsData ? `(${initialAllChatsData?.count})` : ''}`}
+              title={`All Chats ${threadList ? `(${threadList.count})` : ''}`}
               icon="/images/messages.svg"
               expanded={expanded}
               panelKey="panel2"
               handleAccordionChange={handleAccordionChange}
             >
               <DynamicThreadsList
-                searchVal={search}
+                searchVal={searchValue}
                 fromDateVal={fromDate}
                 toDateVal={toDate}
                 handleThreadClick={handleThreadClick}
+                resetTrigger={resetTrigger}
               />
               {/* {!initialAllChatsData && (
                 <NoRecordFound title={'Your chats will show up here.'} />
