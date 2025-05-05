@@ -63,7 +63,7 @@ export const fetchLogIncidents = createAsyncThunk<
   'logIncidents/fetch',
   async ({ search = '', page = 1 }, { rejectWithValue }) => {
     try {
-      const searchQuery = `?search=${encodeURIComponent(search)}&page=${page}&page_size=9`;
+      const searchQuery = `?search=${encodeURIComponent(search)}&page=${page}&page_size=12`;
       const response = await api.get<LogIncidentResponse>(
         `${urlMapper.logIncidents}${searchQuery}`
       );
