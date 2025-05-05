@@ -23,6 +23,10 @@
       content: none !important;
     }
 
+    &::before {
+      content: none !important;
+    }
+
     input {
       color: var(--Primary-Text-Color);
       padding: 0;
