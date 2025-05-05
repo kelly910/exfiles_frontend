@@ -495,7 +495,7 @@ export default function LogIncident() {
                   }}
                 >
                   <Pagination
-                    count={Math.ceil(count / 16)}
+                    count={Math.ceil(count / 12)}
                     page={page}
                     onChange={handlePageChange}
                     shape="rounded"
