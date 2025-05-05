@@ -741,6 +741,7 @@ export default function LogModel({
                                 : '';
                               setFieldValue('incident_time', formattedDate);
                             }}
+                            disableFuture
                             slotProps={{
                               textField: {
                                 placeholder: 'MM/DD/YYYY - hh:mm AM/PM',
