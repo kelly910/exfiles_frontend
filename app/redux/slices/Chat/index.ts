@@ -438,6 +438,19 @@ const chatSlice = createSlice({
       );
       state.messagesList.results = updatedMsgList;
     },
+    setUpdateThreadListKeyValChange: (state, action) => {
+      const { uuid, ...rest } = action.payload;
+      state.threadsList.results = state.threadsList.results.map((item) =>
+        item.uuid === uuid ? { ...item, ...rest } : item
+      );
+    },
+    deleteThreadByUuid: (state, action) => {
+      const { uuid } = action.payload;
+      state.threadsList.results = state.threadsList.results.filter(
+        (thread) => thread.uuid !== uuid
+      );
+      state.threadsList.count = state.threadsList.count - 1;
+    },
     clearChunks: (state, action) => {
       state.messageChunks = action.payload;
     },
@@ -455,6 +468,13 @@ const chatSlice = createSlice({
     builder
       .addCase(fetchThreadMessagesByThreadId.pending, (state) => {
         state.messagesListLoading = true;
+      })
+      .addCase(createNewThread.fulfilled, (state, action) => {
+        state.threadsList.results = [
+          action.payload,
+          ...state.threadsList.results,
+        ];
+        state.threadsList.count += 1;
       })
       .addCase(fetchThreadMessagesByThreadId.fulfilled, (state, action) => {
         const { page } = action.meta.arg;
@@ -511,6 +531,8 @@ export const {
   setActiveThread,
   setIsStreaming,
   setUpdateMessageList,
+  setUpdateThreadListKeyValChange,
+  deleteThreadByUuid,
   clearChunks,
   clearMessagesList,
 } = chatSlice.actions;

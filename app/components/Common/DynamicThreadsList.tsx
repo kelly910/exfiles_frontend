@@ -10,9 +10,11 @@ import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
   deleteThread,
+  deleteThreadByUuid,
   fetchThreadList,
   renameNewThread,
   selectThreadsList,
+  setUpdateThreadListKeyValChange,
 } from '@/app/redux/slices/Chat';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { showToast } from '@/app/shared/toast/ShowToast';
@@ -69,7 +71,9 @@ export default function DynamicThreadsList({
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setHasMore(threadList.results.length < threadList.count);
+    if (!isFetching || !isInitialLoading) {
+      setHasMore(threadList.results.length < threadList.count);
+    }
   }, [threadList]);
 
   useEffect(() => {
@@ -117,10 +121,6 @@ export default function DynamicThreadsList({
       seIsFetching(false);
     }
   };
-
-  useEffect(() => {
-    page, searchVal, fromDateVal, toDateVal;
-  }, []);
 
   const handleScroll = async () => {
     const el = containerRef.current;
@@ -191,14 +191,12 @@ export default function DynamicThreadsList({
       };
       const resultData = await dispatch(renameNewThread(payload));
       if (renameNewThread.fulfilled.match(resultData)) {
-        // const updatedThreadList = chats.map((thread) => {
-        //   if (thread.uuid == currentSelectedItem.uuid) {
-        //     return { ...thread, name: name };
-        //   } else {
-        //     return thread;
-        //   }
-        // });
-        // setChats(updatedThreadList);
+        dispatch(
+          setUpdateThreadListKeyValChange({
+            uuid: currentSelectedItem.uuid,
+            name: name,
+          })
+        );
         setIsOpenRenameModal(false);
         handleActionMenuClose();
         showToast('success', 'Thread rename successfully');
@@ -221,11 +219,11 @@ export default function DynamicThreadsList({
         if (selectedActiveChat?.uuid == currentSelectedItem?.uuid) {
           router.push('/ai-chats');
         }
-        // const updatedThreadList = chats.filter(
-        //   (thread) => thread.uuid !== currentSelectedItem.uuid
-        // );
-        // setChats(updatedThreadList);
-        // updateTotalCount(totalCount - 1);
+        dispatch(
+          deleteThreadByUuid({
+            uuid: currentSelectedItem.uuid,
+          })
+        );
         setIsOpenDeleteModal(false);
         handleActionMenuClose();
         showToast('success', 'Thread deleted successfully');
