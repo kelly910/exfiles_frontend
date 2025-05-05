@@ -354,6 +354,7 @@ export interface LogIncidentFormValues {
   other_tag: string;
   tags: string[];
   evidence: string | null;
+  otherChecked?: boolean;
 }
 
 export default function LogModel({
@@ -421,6 +422,7 @@ export default function LogModel({
     other_tag: editedData?.other_tag_name || '',
     tags: Array.isArray(editedData?.tags) ? editedData.tags : [],
     evidence: editedData?.evidence || '',
+    otherChecked: editedData?.other_tag_name ? true : false,
   };
 
   useEffect(() => {
@@ -463,20 +465,20 @@ export default function LogModel({
     }
   }, [editedData?.other_tag_name]);
 
-  const handleOtherCheckboxChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setFieldValue: (
-      field: string,
-      value: string | number | boolean | null
-    ) => void
-  ) => {
-    const newCheckedState = e.target.checked;
-    setIsChecked(newCheckedState);
+  // const handleOtherCheckboxChange = (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   setFieldValue: (
+  //     field: string,
+  //     value: string | number | boolean | null
+  //   ) => void
+  // ) => {
+  //   const newCheckedState = e.target.checked;
+  //   setIsChecked(newCheckedState);
 
-    if (!newCheckedState) {
-      setFieldValue('other_tag', '');
-    }
-  };
+  //   if (!newCheckedState) {
+  //     setFieldValue('other_tag', '');
+  //   }
+  // };
 
   const addUpdateLogIncident = async (
     values: LogIncidentFormValues
@@ -546,13 +548,27 @@ export default function LogModel({
       200,
       'Involved person name must be at most 200 characters'
     ),
-    tags: Yup.array().min(1, 'Please select at least one tag'),
+    tags: Yup.array().when('otherChecked', {
+      is: true,
+      then: (schema) => schema,
+      otherwise: (schema) => schema.min(1, 'Please select at least one tag'),
+    }),
+    other_tag: Yup.string().when('otherChecked', {
+      is: true,
+      then: (schema) => schema.required('Please specify other tag'),
+      otherwise: (schema) => schema.notRequired(),
+    }),
   });
 
   return (
     <React.Fragment>
       <BootstrapDialog
-        onClose={() => handleClose()}
+        onClose={() => {
+          if (!editedData?.id) {
+            setIsChecked(false);
+          }
+          handleClose();
+        }}
         aria-labelledby="customized-dialog-title"
         open={open}
         className={LogStyle.headerDialogBox}
@@ -604,7 +620,7 @@ export default function LogModel({
         </Box>
         <Formik
           initialValues={initialValues}
-          enableReinitialize={true}
+          // enableReinitialize={true}
           validationSchema={logIncidentValidationSchema}
           onSubmit={addUpdateLogIncident}
         >
@@ -855,10 +871,20 @@ export default function LogModel({
                         <input
                           type="checkbox"
                           id="Other"
-                          checked={isChecked}
-                          onChange={(e) =>
-                            handleOtherCheckboxChange(e, setFieldValue)
-                          }
+                          // checked={isChecked}
+                          // onChange={(e) =>
+                          //   handleOtherCheckboxChange(e, setFieldValue)
+                          // }
+                          name="otherChecked"
+                          checked={values.otherChecked}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            setFieldValue('otherChecked', e.target.checked);
+                            setIsChecked(e.target.checked);
+                            if (!e.target.checked)
+                              setFieldValue('other_tag', '');
+                          }}
                         />
                         <label htmlFor="Other">
                           <Image
@@ -937,6 +963,16 @@ export default function LogModel({
                             },
                           }}
                         />
+                        {isChecked && !values.other_tag && (
+                          <div
+                            className="error-input-field"
+                            style={{
+                              position: 'absolute',
+                            }}
+                          >
+                            Please specify other tag
+                          </div>
+                        )}
                       </div>
                     </Box>
                   </div>
@@ -1168,11 +1204,13 @@ export default function LogModel({
                             >
                               Choose Category
                             </MenuItem>
-                            {categories?.map((cat, index) => (
-                              <MenuItem key={index} value={cat.id}>
-                                {cat.name}
-                              </MenuItem>
-                            ))}
+                            {categories
+                              ?.filter((cat) => cat?.no_of_docs > 0)
+                              ?.map((cat, index) => (
+                                <MenuItem key={index} value={cat.id}>
+                                  {cat.name}
+                                </MenuItem>
+                              ))}
                           </Field>
                         </ThemeProvider>
                       </div>
