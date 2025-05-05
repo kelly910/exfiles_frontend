@@ -1,11 +1,7 @@
 import Image from 'next/image';
 import Style from './Sidebar.module.scss';
 import { Button } from '@mui/material';
-import {
-  GetThreadListResponse,
-  Thread,
-  ThreadType,
-} from '@/app/redux/slices/Chat/chatTypes';
+import { Thread, ThreadType } from '@/app/redux/slices/Chat/chatTypes';
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
@@ -24,12 +20,13 @@ const DynamicConfirmDeleteModal = dynamic(() => import('./ConfirmationDialog'));
 import { selectActiveThread } from '@/app/redux/slices/Chat';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
-
+import { Dayjs } from 'dayjs';
+const NoRecordFound = dynamic(() => import('@components/Common/NoRecordFound'));
 interface DynamicThreadsListProps {
   handleThreadClick: (threadUUID: string) => void;
   searchVal: string;
-  fromDateVal: any;
-  toDateVal: any;
+  fromDateVal: Dayjs | null;
+  toDateVal: Dayjs | null;
   resetTrigger: number;
 }
 
@@ -259,6 +256,21 @@ export default function DynamicThreadsList({
           />
         </div>
       )}
+
+      {!isInitialLoading &&
+        !isFetching &&
+        threadList?.count == 0 &&
+        !(searchVal || fromDateVal || toDateVal) && (
+          <NoRecordFound title={'Your chats will show up here.'} />
+        )}
+
+      {!isInitialLoading &&
+        !isFetching &&
+        threadList?.count == 0 &&
+        (searchVal || fromDateVal || toDateVal) && (
+          <NoRecordFound title={'No Match Found.'} />
+        )}
+
       {!isInitialLoading &&
         threadList.results.map((chat) => (
           <div
@@ -290,6 +302,7 @@ export default function DynamicThreadsList({
             </div>
           </div>
         ))}
+
       {isFetching && (
         <div
           style={{

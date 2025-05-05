@@ -8,6 +8,7 @@ import { processText } from '@/app/utils/constants';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import striptags from 'striptags';
 import {
+  fetchPinnedMessagesList,
   saveUserAnswerReaction,
   setUpdateMessageList,
   togglePinMessages,
@@ -42,6 +43,22 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
     }
   };
 
+  const getPinnedMessagesList = async (page = 1) => {
+    const resultData = await dispatch(
+      fetchPinnedMessagesList({
+        page,
+      })
+    );
+
+    if (fetchPinnedMessagesList.fulfilled.match(resultData)) {
+      // seIsFetching(false);
+    }
+
+    if (fetchPinnedMessagesList.rejected.match(resultData)) {
+      // handleError(error as ErrorResponse);
+    }
+  };
+
   const togglePinMessage = async (messageObj: ChatMessage) => {
     const payload = {
       message_uuid: messageObj.uuid,
@@ -56,6 +73,7 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
           is_pinned: !messageObj.is_pinned,
         })
       );
+      getPinnedMessagesList(1);
       showToast(
         'success',
         resultData.payload.messages[0] || 'Answer message successfully updated'
