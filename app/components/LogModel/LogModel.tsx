@@ -964,17 +964,12 @@ export default function LogModel({
                             },
                           }}
                         />
-                        {isChecked && !values.other_tag && (
-                          <div
-                            className="error-input-field"
-                            style={{
-                              position: 'absolute',
-                            }}
-                          >
-                            Please specify other tag
-                          </div>
-                        )}
                       </div>
+                      {isChecked && !values.other_tag && (
+                        <div className="error-input-field">
+                          Please specify other tag
+                        </div>
+                      )}
                     </Box>
                   </div>
                 </Box>
