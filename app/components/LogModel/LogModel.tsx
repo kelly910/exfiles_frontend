@@ -51,7 +51,8 @@ const BootstrapDialog = styled(Dialog)(() => ({
     border: '1px solid #3a3948',
     borderRadius: '16px',
     minWidth: '650px',
-    maxHeight: '95dvh',
+    maxHeight: '100%',
+
     '@media (max-width: 768px)': {
       maxWidth: '80vw',
       minWidth: '480px',
@@ -139,6 +140,10 @@ const newTheme = (theme: Theme) =>
                 color: 'var(--Primary-Text-Color)',
               },
             },
+            '& .Mui-disabled:not(.Mui-selected)': {
+              color: 'var(--Primary-Text-Color) !important',
+              opacity: '0.3',
+            },
           },
         },
       },
@@ -172,9 +177,9 @@ const newTheme = (theme: Theme) =>
         styleOverrides: {
           root: {
             color: 'inset',
-            borderRadius: '12px 0 0 0',
-            border: '1px solid var(--Stroke-Color)',
-            borderBottom: '0',
+            // borderRadius: '12px 0 0 0',
+            // border: '1px solid var(--Stroke-Color)',
+            borderRight: '1px solid var(--Stroke-Color)',
             backgroundColor: 'var(--Card-Color)',
             maxWidth: '100%',
           },
@@ -184,8 +189,9 @@ const newTheme = (theme: Theme) =>
         styleOverrides: {
           root: {
             color: 'inset',
-            borderRadius: '0 0 12px 12px',
-            border: '1px solid var(--Stroke-Color)',
+            // borderRadius: '0 0 12px 12px',
+            // border: '1px solid var(--Stroke-Color)',
+            borderTop: '1px solid var(--Stroke-Color)',
             backgroundColor: 'var(--Card-Color)',
             maxWidth: '100%',
             button: {
@@ -204,10 +210,7 @@ const newTheme = (theme: Theme) =>
         styleOverrides: {
           root: {
             color: 'inset',
-            borderRadius: '0 12px 0 0',
-            border: '1px solid var(--Stroke-Color)',
-            borderLeft: '0',
-            borderBottom: '0',
+            // borderRadius: '0 12px 0 0',
             backgroundColor: 'var(--Card-Color)',
             maxWidth: '100%',
             ul: {
@@ -249,6 +252,16 @@ const newTheme = (theme: Theme) =>
           root: {
             '&.MuiPickerPopper-paper': {
               backgroundColor: 'transparent',
+              maxWidth: '100%',
+              overflowX: 'auto',
+              border: '1px solid var(--Stroke-Color)',
+              borderRadius: '12px',
+            },
+            '&.MuiPickersLayout-contentWrapper': {
+              backgroundColor: 'var(--Card-Color)',
+              borderRadius: '120px',
+              padding: '0px',
+              margin: '0px',
             },
           },
         },
@@ -258,6 +271,28 @@ const newTheme = (theme: Theme) =>
           root: {
             backgroundColor: 'transparent',
             boxShadow: 'none',
+            backdropFilter: 'blur(10px)',
+            inset: '0 auto auto 0 !important',
+            width: '100vw',
+            height: '100vh',
+            paddingTop: '20px',
+            paddingBottom: '20px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            transform: 'unset !important',
+
+            [theme.breakpoints.down('md')]: {
+              inset: 'auto 0 0 0px !important',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px',
+              height: '100dvh',
+              maxHeight: '100dvh',
+              overflowY: 'auto',
+              maxWidth: '100%',
+              overflowX: 'auto',
+            },
           },
         },
       },
@@ -319,6 +354,7 @@ export interface LogIncidentFormValues {
   other_tag: string;
   tags: string[];
   evidence: string | null;
+  otherChecked?: boolean;
 }
 
 export default function LogModel({
@@ -353,7 +389,7 @@ export default function LogModel({
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setFieldValue: (field: string, value: string | File) => void
+    setFieldValue: (field: string, value: string | File | null) => void
   ) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -386,6 +422,7 @@ export default function LogModel({
     other_tag: editedData?.other_tag_name || '',
     tags: Array.isArray(editedData?.tags) ? editedData.tags : [],
     evidence: editedData?.evidence || '',
+    otherChecked: editedData?.other_tag_name ? true : false,
   };
 
   useEffect(() => {
@@ -393,13 +430,20 @@ export default function LogModel({
     dispatch(fetchTagList());
   }, [dispatch]);
 
-  const handleFetchCategoryDocuments = (categoryId: number) => {
+  const handleFetchCategoryDocuments = (
+    categoryId: number,
+    setFieldValue: (
+      field: string,
+      value: string | number | boolean | null
+    ) => void
+  ) => {
     dispatch(
       fetchDocumentsByCategory({
         categoryId: categoryId,
         page_size: 50,
       })
     );
+    setFieldValue('document', '');
   };
 
   useEffect(() => {
@@ -420,6 +464,21 @@ export default function LogModel({
       setIsChecked(false);
     }
   }, [editedData?.other_tag_name]);
+
+  // const handleOtherCheckboxChange = (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   setFieldValue: (
+  //     field: string,
+  //     value: string | number | boolean | null
+  //   ) => void
+  // ) => {
+  //   const newCheckedState = e.target.checked;
+  //   setIsChecked(newCheckedState);
+
+  //   if (!newCheckedState) {
+  //     setFieldValue('other_tag', '');
+  //   }
+  // };
 
   const addUpdateLogIncident = async (
     values: LogIncidentFormValues
@@ -489,13 +548,27 @@ export default function LogModel({
       200,
       'Involved person name must be at most 200 characters'
     ),
-    tags: Yup.array().min(1, 'Please select at least one tag'),
+    tags: Yup.array().when('otherChecked', {
+      is: true,
+      then: (schema) => schema,
+      otherwise: (schema) => schema.min(1, 'Please select at least one tag'),
+    }),
+    other_tag: Yup.string().when('otherChecked', {
+      is: true,
+      then: (schema) => schema.required('Please specify other tag'),
+      otherwise: (schema) => schema.notRequired(),
+    }),
   });
 
   return (
     <React.Fragment>
       <BootstrapDialog
-        onClose={handleClose}
+        onClose={() => {
+          if (!editedData?.id) {
+            setIsChecked(false);
+          }
+          handleClose();
+        }}
         aria-labelledby="customized-dialog-title"
         open={open}
         className={LogStyle.headerDialogBox}
@@ -547,7 +620,7 @@ export default function LogModel({
         </Box>
         <Formik
           initialValues={initialValues}
-          enableReinitialize={true}
+          // enableReinitialize={true}
           validationSchema={logIncidentValidationSchema}
           onSubmit={addUpdateLogIncident}
         >
@@ -596,7 +669,7 @@ export default function LogModel({
                             color: 'var(--Primary-Text-Color)',
                             padding: '0',
                             fontWeight: 'var(--Regular)',
-                            borderRadius: '12px',
+                            borderRadius: '0',
                             '&::placeholder': {
                               color: '#888',
                               fontWeight: 400,
@@ -658,18 +731,20 @@ export default function LogModel({
                         >
                           <DesktopDateTimePicker
                             className={LogStyle['data-input']}
-                            format="MM/DD/YYYY & HH:mm:ss"
+                            format="MM/DD/YYYY - hh:mm A"
                             name="incident_time"
                             value={dayjs(values.incident_time)}
+                            closeOnSelect={true}
                             onChange={(newValue) => {
                               const formattedDate = newValue
                                 ? newValue.format('YYYY-MM-DD HH:mm')
                                 : '';
                               setFieldValue('incident_time', formattedDate);
                             }}
+                            disableFuture
                             slotProps={{
                               textField: {
-                                placeholder: 'MM/DD/YYYY & HH:MM:SS',
+                                placeholder: 'MM/DD/YYYY - hh:mm AM/PM',
                                 sx: {
                                   width: '100%',
                                   textTransform: 'uppercase',
@@ -793,17 +868,24 @@ export default function LogModel({
                           </>
                         )}
                       </FieldArray>
-                      <div
-                        className={LogStyle['checkbox-card']}
-                        onChange={(e) => {
-                          setIsChecked((e.target as HTMLInputElement).checked);
-                        }}
-                      >
+                      <div className={LogStyle['checkbox-card']}>
                         <input
                           type="checkbox"
                           id="Other"
-                          checked={isChecked}
-                          onChange={(e) => setIsChecked(e.target.checked)}
+                          // checked={isChecked}
+                          // onChange={(e) =>
+                          //   handleOtherCheckboxChange(e, setFieldValue)
+                          // }
+                          name="otherChecked"
+                          checked={values.otherChecked}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            setFieldValue('otherChecked', e.target.checked);
+                            setIsChecked(e.target.checked);
+                            if (!e.target.checked)
+                              setFieldValue('other_tag', '');
+                          }}
                         />
                         <label htmlFor="Other">
                           <Image
@@ -823,9 +905,7 @@ export default function LogModel({
                       />
                       <div
                         className={`${LogStyle['specify-input']} ${
-                          isChecked || editedData?.other_tag_name !== ''
-                            ? LogStyle['specify-input-show']
-                            : ''
+                          isChecked ? LogStyle['specify-input-show'] : ''
                         }`}
                       >
                         <Field
@@ -836,6 +916,12 @@ export default function LogModel({
                           name="other_tag"
                           placeholder="Please Specify"
                           error={Boolean(errors.other_tag && touched.other_tag)}
+                          value={values.other_tag}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            setFieldValue('other_tag', e.target.value);
+                          }}
                           sx={{
                             marginTop: '4px',
                             padding: '0',
@@ -878,6 +964,16 @@ export default function LogModel({
                             },
                           }}
                         />
+                        {isChecked && !values.other_tag && (
+                          <div
+                            className="error-input-field"
+                            style={{
+                              position: 'absolute',
+                            }}
+                          >
+                            Please specify other tag
+                          </div>
+                        )}
                       </div>
                     </Box>
                   </div>
@@ -1065,11 +1161,12 @@ export default function LogModel({
                               e: React.ChangeEvent<HTMLSelectElement>
                             ) => {
                               setFieldValue('category', e.target.value);
-                              setFieldValue('document', '');
                               handleFetchCategoryDocuments(
-                                Number(e.target.value)
+                                Number(e.target.value),
+                                setFieldValue
                               );
                             }}
+                            value={values.category}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Person Involved' }}
                             sx={{
@@ -1108,11 +1205,13 @@ export default function LogModel({
                             >
                               Choose Category
                             </MenuItem>
-                            {categories?.map((cat, index) => (
-                              <MenuItem key={index} value={cat.id}>
-                                {cat.name}
-                              </MenuItem>
-                            ))}
+                            {categories
+                              ?.filter((cat) => cat?.no_of_docs > 0)
+                              ?.map((cat, index) => (
+                                <MenuItem key={index} value={cat.id}>
+                                  {cat.name}
+                                </MenuItem>
+                              ))}
                           </Field>
                         </ThemeProvider>
                       </div>
@@ -1130,12 +1229,12 @@ export default function LogModel({
                             as={Select}
                             id="document"
                             name="document"
-                            // value={initialValues.document}
                             onChange={(
                               e: React.ChangeEvent<HTMLSelectElement>
                             ) => {
                               setFieldValue('document', e.target.value);
                             }}
+                            value={values.document}
                             displayEmpty
                             inputProps={{ 'aria-label': 'Person Involved' }}
                             sx={{

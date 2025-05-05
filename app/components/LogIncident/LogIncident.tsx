@@ -395,6 +395,7 @@ export default function LogIncident() {
                                 sx={{
                                   '& .MuiPaper-root': {
                                     backgroundColor: 'transparent',
+                                    borderRadius: '12px',
                                   },
                                 }}
                               >
@@ -480,7 +481,7 @@ export default function LogIncident() {
                         variant="body1"
                         className={styles.noDataFound}
                       >
-                        No Data Found.
+                        No records found.
                       </Typography>
                     )}
                   </Box>
