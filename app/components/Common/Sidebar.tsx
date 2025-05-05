@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 // css
 import Style from '@components/Common/Sidebar.module.scss';
@@ -18,29 +18,20 @@ import Button from '@mui/material/Button';
 import SidebarAccordion from '@components/Common/SidebarAccordion';
 
 // Custom Components
-import ThreadList from '@components/Common/ThreadsList';
-import PinnedMessagesList from '@components/Common/PinnedMessagesList';
+import DynamicThreadsList from '@components/Common/DynamicThreadsList';
+import DynamicPinnedMessagesList from '@components/Common/DynamicPinnedMessagesList';
 import SidebarButton from '@components/Common/SidebarButton';
-import NoRecordFound from '@components/Common/NoRecordFound';
 import DateSelectionFilter from '@components/Common/DateSelectionFilter';
 import LogModel from '@components/LogModel/LogModel';
 
-// Others
-import { ErrorResponse, handleError } from '@/app/utils/handleError';
-
 // Redux imports
-import { useAppDispatch } from '@/app/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import {
-  fetchPinnedMessagesList,
-  fetchThreadList,
+  selectPinnedMessagesList,
+  selectThreadsList,
   setActiveThread,
 } from '@/app/redux/slices/Chat';
-import {
-  GetThreadListResponse,
-  PinnedAnswerMessage,
-  PinnedAnswerMessagesResponse,
-  ThreadType,
-} from '@/app/redux/slices/Chat/chatTypes';
+import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 
@@ -60,15 +51,16 @@ const Sidebar = ({
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
-  const [openIncidentModel, setOpenIncidentModel] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
+  const [openIncidentModel, setOpenIncidentModel] = useState(false);
+  const threadList = useAppSelector(selectThreadsList);
+  const pinnedChats = useAppSelector(selectPinnedMessagesList);
+  const [resetTrigger, setResetTrigger] = useState(0);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [isFilterSelected, setIsFilterSelected] = useState(false);
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
-  const fromDateRef = useRef(fromDate);
-
   const [toDate, setToDate] = useState<Dayjs | null>(null);
-  const toDateRef = useRef(toDate);
 
   const openLogIncidentModel = () => {
     setOpenIncidentModel(true);
@@ -84,83 +76,10 @@ const Sidebar = ({
   };
   const [expanded, setExpanded] = useState<boolean | string>(''); // Track which accordion is expanded
 
-  const [initialAllChatsData, setInitialAllChatsData] =
-    useState<GetThreadListResponse | null>(null);
-
-  const [initialAllPinnedChatsData, setInitialAllPinnedChatsData] =
-    useState<PinnedAnswerMessagesResponse | null>(null);
-
   const handleAccordionChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false); // Only expand the clicked panel
     };
-
-  const getThreadList = async (
-    page = 1,
-    search = '',
-    created_after = '',
-    created_before = '',
-    thread_type: ThreadType = 'chat'
-  ) => {
-    try {
-      const resultData = await dispatch(
-        fetchThreadList({
-          page,
-          search,
-          created_after,
-          created_before,
-          thread_type,
-        })
-      );
-
-      if (fetchThreadList.fulfilled.match(resultData)) {
-        const payload = resultData.payload;
-        if (page == 1) {
-          console.log('Handle Page 1');
-          setInitialAllChatsData(payload); // Only set on initial fetch
-        } else {
-          return payload;
-        }
-      }
-
-      return { results: [], count: 0 };
-    } catch (err) {
-      console.error('Error fetching thread list:', err);
-      return { results: [], count: 0 };
-    }
-  };
-
-  const getPinnedMessagesList = async (
-    page = 1,
-    search = '',
-    created_after = '',
-    created_before = ''
-  ) => {
-    try {
-      const resultData = await dispatch(
-        fetchPinnedMessagesList({
-          page,
-          search,
-          created_after,
-          created_before,
-        })
-      );
-
-      if (fetchPinnedMessagesList.fulfilled.match(resultData)) {
-        const payload = resultData.payload;
-        if (page == 1) {
-          setInitialAllPinnedChatsData(payload); // Only set on initial fetch
-        } else {
-          return payload;
-        }
-      }
-
-      return { results: [], count: 0 };
-    } catch (err) {
-      console.error('Error fetching thread list:', err);
-      return { results: [], count: 0 };
-    }
-  };
 
   const handleDocumentClick = async () => {
     dispatch(fetchCategories({ page: 1 }))
@@ -172,11 +91,6 @@ const Sidebar = ({
       });
   };
 
-  useEffect(() => {
-    getThreadList(1);
-    getPinnedMessagesList(1);
-  }, []);
-
   const handleStartNewChat = () => {
     dispatch(setActiveThread(null));
     dispatch(clearPageHeaderData());
@@ -187,44 +101,21 @@ const Sidebar = ({
     const createdBefore = toDate?.format('YYYY-MM-DD');
 
     if (createdAfter && createdBefore) {
-      getThreadList(1, search, createdAfter, createdBefore);
-      getPinnedMessagesList(1, search, createdAfter, createdBefore);
+      setResetTrigger((prev) => prev + 1);
     }
   };
 
   const handleClearFilter = () => {
     setFromDate(null);
     setToDate(null);
-    getThreadList(1, search);
-    getPinnedMessagesList(1, search);
-  };
-
-  // keep refs updated
-  useEffect(() => {
-    fromDateRef.current = fromDate;
-    toDateRef.current = toDate;
-  }, [fromDate, toDate]);
-
-  const handleSearch = async (inputValue: string) => {
-    try {
-      const createdAfter = fromDateRef.current?.format('YYYY-MM-DD');
-      const createdBefore = toDateRef.current?.format('YYYY-MM-DD');
-      getThreadList(1, inputValue, createdAfter ?? '', createdBefore ?? '');
-      getPinnedMessagesList(
-        1,
-        inputValue,
-        createdAfter ?? '',
-        createdBefore ?? ''
-      );
-    } catch (error) {
-      handleError(error as ErrorResponse);
-    }
+    setResetTrigger((prev) => prev + 1);
   };
 
   const debouncedSearch = useMemo(
     () =>
       debounce((inputValue: string) => {
-        handleSearch(inputValue);
+        setSearchValue(inputValue);
+        setResetTrigger((prev) => prev + 1);
       }, 300),
     []
   );
@@ -241,10 +132,8 @@ const Sidebar = ({
 
   const handleClearSearch = () => {
     setSearch('');
-    const createdAfter = fromDate?.format('YYYY-MM-DD');
-    const createdBefore = toDate?.format('YYYY-MM-DD');
-    getThreadList(1, '', createdAfter ?? '', createdBefore ?? '');
-    getPinnedMessagesList(1, '', createdAfter ?? '', createdBefore ?? '');
+    setSearchValue('');
+    setResetTrigger((prev) => prev + 1);
   };
 
   return (
@@ -396,90 +285,35 @@ const Sidebar = ({
           </div>
           <div className={Style['sidebar-accordian']}>
             <SidebarAccordion
-              title={`Pinned Chats ${initialAllPinnedChatsData ? `(${initialAllPinnedChatsData?.count})` : ''}`}
+              title={`Pinned Chats ${pinnedChats ? `(${pinnedChats?.count})` : ''}`}
               icon="/images/sidebar-Pin.svg"
               expanded={expanded}
               panelKey="panel1"
               handleAccordionChange={handleAccordionChange}
             >
-              {!initialAllPinnedChatsData && (
-                <NoRecordFound title={'No Chats are pinned yet.'} />
-              )}
-
-              {(search || isFilterSelected) &&
-                initialAllPinnedChatsData?.count == 0 && (
-                  <NoRecordFound title={'No Match Found'} />
-                )}
-
-              {initialAllPinnedChatsData &&
-                initialAllPinnedChatsData?.count > 0 && (
-                  <PinnedMessagesList
-                    initialAllChatsData={initialAllPinnedChatsData?.results}
-                    totalCount={initialAllPinnedChatsData?.count}
-                    fetchPinnedAnswerList={(pageVal) => {
-                      const createdAfter = fromDate?.format('YYYY-MM-DD');
-                      const createdBefore = toDate?.format('YYYY-MM-DD');
-                      return getPinnedMessagesList(
-                        pageVal,
-                        search,
-                        createdAfter ?? '',
-                        createdBefore ?? ''
-                      );
-                    }}
-                    handlePinnedAnswerClick={handlePinnedAnswerClick}
-                    updateTotalCount={(count: number) =>
-                      setInitialAllPinnedChatsData((prev) => ({
-                        ...(prev ?? {
-                          previous: null,
-                          next: null,
-                          results: [],
-                        }),
-                        count,
-                      }))
-                    }
-                  />
-                )}
+              <DynamicPinnedMessagesList
+                searchVal={searchValue}
+                fromDateVal={fromDate}
+                toDateVal={toDate}
+                handlePinnedAnswerClick={handlePinnedAnswerClick}
+                resetTrigger={resetTrigger}
+              />
             </SidebarAccordion>
 
             <SidebarAccordion
-              title={`All Chats ${initialAllChatsData ? `(${initialAllChatsData?.count})` : ''}`}
+              title={`All Chats ${threadList ? `(${threadList.count})` : ''}`}
               icon="/images/messages.svg"
               expanded={expanded}
               panelKey="panel2"
               handleAccordionChange={handleAccordionChange}
             >
-              {!initialAllChatsData && (
-                <NoRecordFound title={'Your chats will show up here.'} />
-              )}
-
-              {(search || isFilterSelected) &&
-                initialAllChatsData?.count == 0 && (
-                  <NoRecordFound title={'No Match Found'} />
-                )}
-
-              {initialAllChatsData && initialAllChatsData?.count > 0 && (
-                <ThreadList
-                  initialAllChatsData={initialAllChatsData?.results}
-                  totalCount={initialAllChatsData?.count}
-                  fetchChats={(pageVal) => {
-                    const createdAfter = fromDate?.format('YYYY-MM-DD');
-                    const createdBefore = toDate?.format('YYYY-MM-DD');
-                    return getThreadList(
-                      pageVal,
-                      search,
-                      createdAfter ?? '',
-                      createdBefore ?? ''
-                    );
-                  }}
-                  handleThreadClick={handleThreadClick}
-                  updateTotalCount={(count: number) =>
-                    setInitialAllChatsData((prev) => ({
-                      ...(prev ?? { previous: null, next: null, results: [] }),
-                      count,
-                    }))
-                  }
-                />
-              )}
+              <DynamicThreadsList
+                searchVal={searchValue}
+                fromDateVal={fromDate}
+                toDateVal={toDate}
+                handleThreadClick={handleThreadClick}
+                resetTrigger={resetTrigger}
+              />
             </SidebarAccordion>
 
             <SidebarButton

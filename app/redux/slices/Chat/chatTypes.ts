@@ -22,7 +22,7 @@ export interface GetThreadListResponse {
 }
 
 export type FetchThreadListParams = {
-  page?: number;
+  page: number;
   page_size?: number;
   search?: string;
   thread_type?: ThreadType;
