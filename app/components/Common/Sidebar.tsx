@@ -74,7 +74,7 @@ const Sidebar = ({
     setIsFilterVisible((prev) => !prev);
     setIsSearchOpen((prev) => !prev);
   };
-  const [expanded, setExpanded] = useState<boolean | string>(''); // Track which accordion is expanded
+  const [expanded, setExpanded] = useState<boolean | string>('panel2'); // Track which accordion is expanded
 
   const handleAccordionChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -121,8 +121,8 @@ const Sidebar = ({
   );
 
   const handleTextInput = (inputValue: string) => {
+    setSearch(inputValue);
     const trimmed = inputValue.trim();
-    setSearch(trimmed);
     if (inputValue == '') {
       handleClearSearch();
     } else {
@@ -330,13 +330,13 @@ const Sidebar = ({
           </div>
         </div>
         <div className={Style['sidebar-btm']}>
-          <div
-            className={Style['sidebar-btm-card']}
-            onClick={openLogIncidentModel}
-          >
+          <div className={Style['sidebar-btm-card']}>
             <p>Something Unexpected Happened?</p>
             <p>
-              <Link href="">Click Here</Link> to Log Incident
+              <Link href="" onClick={openLogIncidentModel}>
+                Click Here
+              </Link>{' '}
+              to Log Incident
             </p>
           </div>
           <Link href="#" className={Style['close-sidebar-btm']}>

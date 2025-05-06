@@ -28,7 +28,7 @@ export default function SidebarButton({
         <Image src={iconPath} alt="icon" width={18} height={18} />
         {btnTitle}
       </Typography>
-      <Typography component="span" className={Style['heading-side-img']}>
+      {/* <Typography component="span" className={Style['heading-side-img']}>
         <Image
           className={Style['img-none']}
           src="/images/arrow-down-right.svg"
@@ -36,7 +36,7 @@ export default function SidebarButton({
           width={16}
           height={16}
         />
-      </Typography>
+      </Typography> */}
     </Button>
   );
 }
