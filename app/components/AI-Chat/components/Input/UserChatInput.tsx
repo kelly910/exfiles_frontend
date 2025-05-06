@@ -5,7 +5,9 @@ import {
   CircularProgress,
   Input,
   InputAdornment,
+  Typography,
 } from '@mui/material';
+import InputUploadFileItem from '@components/AI-Chat/components/FileUpload/InputUploadFileItem'; // Adjusted the path to the correct location
 import {
   ChangeEvent,
   KeyboardEvent,
@@ -15,7 +17,9 @@ import {
 } from 'react';
 import { SocketPayload } from '../../types/aiChat.types';
 import { QUESTION_TYPES } from '@/app/utils/constants';
+import Image from 'next/image';
 interface UserChatInputProps {
+  droppedFiles: File[];
   handleOpenDocUploadModal: () => void;
   sendMessage: (payloadMsg: SocketPayload) => void;
   isLoadingProp?: boolean;
@@ -23,6 +27,7 @@ interface UserChatInputProps {
 }
 
 export default function UserChatInput({
+  droppedFiles,
   handleOpenDocUploadModal,
   sendMessage,
   isLoadingProp,
@@ -65,9 +70,77 @@ export default function UserChatInput({
     }
   }, [selectedPrompt]);
 
+  // Drag and Drop file upload
+
+  const [files, setFiles] = useState<any[]>([]); // State to hold files and their upload status
+
+  // Handle file removal
+  const handleRemoveFile = (fileId: string) => {
+    setFiles((prevFiles) => prevFiles.filter((file) => file.fileId !== fileId));
+  };
+
+  // Handle file description
+  const handleFileDesc = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    fileId: string
+  ) => {
+    console.log('File description for', fileId, ':', e.target.value);
+  };
+
+  useEffect(() => {
+    if (droppedFiles.length === 0) return; // No files dropped
+    droppedFiles.forEach((file) => {
+      const fileId = Date.now().toString(); // Use a unique file ID (e.g., timestamp)
+      setFiles((prevFiles) => [
+        ...prevFiles,
+        {
+          file,
+          fileId,
+          progress: 0,
+          hasUploaded: false,
+          hasError: false,
+          fileErrorMsg: '',
+        },
+      ]);
+    });
+  }, [droppedFiles]);
+
+  // Drag and Drop file upload
+
   return (
     <Box component="div" className={AIChatStyles.chatBoard}>
-      <Input
+      {/* Uploaded file items */}
+      {files.length === 0 ? (
+        <></>
+      ) : (
+        <Box className={AIChatStyles.fileInput}>
+          <Box component="div" className={AIChatStyles.fileBoxDrag}>
+            {files.map((fileData) => (
+              <InputUploadFileItem
+                key={fileData.fileId}
+                fileName={fileData.file.name}
+                fileSize={fileData.file.size}
+                progress={fileData.progress}
+                hasUploaded={fileData.hasUploaded}
+                fileErrorMsg={fileData.fileErrorMsg}
+                hasError={fileData.hasError}
+                fileId={fileData.fileId}
+                onRemove={handleRemoveFile}
+                handleFileDesc={handleFileDesc}
+              />
+            ))}
+          </Box>
+          <InputAdornment
+            position="end"
+            className={AIChatStyles.fileIcon}
+            onClick={handleOpenDocUploadModal}
+          >
+            <span className={AIChatStyles.clip}></span>
+          </InputAdornment>
+        </Box>
+      )}
+
+      {/* <Input
         id="input-with-icon-adornment"
         className={AIChatStyles.fileInput}
         placeholder="Write your question here"
@@ -87,7 +160,8 @@ export default function UserChatInput({
             <span className={AIChatStyles.clip}></span>
           </InputAdornment>
         }
-      />
+      /> */}
+
       <Button
         type="button"
         variant="contained"

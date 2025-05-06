@@ -387,6 +387,11 @@
     gap: 22px;
     margin-top: 14px;
 
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0px;
+    }
+
     &:first-child {
       margin-bottom: 0;
     }

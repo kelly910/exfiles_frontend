@@ -154,6 +154,7 @@
   border-radius: 10px;
   color: var(--Subtext-Color) !important;
   border: 1px solid var(--Stroke-Color);
+  display: flex;
   align-items: flex-end !important;
 
   &::after {
@@ -349,3 +350,65 @@
   text-overflow: ellipsis;
   width: 100%;
 }
+// Drag and drop styles
+.dropOverlay {
+  position: fixed;
+  width: 100%;
+  height: 100dvh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(14px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+
+  .dropOverlayInner {
+    // background-color: var(--Input-Box-Colors);
+    // border: 1px solid var(--Stroke-Color);
+    border-radius: 10px;
+    padding: 50px 20px;
+    text-align: center;
+  }
+
+  p {
+    font-weight: var(--Lighter);
+    font-size: var(--SubTitle-3);
+    line-height: 1.4;
+    text-align: center;
+    color: var(--Primary-Text-Color);
+    margin: 0 auto;
+    margin-top: 9px;
+    max-width: 240px;
+
+    &:last-child {
+      max-width: unset;
+    }
+
+    span {
+      border-bottom: 1px solid transparent;
+    }
+  }
+
+  img {
+    margin: 0 auto;
+  }
+}
+.fileBoxDrag {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-height: 120px;
+  overflow-y: auto;
+  padding-bottom: 1px;
+
+  .fileBoxInner {
+    margin-top: 0;
+    width: calc(33.33% - 6.66px);
+  }
+}
+// Drag and drop styles

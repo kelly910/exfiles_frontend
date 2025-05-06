@@ -238,3 +238,8 @@
     color: var(--Subtext-Color);
   }
 }
+
+.fileBoxDragInner {
+  margin-top: 0;
+  // width: calc(33.33% - 6.66px);
+}
