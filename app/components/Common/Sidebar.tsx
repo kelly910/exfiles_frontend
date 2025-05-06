@@ -40,11 +40,13 @@ const Sidebar = ({
   toggleSidebar,
   handleThreadClick,
   handlePinnedAnswerClick,
+  selectedDocIdNull,
 }: {
   isOpen: boolean;
   toggleSidebar: () => void;
   handleThreadClick: (threadUUID: string) => void;
   handlePinnedAnswerClick: (selectedMessage: PinnedAnswerMessage) => void;
+  selectedDocIdNull?: () => void;
   title: string;
 }) => {
   const dispatch = useAppDispatch();
@@ -290,6 +292,7 @@ const Sidebar = ({
               expanded={expanded}
               panelKey="panel1"
               handleAccordionChange={handleAccordionChange}
+              closeDocumentSummary={selectedDocIdNull}
             >
               <DynamicPinnedMessagesList
                 searchVal={searchValue}
@@ -306,6 +309,7 @@ const Sidebar = ({
               expanded={expanded}
               panelKey="panel2"
               handleAccordionChange={handleAccordionChange}
+              closeDocumentSummary={selectedDocIdNull}
             >
               <DynamicThreadsList
                 searchVal={searchValue}

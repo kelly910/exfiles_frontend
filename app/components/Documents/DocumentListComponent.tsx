@@ -126,6 +126,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
         handleThreadClick={handleThreadClick}
         handlePinnedAnswerClick={handlePinnedAnswerClick}
         title="Documents"
+        selectedDocIdNull={closeSummaryDrawer}
       />
       <section className="main-body">
         <PageHeader
