@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -91,38 +93,38 @@ export default function ChatHomeScreen() {
   }, []);
 
   // Drag and Drop file upload
-  const [isDragging, setIsDragging] = useState(false);
+  // const [isDragging, setIsDragging] = useState(false);
 
-  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  };
+  // const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   setIsDragging(true);
+  // };
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // Only hide if actually leaving the main container
-    if (e.target === e.currentTarget) {
-      setIsDragging(false);
-    }
-  };
+  // const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   // Only hide if actually leaving the main container
+  //   if (e.target === e.currentTarget) {
+  //     setIsDragging(false);
+  //   }
+  // };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault(); // Needed to allow dropping
-    e.stopPropagation();
-  };
+  // const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault(); // Needed to allow dropping
+  //   e.stopPropagation();
+  // };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
+  // const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   setIsDragging(false);
 
-    const files = Array.from(e.dataTransfer.files);
-    setDroppedFiles(files);
-    console.log('Dropped files:', files);
-    // Handle files here
-  };
+  //   const files = Array.from(e.dataTransfer.files);
+  //   setDroppedFiles(files);
+  //   console.log('Dropped files:', files);
+  //   // Handle files here
+  // };
 
   // Drag and Drop file upload
 
@@ -130,13 +132,13 @@ export default function ChatHomeScreen() {
     <>
       <div
         className={AIChatStyles.chatBoarbMain}
-        onDragEnter={handleDragEnter}
-        onDragLeave={handleDragLeave}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
+        // onDragEnter={handleDragEnter}
+        // onDragLeave={handleDragLeave}
+        // onDragOver={handleDragOver}
+        // onDrop={handleDrop}
       >
         {/* Drag and Drop file upload */}
-        {isDragging && (
+        {/* {isDragging && (
           <div className={AIChatStyles.dropOverlay}>
             <Box className={AIChatStyles.dropOverlayInner}>
               <Image
@@ -153,7 +155,7 @@ export default function ChatHomeScreen() {
               </Typography>
             </Box>
           </div>
-        )}
+        )} */}
         {/* Drag and Drop file upload */}
 
         <Box component="section" className={AIChatStyles.chatHeading}>

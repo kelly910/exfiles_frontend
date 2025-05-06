@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import AIChatStyles from '@components/AI-Chat/styles/AIChatStyle.module.scss';
 import {
   Box,
@@ -19,7 +20,7 @@ import { SocketPayload } from '../../types/aiChat.types';
 import { QUESTION_TYPES } from '@/app/utils/constants';
 import Image from 'next/image';
 interface UserChatInputProps {
-  droppedFiles: File[];
+  droppedFiles?: File[];
   handleOpenDocUploadModal: () => void;
   sendMessage: (payloadMsg: SocketPayload) => void;
   isLoadingProp?: boolean;
@@ -72,11 +73,11 @@ export default function UserChatInput({
 
   // Drag and Drop file upload
 
-  const [files, setFiles] = useState<any[]>([]); // State to hold files and their upload status
+  const [files, setFiles] = useState([]); // State to hold files and their upload status
 
   // Handle file removal
   const handleRemoveFile = (fileId: string) => {
-    setFiles((prevFiles) => prevFiles.filter((file) => file.fileId !== fileId));
+    // setFiles((prevFiles) => prevFiles.filter((file) => file.fileId !== fileId));
   };
 
   // Handle file description
@@ -87,30 +88,30 @@ export default function UserChatInput({
     console.log('File description for', fileId, ':', e.target.value);
   };
 
-  useEffect(() => {
-    if (droppedFiles.length === 0) return; // No files dropped
-    droppedFiles.forEach((file) => {
-      const fileId = Date.now().toString(); // Use a unique file ID (e.g., timestamp)
-      setFiles((prevFiles) => [
-        ...prevFiles,
-        {
-          file,
-          fileId,
-          progress: 0,
-          hasUploaded: false,
-          hasError: false,
-          fileErrorMsg: '',
-        },
-      ]);
-    });
-  }, [droppedFiles]);
+  // useEffect(() => {
+  //   if (droppedFiles.length === 0) return; // No files dropped
+  //   droppedFiles.forEach((file) => {
+  //     const fileId = Date.now().toString(); // Use a unique file ID (e.g., timestamp)
+  //     setFiles((prevFiles) => [
+  //       ...prevFiles,
+  //       {
+  //         file,
+  //         fileId,
+  //         progress: 0,
+  //         hasUploaded: false,
+  //         hasError: false,
+  //         fileErrorMsg: '',
+  //       },
+  //     ]);
+  //   });
+  // }, [droppedFiles]);
 
   // Drag and Drop file upload
 
   return (
     <Box component="div" className={AIChatStyles.chatBoard}>
       {/* Uploaded file items */}
-      {files.length === 0 ? (
+      {/* {files.length === 0 ? (
         <></>
       ) : (
         <Box className={AIChatStyles.fileInput}>
@@ -138,9 +139,9 @@ export default function UserChatInput({
             <span className={AIChatStyles.clip}></span>
           </InputAdornment>
         </Box>
-      )}
+      )} */}
 
-      {/* <Input
+      <Input
         id="input-with-icon-adornment"
         className={AIChatStyles.fileInput}
         placeholder="Write your question here"
@@ -160,7 +161,7 @@ export default function UserChatInput({
             <span className={AIChatStyles.clip}></span>
           </InputAdornment>
         }
-      /> */}
+      />
 
       <Button
         type="button"
