@@ -30,8 +30,8 @@ export default function ChatHomeScreen() {
   const router = useRouter();
 
   const CHAT_PROMPS = [
-    'What did say as a kid when asked: What do you want to be when you grow up?',
-    'When is the last time you can remember feeling totally at peace?',
+    'Upload a message or document - let AI summarize, analyze, and tag it for you',
+    'What is the best way to respond to this message?',
   ];
 
   const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
@@ -76,6 +76,7 @@ export default function ChatHomeScreen() {
   };
 
   const handlePromptClick = (prompText: string) => {
+    return false;
     setSelectedPrompt(prompText);
   };
 
@@ -144,7 +145,7 @@ export default function ChatHomeScreen() {
                 >
                   <div className={AIChatStyles.chatBox}>
                     <Typography variant="body1">
-                      Something Unexpected Happened?
+                      Log an incident - document what happened today.
                     </Typography>
                     <Button
                       type="button"
