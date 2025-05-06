@@ -53,29 +53,12 @@ api.interceptors.response.use(
     // Handle 401 (Unauthorized) Errors
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
-      try {
-        // Attempt token refresh (if applicable)
-        const refreshToken = localStorage.getItem('refreshToken');
-        if (refreshToken) {
-          const response = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/refresh`,
-            { token: refreshToken }
-          );
-
-          const newToken = response.data.token;
-          localStorage.setItem('token', newToken);
-          originalRequest.headers.Authorization = `Token ${newToken}`;
-
-          return api(originalRequest); // Retry original request with new token
-        }
-      } catch (refreshError) {
-        console.error('Token refresh failed', refreshError);
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        document.cookie = `accessToken=; path=/; max-age=0`;
+      localStorage.removeItem('loggedInUser');
+      document.cookie = `accessToken=; path=/; max-age=0`;
+      if (typeof window !== 'undefined') {
         window.location.href = '/login';
       }
+      return Promise.reject(error);
     }
 
     return Promise.reject(error);
