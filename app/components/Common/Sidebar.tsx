@@ -345,7 +345,11 @@ const Sidebar = ({
               to Log Incident
             </p>
           </div>
-          <Link href="#" className={Style['close-sidebar-btm']}>
+          <Link
+            href="#"
+            className={Style['close-sidebar-btm']}
+            onClick={openLogIncidentModel}
+          >
             <Image
               src="/images/close-sidebar-btm-img.svg"
               alt=""
