@@ -529,7 +529,7 @@
       color: var(--Primary-Text-Color);
     }
     b {
-      font-weight: var(--Lighter);
+      font-weight: var(--Bold);
       font-size: var(--SubTitle-3);
       color: var(--Primary-Text-Color);
     }
@@ -564,13 +564,22 @@
     h4,
     h5,
     h6 {
-      font-weight: var(--Medium);
+      font-weight: var(--Bold);
       color: var(--Primary-Text-Color);
-      font-size: var(--SubTitle-3);
+      font-size: var(--SubTitle-2);
       b {
-        font-weight: var(--Medium);
+        font-weight: var(--Bold);
         color: var(--Primary-Text-Color);
-        font-size: var(--SubTitle-3);
+        font-size: var(--SubTitle-2);
+      }
+    }
+
+    ul {
+      padding-left: 20px;
+
+      li {
+        margin-bottom: 12px;
+        line-height: 1.4;
       }
     }
 

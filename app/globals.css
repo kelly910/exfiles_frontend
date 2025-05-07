@@ -1,7 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 :root {
-  --font-fustat: 'Fustat', sans-serif;
+  /* --font-fustat: 'Fustat', sans-serif; */
+  --font-fustat: "Open Sans", sans-serif;
 
   --Primary-Text-Color: #F5F5F5;
   --Subtext-Color: #898B94;
