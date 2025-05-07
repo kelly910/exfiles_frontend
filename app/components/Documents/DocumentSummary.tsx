@@ -13,7 +13,10 @@ import Image from 'next/image';
 import styles from './document.module.scss';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useEffect, useState } from 'react';
-import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
+import {
+  downloadSummaryById,
+  fetchDocumentSummaryById,
+} from '@/app/redux/slices/documentSummary';
 import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
 import { setLoader } from '@/app/redux/slices/loader';
@@ -48,6 +51,8 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   );
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [downloadingSummaryLoading, setDownloadingSummaryLoading] =
+    useState(false);
   const router = useRouter();
 
   const editSummary = () => {
@@ -129,9 +134,18 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     }
   };
 
-  // const downloadSummary = async () => {
-  //   console.log(documentSummary?.summary, ':htmlContent');
-  // };
+  const downloadSummary = () => {
+    setDownloadingSummaryLoading(true);
+    setTimeout(async () => {
+      try {
+        await dispatch(downloadSummaryById(docId)).unwrap();
+      } catch (error) {
+        handleError(error as ErrorResponse);
+      } finally {
+        setDownloadingSummaryLoading(false);
+      }
+    }, 1000);
+  };
 
   return (
     <>
@@ -328,20 +342,29 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     />
                     Copy
                   </Button>
+                  {documentSummary?.can_download_summary_pdf && (
+                    <>
+                      <span className={styles.docsDas}></span>
+                      <Button
+                        className={styles.docsButton}
+                        onClick={downloadSummary}
+                        disabled={downloadingSummaryLoading}
+                      >
+                        {downloadingSummaryLoading ? (
+                          <CircularProgress size={18} color="inherit" />
+                        ) : (
+                          <Image
+                            src="/images/download_summary.svg"
+                            alt="Download"
+                            width={24}
+                            height={24}
+                          />
+                        )}
+                        Download Summary
+                      </Button>
+                    </>
+                  )}
                   <span className={styles.docsDas}></span>
-                  {/* <Button
-                    className={styles.docsButton}
-                    onClick={downloadSummary}
-                  >
-                    <Image
-                      src="/images/download_summary.svg"
-                      alt="Download"
-                      width={24}
-                      height={24}
-                    />
-                    Download Summary
-                  </Button>
-                  <span className={styles.docsDas}></span> */}
                   <Button className={styles.docsButton} onClick={editSummary}>
                     <Image
                       src="/images/edit.svg"
@@ -349,7 +372,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       width={24}
                       height={24}
                     />
-                    Edit Summary
+                    Edit
                   </Button>
                 </Box>
               )}
@@ -589,20 +612,29 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       />
                       Copy
                     </Button>
+                    {documentSummary?.can_download_summary_pdf && (
+                      <>
+                        <span className={styles.docsDas}></span>
+                        <Button
+                          className={styles.docsButton}
+                          onClick={downloadSummary}
+                          disabled={downloadingSummaryLoading}
+                        >
+                          {downloadingSummaryLoading ? (
+                            <CircularProgress size={18} color="inherit" />
+                          ) : (
+                            <Image
+                              src="/images/download_summary.svg"
+                              alt="Download"
+                              width={24}
+                              height={24}
+                            />
+                          )}
+                          Download Summary
+                        </Button>
+                      </>
+                    )}
                     <span className={styles.docsDas}></span>
-                    {/* <Button
-                      className={styles.docsButton}
-                      onClick={downloadSummary}
-                    >
-                      <Image
-                        src="/images/download_summary.svg"
-                        alt="Download"
-                        width={24}
-                        height={24}
-                      />
-                      Download Summary
-                    </Button>
-                    <span className={styles.docsDas}></span> */}
                     <Button className={styles.docsButton} onClick={editSummary}>
                       <Image
                         src="/images/edit.svg"
@@ -610,7 +642,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         width={24}
                         height={24}
                       />
-                      Edit Summary
+                      Edit
                     </Button>
                   </Box>
                 )}

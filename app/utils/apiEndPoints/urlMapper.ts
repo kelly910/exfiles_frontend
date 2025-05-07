@@ -27,6 +27,7 @@ const urlMapper = {
   chatAnswerReaction: `${BASE_URL}message-reaction/`,
   combinedSummary: `${BASE_URL}combined-summary/`,
   tagList: `${BASE_URL}default-tags-list/`,
+  generatedDownloadSummary: `${BASE_URL}generate-summary-pdf/`,
 };
 
 export default urlMapper;
