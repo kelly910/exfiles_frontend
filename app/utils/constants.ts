@@ -98,6 +98,15 @@ export const processText = (text: string) => {
     text = text.replace(/^## (.*)/gm, '<h2>$1</h2>');
     text = text.replace(/^# (.*)/gm, '<h1>$1</h1>');
 
+    text = text.replace(/(?:^[-*] .*(?:\r?\n)?)+/gm, (match) => {
+      const items = match
+        .trim()
+        .split(/\r?\n/)
+        .map((line) => line.replace(/^[-*] (.*)/, '<li>$1</li>'))
+        .join('');
+      return `<ul>${items}</ul>`;
+    });
+
     // Step 3: Newline to <br>
     text = text.replace(/\\n/g, '<br>');
     text = text.replace(/\n/g, '<br>');
