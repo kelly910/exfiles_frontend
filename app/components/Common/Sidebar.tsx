@@ -89,6 +89,8 @@ const Sidebar = ({
       .then((res) => {
         if (res?.count) {
           router.push(`/documents/${res?.results[0]?.id}`);
+        } else {
+          router.push('/documents');
         }
       });
   };
