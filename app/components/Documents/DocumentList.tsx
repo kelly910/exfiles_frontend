@@ -41,6 +41,7 @@ type Document = {
   tags: Tag[];
   upload_on: string;
   uuid?: string;
+  can_download_summary_pdf?: string;
 };
 
 type DocumentListProps = {
