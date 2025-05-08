@@ -142,7 +142,7 @@ const newTheme = (theme: Theme) =>
             },
             '& .Mui-disabled:not(.Mui-selected)': {
               color: 'var(--Primary-Text-Color) !important',
-              opacity: '0.3',
+              opacity: '0.5',
             },
           },
         },
