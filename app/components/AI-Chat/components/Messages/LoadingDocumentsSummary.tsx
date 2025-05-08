@@ -1,4 +1,4 @@
-import { Box, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import { ChatMessage } from '@store/slices/Chat/chatTypes';

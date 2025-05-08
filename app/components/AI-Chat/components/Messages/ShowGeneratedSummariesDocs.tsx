@@ -5,7 +5,6 @@ import {
   Grid,
   IconButton,
   Skeleton,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
