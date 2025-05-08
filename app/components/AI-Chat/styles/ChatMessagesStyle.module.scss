@@ -4,18 +4,30 @@
 
   * {
     font-weight: var(--Lighter);
-    font-size: var(--SubTitle-3);
+    font-size: var(--SubTitle-2);
     line-height: 1.4;
+
+    @media (max-width: 1200px) {
+      font-size: var(--SubTitle-3);
+    }
   }
   p {
-    font-size: var(--SubTitle-3);
+    font-size: var(--SubTitle-2);
     font-weight: var(--Lighter);
     color: var(--Primary-Text-Color);
+
+    @media (max-width: 1200px) {
+      font-size: var(--SubTitle-3);
+    }
   }
   b {
     font-weight: var(--Bold);
-    font-size: var(--SubTitle-3);
+    font-size: var(--SubTitle-2);
     color: var(--Primary-Text-Color);
+
+    @media (max-width: 1200px) {
+      font-size: var(--SubTitle-3);
+    }
   }
   // h1 > *,
   // h1 {
@@ -50,11 +62,19 @@
   h6 {
     font-weight: var(--Bold);
     color: var(--Primary-Text-Color);
-    font-size: var(--SubTitle-2);
+    font-size: var(--SubTitle-1);
+
+    @media (max-width: 1200px) {
+      font-size: var(--SubTitle-2);
+    }
     b {
       font-weight: var(--Bold);
       color: var(--Primary-Text-Color);
-      font-size: var(--SubTitle-2);
+      font-size: var(--SubTitle-1);
+
+      @media (max-width: 1200px) {
+        font-size: var(--SubTitle-2);
+      }
     }
   }
 
@@ -62,7 +82,7 @@
     padding-left: 20px;
 
     li {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       line-height: 1.4;
     }
   }
@@ -172,13 +192,17 @@
 
     .chatAlContentText {
       font-weight: var(--Lighter);
-      font-size: var(--SubTitle-3);
+      font-size: var(--SubTitle-2);
       line-height: 1.4;
       letter-spacing: 0%;
       text-align: left;
       color: var(--Primary-Text-Color);
       padding: 8px 12px;
       background-color: var(--Card-Color);
+
+      @media (max-width: 1200px) {
+        font-size: var(--SubTitle-3);
+      }
     }
 
     .chatAlIcon {
@@ -445,6 +469,9 @@
           line-height: 1;
           color: var(--Primary-Text-Color);
           width: 100%;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
 
         .chatAlUploadFailed {
