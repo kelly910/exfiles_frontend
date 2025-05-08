@@ -447,6 +447,19 @@ const chatSlice = createSlice({
                 ...state.activeThread,
                 name: threadTitle,
               } as Thread;
+
+              const index = state.threadsList.results.findIndex(
+                (thread) => thread.uuid === threadId
+              );
+
+              if (index !== -1) {
+                state.threadsList.results = state.threadsList.results.map(
+                  (thread) =>
+                    thread.uuid === threadId
+                      ? { ...thread, name: threadTitle }
+                      : thread
+                );
+              }
             }
             const index = targetData.findIndex(
               (item) => item?.uuid === newMsg.uuid
