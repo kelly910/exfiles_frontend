@@ -542,7 +542,17 @@ export default function LogModel({
     description: Yup.string()
       .max(200, 'Description must be at most 200 characters')
       .required('Description is required'),
-    incident_time: Yup.string().required('Incident time is required'),
+    incident_time: Yup.string()
+      .required('Incident time is required')
+      .test(
+        'is-not-in-future',
+        'Date & time cannot be in the future',
+        (value) => {
+          if (!value) return false;
+          const selected = dayjs(value, 'YYYY-MM-DD HH:mm');
+          return selected.isBefore(dayjs()) || selected.isSame(dayjs());
+        }
+      ),
     location: Yup.string().max(200, 'Location must be at most 200 characters'),
     involved_person_name: Yup.string().max(
       200,
@@ -734,7 +744,6 @@ export default function LogModel({
                             format="MM/DD/YYYY - hh:mm A"
                             name="incident_time"
                             value={dayjs(values.incident_time)}
-                            closeOnSelect={true}
                             onChange={(newValue) => {
                               const formattedDate = newValue
                                 ? newValue.format('YYYY-MM-DD HH:mm')

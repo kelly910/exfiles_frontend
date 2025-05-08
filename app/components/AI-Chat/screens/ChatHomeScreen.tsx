@@ -37,9 +37,19 @@ export default function ChatHomeScreen() {
     'What is the best way to respond to this message?',
   ];
 
+  const CHAT_TITLES = [
+    'Ask me anything',
+    'What do you need help with today?',
+    'Got something to upload, log, or respond to?',
+    'What are we documenting today?',
+    'Start by uploading a file or asking a question.',
+  ];
+
   const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
+  const [randomTitle, setRandomTitle] = useState<string | null>(null);
+
   const [openModel, setOpenModel] = useState(false);
   const [droppedFiles, setDroppedFiles] = useState([]);
 
@@ -80,7 +90,6 @@ export default function ChatHomeScreen() {
   };
 
   const handlePromptClick = (prompText: string) => {
-    return false;
     setSelectedPrompt(prompText);
   };
 
@@ -90,6 +99,16 @@ export default function ChatHomeScreen() {
     dispatch(clearPageHeaderData());
     dispatch(setIsStreaming(false));
     dispatch(clearChunks([]));
+  }, []);
+
+  const getRandomTitle = () => {
+    const index = Math.floor(Math.random() * CHAT_TITLES.length);
+    return CHAT_TITLES[index];
+  };
+
+  useEffect(() => {
+    const randomTitleString = getRandomTitle();
+    setRandomTitle(randomTitleString);
   }, []);
 
   // Drag and Drop file upload
@@ -161,10 +180,10 @@ export default function ChatHomeScreen() {
         <Box component="section" className={AIChatStyles.chatHeading}>
           <div className={AIChatStyles.chatHeader}>
             <Typography variant="h2" className={AIChatStyles.chatTitle}>
-              Wondering What is ExFiles?
+              What Can ExFiles Help You Do Today?
             </Typography>
             <Typography variant="body1" className={AIChatStyles.chatSubtitle}>
-              Try clicking on below examples to get things going
+              Start with a common task below or ask your own question.
             </Typography>
           </div>
 
@@ -274,15 +293,15 @@ export default function ChatHomeScreen() {
         <Box component="section" className={AIChatStyles.chatHeading}>
           <div className={AIChatStyles.chatHeader}>
             <Typography variant="h2" className={AIChatStyles.chatTitle}>
-              How can I help you with?
+              {randomTitle}
             </Typography>
             <Typography
               variant="body1"
               className={AIChatStyles.chatSubtitle}
               sx={{ maxWidth: '500px' }}
             >
-              Ask me anything. Enter the queries you get in textbox below, and
-              see the magic of ExFiles.
+              Type your question or upload a message below—ExFiles will do the
+              heavy lifting.
             </Typography>
           </div>
 
