@@ -7,16 +7,14 @@ export default function MessageLoading() {
   return (
     <Box component="div" className={chatMessagesStyles.chatAl}>
       <Box component="div" className={chatMessagesStyles.chatAlImg}>
-        <Tooltip title="Open settings">
-          <IconButton sx={{ p: 0 }}>
-            <Image
-              src="/images/close-sidebar-logo.svg"
-              alt="Logo"
-              width={40}
-              height={40}
-            />
-          </IconButton>
-        </Tooltip>
+        <IconButton sx={{ p: 0 }}>
+          <Image
+            src="/images/close-sidebar-logo.svg"
+            alt="Logo"
+            width={40}
+            height={40}
+          />
+        </IconButton>
       </Box>
       <Box component="div" className={chatMessagesStyles.chatAlContent}>
         <Typography
