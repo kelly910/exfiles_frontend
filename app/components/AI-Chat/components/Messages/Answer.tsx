@@ -167,9 +167,12 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
                   <Typography
                     variant="body1"
                     className={chatMessagesStyles.chatAlText}
-                  >
-                    {messageObj.message || 'Generating Summary Links'}
-                  </Typography>
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        processText(messageObj.message) ||
+                        'Generating Summary Links',
+                    }}
+                  ></Typography>
                 </Box>
               </Box>
             </>
@@ -177,8 +180,11 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
             <Typography
               variant="body1"
               className={chatMessagesStyles.chatAlContentText}
+              dangerouslySetInnerHTML={{
+                __html: processText(messageObj.message),
+              }}
             >
-              {messageObj.combined_summary_data ? (
+              {/* {messageObj.combined_summary_data ? (
                 <div
                   dangerouslySetInnerHTML={{
                     __html: processText(
@@ -192,7 +198,7 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
                     __html: processText(messageObj.message),
                   }}
                 />
-              )}
+              )} */}
             </Typography>
           )}
           <span className={chatMessagesStyles.chatTime}>

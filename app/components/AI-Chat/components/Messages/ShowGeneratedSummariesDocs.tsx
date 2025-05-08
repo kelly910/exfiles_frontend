@@ -137,13 +137,17 @@ export default function ShowGeneratedSummariesDocs({
         </IconButton>
       </Box>
       <Box component="div" className={chatMessagesStyles.chatAlContent}>
-        <Typography
-          variant="body1"
-          className={chatMessagesStyles.chatAlContentText}
-        >
-          {messageObj.message ||
-            'Your summaries are ready! Click below to view them'}
-        </Typography>
+        {summaryGeneratedDocList && summaryGeneratedDocList?.length !== 1 && (
+          <Typography
+            variant="body1"
+            className={chatMessagesStyles.chatAlContentText}
+            dangerouslySetInnerHTML={{
+              __html:
+                processText(messageObj.message) ||
+                'Your summaries are ready! Click below to view them',
+            }}
+          />
+        )}
         <Grid
           container
           spacing={1.5}
@@ -320,6 +324,7 @@ export default function ShowGeneratedSummariesDocs({
               )}
             </Typography>
           )}
+
         {messageObj.all_doc_summarized &&
           summaryGeneratedDocList &&
           summaryGeneratedDocList?.length > 1 && (
