@@ -428,12 +428,14 @@
       p {
         color: var(--Primary-Text-Color);
         font-weight: var(--Regular);
-        font-size: var(--SubTitle-3);
+        font-size: var(--SubTitle-2);
         line-height: 1.4;
         letter-spacing: 0%;
+
         &:first-child {
           margin-bottom: 20px;
-          max-width: 150px;
+          max-width: 180px;
+          text-transform: capitalize;
         }
         a {
           color: var(--Primary-Text-Color);
