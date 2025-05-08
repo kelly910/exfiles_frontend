@@ -307,6 +307,9 @@ export default function DateSelectionFilter({
                           },
                         },
                       },
+                      field: {
+                        readOnly: true,
+                      },
                     }}
                   />
                 </Box>
@@ -402,6 +405,9 @@ export default function DateSelectionFilter({
                             display: 'none',
                           },
                         },
+                      },
+                      field: {
+                        readOnly: true,
                       },
                     }}
                   />
