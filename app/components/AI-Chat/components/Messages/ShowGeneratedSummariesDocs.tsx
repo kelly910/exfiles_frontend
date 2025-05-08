@@ -5,7 +5,6 @@ import {
   Grid,
   IconButton,
   Skeleton,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
@@ -128,16 +127,14 @@ export default function ShowGeneratedSummariesDocs({
   return (
     <Box component="div" className={chatMessagesStyles.chatAl}>
       <Box component="div" className={chatMessagesStyles.chatAlImg}>
-        <Tooltip title="Open settings">
-          <IconButton sx={{ p: 0 }}>
-            <Image
-              alt="Logo"
-              width={40}
-              height={40}
-              src="/images/close-sidebar-logo.svg"
-            />
-          </IconButton>
-        </Tooltip>
+        <IconButton sx={{ p: 0 }}>
+          <Image
+            alt="Logo"
+            width={40}
+            height={40}
+            src="/images/close-sidebar-logo.svg"
+          />
+        </IconButton>
       </Box>
       <Box component="div" className={chatMessagesStyles.chatAlContent}>
         <Typography

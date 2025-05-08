@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 
 import Image from 'next/image';
@@ -46,16 +46,14 @@ export default function StreamingResponse(props: StreamingResponseProps) {
       className={`${chatMessagesStyles.chatAl} streaming-container`}
     >
       <Box component="div" className={chatMessagesStyles.chatAlImg}>
-        <Tooltip title="Open settings">
-          <IconButton sx={{ p: 0 }}>
-            <Image
-              alt="Logo"
-              width={40}
-              height={40}
-              src="/images/close-sidebar-logo.svg"
-            />
-          </IconButton>
-        </Tooltip>
+        <IconButton sx={{ p: 0 }}>
+          <Image
+            alt="Logo"
+            width={40}
+            height={40}
+            src="/images/close-sidebar-logo.svg"
+          />
+        </IconButton>
       </Box>
       <Box component="div" className={chatMessagesStyles.chatAlContent}>
         <Typography

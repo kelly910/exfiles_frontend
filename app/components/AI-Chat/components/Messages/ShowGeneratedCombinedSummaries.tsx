@@ -1,4 +1,4 @@
-import { Box, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import { ChatMessage } from '@store/slices/Chat/chatTypes';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import Image from 'next/image';
@@ -12,16 +12,14 @@ export default function ShowGeneratedCombinedSummaries({
   return (
     <Box component="div" className={chatMessagesStyles.chatAl}>
       <Box component="div" className={chatMessagesStyles.chatAlImg}>
-        <Tooltip title="Open settings">
-          <IconButton sx={{ p: 0 }}>
-            <Image
-              alt="Logo"
-              width={40}
-              height={40}
-              src="/images/close-sidebar-logo.svg"
-            />
-          </IconButton>
-        </Tooltip>
+        <IconButton sx={{ p: 0 }}>
+          <Image
+            alt="Logo"
+            width={40}
+            height={40}
+            src="/images/close-sidebar-logo.svg"
+          />
+        </IconButton>
       </Box>
       <Box component="div" className={chatMessagesStyles.chatAlContent}>
         <Typography
