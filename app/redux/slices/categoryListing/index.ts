@@ -45,7 +45,7 @@ export const fetchCategories = createAsyncThunk<
   async ({ page, page_size }, { rejectWithValue }) => {
     try {
       const response = await api.get<DocumentListingResponse>(
-        `${urlMapper.getCategories}?page=${page}&page_size=${page_size ?? 20}`
+        `${urlMapper.getCategories}?page=${page}&page_size=${page_size ?? 20}&default=true`
       );
       return response.data;
     } catch (error) {
@@ -94,7 +94,7 @@ const categoryListingSlice = createSlice({
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.isFetching = false;
-        const newCategories = action.payload.results.filter(
+        const newCategories = action.payload.results?.filter(
           (newCat) => !state.categories.some((cat) => cat.id === newCat.id)
         );
         if (action.meta.arg.page === 1) {

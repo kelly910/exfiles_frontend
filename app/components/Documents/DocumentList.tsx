@@ -41,6 +41,7 @@ type Document = {
   tags: Tag[];
   upload_on: string;
   uuid?: string;
+  can_download_summary_pdf?: string;
 };
 
 type DocumentListProps = {
@@ -188,40 +189,40 @@ const DocumentList: React.FC<DocumentListProps> = ({
     handleCloseUserMenu();
   };
 
-  const getExtensionFromUrl = (url: string) => {
-    const fileName = url.split('/').pop() || '';
-    return fileName.split('.').pop() || 'unknown';
-  };
+  // const getExtensionFromUrl = (url: string) => {
+  //   const fileName = url.split('/').pop() || '';
+  //   return fileName.split('.').pop() || 'unknown';
+  // };
 
-  const handleDownloadReport = async () => {
-    const doc = documents.find((doc) => doc.uuid === menuDocUUID);
-    if (!doc?.file_path) {
-      console.error('File path is missing or invalid');
-      return;
-    }
-    try {
-      const response = await fetch(doc.file_path);
-      if (!response.ok) {
-        throw new Error('Failed to fetch file');
-      }
-      const blob = await response.blob();
-      const link = document.createElement('a');
-      const extension = getExtensionFromUrl(doc.file_path);
-      let finalFileName = doc.file_name;
-      if (!finalFileName.endsWith(`.${extension}`)) {
-        finalFileName = `${finalFileName}.${extension}`;
-      }
-      const downloadUrl = window.URL.createObjectURL(blob);
-      link.href = downloadUrl;
-      link.setAttribute('download', finalFileName);
-      link.click();
-      window.URL.revokeObjectURL(downloadUrl);
-      link.remove();
-      handleCloseUserMenu();
-    } catch (error) {
-      console.error('Error downloading the file:', error);
-    }
-  };
+  // const handleDownloadReport = async () => {
+  //   const doc = documents.find((doc) => doc.uuid === menuDocUUID);
+  //   if (!doc?.file_path) {
+  //     console.error('File path is missing or invalid');
+  //     return;
+  //   }
+  //   try {
+  //     const response = await fetch(doc.file_path);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch file');
+  //     }
+  //     const blob = await response.blob();
+  //     const link = document.createElement('a');
+  //     const extension = getExtensionFromUrl(doc.file_path);
+  //     let finalFileName = doc.file_name;
+  //     if (!finalFileName.endsWith(`.${extension}`)) {
+  //       finalFileName = `${finalFileName}.${extension}`;
+  //     }
+  //     const downloadUrl = window.URL.createObjectURL(blob);
+  //     link.href = downloadUrl;
+  //     link.setAttribute('download', finalFileName);
+  //     link.click();
+  //     window.URL.revokeObjectURL(downloadUrl);
+  //     link.remove();
+  //     handleCloseUserMenu();
+  //   } catch (error) {
+  //     console.error('Error downloading the file:', error);
+  //   }
+  // };
 
   return (
     <>
@@ -361,7 +362,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
                             />
                             <Typography>View Document</Typography>
                           </MenuItem>
-                          <MenuItem
+                          {/* <MenuItem
                             onClick={handleDownloadReport}
                             className={`${styles.menuDropdown}`}
                           >
@@ -372,7 +373,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
                               height={18}
                             />
                             <Typography>Download Report</Typography>
-                          </MenuItem>
+                          </MenuItem> */}
                           <MenuItem
                             onClick={handleDeleteOption}
                             className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
