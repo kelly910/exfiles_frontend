@@ -337,7 +337,7 @@ const Sidebar = ({
         </div>
         <div className={Style['sidebar-btm']}>
           <div className={Style['sidebar-btm-card']}>
-            <p>Something Unexpected Happened?</p>
+            <p>Add to your timeline?</p>
             <p>
               <Link href="" onClick={openLogIncidentModel}>
                 Click Here
