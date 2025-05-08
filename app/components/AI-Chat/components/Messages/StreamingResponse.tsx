@@ -1,8 +1,7 @@
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 
 import Image from 'next/image';
-import { formatTo12HourTimeManually } from '@/app/utils/functions';
 
 interface StreamingResponseProps {
   inputText: string;
@@ -66,10 +65,10 @@ export default function StreamingResponse(props: StreamingResponseProps) {
             }}
           />
         </Typography>
-        <span className={chatMessagesStyles.chatTime}>
+        {/* <span className={chatMessagesStyles.chatTime}>
           {formatTo12HourTimeManually()}
-        </span>
-        <Box component="div" className={chatMessagesStyles.chatAlIcon}>
+        </span> */}
+        {/* <Box component="div" className={chatMessagesStyles.chatAlIcon}>
           <Button>
             <Image
               src="/images/chat-like.svg"
@@ -110,7 +109,7 @@ export default function StreamingResponse(props: StreamingResponseProps) {
               height={18}
             />
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );
