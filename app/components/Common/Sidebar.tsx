@@ -337,13 +337,15 @@ const Sidebar = ({
         </div>
         <div className={Style['sidebar-btm']}>
           <div className={Style['sidebar-btm-card']}>
-            <p>Add to your timeline?</p>
-            <p>
-              <Link href="" onClick={openLogIncidentModel}>
-                Click Here
-              </Link>{' '}
-              to Log Incident
-            </p>
+            <div className={Style['sidebar-btm-card-inner']}>
+              <p>Add to your timeline?</p>
+              <p>
+                <Link href="" onClick={openLogIncidentModel}>
+                  Click Here
+                </Link>{' '}
+                to Log Incident
+              </p>
+            </div>
           </div>
           <Link
             href="#"

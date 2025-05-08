@@ -33,6 +33,9 @@
   overflow: hidden;
   transition: all 0.4s;
   filter: drop-shadow(0px 0px 0px black);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   // overflow-y: auto;
   @media (max-width: 1100px) {
     width: 100%;
@@ -98,8 +101,9 @@
   padding: 16px 12px 16px 12px;
   display: flex;
   flex-direction: column;
-  height: calc(100dvh - 65px - 173px);
+  height: calc(100dvh - 65px - 150px);
   min-height: 300px;
+  flex-grow: 1;
   overflow: hidden;
 
   @media (max-width: 1100px) {
@@ -378,32 +382,68 @@
 
 .sidebar-btm {
   margin-top: auto;
-  margin-bottom: 10px;
+  margin-bottom: 0;
   padding: 12px;
+  min-height: 150px;
+  display: flex;
+  width: 100%;
+
   .sidebar-btm-card {
-    background-image: url('/images/sidebar-btm-img.png');
-    background-size: contain;
     width: auto;
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 12px;
-    padding: 20px 12px 10px 12px;
-    p {
-      color: var(--Primary-Text-Color);
-      font-weight: var(--Regular);
-      font-size: var(--SubTitle-3);
-      line-height: 1.4;
-      letter-spacing: 0%;
-      &:first-child {
-        margin-bottom: 60px;
-        max-width: 150px;
+    padding: 1px;
+    background: var(--Main-Gradient);
+    width: 100%;
+    aspect-ratio: 2 / 1;
+
+    .sidebar-btm-card-inner {
+      padding: 20px 12px 10px 12px;
+      background: var(--Card-Color);
+      border-radius: 11px;
+      position: relative;
+      z-index: 3;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: start;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        top: 0;
+        right: 0;
+        z-index: -1;
+        background-image: url(/images/log-incident.png);
+        background-repeat: no-repeat;
+        background-position: top right;
+        background-size: contain;
+        border-radius: 12px;
       }
-      a {
+
+      p {
         color: var(--Primary-Text-Color);
-        text-decoration: underline;
-        transition: all 0.4s;
-        &:hover {
-          color: var(--Card-Border);
+        font-weight: var(--Regular);
+        font-size: var(--SubTitle-3);
+        line-height: 1.4;
+        letter-spacing: 0%;
+        &:first-child {
+          margin-bottom: 20px;
+          max-width: 150px;
+        }
+        a {
+          color: var(--Primary-Text-Color);
+          text-decoration: underline;
+          transition: all 0.4s;
+          font-size: inherit;
+
+          &:hover {
+            color: var(--Card-Border);
+          }
         }
       }
     }
@@ -438,7 +478,7 @@
 }
 .closesidebar {
   .sidebar-details {
-    height: calc(100dvh - 65px - 77px);
+    height: calc(100dvh - 65px - 76px);
   }
   .main-logo {
     justify-content: flex-start;
@@ -510,11 +550,12 @@
   .sidebar-btm {
     margin-bottom: 0;
     padding: 16px 12px 16px 13px;
+    min-height: 76px;
     .sidebar-btm-card {
       display: none;
     }
     .close-sidebar-btm {
-      display: block;
+      display: flex;
     }
   }
   .bottom-content {
