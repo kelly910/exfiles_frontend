@@ -143,7 +143,12 @@ export default function LogDetailsModel({
               className={LogStyle.logListFooterDetails}
             >
               {itemDetails?.incident_time
-                ? dayjs(itemDetails?.incident_time).format('MM/DD/YYYY hh:mm A')
+                ? dayjs(
+                    itemDetails?.incident_time.replace(
+                      /([+-]\d{2}:\d{2}):\d{2}$/,
+                      '$1'
+                    )
+                  ).format('MM/DD/YYYY hh:mm A')
                 : '-'}
             </Typography>
           </Box>
