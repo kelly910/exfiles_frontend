@@ -25,6 +25,7 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useRouter } from 'next/navigation';
 
 interface DocumentUploadModalProps {
+  userInputText?: string;
   open: boolean;
   handleClose: () => void;
   threadId?: string | null;
@@ -50,6 +51,7 @@ type successChunkResponseType = {
 } | null;
 
 export default function DocumentUploadDialog({
+  userInputText,
   open,
   handleClose,
   threadId,
@@ -269,6 +271,7 @@ export default function DocumentUploadDialog({
       uploadActualDocs({
         thread_uuid: threadUUID,
         data: payloadData,
+        ...(userInputText && { user_message: userInputText }),
       })
     );
     setIsLoading(false);

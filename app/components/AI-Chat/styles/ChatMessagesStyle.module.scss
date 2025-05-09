@@ -868,3 +868,56 @@ span.chatTime {
     max-width: 280px;
   }
 }
+
+.chatAlContentQ {
+  min-width: 350px;
+  padding: 8px;
+  background-color: var(--Card-Color);
+  p {
+    padding-top: 8px;
+    border-top: 1px solid var(--Stroke-Color);
+  }
+}
+
+.chatAlFilesWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.chatAlFileChip {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: var(--Input-Box-Colors);
+  color: var(--Primary-Text-Color);
+  border: 1px solid var(--Stroke-Color) !important;
+  border-radius: 8px;
+  font-size: var(--SubTitle-2);
+  font-weight: var(--Regular);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.chatUserProgress {
+  .chatAlContent {
+    .chatAlMessageText {
+      padding: 8px 12px;
+      background-color: var(--Card-Color);
+      color: var(--Primary-Text-Color);
+      font-size: var(--SubTitle-2);
+      font-weight: var(--Lighter);
+      line-height: 1.4;
+      text-align: left;
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      white-space: wrap;
+
+      @media (max-width: 1200px) {
+        font-size: var(--SubTitle-3);
+      }
+    }
+  }
+}

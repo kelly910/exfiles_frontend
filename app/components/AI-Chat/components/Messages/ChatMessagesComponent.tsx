@@ -41,10 +41,6 @@ import Image from 'next/image';
 const DynamicMessageLoading = dynamic(
   () => import('@/app/components/AI-Chat/components/Messages/MessageLoading')
 );
-const DynamicDocUploadModal = dynamic(
-  () =>
-    import('@/app/components/AI-Chat/components/Modals/DocumentUploadDialog')
-);
 
 export default function ChatMessagesComponent({
   threadId,
@@ -57,7 +53,6 @@ export default function ChatMessagesComponent({
   const isStreamingMessages = useSelector(selectIsStreaming);
   const messagesChunks = useSelector(selectMessagesChunks);
   const chatElementRef = useRef<HTMLInputElement>(null);
-  const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
 
   const [page, setPage] = useState(1);
 
@@ -169,14 +164,6 @@ export default function ChatMessagesComponent({
         behavior: 'smooth',
       });
     }
-  };
-
-  const handleClickOpen = () => {
-    setIsOpenDocUpload(true);
-  };
-
-  const handleClose = () => {
-    setIsOpenDocUpload(false);
   };
 
   const handleFileUploadSubmit = () => {
@@ -398,20 +385,13 @@ export default function ChatMessagesComponent({
       >
         <Container maxWidth="lg" disableGutters>
           <UserChatInput
-            handleOpenDocUploadModal={handleClickOpen}
+            handleFileUploadSubmit={() => handleFileUploadSubmit()}
+            threadId={threadId}
             sendMessage={(payloadData) => handleSendMessage(payloadData)}
             isLoadingProp={isStreamingMessages}
           />
         </Container>
       </div>
-      {isOpenDocUpload && (
-        <DynamicDocUploadModal
-          open={isOpenDocUpload}
-          handleClose={handleClose}
-          threadId={threadId}
-          handleFileUploadSubmit={() => handleFileUploadSubmit()}
-        />
-      )}
     </>
   );
 }

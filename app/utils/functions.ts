@@ -43,3 +43,14 @@ export const getDocumentImage = (fileType: string) => {
   const docType = documentType.find((doc) => doc.type.includes(fileType));
   return docType ? docType.image : '/images/pdf.svg';
 };
+
+export const extractFileNames = (text: string): string[] => {
+  if (text && text.length > 0) {
+    const matches = text.match(/\[([^\]]+)\]/);
+    return matches
+      ? matches[1].split(',').map((f) => f.trim().replace(/^'|'$/g, ''))
+      : [];
+  } else {
+    return [];
+  }
+};

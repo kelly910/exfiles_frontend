@@ -4,7 +4,10 @@ import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.mod
 import NameAvatar from './NameAvatar';
 import { ChatMessage } from '@store/slices/Chat/chatTypes';
 import { LoginResponse } from '@store/slices/login';
-import { formatTo12HourTimeManually } from '@/app/utils/functions';
+import {
+  extractFileNames,
+  formatTo12HourTimeManually,
+} from '@/app/utils/functions';
 
 export default function Question({
   messageObj,
@@ -13,12 +16,6 @@ export default function Question({
   messageObj: ChatMessage;
   userDetails: LoginResponse;
 }) {
-  const extractFileNames = (text: string): string[] => {
-    const matches = text.match(/\[([^\]]+)\]/);
-    return matches
-      ? matches[1].split(',').map((f) => f.trim().replace(/^'|'$/g, ''))
-      : [];
-  };
   const fileList = extractFileNames(messageObj.message);
 
   return (

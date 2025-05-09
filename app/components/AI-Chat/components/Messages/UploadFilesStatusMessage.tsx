@@ -2,6 +2,7 @@ import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.mod
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import {
+  extractFileNames,
   formatFileSizeLabel,
   formatTo12HourTimeManually,
   getDocumentImage,
@@ -21,6 +22,7 @@ export default function UploadFilesStatusMessage({
   userDetails: LoginResponse;
 }) {
   const documementsList = messageObj.uploaded_documents;
+  const fileList = extractFileNames(messageObj.message);
 
   return (
     <Box
@@ -31,7 +33,32 @@ export default function UploadFilesStatusMessage({
         component="div"
         className={` ${chatMessagesStyles.chatUserProgress}`}
       >
-        {documementsList &&
+        {messageObj.message && fileList?.length > 0 ? (
+          <Box className={chatMessagesStyles.chatAlContent} component="div">
+            <>
+              <Box
+                component="div"
+                className={chatMessagesStyles.chatAlFilesWrapper}
+              >
+                {fileList.map((fileName) => (
+                  <span
+                    key={fileName}
+                    className={chatMessagesStyles.chatAlFileChip}
+                  >
+                    {fileName}
+                  </span>
+                ))}
+              </Box>
+              <Typography
+                variant="body1"
+                className={chatMessagesStyles.chatAlMessageText}
+              >
+                {messageObj.message.split(']')?.[1]}
+              </Typography>
+            </>
+          </Box>
+        ) : (
+          documementsList &&
           documementsList?.length > 0 &&
           documementsList.map(
             (documentItem: UploadedDocument, index: number) => {
@@ -148,7 +175,8 @@ export default function UploadFilesStatusMessage({
                 </Box>
               );
             }
-          )}
+          )
+        )}
 
         <span className={chatMessagesStyles.chatTime}>
           {formatTo12HourTimeManually(messageObj.created)}
