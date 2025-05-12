@@ -348,19 +348,24 @@ export default function Conversation({ threadId }: { threadId: string }) {
                         {loggedInUser &&
                         loggedInUser.data.id == record.sender ? (
                           <>
-                            {record.uploaded_documents?.length > 0 && (
+                            {record.uploaded_documents?.length > 0 ? (
                               <QuestionCardWithFiles
                                 messageObj={record}
                                 userDetails={loggedInUser}
                               />
-                            )}
-
-                            {record.message && (
+                            ) : (
                               <QuestionComponent
                                 userDetails={loggedInUser}
                                 messageObj={record}
                               />
                             )}
+
+                            {/* {record.message && (
+                              <QuestionComponent
+                              userDetails={loggedInUser}
+                              messageObj={record}
+                            />
+                            )} */}
                           </>
                         ) : (
                           <>

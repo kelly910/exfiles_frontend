@@ -21,6 +21,7 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import PromptsSuggestions from './components/PromptsSuggestions';
 import DraggingUI from './components/DraggingUI';
 import DynamicLowerHeader from './components/DynamicLowerHeader';
+import { resetUploadedFiles } from '@/app/redux/slices/fileUpload';
 
 export default function ChatHomeScreen() {
   const dispatch = useAppDispatch();
@@ -65,6 +66,12 @@ export default function ChatHomeScreen() {
     dispatch(clearPageHeaderData());
     dispatch(setIsStreaming(false));
     dispatch(clearChunks([]));
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetUploadedFiles());
+    };
   }, []);
 
   // Drag and Drop file upload
