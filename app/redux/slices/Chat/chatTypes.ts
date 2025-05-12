@@ -57,6 +57,7 @@ export interface UploadDocsPayload {
     temp_doc: number;
     description: string;
   }[];
+  user_message?: string;
 }
 
 export interface UploadDocsResponse {

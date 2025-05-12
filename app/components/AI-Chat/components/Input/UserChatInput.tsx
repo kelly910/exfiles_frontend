@@ -18,24 +18,39 @@ import {
 } from 'react';
 import { SocketPayload } from '../../types/aiChat.types';
 import { QUESTION_TYPES } from '@/app/utils/constants';
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
 interface UserChatInputProps {
   droppedFiles?: File[];
-  handleOpenDocUploadModal: () => void;
+  handleFileUploadSubmit?: () => void;
   sendMessage: (payloadMsg: SocketPayload) => void;
   isLoadingProp?: boolean;
   selectedPrompt?: string | null;
+  threadId?: string | null;
 }
+
+const DynamicDocUploadModal = dynamic(
+  () =>
+    import('@/app/components/AI-Chat/components/Modals/DocumentUploadDialog')
+);
 
 export default function UserChatInput({
   droppedFiles,
-  handleOpenDocUploadModal,
   sendMessage,
   isLoadingProp,
   selectedPrompt,
+  threadId,
+  handleFileUploadSubmit,
 }: UserChatInputProps) {
   const [text, setText] = useState('');
   const isSendDisabled = isLoadingProp || !text?.trim();
+  const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
+
+  const handleOpenDocUploadModal = () => {
+    setIsOpenDocUpload(true);
+  };
+  const handleCloseDocUploadModal = () => {
+    setIsOpenDocUpload(false);
+  };
 
   const handleKeyUp = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
@@ -108,6 +123,13 @@ export default function UserChatInput({
 
   // Drag and Drop file upload
 
+  const handleFileUploadInExistingThread = () => {
+    if (handleFileUploadSubmit) {
+      setText('');
+      return handleFileUploadSubmit();
+    }
+  };
+
   return (
     <Box component="div" className={AIChatStyles.chatBoard}>
       {/* Uploaded file items */}
@@ -178,6 +200,20 @@ export default function UserChatInput({
           <span className="arrow"></span>
         )}
       </Button>
+
+      {isOpenDocUpload && (
+        <DynamicDocUploadModal
+          handleFileUploadSubmit={
+            handleFileUploadSubmit
+              ? () => handleFileUploadInExistingThread()
+              : () => {}
+          }
+          threadId={threadId}
+          userInputText={text}
+          open={isOpenDocUpload}
+          handleClose={handleCloseDocUploadModal}
+        />
+      )}
     </Box>
   );
 }

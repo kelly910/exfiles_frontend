@@ -1,15 +1,15 @@
 import { Box, Typography } from '@mui/material';
-import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
+import chatMessagesStyles from '@components/AI-Chat-Module/styles/ChatMessagesStyle.module.scss';
 
-import NameAvatar from './NameAvatar';
 import { ChatMessage } from '@store/slices/Chat/chatTypes';
 import { LoginResponse } from '@store/slices/login';
 import {
   extractFileNames,
   formatTo12HourTimeManually,
 } from '@/app/utils/functions';
+import UserNameAvatar from '@components/AI-Chat-Module/chat-conversation-screen/components/UserNameAvatar';
 
-export default function Question({
+export default function QuestionComponent({
   messageObj,
   userDetails,
 }: {
@@ -54,7 +54,7 @@ export default function Question({
         </span>
       </Box>
       <Box component="div" className={chatMessagesStyles.chatAlImg}>
-        <NameAvatar
+        <UserNameAvatar
           fullName={`${userDetails?.data?.first_name} ${userDetails?.data?.last_name}`}
         />
       </Box>

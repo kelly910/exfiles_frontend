@@ -44,6 +44,10 @@
   overflow-y: auto;
   width: 100%;
 
+  &:focus-visible {
+    outline: none;
+  }
+
   @media (max-width: 800px) {
     height: calc(100vh - 65px - 97px - 42px - 70px);
   }
@@ -156,24 +160,27 @@
   border: 1px solid var(--Stroke-Color);
   display: flex;
   align-items: flex-end !important;
+  flex-direction: column;
 
-  &::after {
-    content: none !important;
-  }
+  .fileInputInner {
+    &::after {
+      content: none !important;
+    }
 
-  &::before {
-    content: none !important;
+    &::before {
+      content: none !important;
+    }
+
+    textarea,
+    input {
+      color: var(--Primary-Text-Color);
+      font-size: var(--SubTitle-3);
+      font-weight: var(--Regular);
+    }
   }
 
   &:hover {
     border: 1px solid var(--Subtext-Color);
-  }
-
-  textarea,
-  input {
-    color: var(--Primary-Text-Color);
-    font-size: var(--SubTitle-3);
-    font-weight: var(--Regular);
   }
 }
 
@@ -405,6 +412,7 @@
   max-height: 120px;
   overflow-y: auto;
   padding-bottom: 1px;
+  margin-bottom: 10px;
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
@@ -414,9 +422,8 @@
     grid-template-columns: repeat(1, 1fr);
   }
 
-  .fileBoxInner {
-    margin-top: 0;
-    width: calc(33.33% - 6.66px);
+  > div {
+    margin-top: 0 !important;
   }
 }
 // Drag and drop styles

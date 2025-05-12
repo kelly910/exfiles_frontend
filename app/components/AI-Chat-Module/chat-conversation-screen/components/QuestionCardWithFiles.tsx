@@ -1,4 +1,4 @@
-import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
+import chatMessagesStyles from '@components/AI-Chat-Module/styles/ChatMessagesStyle.module.scss';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import {
@@ -7,14 +7,14 @@ import {
   formatTo12HourTimeManually,
   getDocumentImage,
 } from '@/app/utils/functions';
-import NameAvatar from './NameAvatar';
 // import { RootState } from '@/app/redux/store';
 // import { useSelector } from 'react-redux';
 // import { DOCUMENT_STATUS } from '@/app/utils/constants';
 import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
 import { LoginResponse } from '@store/slices/login';
+import UserNameAvatar from '@components/AI-Chat-Module/chat-conversation-screen/components/UserNameAvatar';
 
-export default function UploadFilesStatusMessage({
+export default function QuestionCardWithFiles({
   messageObj,
   userDetails,
 }: {
@@ -183,7 +183,7 @@ export default function UploadFilesStatusMessage({
         </span>
       </Box>
       <Box component="div" className={chatMessagesStyles.chatAlImg}>
-        <NameAvatar
+        <UserNameAvatar
           fullName={`${userDetails?.data?.first_name} ${userDetails?.data?.last_name}`}
         />
       </Box>

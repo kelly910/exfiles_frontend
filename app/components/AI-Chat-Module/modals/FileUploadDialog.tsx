@@ -1,4 +1,4 @@
-import DocUploadStyles from '@components/AI-Chat/styles/DocumentUploadModal.module.scss';
+import DocUploadStyles from '@components/AI-Chat-Module/styles/DocumentUploadModal.module.scss';
 import React, { ChangeEvent, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
@@ -12,17 +12,20 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import {
-  ALLOWED_FILE_TYPES,
-  FILE_UPLOAD_CHUNK_SIZE,
-} from '@/app/utils/constants';
-import UploadFileItem from '@/app/components/AI-Chat/components/FileUpload/UploadFileItem';
-import { computeChecksum } from '@/app/utils/functions';
-import { useAppDispatch } from '@/app/redux/hooks';
+import { ALLOWED_FILE_TYPES } from '@/app/utils/constants';
+import UploadFileItem from '@/app/components/AI-Chat-Module/common/file-upload/UploadFileItem';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useRouter } from 'next/navigation';
+import {
+  removeUploadFile,
+  resetUploadedFiles,
+  selectUserUploadedFiles,
+  updateFileDescription,
+} from '@/app/redux/slices/fileUpload';
+import { useChunkedFileUpload } from '../hooks/useChunkedFileUpload';
 
 interface DocumentUploadModalProps {
   userInputText?: string;
@@ -32,25 +35,7 @@ interface DocumentUploadModalProps {
   handleFileUploadSubmit?: () => void;
 }
 
-interface UploadFiles {
-  file: File;
-  progress: number;
-  docDesc: string;
-  isUploading: boolean;
-  hasUploaded: boolean;
-  fileId: string;
-  controller?: AbortController;
-  fileErrorMsg: string;
-  hasError: boolean;
-  uploadedFileId: string | number | null;
-}
-
-type successChunkResponseType = {
-  uploadedFileId: number | string;
-  is_completed: boolean;
-} | null;
-
-export default function DocumentUploadDialog({
+export default function FileUploadDialog({
   userInputText,
   open,
   handleClose,
@@ -59,159 +44,17 @@ export default function DocumentUploadDialog({
 }: DocumentUploadModalProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { handleFiles } = useChunkedFileUpload();
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [uploadFiles, setUploadFiles] = useState<Array<UploadFiles> | []>([]);
+  const uploadedFiles = useAppSelector(selectUserUploadedFiles);
+
   const [isLoading, setIsLoading] = useState(false);
-  const storedUser = localStorage.getItem('loggedInUser');
 
   const handleOpenUserFileInput = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
-  };
-
-  const uploadFileInChunks = async (
-    fileData: UploadFiles,
-    onProgress: (progress: number) => void
-  ) => {
-    const { file, controller } = fileData;
-    const totalChunks = Math.ceil(file.size / FILE_UPLOAD_CHUNK_SIZE);
-
-    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-    const token: string | null = parsedUser?.data?.token || null;
-    let uploadedSize = 0;
-
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}api/v1/upload-temporary-document/`;
-
-    let documentId: string | null = null; // Store the document ID after the first request
-    let successChunkResponse: successChunkResponseType = null;
-
-    for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
-      const start = chunkIndex * FILE_UPLOAD_CHUNK_SIZE;
-      const end = Math.min(start + FILE_UPLOAD_CHUNK_SIZE, file.size);
-      const chunk = file.slice(start, end);
-      // Generate SHA-256 checksum for each chunk
-      const checkSUM = await computeChecksum(chunk);
-      const filename = file.name.split('.')[0];
-      const fileParts = file.name.split('.');
-      const fileExtension = (fileParts.pop() || '').toLowerCase();
-
-      const formData = new FormData();
-      formData.append('document', chunk);
-      formData.append('extension', fileExtension);
-      formData.append('file_name', filename);
-      formData.append('chunk_index', chunkIndex.toString());
-      formData.append('total_index', totalChunks.toString());
-      formData.append('file_size', file.size.toString());
-      formData.append('checksum', checkSUM);
-
-      try {
-        const apiURI: string = documentId ? `${apiUrl}${documentId}/` : apiUrl; // If `documentId` exists, append it to the request URL
-        const response = await fetch(apiURI, {
-          method: chunkIndex === 0 ? 'POST' : 'PUT',
-          body: formData,
-          signal: controller?.signal,
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-        const data = await response.json();
-
-        // Extract document ID after the first request
-        if (chunkIndex === 0) {
-          if (data.id) {
-            documentId = data.id; // ✅ Store ID for next chunks
-          } else {
-            throw new Error('Failed to get document ID');
-          }
-        }
-
-        uploadedSize += chunk.size;
-        const progress = Math.round((uploadedSize / file.size) * 100);
-        onProgress(progress);
-
-        // Check if `is_completed` is true, update state with `uploadedFileId`
-        if (data.is_completed) {
-          successChunkResponse = {
-            uploadedFileId: data.id,
-            is_completed: data.is_completed,
-          };
-
-          // Return the last chunk response when `is_completed` is true
-          return successChunkResponse;
-        }
-      } catch (error) {
-        // Need to handle the Chunk api error- Set the error into
-        console.error(
-          `Error uploading chunk ${chunkIndex} for ${file.name}:`,
-          error
-        );
-        return false;
-      }
-    }
-
-    return true; // Ensure function always returns a boolean or response
-  };
-
-  const handleFiles = (files: FileList | null) => {
-    if (!files) return;
-    const newFiles: File[] = Array.from(files);
-
-    const newUploads: Array<UploadFiles> = newFiles.map((file) => {
-      const fileParts = file.name.split('.');
-      // const isSingleExtension = fileParts.length === 2; // Ensures only one dot
-      const fileExtension = '.' + fileParts.pop()?.toLowerCase();
-      // const isValidExtension =
-      //   isSingleExtension && ALLOWED_FILE_TYPES.includes(fileExtension);
-      const isValidExtension = ALLOWED_FILE_TYPES.includes(fileExtension);
-
-      return {
-        file,
-        progress: 0,
-        isUploading: isValidExtension, // False if invalid
-        hasUploaded: false,
-        controller: new AbortController(), // Adding this to stop chunk api calls if user cancel the uploading
-        fileId: `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
-        docDesc: '',
-        uploadedFileId: null,
-        fileErrorMsg: isValidExtension ? '' : 'Invalid file extension',
-        hasError: !isValidExtension, // True if invalid
-      };
-    });
-    // Update original state
-    setUploadFiles((prev) => [...newUploads, ...prev]);
-
-    // Upload only valid files (hasError: false)
-    newUploads
-      .filter((file) => !file.hasError) // Filter out invalid files
-      .forEach((fileData) => {
-        uploadFileInChunks(fileData, (progress) => {
-          setUploadFiles((prev) =>
-            prev.map((f) =>
-              f.fileId === fileData.fileId ? { ...f, progress } : f
-            )
-          );
-        }).then((response) => {
-          if (
-            response &&
-            typeof response === 'object' &&
-            response.is_completed
-          ) {
-            setUploadFiles((prev) =>
-              prev.map((f) =>
-                f.fileId === fileData.fileId
-                  ? {
-                      ...f,
-                      hasUploaded: true,
-                      uploadedFileId: response.uploadedFileId,
-                    }
-                  : f
-              )
-            );
-          }
-        });
-      });
   };
 
   const handleFileChange = (
@@ -237,26 +80,13 @@ export default function DocumentUploadDialog({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     fileId: string
   ) => {
-    setUploadFiles((prevFiles) =>
-      prevFiles.map((prevFile) =>
-        prevFile.fileId === fileId
-          ? {
-              ...prevFile,
-              docDesc: e.target.value,
-            }
-          : prevFile
-      )
+    dispatch(
+      updateFileDescription({ fileId: fileId, docDesc: e.target.value })
     );
   };
 
   const removeFile = (fileNum: string) => {
-    setUploadFiles((prev) => {
-      // Find the file with the matching fileId and abort its controller if it exists
-      prev.find(({ fileId }) => fileId === fileNum)?.controller?.abort();
-
-      // Return a new array excluding the file with the matching fileId
-      return prev.filter(({ fileId }) => fileId !== fileNum);
-    });
+    dispatch(removeUploadFile({ fileId: fileNum }));
   };
 
   const uploadActualDocuments = async (
@@ -290,6 +120,7 @@ export default function DocumentUploadDialog({
         // Need to redirect user to that Thread page
         router.push(`/ai-chats/${threadUUID}/`); // Navigate to thread page
       }
+      dispatch(resetUploadedFiles());
 
       handleClose();
       return;
@@ -303,7 +134,7 @@ export default function DocumentUploadDialog({
   };
 
   const handleContinue = async () => {
-    const payloadDocs = uploadFiles
+    const payloadDocs = uploadedFiles
       .filter(({ uploadedFileId }) => typeof uploadedFileId === 'number')
       .map(({ uploadedFileId, docDesc }) => ({
         temp_doc: uploadedFileId as number,
@@ -372,7 +203,7 @@ export default function DocumentUploadDialog({
         </IconButton>
       </Box>
       <DialogContent dividers className={DocUploadStyles.dialogBody}>
-        {uploadFiles && uploadFiles?.length == 0 && (
+        {uploadedFiles && uploadedFiles?.length == 0 && (
           <Box
             className={`${DocUploadStyles.dialogContent}`}
             role="button"
@@ -392,7 +223,7 @@ export default function DocumentUploadDialog({
           >
             <Box>
               <Image
-                src="/images/Upload-img.png"
+                src="/images/draggable-img-upload.png"
                 alt="Upload-img"
                 width={88}
                 height={94}
@@ -419,8 +250,9 @@ export default function DocumentUploadDialog({
         />
 
         <Box component="div" className={DocUploadStyles.fileBoxBody}>
-          {uploadFiles.map((upload, index) => (
+          {uploadedFiles.map((upload, index) => (
             <UploadFileItem
+              isShowDescField={true}
               key={index}
               fileName={upload.file.name}
               fileId={upload.fileId}
@@ -429,6 +261,7 @@ export default function DocumentUploadDialog({
               isUploading={upload.isUploading}
               hasUploaded={upload.hasUploaded}
               fileErrorMsg={upload.fileErrorMsg}
+              fileDesc={upload.docDesc}
               hasError={upload.hasError}
               onRemove={() => removeFile(upload.fileId)}
               handleFileDesc={handleFileDesc}

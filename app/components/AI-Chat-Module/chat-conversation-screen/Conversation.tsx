@@ -17,36 +17,43 @@ import {
   setIsStreaming,
 } from '@/app/redux/slices/Chat';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-import UploadFilesStatusMessage from './UploadFilesStatusMessage';
 import { Box, Container } from '@mui/material';
-import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
+import chatMessagesStyles from '@components/AI-Chat-Module/styles/ChatMessagesStyle.module.scss';
+import AIChatStyles from '@components/AI-Chat-Module/styles/AIChatStyle.module.scss';
 import { RootState } from '@/app/redux/store';
 import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
-import Question from './Question';
-import UserChatInput from '../Input/UserChatInput';
-import Answer from './Answer';
-import AIChatStyles from '@components/AI-Chat/styles/AIChatStyle.module.scss';
-import ShowGeneratedSummariesDocs from './ShowGeneratedSummariesDocs';
 import { useSelector } from 'react-redux';
-import { SocketPayload } from '../../types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
-import StreamingResponse from './StreamingResponse';
+
+// Custom Types
+import { SocketPayload } from '@components/AI-Chat-Module/types/aiChat.types';
+
+// Custom component
+import ChatInputBox from '@/app/components/AI-Chat-Module/common/chat-input-box/ChatInputBox';
+import DraggingUIConversation from '@/app/components/AI-Chat-Module/chat-conversation-screen/components/DraggingUIConversation';
+import StreamingAnswerComponent from '@/app/components/AI-Chat-Module/chat-conversation-screen/components/StreamingAnswer';
+import QuestionComponent from '@/app/components/AI-Chat-Module/chat-conversation-screen/components/QuestionComponent';
+import QuestionCardWithFiles from '@/app/components/AI-Chat-Module/chat-conversation-screen/components/QuestionCardWithFiles';
+import AnswerComponent from '@/app/components/AI-Chat-Module/chat-conversation-screen/components/AnswerComponent';
+import ShowGeneratedSummariesDocs from '@/app/components/AI-Chat-Module/chat-conversation-screen/components/ShowGeneratedSummariesDocs';
+
 import {
   clearPageHeaderData,
   setPageHeaderData,
 } from '@/app/redux/slices/login';
 import Image from 'next/image';
+import { resetUploadedFiles } from '@/app/redux/slices/fileUpload';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 // Dynamic Custom Component imports
 const DynamicMessageLoading = dynamic(
-  () => import('@/app/components/AI-Chat/components/Messages/MessageLoading')
+  () =>
+    import(
+      '@/app/components/AI-Chat-Module/chat-conversation-screen/components/AnswerLoading'
+    )
 );
 
-export default function ChatMessagesComponent({
-  threadId,
-}: {
-  threadId: string;
-}) {
+export default function Conversation({ threadId }: { threadId: string }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const messagesList = useSelector(selectMessageList);
@@ -55,6 +62,9 @@ export default function ChatMessagesComponent({
   const chatElementRef = useRef<HTMLInputElement>(null);
 
   const [page, setPage] = useState(1);
+  const [droppedFiles, setDroppedFiles] = useState<File[] | null>([]);
+  // Drag and Drop file upload
+  const [isDragging, setIsDragging] = useState(false);
 
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [isFetchingPreviousMessages, setIsFetchingPreviousMessages] =
@@ -140,6 +150,11 @@ export default function ChatMessagesComponent({
         })
       );
     }
+
+    if (getThreadDetailsById.rejected.match(resultData)) {
+      router.push('/ai-chats');
+      showToast('error', 'Unable to load conversation.');
+    }
   };
 
   const groupedData = groupByDate(messagesList?.results || []);
@@ -178,6 +193,7 @@ export default function ChatMessagesComponent({
       dispatch(clearChunks([]));
       dispatch(clearMessagesList());
       dispatch(clearPageHeaderData());
+      dispatch(resetUploadedFiles());
     };
   }, []);
 
@@ -227,37 +243,54 @@ export default function ChatMessagesComponent({
       }
     }
   };
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Only hide if actually leaving the main container
+    if (e.target === e.currentTarget) {
+      setIsDragging(false);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault(); // Needed to allow dropping
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    setDroppedFiles(files);
+    // // to trigger inputChange when same file gets uploaded again
+    // const target = e.target as HTMLInputElement;
+    // target.value = '';
+    // console.log('Dropped files:', files);
+    // Handle files here
+  };
 
   return (
     <>
-      {/* <Box component="div" className={AIChatStyles.chatResBox}>
-        <Box className={AIChatStyles.chatResBoxInner}>
-          <Button
-            // onClick={() => handleOpenCategoryDrawer(true)}
-            className={AIChatStyles.backButton}
-            sx={{ marginBottom: '24px' }}
-          >
-            <Image
-              src="/images/arrow-left.svg"
-              alt="user"
-              width={16}
-              height={16}
-            />
-          </Button>
-          <Typography variant="body1" className={AIChatStyles.chatResTitle}>
-            How to optimize images in WordPress for faster loading (complete
-            guide)
-          </Typography>
-        </Box>
-        <Typography variant="body1" className={AIChatStyles.chatResSemiTitle}>
-          Created On : <span>25-02-2025</span>
-        </Typography>
-      </Box> */}
       <div
         className={AIChatStyles.chatContainer}
         ref={chatElementRef}
         onScroll={handleScroll}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
       >
+        {/* Drag and Drop file upload */}
+        {isDragging && <DraggingUIConversation />}
+        {/* Drag and Drop file upload */}
         {isInitialLoading && (
           <div
             style={{
@@ -315,19 +348,24 @@ export default function ChatMessagesComponent({
                         {loggedInUser &&
                         loggedInUser.data.id == record.sender ? (
                           <>
-                            {record.uploaded_documents?.length > 0 && (
-                              <UploadFilesStatusMessage
+                            {record.uploaded_documents?.length > 0 ? (
+                              <QuestionCardWithFiles
                                 messageObj={record}
                                 userDetails={loggedInUser}
+                              />
+                            ) : (
+                              <QuestionComponent
+                                userDetails={loggedInUser}
+                                messageObj={record}
                               />
                             )}
 
-                            {record.message && (
-                              <Question
-                                userDetails={loggedInUser}
-                                messageObj={record}
-                              />
-                            )}
+                            {/* {record.message && (
+                              <QuestionComponent
+                              userDetails={loggedInUser}
+                              messageObj={record}
+                            />
+                            )} */}
                           </>
                         ) : (
                           <>
@@ -347,7 +385,7 @@ export default function ChatMessagesComponent({
                                 messageObj={record}
                               />
                             ) : (
-                              <Answer messageObj={record} />
+                              <AnswerComponent messageObj={record} />
                             )}
                           </>
                         )}
@@ -365,7 +403,7 @@ export default function ChatMessagesComponent({
             {isStreamingMessages &&
               messagesChunks &&
               (messagesChunks.length > 2 ? (
-                <StreamingResponse
+                <StreamingAnswerComponent
                   isStreaming={isStreamingMessages}
                   inputText={messagesChunks.join('')}
                 />
@@ -384,9 +422,16 @@ export default function ChatMessagesComponent({
         }}
       >
         <Container maxWidth="lg" disableGutters>
-          <UserChatInput
+          {/* <UserChatInput
             handleFileUploadSubmit={() => handleFileUploadSubmit()}
             threadId={threadId}
+            sendMessage={(payloadData) => handleSendMessage(payloadData)}
+            isLoadingProp={isStreamingMessages}
+          /> */}
+          <ChatInputBox
+            droppedFiles={droppedFiles}
+            threadId={threadId}
+            handleFileUploadSubmit={() => handleFileUploadSubmit()}
             sendMessage={(payloadData) => handleSendMessage(payloadData)}
             isLoadingProp={isStreamingMessages}
           />

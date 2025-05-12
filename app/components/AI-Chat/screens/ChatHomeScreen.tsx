@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-
 import { Box, Button, Grid, Typography } from '@mui/material';
 
 import AIChatStyles from '@components/AI-Chat/styles/AIChatStyle.module.scss';
@@ -20,13 +18,7 @@ import { useRouter } from 'next/navigation';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import LogModel from '../../LogModel/LogModel';
-import Image from 'next/image';
-
-// Dynamic Custom Component imports
-const DynamicDocUploadModal = dynamic(
-  () =>
-    import('@/app/components/AI-Chat/components/Modals/DocumentUploadDialog')
-);
+// import Image from 'next/image';
 
 export default function ChatHomeScreen() {
   const dispatch = useAppDispatch();
@@ -45,7 +37,6 @@ export default function ChatHomeScreen() {
     'Start by uploading a file or asking a question.',
   ];
 
-  const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
   const [randomTitle, setRandomTitle] = useState<string | null>(null);
@@ -55,13 +46,6 @@ export default function ChatHomeScreen() {
 
   const openLogIncidentModel = () => {
     setOpenModel(true);
-  };
-
-  const handleClickOpen = () => {
-    setIsOpenDocUpload(true);
-  };
-  const handleClose = () => {
-    setIsOpenDocUpload(false);
   };
 
   const handleNewSendMessage = async (payloadData: SocketPayload) => {
@@ -307,19 +291,11 @@ export default function ChatHomeScreen() {
 
           <UserChatInput
             droppedFiles={droppedFiles}
-            handleOpenDocUploadModal={handleClickOpen}
             sendMessage={(payloadData) => handleNewSendMessage(payloadData)}
             isLoadingProp={isLoading}
             selectedPrompt={selectedPrompt}
           />
         </Box>
-
-        {isOpenDocUpload && (
-          <DynamicDocUploadModal
-            open={isOpenDocUpload}
-            handleClose={handleClose}
-          />
-        )}
       </div>
       <LogModel
         open={openModel}

@@ -1,12 +1,13 @@
 import Image from 'next/image';
 import debounce from 'lodash.debounce';
 
-import DocUploadStyles from '@components/AI-Chat/styles/DocumentUploadModal.module.scss';
+import DocUploadStyles from '@components/AI-Chat-Module/styles/DocumentUploadModal.module.scss';
 import { Box, LinearProgress, TextField, Typography } from '@mui/material';
-import { ChangeEvent, useEffect, useMemo } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { formatFileSizeLabel, getDocumentImage } from '@/app/utils/functions';
 
 interface FileItemProps {
+  isShowDescField?: boolean;
   fileName: string;
   fileSize: number;
   progress: number;
@@ -15,6 +16,7 @@ interface FileItemProps {
   fileErrorMsg?: string;
   hasError: boolean;
   fileId: string;
+  fileDesc: string;
   onRemove: (fileId: string) => void;
   type?: string;
   handleFileDesc: (
@@ -24,6 +26,7 @@ interface FileItemProps {
 }
 
 export default function UploadFileItem({
+  isShowDescField,
   fileSize,
   fileName,
   progress,
@@ -33,8 +36,15 @@ export default function UploadFileItem({
   fileId,
   onRemove,
   type,
+  fileDesc,
   handleFileDesc,
 }: FileItemProps) {
+  const [description, setDescription] = useState(fileDesc || '');
+
+  useEffect(() => {
+    setDescription(fileDesc);
+  }, [fileDesc]);
+
   const debouncedHandleFileDesc = useMemo(
     () =>
       debounce(
@@ -108,12 +118,16 @@ export default function UploadFileItem({
         )}
 
         {/* Show Description field if the file is uploaded successfully */}
-        {hasUploaded && type !== 'LogIncident' && (
+        {hasUploaded && type !== 'LogIncident' && isShowDescField && (
           <TextField
+            value={description}
             fullWidth
             placeholder="Add Description of this file"
             className={DocUploadStyles.fileInput}
-            onChange={(e) => debouncedHandleFileDesc(e, fileId)}
+            onChange={(e) => {
+              setDescription(e.target.value);
+              debouncedHandleFileDesc(e, fileId);
+            }}
             sx={{
               marginTop: '12px',
               padding: '0',
@@ -125,13 +139,15 @@ export default function UploadFileItem({
                 '& .MuiOutlinedInput-input': {
                   fontSize: 'var(--SubTitle-5)',
                   color: 'var(--Primary-Text-Color)',
-                  padding: '12px 8px',
+                  // padding: '12px 8px',
+                  padding: '4px 4px',
                   fontWeight: 500,
                   borderRadius: '6px',
                   background: 'var(--Card-Color)',
                   // backgroundColor: '#252431',
                   '&::placeholder': {
                     color: 'var(--Txt-On-Gradient)',
+                    // color: 'var(--Primary-Text-Color)',
                     fontWeight: 400,
                   },
                 },

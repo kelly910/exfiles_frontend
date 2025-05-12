@@ -33,7 +33,7 @@ export default function LogIncidentHomeScreen() {
       >
         <Container maxWidth="lg" disableGutters>
           <UserChatInput
-            handleOpenDocUploadModal={() => {}}
+            // handleOpenDocUploadModal={() => {}}
             sendMessage={() => {}}
             isLoadingProp={false}
           />
