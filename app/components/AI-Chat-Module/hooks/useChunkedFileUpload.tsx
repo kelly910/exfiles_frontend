@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useAppDispatch } from '@/app/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 
 import {
   ALLOWED_FILE_TYPES,
@@ -10,6 +10,7 @@ import {
   addUploadFiles,
   markUploadCompleted,
   markUploadError,
+  selectUserUploadedFiles,
   updateUploadProgress,
 } from '@/app/redux/slices/fileUpload';
 
@@ -17,9 +18,12 @@ import {
   successChunkResponseType,
   UploadFiles,
 } from '@/app/redux/slices/fileUpload/fileUploadTypes';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 export const useChunkedFileUpload = () => {
   const dispatch = useAppDispatch();
+  const uploadedFiles = useAppSelector(selectUserUploadedFiles);
+
   const storedUser =
     typeof window !== 'undefined' ? localStorage.getItem('loggedInUser') : null;
 
@@ -105,41 +109,53 @@ export const useChunkedFileUpload = () => {
     [dispatch, storedUser]
   );
 
-  const handleFiles = useCallback(
-    (files: File[] | FileList | null) => {
-      if (!files) return;
+  const handleFiles = (files: File[] | FileList | null) => {
+    if (!files) return;
 
-      const newFiles: File[] = Array.from(files);
-      const uploadFilesPayload: UploadFiles[] = newFiles.map((file) => {
-        const fileParts = file.name.split('.');
-        const fileExtension = '.' + fileParts.pop()?.toLowerCase();
-        const isValidExtension = ALLOWED_FILE_TYPES.includes(fileExtension);
-        const fileId = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+    const fileArray: File[] = Array.from(files);
+    const maxFiles =
+      Number(process.env.NEXT_PUBLIC_MAX_FILE_UPLOAD_LIMIT_AT_ONCE) || 10;
 
-        return {
-          file,
-          progress: 0,
-          isUploading: isValidExtension,
-          hasUploaded: false,
-          controller: new AbortController(),
-          fileId,
-          docDesc: '',
-          uploadedFileId: null,
-          fileErrorMsg: isValidExtension ? '' : 'Invalid file extension',
-          hasError: !isValidExtension,
-        };
+    const remainingSlots = maxFiles - uploadedFiles.length;
+
+    if (remainingSlots <= 0) {
+      showToast('error', 'You can only upload up to 10 files.');
+      return;
+    }
+
+    if (fileArray.length > remainingSlots) {
+      showToast('error', `You can only upload ${remainingSlots} more file(s).`);
+    }
+    const newFiles: File[] = fileArray.slice(0, remainingSlots);
+
+    const uploadFilesPayload: UploadFiles[] = newFiles.map((file) => {
+      const fileParts = file.name.split('.');
+      const fileExtension = '.' + fileParts.pop()?.toLowerCase();
+      const isValidExtension = ALLOWED_FILE_TYPES.includes(fileExtension);
+      const fileId = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+
+      return {
+        file,
+        progress: 0,
+        isUploading: isValidExtension,
+        hasUploaded: false,
+        controller: new AbortController(),
+        fileId,
+        docDesc: '',
+        uploadedFileId: null,
+        fileErrorMsg: isValidExtension ? '' : 'Invalid file extension',
+        hasError: !isValidExtension,
+      };
+    });
+
+    dispatch(addUploadFiles(uploadFilesPayload));
+
+    uploadFilesPayload
+      .filter((f) => !f.hasError)
+      .forEach((fileData) => {
+        uploadFileInChunks(fileData);
       });
-
-      dispatch(addUploadFiles(uploadFilesPayload));
-
-      uploadFilesPayload
-        .filter((f) => !f.hasError)
-        .forEach((fileData) => {
-          uploadFileInChunks(fileData);
-        });
-    },
-    [dispatch, uploadFileInChunks]
-  );
+  };
 
   return {
     handleFiles,

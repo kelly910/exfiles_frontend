@@ -19,7 +19,6 @@ import {
   useState,
 } from 'react';
 import { QUESTION_TYPES } from '@/app/utils/constants';
-import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import {
   removeUploadFile,
@@ -68,7 +67,6 @@ export default function ChatInputBox({
 
   const isSendDisabled =
     isLoadingProp || !text?.trim() || uploadedFiles?.length <= 0;
-  console.log(uploadedFiles, 'uploadedFiles', isSendDisabled);
 
   const handleOpenDocUploadModal = () => {
     setIsOpenDocUpload(true);
