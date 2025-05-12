@@ -43,6 +43,7 @@ import {
 } from '@/app/redux/slices/login';
 import Image from 'next/image';
 import { resetUploadedFiles } from '@/app/redux/slices/fileUpload';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 // Dynamic Custom Component imports
 const DynamicMessageLoading = dynamic(
@@ -148,6 +149,11 @@ export default function Conversation({ threadId }: { threadId: string }) {
           subTitle: `Created On : ${threadCreatedDate}`,
         })
       );
+    }
+
+    if (getThreadDetailsById.rejected.match(resultData)) {
+      router.push('/ai-chats');
+      showToast('error', 'Unable to load conversation.');
     }
   };
 
