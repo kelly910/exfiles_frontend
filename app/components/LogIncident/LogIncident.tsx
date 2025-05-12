@@ -468,9 +468,12 @@ export default function LogIncident() {
                               className={styles.logListFooterDetails}
                             >
                               {item.incident_time
-                                ? dayjs(item.incident_time).format(
-                                    'MM/DD/YYYY hh:mm A'
-                                  )
+                                ? dayjs(
+                                    item.incident_time.replace(
+                                      /([+-]\d{2}:\d{2}):\d{2}$/,
+                                      '$1'
+                                    )
+                                  ).format('MM/DD/YYYY hh:mm A')
                                 : '-'}
                             </Typography>
                           </Box>

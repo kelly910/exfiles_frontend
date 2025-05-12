@@ -413,7 +413,9 @@ export default function LogModel({
   const initialValues: LogIncidentFormValues = {
     description: editedData?.description || '',
     incident_time: editedData?.incident_time
-      ? dayjs(editedData.incident_time).format('YYYY-MM-DD HH:mm')
+      ? dayjs(
+          editedData.incident_time.replace(/([+-]\d{2}:\d{2}):\d{2}$/, '$1')
+        ).format('YYYY-MM-DD HH:mm')
       : dayjs().format('YYYY-MM-DD HH:mm'),
     location: editedData?.location || '',
     involved_person_name: editedData?.involved_person_name || '',
