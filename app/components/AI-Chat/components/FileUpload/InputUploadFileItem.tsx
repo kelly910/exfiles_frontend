@@ -146,12 +146,12 @@ export default function InputUploadFileItem({
               '& .MuiOutlinedInput-input': {
                 fontSize: 'var(--SubTitle-5)',
                 color: 'var(--Primary-Text-Color)',
-                padding: '12px 8px',
+                padding: '4px 4px',
                 fontWeight: 500,
                 borderRadius: '6px',
                 background: 'var(--Card-Color)',
                 '&::placeholder': {
-                  color: 'var(--Placeholder-Text)',
+                  color: 'var(--Primary-Text-Color)',
                   fontWeight: 400,
                 },
               },

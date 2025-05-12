@@ -16,6 +16,7 @@ import documentSummarySlice from './slices/documentSummary';
 import editSummarySlice from './slices/editSummary';
 import logIncidentSlice from './slices/logIncident';
 import tagListingSlice from './slices/tagListing';
+import fileUploadSlice from './slices/fileUpload';
 
 const createNoopStorage = () => {
   return {
@@ -51,6 +52,7 @@ const persistConfig = {
     'logIncidents',
     'chat',
     'tagList',
+    'fileUpload',
   ],
   // whitelist: ["auth"], // specify reducers to persist
 };
@@ -69,6 +71,7 @@ const rootReducer = combineReducers({
   editSummary: editSummarySlice,
   logIncidents: logIncidentSlice,
   tagList: tagListingSlice,
+  fileUpload: fileUploadSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
