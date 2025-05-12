@@ -1,17 +1,10 @@
 import dynamic from 'next/dynamic';
 
-// Dynamic Custom Modal imports
-const DynamicAIChatComponent = dynamic(
-  () => import('@components/AI-Chat/AIChatComponent')
-);
-
+// Dynamic Custom Component imports
 const AIChatComponent = dynamic(
   () => import('@components/AI-Chat-Module/AIChatComponent')
 );
 
 export default function Page() {
-  return (
-    // <DynamicAIChatComponent />
-    <AIChatComponent />
-  );
+  return <AIChatComponent />;
 }

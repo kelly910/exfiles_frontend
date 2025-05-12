@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
 import AIChatStyles from '@components/AI-Chat-Module/styles/AIChatStyle.module.scss';
-import UserChatInput from '@/app/components/AI-Chat-Module/common/chat-input-box/ChatInputBox';
-// import { SocketPayload } from '@components/AI-Chat-Module/types/aiChat.types';
+import ChatInputBox from '@/app/components/AI-Chat-Module/common/chat-input-box/ChatInputBox';
+// Custom Types
+import { SocketPayload } from '@components/AI-Chat-Module/types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import { useAppDispatch } from '@/app/redux/hooks';
 import {
@@ -133,7 +134,7 @@ export default function ChatHomeScreen() {
         <Box component="section" className={AIChatStyles.chatHeading}>
           <DynamicLowerHeader />
 
-          <UserChatInput
+          <ChatInputBox
             droppedFiles={droppedFiles}
             sendMessage={(payloadData) => handleNewSendMessage(payloadData)}
             isLoadingProp={isLoading}

@@ -1,10 +1,5 @@
 import dynamic from 'next/dynamic';
 
-// Dynamic Custom Component imports
-// const DynamicAIChatComponent = dynamic(
-//   () => import('@components/AI-Chat/AIChatComponent')
-// );
-
 const AIChatComponent = dynamic(
   () => import('@components/AI-Chat-Module/AIChatComponent')
 );

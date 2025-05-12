@@ -90,7 +90,12 @@ export const useChunkedFileUpload = () => {
           }
         } catch (error) {
           console.error(`Error uploading chunk ${chunkIndex}`, error);
-          dispatch(markUploadError({ fileId, error: error.message }));
+          // dispatch(markUploadError({ fileId, error: error.message }));
+          if (error instanceof Error) {
+            dispatch(markUploadError({ fileId, error: error.message }));
+          } else {
+            dispatch(markUploadError({ fileId, error: String(error) }));
+          }
           return false;
         }
       }
@@ -101,7 +106,7 @@ export const useChunkedFileUpload = () => {
   );
 
   const handleFiles = useCallback(
-    (files: FileList | null) => {
+    (files: File[] | FileList | null) => {
       if (!files) return;
 
       const newFiles: File[] = Array.from(files);

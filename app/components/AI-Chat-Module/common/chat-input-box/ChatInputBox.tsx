@@ -28,7 +28,8 @@ import {
   updateFileDescription,
 } from '@/app/redux/slices/fileUpload';
 import UploadFileItem from '@/app/components/AI-Chat-Module/common/file-upload/UploadFileItem';
-import { SocketPayload } from '@/app/components/AI-Chat/types/aiChat.types';
+// Custom Types
+import { SocketPayload } from '@components/AI-Chat-Module/types/aiChat.types';
 import { useChunkedFileUpload } from '@/app/components/AI-Chat-Module/hooks/useChunkedFileUpload';
 import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
 import { showToast } from '@/app/shared/toast/ShowToast';
@@ -40,7 +41,7 @@ const DynamicDocUploadModal = dynamic(
 );
 
 interface UserChatInputProps {
-  droppedFiles?: File[];
+  droppedFiles?: File[] | null;
   sendMessage: (payloadMsg: SocketPayload) => void;
   isLoadingProp?: boolean;
   selectedPrompt?: string | null;

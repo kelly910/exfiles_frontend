@@ -12,10 +12,7 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import {
-  ALLOWED_FILE_TYPES,
-  FILE_UPLOAD_CHUNK_SIZE,
-} from '@/app/utils/constants';
+import { ALLOWED_FILE_TYPES } from '@/app/utils/constants';
 import UploadFileItem from '@/app/components/AI-Chat-Module/common/file-upload/UploadFileItem';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
@@ -52,7 +49,6 @@ export default function FileUploadDialog({
   const uploadedFiles = useAppSelector(selectUserUploadedFiles);
 
   const [isLoading, setIsLoading] = useState(false);
-  const storedUser = localStorage.getItem('loggedInUser');
 
   const handleOpenUserFileInput = () => {
     if (fileInputRef.current) {
