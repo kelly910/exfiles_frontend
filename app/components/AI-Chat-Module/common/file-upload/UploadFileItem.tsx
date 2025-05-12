@@ -7,6 +7,7 @@ import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { formatFileSizeLabel, getDocumentImage } from '@/app/utils/functions';
 
 interface FileItemProps {
+  isShowDescField?: boolean;
   fileName: string;
   fileSize: number;
   progress: number;
@@ -25,6 +26,7 @@ interface FileItemProps {
 }
 
 export default function UploadFileItem({
+  isShowDescField,
   fileSize,
   fileName,
   progress,
@@ -116,7 +118,7 @@ export default function UploadFileItem({
         )}
 
         {/* Show Description field if the file is uploaded successfully */}
-        {hasUploaded && type !== 'LogIncident' && (
+        {hasUploaded && type !== 'LogIncident' && isShowDescField && (
           <TextField
             value={description}
             fullWidth

@@ -122,6 +122,7 @@ export default function ChatInputBox({
 
       if (threadId) {
         if (handleFileUploadSubmit) {
+          setText('');
           handleFileUploadSubmit();
         }
       } else {
@@ -217,39 +218,29 @@ export default function ChatInputBox({
 
   return (
     <Box component="div" className={AIChatStyles.chatBoard}>
-      {uploadedFiles && uploadedFiles?.length > 0 ? (
-        <>
-          <Box className={AIChatStyles.fileInput}>
-            <Box component="div" className={AIChatStyles.fileBoxDrag}>
-              {uploadedFiles.map((fileData) => (
-                <UploadFileItem
-                  key={fileData.fileId}
-                  fileName={fileData.file.name}
-                  fileSize={fileData.file.size}
-                  progress={fileData.progress}
-                  hasUploaded={fileData.hasUploaded}
-                  fileErrorMsg={fileData.fileErrorMsg}
-                  hasError={fileData.hasError}
-                  fileId={fileData.fileId}
-                  fileDesc={fileData.docDesc}
-                  onRemove={() => removeFile(fileData.fileId)}
-                  handleFileDesc={handleFileDesc}
-                />
-              ))}
-            </Box>
-            <InputAdornment
-              position="end"
-              className={AIChatStyles.fileIcon}
-              onClick={handleOpenDocUploadModal}
-            >
-              <span className={AIChatStyles.clip}></span>
-            </InputAdornment>
+      <Box className={AIChatStyles.fileInput}>
+        {uploadedFiles && uploadedFiles?.length > 0 && (
+          <Box component="div" className={AIChatStyles.fileBoxDrag}>
+            {uploadedFiles.map((fileData) => (
+              <UploadFileItem
+                key={fileData.fileId}
+                fileName={fileData.file.name}
+                fileSize={fileData.file.size}
+                progress={fileData.progress}
+                hasUploaded={fileData.hasUploaded}
+                fileErrorMsg={fileData.fileErrorMsg}
+                hasError={fileData.hasError}
+                fileId={fileData.fileId}
+                fileDesc={fileData.docDesc}
+                onRemove={() => removeFile(fileData.fileId)}
+                handleFileDesc={handleFileDesc}
+              />
+            ))}
           </Box>
-        </>
-      ) : (
+        )}
         <Input
           id="input-with-icon-adornment"
-          className={AIChatStyles.fileInput}
+          className={AIChatStyles.fileInputInner}
           placeholder="Write your question here"
           value={text}
           onChange={handleText}
@@ -258,6 +249,7 @@ export default function ChatInputBox({
           minRows={1}
           maxRows={3}
           disabled={false}
+          style={{ width: '100%' }}
           endAdornment={
             <InputAdornment
               position="end"
@@ -268,7 +260,7 @@ export default function ChatInputBox({
             </InputAdornment>
           }
         />
-      )}
+      </Box>
 
       <Button
         type="button"

@@ -21,6 +21,7 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useRouter } from 'next/navigation';
 import {
   removeUploadFile,
+  resetUploadedFiles,
   selectUserUploadedFiles,
   updateFileDescription,
 } from '@/app/redux/slices/fileUpload';
@@ -119,6 +120,7 @@ export default function FileUploadDialog({
         // Need to redirect user to that Thread page
         router.push(`/ai-chats/${threadUUID}/`); // Navigate to thread page
       }
+      dispatch(resetUploadedFiles());
 
       handleClose();
       return;
@@ -250,6 +252,7 @@ export default function FileUploadDialog({
         <Box component="div" className={DocUploadStyles.fileBoxBody}>
           {uploadedFiles.map((upload, index) => (
             <UploadFileItem
+              isShowDescField={true}
               key={index}
               fileName={upload.file.name}
               fileId={upload.fileId}
