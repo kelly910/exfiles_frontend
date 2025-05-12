@@ -309,22 +309,18 @@ export default function ShowGeneratedSummariesDocs({
             })}
         </Grid>
 
-        {summaryGeneratedDocList &&
-          summaryGeneratedDocList?.length == 1 &&
-          summaryGeneratedDocList[0]?.summary && (
-            <Typography
-              variant="body1"
-              className={chatMessagesStyles.chatAlContentText}
-            >
-              {summaryGeneratedDocList[0].summary && (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: processText(summaryGeneratedDocList[0].summary),
-                  }}
-                />
-              )}
-            </Typography>
-          )}
+        {summaryGeneratedDocList && summaryGeneratedDocList?.length == 1 && (
+          <Typography
+            variant="body1"
+            className={chatMessagesStyles.chatAlContentText}
+          >
+            <div
+              dangerouslySetInnerHTML={{
+                __html: processText(messageObj.message),
+              }}
+            />
+          </Typography>
+        )}
 
         {messageObj.all_doc_summarized &&
           summaryGeneratedDocList &&
