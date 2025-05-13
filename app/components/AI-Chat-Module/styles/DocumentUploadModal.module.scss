@@ -1,0 +1,245 @@
+.dialogBox {
+  border: 1px solid var(--Stroke-Color);
+  border-radius: 11px;
+
+  .dialogHeader {
+    background-color: var(--Card-Color);
+    border-bottom: 1px solid var(--Stroke-Color);
+    // border-bottom: 0;
+    padding: 16px 24px;
+    // border-radius: 12px 12px 0 0;
+    min-width: 600px;
+    max-width: 700px;
+
+    @media (max-width: 768px) {
+      min-width: unset;
+      max-width: 100%;
+      padding: 16px 16px;
+    }
+
+    h2 {
+      padding: 0;
+      font-weight: var(--Medium);
+      font-size: var(--SubTitle-2);
+      line-height: 1.4;
+      color: var(--Txt-On-Gradient);
+    }
+  }
+
+  .dialogBody {
+    background-color: var(--Card-Color);
+    padding: 0 24px;
+    // border-radius: 0 0 12px 12px;
+    // border: 1px solid var(--Stroke-Color);
+    padding-top: 24px;
+
+    @media (max-width: 768px) {
+      padding: 0 16px;
+      padding-top: 24px;
+    }
+
+    .dialogContent {
+      background-color: var(--Input-Box-Colors);
+      border: 1px solid var(--Stroke-Color);
+      border-radius: 10px;
+      padding: 50px 20px;
+      text-align: center;
+
+      p {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-3);
+        line-height: 1.4;
+        text-align: center;
+        color: var(--Placeholder-Text);
+        margin: 0 auto;
+        margin-top: 9px;
+        max-width: 240px;
+
+        &:last-child {
+          max-width: unset;
+        }
+
+        span {
+          border-bottom: 1px solid transparent;
+        }
+      }
+
+      img {
+        margin: 0 auto;
+      }
+    }
+  }
+}
+
+.fileBoxBody {
+  padding-bottom: 2px;
+}
+
+.fileBoxInner {
+  border: 1px solid var(--Stroke-Color);
+  padding: 8px;
+  border-radius: 12px;
+  background-color: var(--Input-Box-Colors);
+  margin-top: 12px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  .fileGridBox {
+    .fileBox {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+
+      .fileIcon {
+        display: inline-flex;
+        flex: 0 0 auto;
+        padding: 4px 6px;
+        background-color: var(--Card-Color);
+        border-radius: 3px;
+        border: 0.94px solid var(--Stroke-Color);
+
+        img {
+          width: 18px;
+          height: 22px;
+        }
+      }
+
+      p {
+        width: 100%;
+        font-weight: var(--Medium);
+        font-size: var(--SubTitle-2);
+        line-height: 1.4;
+        color: var(--Primary-Text-Color);
+
+        p {
+          line-clamp: 1;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          word-break: break-all;
+        }
+
+        span {
+          display: block;
+          font-weight: var(--Lighter);
+          font-size: var(--SubTitle-5);
+          line-height: 140%;
+          letter-spacing: 0%;
+          color: var(--Subtext-Color);
+        }
+      }
+
+      .trashImg {
+        width: 16px;
+        flex: 0 0 auto;
+        cursor: pointer;
+      }
+    }
+
+    .fileSemiTitle {
+      margin-top: 12px;
+      background-color: var(--Card-Image);
+      border-radius: 6px;
+      padding: 7px 8px;
+
+      p {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-2);
+        line-height: 1.4;
+        color: var(--Primary-Text-Color);
+      }
+    }
+  }
+}
+
+.dialogButtonBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 0;
+  background-color: var(--Card-Color);
+  position: sticky;
+  bottom: 0;
+
+  .uploadBtn {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+    background-color: unset;
+    margin: 0;
+    gap: 8px;
+    box-shadow: none;
+    width: fit-content;
+    font-size: var(--SubTitle-3);
+    font-weight: var(--Medium);
+  }
+
+  button {
+    margin-top: 0;
+  }
+}
+
+.chatAlProgress {
+  background-color: #1b1a25;
+  margin-top: 8px;
+
+  span {
+    border: none;
+    background: #2c2a38;
+    border-radius: 500px;
+    height: 8px;
+    overflow: hidden;
+
+    span {
+      background-color: transparent;
+      background: linear-gradient(
+        90deg,
+        #2a1ad8 0%,
+        #4e26e2 25%,
+        #7231ec 50%,
+        #953df5 75%,
+        #b948ff 100%
+      );
+      border-radius: 500px;
+    }
+  }
+}
+
+.fileInputBox {
+  background: var(--Card-Color);
+  margin-top: 8px;
+  border-radius: 8px;
+}
+
+.fileErrorBox {
+  background: var(--Card-Color);
+  margin-top: 12px;
+  border-radius: 8px;
+  padding: 5px 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    margin-right: 6px;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: var(--SubTitle-6);
+    line-height: 7px;
+    color: var(--Subtext-Color);
+  }
+}
+
+.fileBoxDragInner {
+  margin-top: 0;
+  // width: calc(33.33% - 6.66px);
+}

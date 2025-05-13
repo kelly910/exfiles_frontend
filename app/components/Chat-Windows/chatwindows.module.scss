@@ -1,0 +1,701 @@
+.chatWindow {
+  width: 100%;
+  padding: 0 10px;
+}
+
+.chatDate {
+  width: 100%;
+  position: relative;
+  margin-bottom: 24px;
+  padding: 0 10px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    max-width: calc(100% - 20px);
+    height: 1px;
+    background-color: var(--Stroke-Color);
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    transform: translate(-50%, 50%);
+  }
+
+  &:first-child {
+    margin-top: 24px;
+  }
+
+  span {
+    border: 0.5px solid var(--Stroke-Color);
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 24px;
+    min-width: 153px;
+    padding: 2px 4px;
+    background-color: var(--Background-Color);
+    font-weight: var(--Lighter);
+    font-size: 10px;
+    line-height: 1.4;
+    letter-spacing: 3.68px;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--Subtext-Color);
+  }
+}
+
+.chatAl {
+  display: flex;
+  justify-content: flex-start;
+  gap: 9px;
+  align-items: flex-start;
+  max-width: 150px;
+  max-width: 80%;
+  margin-right: auto;
+  margin-left: 0;
+  margin-bottom: 32px;
+
+  .chatAlImg {
+    div,
+    button {
+      width: 22px;
+      height: 22px;
+      font-size: var(--SubTitle-6);
+      font-weight: var(--Medium);
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .chatAlSummaryButtonMain {
+    padding: 2px 12px 8px 12px;
+    background: var(--Card-Color);
+
+    .chatAlSummaryButton {
+      font-weight: var(--Medium);
+      font-size: var(--SubTitle-5);
+      line-height: 1.4;
+      text-align: center;
+      color: var(--Txt-On-Gradient);
+      background: var(--Main-Gradient);
+      outline: 0.5px solid transparent;
+      text-transform: capitalize;
+      padding: 9px 20px;
+      border-radius: 8px;
+
+      &:hover {
+        outline: 0.5px solid var(--Card-Border);
+        transition: all 0.3s;
+      }
+
+      img {
+        margin-right: 12px;
+      }
+    }
+  }
+
+  .chatAlContent {
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: unset;
+    // background-color: var(--Card-Color);
+
+    .chatAlContentText {
+      font-weight: var(--Lighter);
+      font-size: var(--SubTitle-3);
+      line-height: 1.4;
+      letter-spacing: 0%;
+      text-align: left;
+      color: var(--Primary-Text-Color);
+      padding: 8px 12px;
+      background-color: var(--Card-Color);
+    }
+
+    .chatAlIcon {
+      overflow: hidden;
+      width: fit-content;
+      background-color: var(--Card-Color);
+      border-radius: 0 0 8px 8px;
+      padding: 4px 8px;
+
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 8px;
+
+      button {
+        padding: 0;
+        min-width: 18px;
+        max-width: 18px;
+        display: block;
+        height: 18px;
+        transition: all 0.3s;
+
+        &:hover {
+          transform: translateY(-2px);
+          transition: all 0.3s;
+        }
+
+        span {
+          display: none;
+        }
+      }
+    }
+
+    .chatAlSummary {
+      background: var(--Input-Box-Colors);
+      padding: 2px 12px 8px 12px;
+      background: var(--Card-Color);
+
+      .chatAlSummaryInner {
+        border-radius: 12px;
+        border: 1px solid #3a3948;
+      }
+
+      .chatAlSummaryBox {
+        padding: 12px 8px;
+        border-bottom: 1px solid #3a3948;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .chatAlSummaryImg {
+          background: var(--Main-Gradient);
+          border-radius: 4px;
+          padding: 6px 7px;
+          display: flex;
+          margin-right: 8px;
+          flex: 0 0 auto;
+        }
+
+        .chatAlSummaryText {
+          .chatAlSummaryTitle {
+            font-weight: var(--Medium);
+            font-size: var(--SubTitle-3);
+            line-height: 140%;
+            letter-spacing: 0%;
+            color: var(--Primary-Text-Color);
+          }
+
+          .chatAlSummarySemiTitle {
+            font-weight: var(--Regular);
+            font-size: var(--SubTitle-5);
+            line-height: 140%;
+            letter-spacing: 0%;
+            color: var(--Placeholder-Text);
+          }
+        }
+      }
+    }
+
+    .chatAlCategory {
+      background-color: var(--Card-Color);
+      padding: 2px 8px 7px 8px;
+      min-width: 460px;
+
+      .chatAlCategoryInner {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        margin-top: 8px;
+        background-color: var(--Card-Image);
+        border-radius: 6px;
+        padding: 7px 8px;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+
+      img {
+        margin-right: 6px;
+      }
+
+      .chatAlText {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-5);
+        line-height: 100%;
+        color: var(--Placeholder-Text);
+      }
+    }
+
+    .chatAlFile {
+      background-color: var(--Card-Color);
+      min-width: 220px;
+
+      .chatAlFileInner {
+        margin-top: 8px;
+        background-color: var(--Input-Box-Colors);
+        border-radius: 12px;
+        padding: 8px;
+        border: 1px solid #3a3948;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: space-between;
+        width: 100%;
+
+        div {
+          width: 100%;
+        }
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+
+      .chatAlFileIcon {
+        padding: 4px 6px;
+        background-color: var(--Card-Color);
+        border-radius: 3px;
+        display: flex;
+        width: fit-content;
+        max-width: fit-content;
+      }
+
+      .chatAlText {
+        font-weight: var(--Medium);
+        font-size: var(--SubTitle-2);
+        line-height: 140%;
+        color: var(--Primary-Text-Color);
+        margin-top: 8px;
+        line-clamp: 2;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        word-break: break-all;
+      }
+
+      .chatAlFileSummary {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 4px 8px;
+        background: var(--Card-Color);
+        border-radius: 8px;
+        margin-top: 8px;
+        cursor: pointer;
+
+        &:has(.chatAlUploadFailed) {
+          align-items: start;
+        }
+
+        img {
+          flex: 0 0 auto;
+
+          &:first-child {
+            margin-right: 4px;
+          }
+        }
+
+        p {
+          font-weight: var(--Regular);
+          font-size: var(--SubTitle-5);
+          line-height: 140%;
+          color: var(--Primary-Text-Color);
+          width: 100%;
+        }
+
+        .chatAlUploadFailed {
+          display: block;
+          width: fit-content;
+          padding: 0;
+          margin: 0;
+
+          p {
+            margin: 0;
+            margin-bottom: 7px;
+          }
+        }
+      }
+    }
+
+    .chatAlCombined {
+      background-color: var(--Card-Color);
+      padding: 2px 8px 7px 8px;
+      min-width: 280px;
+
+      .chatAlCombinedInner {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        margin-top: 8px;
+        background-color: var(--Input-Box-Colors);
+        border-radius: 6px;
+        padding: 7px 8px;
+        border: 1px solid #3a3948;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+
+      .chatAlText {
+        font-weight: var(--Medium);
+        font-size: var(--SubTitle-3);
+        line-height: 140%;
+        color: var(--Primary-Text-Color);
+      }
+    }
+
+    .chatAlContent {
+      min-width: 350px;
+      padding: 2px 12px 8px 12px;
+      background: var(--Card-Color);
+
+      .chatAlFileInner {
+        border-radius: 12px;
+        background: var(--Input-Box-Colors);
+        border: 1px solid var(--Stroke-Color);
+        padding: 8px;
+      }
+
+      .chatAlFileHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .fileBox {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 8px;
+        // padding-top: 8px;
+
+        .fileIcon {
+          padding: 4px 6px;
+          background-color: var(--Input-Box-Colors);
+          width: fit-content;
+          display: flex;
+          border-radius: 5px;
+        }
+
+        p {
+          font-weight: var(--Medium);
+          font-size: var(--SubTitle-3);
+          line-height: 140%;
+          letter-spacing: 0%;
+          color: var(--Primary-Text-Color);
+
+          span {
+            display: block;
+            font-weight: var(--Medium);
+            font-size: var(--SubTitle-6);
+            line-height: 140%;
+            letter-spacing: 0%;
+            color: var(--Placeholder-Text);
+          }
+        }
+      }
+    }
+    .chatAlUploadFailed {
+      padding: 5px 8px;
+      background-color: var(--Card-Color);
+      border-radius: 6px;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      margin-top: 8px;
+
+      img {
+        margin-right: 6px;
+      }
+
+      .chatAlText {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-6);
+        line-height: 100%;
+        width: fit-content;
+        color: var(--Primary-Text-Color);
+        margin-right: 10px;
+      }
+
+      .charAlRetryButton {
+        background: var(--Main-Gradient);
+        outline: 0.5px solid transparent;
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-6);
+        color: var(--Txt-On-Gradient);
+        line-height: var(--SubTitle-6);
+        padding: 3px 8px;
+        border-radius: 500px;
+        transition: all 0.4s;
+
+        &:hover {
+          outline: 0.5px solid var(--Card-Border);
+          transition: all 0.4s;
+        }
+
+        img {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
+
+span.chatTime {
+  border-top: 0.5px solid var(--Stroke-Color);
+  background-color: var(--Card-Color);
+  display: block;
+  width: 100%;
+  text-align: right;
+  font-weight: var(--Regular);
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--Placeholder-Text);
+  padding: 6px 8px;
+  border-radius: 0 0 8px 0;
+}
+
+.chatAlUser {
+  margin-right: 0;
+  margin-left: auto;
+  justify-content: flex-end;
+
+  .chatAlContent {
+    background-color: var(--Card-Color);
+
+    .chatAlContentText {
+      text-align: right;
+    }
+  }
+}
+
+.chatUserProgress {
+  border-radius: 12px;
+  max-width: 90%;
+
+  .chatAlContent {
+    min-width: 350px;
+    padding: 8px;
+    border-radius: 0;
+
+    .fileBox {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--Stroke-Color);
+
+      .fileIcon {
+        padding: 4px 6px;
+        background-color: var(--Input-Box-Colors);
+        width: fit-content;
+        display: flex;
+        border-radius: 5px;
+      }
+    }
+
+    p {
+      font-weight: var(--Medium);
+      font-size: var(--SubTitle-2);
+      line-height: 1.4;
+      color: var(--Primary-Text-Color);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+
+      span {
+        display: block;
+        padding: 0;
+        font-weight: var(--Regular);
+        font-size: var(--SubTitle-5);
+        line-height: 1.4;
+        letter-spacing: 0%;
+        color: var(--Subtext-Color);
+        text-align: start;
+      }
+    }
+
+    span {
+      border: none;
+    }
+
+    .chatAlProgress {
+      background-color: var(--Card-Color);
+      margin-top: 8px;
+
+      span {
+        border: none;
+        background: var(--Card-Image);
+        border-radius: 500px;
+        height: 8px;
+        overflow: hidden;
+
+        span {
+          background-color: transparent;
+          background: var(--Main-Gradient);
+          border-radius: 500px;
+        }
+      }
+    }
+
+    .chatAlCategory {
+      padding: 7px 8px;
+      background-color: var(--Card-Image);
+      border-radius: 6px;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      margin-top: 8px;
+
+      img {
+        margin-right: 6px;
+      }
+
+      .chatAlText {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-5);
+        line-height: 100%;
+        color: var(--Placeholder-Text);
+      }
+    }
+
+    .chatAlUploadFailed {
+      padding: 5px 8px;
+      background-color: var(--Card-Image);
+      border-radius: 6px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 8px;
+
+      img {
+        margin-right: 6px;
+      }
+
+      .chatAlText {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-5);
+        line-height: 100%;
+        color: var(--Placeholder-Text);
+      }
+
+      .charAlRetryButton {
+        background: var(--Main-Gradient);
+        outline: 0.5px solid transparent;
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-6);
+        color: var(--Txt-On-Gradient);
+        line-height: var(--SubTitle-6);
+        padding: 3px 8px;
+        border-radius: 500px;
+        transition: all 0.4s;
+
+        &:hover {
+          outline: 0.5px solid var(--Card-Border);
+          transition: all 0.4s;
+        }
+
+        img {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .chatAlFolder {
+      padding: 5px 8px;
+      background-color: var(--Card-Image);
+      border-radius: 6px;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      margin-top: 8px;
+
+      img {
+        margin-right: 4px;
+      }
+
+      .chatAlText {
+        font-weight: var(--Regular);
+        font-size: var(--SubTitle-4);
+        line-height: 100%;
+        color: var(--Primary-Text-Color);
+      }
+    }
+  }
+}
+
+.chatAlContent:first-child .fileBox {
+  border-top: none !important;
+  padding-top: 0;
+}
+
+.chatAlGenerating {
+  padding: 0 12px 8px;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  max-width: 620px;
+
+  span {
+    display: block;
+    width: fit-content;
+    padding: 2px 8px;
+    background-color: var(--Input-Box-Colors);
+    font-weight: var(--Regular);
+    font-size: var(--SubTitle-3);
+    line-height: 1.4;
+    color: var(--Primary-Text-Color);
+    border: 1px solid var(--Stroke-Color);
+    border-radius: 6px;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    text-wrap: nowrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .chatAl {
+    max-width: 450px;
+    min-width: 400px;
+    align-items: flex-end;
+  }
+}
+
+@media (max-width: 500px) {
+  .chatAl {
+    max-width: 90%;
+    min-width: 150px;
+    align-items: flex-start;
+    flex-direction: column;
+    .chatAlImg {
+      order: 1;
+    }
+  }
+  .chatAlContent {
+    order: 2;
+  }
+  .chatAlUser {
+    align-items: flex-end;
+  }
+  .chatUserProgress {
+    max-width: 100%;
+    order: 2;
+  }
+}
+
+@media (max-width: 400px) {
+  .chatUserProgress .chatAlContent {
+    min-width: 200px;
+    max-width: 280px;
+  }
+}

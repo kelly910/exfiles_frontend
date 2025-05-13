@@ -1,0 +1,161 @@
+.chatHeading {
+  width: 100%;
+  padding: 0 30px;
+
+  .gridBox {
+    margin-top: 28px;
+
+    .gridBoxInner {
+      .chatBox {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        p {
+          color: var(--Primary-Text-Color) cc;
+          font-weight: var(--Regular);
+          font-size: var(--SubTitle-2);
+          line-height: 1.4;
+          letter-spacing: 0%;
+        }
+      }
+
+      .gridBoxButton {
+        margin-top: 23px;
+      }
+    }
+  }
+}
+
+.chatHeader {
+  .chatTitle {
+    color: var(--Primary-Text-Color);
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: var(--Bold);
+    font-size: var(--Heading-1);
+    line-height: 1.4;
+    letter-spacing: 0%;
+  }
+
+  .chatSubtitle {
+    font-weight: var(--Regular);
+    font-size: var(--SubTitle-3);
+    line-height: 1.4;
+    letter-spacing: 0%;
+    text-align: center;
+    color: var(--Subtext-Color);
+    margin: 0 auto;
+  }
+}
+
+.chatGridBox {
+  border: 1px solid var(--Stroke-Color);
+  background-color: var(--Card-Color);
+  width: 100%;
+  border-radius: 12px;
+  padding: 24px 16px;
+  height: 100%;
+}
+
+.chatBoarbMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 100px;
+  min-height: 100vh;
+  padding: 100px 0;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.fileInput {
+  padding: 9px 16px;
+  background-color: var(--Card-Color);
+  width: 100%;
+  border-radius: 10px;
+  color: var(--Subtext-Color);
+
+  &::after {
+    content: none !important;
+  }
+
+  input {
+    color: var(--Primary-Text-Color);
+  }
+}
+
+.chatBoard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--Stroke-Color);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.fileIcon {
+  cursor: pointer;
+  // border: 0.72px solid var(--Stroke-Color);
+
+  .clip {
+    background-image: url('/images/paperclip.svg');
+    width: 20px;
+    height: 20px;
+    aspect-ratio: 1 / 1;
+    display: block;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+
+@media (max-width: 900px) {
+  .chatGridBox {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .chatHeading {
+    .gridBox {
+      .gridBoxInner {
+        .chatBox {
+          align-items: center;
+          flex-direction: row;
+        }
+
+        .gridBoxButton {
+          margin-top: 0;
+          flex: 0 0 auto;
+        }
+      }
+    }
+  }
+
+  .chatBoarbMain {
+    max-width: 800px;
+  }
+}
+
+@media (max-width: 500px) {
+  .chatHeading {
+    .gridBox {
+      .gridBoxInner {
+        .chatBox {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .gridBoxButton {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}

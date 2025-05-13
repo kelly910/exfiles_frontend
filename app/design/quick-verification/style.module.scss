@@ -1,0 +1,280 @@
+/* Form Header */
+
+.formCard {
+  border: 1px solid var(--Stroke-Color);
+  background-color: var(--Card-Color);
+  max-width: 515px;
+  margin: 0 auto;
+  border-radius: 24px;
+  padding: 32px 25px;
+}
+
+.formLogo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.formLogo img {
+  display: block;
+  object-fit: cover;
+  width: 289.125px;
+  height: auto;
+}
+
+.formHeader {
+  margin-bottom: 32px;
+}
+
+.formHeader .formTitle {
+  font-size: 32px;
+  color: var(--Txt-On-Gradient);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.formHeader .formSubtitle {
+  font-weight: var(--Regular);
+  font-size: var(--SubTitle-2);
+  letter-spacing: 0%;
+  text-align: center;
+  color: #b2b1b9;
+}
+
+/* Google Login */
+.googleLogin {
+  margin-top: 36px;
+  background-color: var(--Input-Box-Colors);
+  border: 1px solid var(--Stroke-Color);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.googleLogin p {
+  font-weight: var(--Medium) var(--SubTitle-2);
+  letter-spacing: 0%;
+  color: var(--Primary-Text-Color);
+  margin-bottom: 0;
+}
+
+/* Already Login */
+.alreadyLogin {
+  max-width: 515px;
+  padding: 24px;
+  margin: 48px auto 0 auto;
+  background: var(--Main-Gradient);
+  background-blend-mode: overlay;
+
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+
+  p {
+    color: var(--Txt-On-Gradient) 45;
+    font-family: Fustat;
+    font-weight: var(--Regular);
+    font-size: 14px !important;
+  }
+}
+
+.loginGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loginGroup h4 {
+  font-weight: var(--Medium);
+  font-size: var(--SubTitle-1);
+}
+
+.loginGroup p {
+  font-weight: var(--Regular);
+  font-size: var(--SubTitle-3);
+  line-height: 1.4;
+  letter-spacing: 0%;
+  color: var(--Txt-On-Gradient) !important;
+  margin-bottom: 0;
+}
+
+/* Google Button Icon */
+.googleBtnIcon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: cover;
+  margin-right: 5px;
+}
+
+/* Login Section */
+.authSection {
+  padding: 80px 0;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.authContainer {
+  position: relative;
+  z-index: 999;
+}
+
+/* Background Effects */
+.before,
+.after {
+  content: '';
+  position: fixed;
+  z-index: 99;
+  opacity: 0.08;
+}
+
+.before {
+  left: -74px;
+  top: -100px;
+  width: 460px;
+  height: 148px;
+}
+
+.after {
+  right: -210px;
+  bottom: 0px;
+  width: 947px;
+  height: 306px;
+  left: auto;
+}
+
+.btnGroup {
+  margin-top: 25px;
+}
+
+/* Form Header */
+@media (max-width: 768px) {
+  .formCard {
+    padding: 22.4px 17.5px;
+    border-radius: 16.8px;
+    margin: 0 auto;
+  }
+
+  .formLogo img {
+    width: 202.4px;
+  }
+
+  .formHeader .formTitle {
+    font-size: 22.4px;
+  }
+
+  .formHeader .formSubtitle {
+    font-size: var(--SubTitle-3);
+  }
+
+  /* Google Login */
+  .googleLogin {
+    padding: 8.4px 11.2px;
+    border-radius: 8.4px;
+  }
+
+  .googleLogin p {
+    font-size: 11.2px;
+  }
+
+  /* Already Login */
+  .alreadyLogin {
+    padding: 16.8px;
+    margin: 33.6px auto 0 auto;
+    border-radius: 16.8px;
+  }
+
+  .loginGroup h4 {
+    font-size: var(--SubTitle-2);
+  }
+
+  .loginGroup p {
+    font-size: var(--SubTitle-3);
+  }
+
+  /* Google Button Icon */
+  .googleBtnIcon {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Login Section */
+  .authSection {
+    padding: 56px 0;
+  }
+
+  .authContainer {
+    z-index: 999;
+  }
+
+  /* Background Effects */
+  .before,
+  .after {
+    opacity: 0.08;
+  }
+
+  .before {
+    width: 322px;
+    height: 103.6px;
+    left: -51.8px;
+    top: -70px;
+  }
+
+  .after {
+    width: 663.9px;
+    height: 214.2px;
+    right: -147px;
+    bottom: 0;
+  }
+
+  .alreadyLogin {
+    flex-direction: column;
+    text-align: center;
+    button {
+      width: 100%;
+      margin-top: 10px;
+    }
+  }
+
+  .authSection {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+@media (min-width: 1921px) {
+  .alreadyLogin {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+  }
+}
+
+@media (max-width: 767px) {
+  .before {
+    width: 225.4px;
+    height: 72.52px;
+    left: -50.26px;
+    top: 0;
+    opacity: 0.3;
+    img {
+      width: 225.4px;
+      height: 72.52px;
+    }
+  }
+
+  .after {
+    width: 464.73px;
+    height: 150.94px;
+    right: -102.9px;
+    bottom: 0;
+
+    img {
+      width: 464.73px;
+      height: 150.94px;
+    }
+  }
+}
