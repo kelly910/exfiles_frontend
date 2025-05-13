@@ -66,7 +66,8 @@ export default function ChatInputBox({
   const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
 
   const isSendDisabled =
-    isLoadingProp || !text?.trim() || uploadedFiles?.length <= 0;
+    isLoadingProp ||
+    (!text?.trim() && (!uploadedFiles || uploadedFiles.length === 0));
 
   const handleOpenDocUploadModal = () => {
     setIsOpenDocUpload(true);
@@ -267,7 +268,7 @@ export default function ChatInputBox({
         color="primary"
         fullWidth
         onClick={handleMessageSending}
-        disabled={false}
+        disabled={isSendDisabled}
       >
         {isLoadingProp ? (
           <CircularProgress size={18} sx={{ color: '#fff' }} />
