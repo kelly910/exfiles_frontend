@@ -18,6 +18,7 @@ interface SidebarAccordionProps {
   ) => (event: React.SyntheticEvent, isExpanded: boolean) => void;
   children?: React.ReactNode;
   closeDocumentSummary?: () => void;
+  expandPanel?: (panel: string | boolean) => void;
 }
 
 const SidebarAccordion = ({
@@ -28,6 +29,7 @@ const SidebarAccordion = ({
   handleAccordionChange,
   children,
   closeDocumentSummary,
+  expandPanel,
 }: SidebarAccordionProps) => {
   const router = useRouter();
   const redirection = (expanded: string) => {
@@ -36,6 +38,7 @@ const SidebarAccordion = ({
     } else if (expanded == 'panel1' || expanded == 'panel2') {
       closeDocumentSummary?.();
     }
+    expandPanel?.('panel2');
   };
 
   return (
