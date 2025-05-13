@@ -21,8 +21,17 @@ export default function AiChatsLayout({
     setIsSidebarOpen((prev) => !prev);
   };
 
+  const sideBarToggle = () => {
+    if (window.innerWidth <= 1100) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+  };
+
   const handleThreadClick = (thread: string) => {
     router.push(`/ai-chats/${thread}`); // Navigate to thread page
+    sideBarToggle();
   };
 
   const handlePinnedAnswerClick = (selectedMessage: PinnedAnswerMessage) => {
@@ -31,6 +40,7 @@ export default function AiChatsLayout({
         `/ai-chats/${selectedMessage.thread.uuid}/?message=${selectedMessage.uuid}`
       );
     }
+    sideBarToggle();
   };
 
   // New code
