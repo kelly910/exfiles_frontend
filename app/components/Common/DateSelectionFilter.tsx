@@ -276,8 +276,8 @@ export default function DateSelectionFilter({
                           },
                           '& .MuiInputAdornment-root': {
                             padding: '6px',
-                            backgroundColor: isFromDatePickerOpen
-                              ? 'var(--Main-Gradient) !important'
+                            background: isFromDatePickerOpen
+                              ? 'var(--Main-Gradient)'
                               : 'var(--Card-Color)',
                             color: 'var(--Primary-Text-Color)',
                             borderRadius: '8px',
@@ -375,8 +375,8 @@ export default function DateSelectionFilter({
                           },
                           '& .MuiInputAdornment-root': {
                             padding: '6px',
-                            backgroundColor: isToDatePickerOpen
-                              ? 'var(--Main-Gradient) !important'
+                            background: isToDatePickerOpen
+                              ? 'var(--Main-Gradient)'
                               : 'var(--Card-Color)',
                             color: 'var(--Primary-Text-Color)',
                             borderRadius: '8px',

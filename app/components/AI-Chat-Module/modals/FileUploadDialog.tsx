@@ -223,7 +223,7 @@ export default function FileUploadDialog({
           >
             <Box>
               <Image
-                src="/images/draggable-img-upload.png"
+                src="/images/upload-img-new.png"
                 alt="Upload-img"
                 width={88}
                 height={94}

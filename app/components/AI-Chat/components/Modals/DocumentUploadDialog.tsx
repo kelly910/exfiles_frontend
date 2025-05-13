@@ -392,7 +392,7 @@ export default function DocumentUploadDialog({
           >
             <Box>
               <Image
-                src="/images/Upload-img.png"
+                src="/images/upload-img-new.png"
                 alt="Upload-img"
                 width={88}
                 height={94}

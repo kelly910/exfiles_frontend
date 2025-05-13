@@ -7,7 +7,7 @@ export default function DraggingUIConversation() {
     <div className={AIChatStyles.dropOverlay}>
       <Box className={AIChatStyles.dropOverlayInner}>
         <Image
-          src="/images/Upload-img.png"
+          src="/images/upload-img-new.png"
           alt="Upload-img"
           width={88}
           height={94}
