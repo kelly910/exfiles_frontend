@@ -1316,7 +1316,7 @@ export default function LogModel({
                         >
                           <Box>
                             <Image
-                              src="/images/Upload-img.png"
+                              src="/images/upload-img-new.png"
                               alt="Upload-img"
                               width={51}
                               height={55}
