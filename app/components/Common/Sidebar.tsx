@@ -295,6 +295,7 @@ const Sidebar = ({
               panelKey="panel1"
               handleAccordionChange={handleAccordionChange}
               closeDocumentSummary={selectedDocIdNull}
+              expandPanel={() => setExpanded('panel1')}
             >
               <DynamicPinnedMessagesList
                 searchVal={searchValue}
@@ -312,6 +313,7 @@ const Sidebar = ({
               panelKey="panel2"
               handleAccordionChange={handleAccordionChange}
               closeDocumentSummary={selectedDocIdNull}
+              expandPanel={() => setExpanded('panel2')}
             >
               <DynamicThreadsList
                 searchVal={searchValue}
