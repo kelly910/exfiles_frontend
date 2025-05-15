@@ -21,7 +21,7 @@ const Page = () => {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <Link href="https://exfiles.trooinbounddevs.com/">
+                <Link href={process.env.NEXT_PUBLIC_REDIRECT_URL!}>
                   <Image
                     src="/images/logo.svg"
                     alt="logo"

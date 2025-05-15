@@ -76,10 +76,12 @@ export default function ChatHomeScreen() {
 
   // Drag and Drop file upload
   const [isDragging, setIsDragging] = useState(false);
+  const [dragCounter, setDragCounter] = useState(0);
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    setDragCounter((prev) => prev + 1);
     setIsDragging(true);
   };
 
@@ -87,9 +89,16 @@ export default function ChatHomeScreen() {
     e.preventDefault();
     e.stopPropagation();
     // Only hide if actually leaving the main container
-    if (e.target === e.currentTarget) {
-      setIsDragging(false);
-    }
+    // if (e.target === e.currentTarget) {
+    //   setIsDragging(false);
+    // }
+    setDragCounter((prev) => {
+      const newCount = prev - 1;
+      if (newCount === 0) {
+        setIsDragging(false);
+      }
+      return newCount;
+    });
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -101,6 +110,7 @@ export default function ChatHomeScreen() {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
+    setDragCounter(0);
 
     const files = Array.from(e.dataTransfer.files);
     setDroppedFiles(files);
