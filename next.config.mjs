@@ -14,7 +14,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'api.exfiles.trootechproducts.com',
+        hostname: process.env.NEXT_PUBLIC_FETCH_TAG_IMAGES,
         pathname: '/media/icons/**',
       },
     ],
