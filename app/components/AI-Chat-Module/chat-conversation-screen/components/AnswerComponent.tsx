@@ -6,7 +6,7 @@ import { ChatMessage, ThumbReaction } from '@store/slices/Chat/chatTypes';
 import { formatTo12HourTimeManually } from '@/app/utils/functions';
 import { processText } from '@/app/utils/constants';
 import { showToast } from '@/app/shared/toast/ShowToast';
-import striptags from 'striptags';
+// import striptags from 'striptags';
 import {
   fetchPinnedMessagesList,
   saveUserAnswerReaction,
@@ -38,14 +38,49 @@ export default function AnswerComponent({
       targetData = processText(messageObj.message);
     }
 
+    const cleanText = targetData
+      .replace(/<br\s*\/?>/gi, '<br>')
+      .replace(/<(i|em)[^>]*>([\s\S]*?)<\/\1>/gi, '<em>$2</em>')
+      .replace(
+        /<li[^>]*>\s*<b>(.*?)<\/b>:(.*?)<\/li>/gi,
+        '<li><strong>$1</strong>:$2</li>'
+      )
+      .replace(
+        /<li[^>]*>\s*<strong>(.*?)<\/strong>:(.*?)<\/li>/gi,
+        '<li><strong>$1</strong>:$2</li>'
+      )
+      .replace(/<h([1-6])[^>]*>([\s\S]*?)<\/h\1>/gi, '<h$1>$2</h$1>')
+      .replace(/<\/?(ul|ol)[^>]*>/gi, (tag) => tag.toLowerCase())
+      .replace(/<p[^>]*>([\s\S]*?)<\/p>/gi, '<p>$1</p>')
+      .trim();
+
     try {
-      await navigator.clipboard.writeText(striptags(targetData));
+      const blob = new Blob([cleanText], { type: 'text/html' });
+      const clipboardItem = new ClipboardItem({ 'text/html': blob });
+      await navigator.clipboard.write([clipboardItem]);
       showToast('success', 'Message copied successfully!');
     } catch (err) {
       console.warn(err);
       showToast('error', 'Failed to copy content');
     }
   };
+
+  // const handleCopyThread = async (messageObj: ChatMessage) => {
+  //   let targetData;
+  //   if (messageObj.combined_summary_data) {
+  //     targetData = processText(messageObj.combined_summary_data.summary);
+  //   } else {
+  //     targetData = processText(messageObj.message);
+  //   }
+
+  //   try {
+  //     await navigator.clipboard.writeText(striptags(targetData));
+  //     showToast('success', 'Message copied successfully!');
+  //   } catch (err) {
+  //     console.warn(err);
+  //     showToast('error', 'Failed to copy content');
+  //   }
+  // };
 
   const getPinnedMessagesList = async (page = 1) => {
     const resultData = await dispatch(
