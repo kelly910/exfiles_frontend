@@ -126,7 +126,16 @@ export const useChunkedFileUpload = () => {
     if (fileArray.length > remainingSlots) {
       showToast('error', `You can only upload ${remainingSlots} more file(s).`);
     }
-    const newFiles: File[] = fileArray.slice(0, remainingSlots);
+    // const newFiles: File[] = fileArray.slice(0, remainingSlots);
+
+    const newFiles: File[] = fileArray
+      .slice(0, remainingSlots)
+      .filter((file) => {
+        const alreadyUploaded = uploadedFiles.some(
+          (uf) => uf.file.name === file.name && uf.file.size === file.size
+        );
+        return !alreadyUploaded;
+      });
 
     const uploadFilesPayload: UploadFiles[] = newFiles.map((file) => {
       const fileParts = file.name.split('.');
