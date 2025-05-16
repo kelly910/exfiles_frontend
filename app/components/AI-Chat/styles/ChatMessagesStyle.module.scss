@@ -6,6 +6,7 @@
     font-weight: var(--Lighter);
     font-size: var(--SubTitle-2);
     line-height: 1.4;
+    letter-spacing: 1px;
 
     @media (max-width: 1200px) {
       font-size: var(--SubTitle-3);
@@ -197,7 +198,7 @@
       letter-spacing: 0%;
       text-align: left;
       color: var(--Primary-Text-Color);
-      padding: 8px 12px;
+      padding: 8px 15px;
       background-color: var(--Card-Color);
 
       @media (max-width: 1200px) {
