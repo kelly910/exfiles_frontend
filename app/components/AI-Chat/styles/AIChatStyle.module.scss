@@ -185,7 +185,7 @@
 .chatBoard {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   gap: 14px;
   border: 1px solid var(--Stroke-Color);
   border-radius: 12px;
@@ -194,7 +194,7 @@
   background-color: var(--Card-Color);
 
   button {
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
     outline: 0.5px solid transparent;
     transition: all 0.4s;
 
