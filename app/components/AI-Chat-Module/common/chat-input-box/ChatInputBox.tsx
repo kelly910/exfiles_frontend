@@ -96,6 +96,28 @@ export default function ChatInputBox({
     }
   }, []);
 
+  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+    const items = event.clipboardData?.items;
+    if (!items) return;
+
+    const files: File[] = [];
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.kind === 'file') {
+        const file = item.getAsFile();
+        if (file && file.type.startsWith('image/')) {
+          files.push(file);
+        }
+      }
+    }
+
+    if (files.length > 0) {
+      event.preventDefault();
+      handleFiles(files);
+    }
+  };
+
   const uploadActualDocuments = async (
     threadUUID: string,
     payloadData: {
@@ -244,6 +266,7 @@ export default function ChatInputBox({
           value={text}
           onChange={handleText}
           onKeyDown={handleKeyUp}
+          onPaste={handlePaste}
           multiline
           minRows={1}
           maxRows={3}
