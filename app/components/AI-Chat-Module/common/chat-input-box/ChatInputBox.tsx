@@ -18,7 +18,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { QUESTION_TYPES } from '@/app/utils/constants';
+import { ALLOWED_FILE_TYPES, QUESTION_TYPES } from '@/app/utils/constants';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import {
   removeUploadFile,
@@ -99,15 +99,19 @@ export default function ChatInputBox({
   const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
     const items = event.clipboardData?.items;
     if (!items) return;
-
     const files: File[] = [];
-
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       if (item.kind === 'file') {
         const file = item.getAsFile();
-        if (file && file.type.startsWith('image/')) {
-          files.push(file);
+
+        if (file) {
+          const isAllowed = ALLOWED_FILE_TYPES.some((ext) =>
+            file.name?.toLowerCase().endsWith(ext)
+          );
+          if (isAllowed) {
+            files.push(file);
+          }
         }
       }
     }
