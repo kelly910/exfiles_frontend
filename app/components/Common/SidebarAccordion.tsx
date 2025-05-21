@@ -48,7 +48,7 @@ const SidebarAccordion = ({
       onChange={handleAccordionChange(panelKey)}
       sx={{
         '.Mui-expanded': {
-          backgroundColor: 'var(--Input-Box-Colors)',
+          backgroundColor: 'var(--Input-Box-Colors) !important',
         },
         'span.Mui-expanded': {
           transform: 'rotate(0deg)',

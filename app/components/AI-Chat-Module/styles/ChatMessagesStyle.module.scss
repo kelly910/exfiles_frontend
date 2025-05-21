@@ -467,7 +467,7 @@
         p {
           font-weight: var(--Lighter);
           font-size: var(--SubTitle-5);
-          line-height: 1;
+          line-height: 1.2;
           color: var(--Primary-Text-Color);
           width: 100%;
           text-overflow: ellipsis;
@@ -636,6 +636,7 @@ span.chatTime {
 
   .chatAlContent {
     background-color: var(--Card-Color);
+    max-width: 100%;
 
     .chatAlContentText {
       text-align: right;
@@ -830,6 +831,10 @@ span.chatTime {
     margin-left: 6px;
     margin-bottom: 6px;
     text-wrap: nowrap;
+    white-space: nowrap;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 
@@ -910,7 +915,7 @@ span.chatTime {
       font-size: var(--SubTitle-2);
       font-weight: var(--Lighter);
       line-height: 1.4;
-      text-align: left;
+      text-align: right;
       display: block;
       width: 100%;
       max-width: 100%;
