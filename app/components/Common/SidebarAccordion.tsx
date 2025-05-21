@@ -71,6 +71,12 @@ const SidebarAccordion = ({
             height={16}
           />
         }
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }}
         aria-controls={`${panelKey}-content`}
         id={`${panelKey}-header`}
         classes={{

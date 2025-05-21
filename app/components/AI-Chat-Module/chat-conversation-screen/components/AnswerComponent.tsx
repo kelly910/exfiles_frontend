@@ -277,7 +277,15 @@ export default function AnswerComponent({
                 <path d="M10.9608 10.2783H11.5616C12.4658 10.2783 12.8333 9.92832 12.8333 9.06499V3.19665C12.8333 2.33332 12.4658 1.98332 11.5616 1.98332H10.9608C10.0566 1.98332 9.68909 2.33332 9.68909 3.19665V9.06499C9.68909 9.92832 10.0566 10.2783 10.9608 10.2783Z" />
               </svg>
             </Button>
-            <Button onClick={() => handleCopyThread(messageObj)}>
+            <Button
+              onClick={() => handleCopyThread(messageObj)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
+              }}
+            >
               <Image
                 src="/images/chat-copy.svg"
                 alt="Reply"
@@ -287,7 +295,15 @@ export default function AnswerComponent({
             </Button>
             {messageObj.combined_summary_data &&
               messageObj.combined_summary_data.summary && (
-                <Button onClick={handleClickOpenEditSummary}>
+                <Button
+                  onClick={handleClickOpenEditSummary}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }
+                  }}
+                >
                   <Image
                     src="/images/chat-edit.svg"
                     alt="edit-combine-chat-icon"
@@ -296,7 +312,15 @@ export default function AnswerComponent({
                   />
                 </Button>
               )}
-            <Button onClick={() => togglePinMessage(messageObj)}>
+            <Button
+              onClick={() => togglePinMessage(messageObj)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
+              }}
+            >
               {/* pin */}
               <svg
                 className={`${chatMessagesStyles.pin} ${messageObj.is_pinned ? chatMessagesStyles.active : ''} `}
