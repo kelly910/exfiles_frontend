@@ -219,11 +219,8 @@ export default function AnswerComponent({
             <Typography
               variant="body1"
               className={chatMessagesStyles.chatAlContentText}
-              dangerouslySetInnerHTML={{
-                __html: processText(messageObj.message),
-              }}
             >
-              {/* {messageObj.combined_summary_data ? (
+              {messageObj.combined_summary_data ? (
                 <div
                   dangerouslySetInnerHTML={{
                     __html: processText(
@@ -237,7 +234,7 @@ export default function AnswerComponent({
                     __html: processText(messageObj.message),
                   }}
                 />
-              )} */}
+              )}
             </Typography>
           )}
           <span className={chatMessagesStyles.chatTime}>
