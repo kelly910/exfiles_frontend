@@ -77,6 +77,12 @@ export const useChunkedFileUpload = () => {
           if (chunkIndex === 0 && data.id) {
             documentId = data.id;
           } else if (chunkIndex === 0 && !data.id) {
+            if (
+              data.messages[0].document[0] ===
+              'Uploaded document is empty, Please upload a valid document.'
+            ) {
+              showToast('error', data.messages[0].document[0]);
+            }
             throw new Error('Failed to get document ID');
           }
 
