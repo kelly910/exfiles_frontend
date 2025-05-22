@@ -114,6 +114,7 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  line-height: 1.3;
 }
 
 a {
@@ -241,7 +242,7 @@ input {
   font-weight: var(--Regular);
   width: max-content;
   min-width: 150px;
-  padding: 5px 8px;
+  padding: 5px 10px;
   border-radius: 8px;
   display: flex;
   justify-content: center;
@@ -262,8 +263,8 @@ input {
 .btn-arrow span.arrow,
 .btn.btn-primary-arrow span.arrow {
   background-image: url('/images/buttonArrow.svg');
-  width: 14.92px;
-  height: 14.92px;
+  width: 18px;
+  height: 18px;
   aspect-ratio: 1 / 1;
   display: block;
   position: relative;
