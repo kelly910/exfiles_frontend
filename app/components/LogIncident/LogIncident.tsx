@@ -237,6 +237,7 @@ export default function LogIncident() {
             isSidebarOpen={isSidebarOpen}
             toggleSidebar={toggleSidebar}
             title="Log Incident"
+            handleOpenSidebarFromLogIncident={() => setIsSidebarOpen(true)}
           />
           {no_of_incident ? (
             <>
