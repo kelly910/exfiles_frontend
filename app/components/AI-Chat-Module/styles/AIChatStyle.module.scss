@@ -200,6 +200,10 @@
   margin-top: 24px;
   background-color: var(--Card-Color);
 
+  @media (max-width: 768px) {
+    margin-top: 10px;
+  }
+
   button {
     // margin-bottom: 5px;
     outline: 0.5px solid transparent;
@@ -307,7 +311,7 @@
 
   .chatBoard {
     padding: 16px 12px;
-    margin-top: 32px;
+    margin-top: 6px;
   }
 }
 

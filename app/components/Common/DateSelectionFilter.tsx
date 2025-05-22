@@ -73,6 +73,11 @@ export default function DateSelectionFilter({
                   color: 'var(--Primary-Text-Color)',
                 },
               },
+              '& .MuiDayCalendar-header span': {
+                color: 'var(--Primary-Text-Color)', // your desired style
+                fontWeight: 600,
+                fontSize: '14px',
+              },
               button: {
                 backgroundColor: 'var(--Card-Color)',
                 padding: '5px 10px',
@@ -111,6 +116,10 @@ export default function DateSelectionFilter({
               '&:hover': {
                 border: '1px solid var(--Card-Border)',
                 color: 'var(--Primary-Text-Color)',
+              },
+              '&.Mui-disabled:not(.Mui-selected)': {
+                color: 'var(--Primary-Text-Color) !important',
+                opacity: '0.5',
               },
               '&[aria-selected="true"].Mui-selected': {
                 backgroundColor: 'var(--Card-Border)',

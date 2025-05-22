@@ -380,6 +380,43 @@ export default function PageHeader({
         openFeedbackDialogProps={openFeedbackDialog}
         onClose={() => setOpenFeedbackDialog(false)}
       />
+      {/* <Box
+        sx={{ width: '100%' }}
+        className={`${styles.docsHeader} ${styles.docsHeaderMobile}`}
+      >
+        <Button
+          // onClick={handleCloseFirstDrawer}
+          className={styles.backButton}
+          sx={{ marginBottom: '0 !important' }}
+        >
+          <Image
+            src="/images/arrow-left.svg"
+            alt="user"
+            width={16}
+            height={16}
+          />
+        </Button>
+        <Box className={styles.backTitle}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {selectedPageHeaderData && selectedPageHeaderData.title && (
+              <Typography
+                variant="body1"
+                sx={{ display: 'flex' }}
+                className={styles.documentTitle}
+              >
+                {selectedPageHeaderData.title}
+              </Typography>
+            )}
+          </Box>
+          <Box>
+            {selectedPageHeaderData && selectedPageHeaderData.subTitle && (
+              <Typography variant="body1" className={styles.documentNo}>
+                {selectedPageHeaderData.subTitle}
+              </Typography>
+            )}
+          </Box>
+        </Box>
+      </Box> */}
     </>
   );
 }
