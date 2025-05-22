@@ -63,7 +63,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const { documents, count } = useSelector(
     (state: RootState) => state.documentListing
   );
-  const { categories, no_of_docs } = useSelector(
+  const { categories } = useSelector(
     (state: RootState) => state.categoryListing
   );
 
@@ -247,7 +247,8 @@ const DocumentList: React.FC<DocumentListProps> = ({
               </Typography>
             </Box>
             <Typography variant="body1" className={styles.categoriesSemiTitle}>
-              No. of Docs : <span>{no_of_docs || 0}</span>
+              No. of Docs :{' '}
+              <span>{findSelectedCategoryDocs?.no_of_docs || 0}</span>
             </Typography>
           </Box>
         )}
