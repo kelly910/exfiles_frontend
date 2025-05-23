@@ -28,7 +28,10 @@ export default function ChatHomeScreen() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
+  const [selectedPrompt, setSelectedPrompt] = useState<{
+    text: string;
+    version: number;
+  } | null>(null);
   const [droppedFiles, setDroppedFiles] = useState<File[]>([]);
 
   const handleNewSendMessage = async (payloadData: SocketPayload) => {
@@ -56,8 +59,8 @@ export default function ChatHomeScreen() {
     router.push(`/ai-chats/${createdThreadID}/`);
   };
 
-  const handlePromptClick = (prompText: string) => {
-    setSelectedPrompt(prompText);
+  const handlePromptClick = (promptText: string) => {
+    setSelectedPrompt({ text: promptText, version: Date.now() });
   };
 
   useEffect(() => {
