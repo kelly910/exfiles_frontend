@@ -134,6 +134,12 @@ export default function LogIncident() {
     setIsSidebarOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    if (isMobile) {
+      setIsSidebarOpen(false);
+    }
+  }, []);
+
   const deleteDialogOpen = () => {
     setAnchorEl(null);
     setOpenDeleteDialog(true);

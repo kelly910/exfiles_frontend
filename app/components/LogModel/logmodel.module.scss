@@ -415,4 +415,19 @@
     }
   }
 }
+
+@media (max-width: 450px) {
+  .logDetailsList {
+    .logDetailsListInner {
+      display: block;
+    }
+
+    .logDetailsListDetails {
+      .logDetailsListDetailsInner {
+        text-align: left;
+      }
+    }
+  }
+}
+
 // Log Details

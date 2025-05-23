@@ -13,7 +13,7 @@ import { Dayjs } from 'dayjs';
 
 // MUI Components
 import ListItem from '@mui/material/ListItem';
-import { Box, List, TextField } from '@mui/material';
+import { Box, List, TextField, useMediaQuery } from '@mui/material';
 import Button from '@mui/material/Button';
 import SidebarAccordion from '@components/Common/SidebarAccordion';
 
@@ -54,7 +54,7 @@ const Sidebar = ({
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [searchValue, setSearchValue] = useState('');
-
+  const isMobile = useMediaQuery('(max-width:768px)');
   const [openIncidentModel, setOpenIncidentModel] = useState(false);
   const threadList = useAppSelector(selectThreadsList);
   const pinnedChats = useAppSelector(selectPinnedMessagesList);
@@ -123,6 +123,13 @@ const Sidebar = ({
       }, 300),
     []
   );
+
+  const handleLogIncidentClick = () => {
+    if (isMobile) {
+      toggleSidebar();
+    }
+    router.push('/log-incident');
+  };
 
   const handleTextInput = (inputValue: string) => {
     setSearch(inputValue);
@@ -333,7 +340,7 @@ const Sidebar = ({
             <SidebarButton
               btnTitle={'Log Incident'}
               iconPath={'/images/log-incident-sidebar.svg'}
-              handleBtnClick={() => router.push('/log-incident')}
+              handleBtnClick={handleLogIncidentClick}
             />
           </div>
         </div>
