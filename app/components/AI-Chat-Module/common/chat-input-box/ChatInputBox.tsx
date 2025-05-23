@@ -43,7 +43,7 @@ interface UserChatInputProps {
   droppedFiles?: File[] | null;
   sendMessage: (payloadMsg: SocketPayload) => void;
   isLoadingProp?: boolean;
-  selectedPrompt?: string | null;
+  selectedPrompt?: { text: string; version: number } | null;
   handleFileUploadSubmit?: () => void;
   threadId?: string | null;
 }
@@ -218,9 +218,9 @@ export default function ChatInputBox({
 
   useEffect(() => {
     if (selectedPrompt) {
-      setText(selectedPrompt);
+      setText(selectedPrompt.text);
     }
-  }, [selectedPrompt]);
+  }, [selectedPrompt?.version]);
 
   useEffect(() => {
     if (droppedFiles && droppedFiles?.length > 0) {
