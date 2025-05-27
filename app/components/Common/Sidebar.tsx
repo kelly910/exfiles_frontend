@@ -350,7 +350,7 @@ const Sidebar = ({
               />
 
               <SidebarButton
-                btnTitle={'Reports'}
+                btnTitle={'Report'}
                 iconPath={'/images/report-icon.svg'}
                 handleBtnClick={handleDocReport}
               />

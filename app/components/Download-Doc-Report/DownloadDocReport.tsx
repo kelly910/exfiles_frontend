@@ -28,6 +28,7 @@ import { setPageHeaderData } from '@/app/redux/slices/login';
 import { fetchDocumentsByCategory } from '@/app/redux/slices/documentByCategory';
 import { getDocumentImage } from '@/app/utils/functions';
 import { convertDateFormat } from '@/app/utils/constants';
+import { Check, CheckCircleOutline } from '@mui/icons-material';
 
 type Tag = {
   id: number;
@@ -49,8 +50,6 @@ type Document = {
 type DocumentReportDownloadProps = {
   catId: number | null;
 };
-
-const label = { inputProps: { 'aria-label': 'Report Checkbox' } };
 
 const DownloadDocReport: React.FC<DocumentReportDownloadProps> = ({
   catId,
@@ -207,155 +206,243 @@ const DownloadDocReport: React.FC<DocumentReportDownloadProps> = ({
             title="Download Report"
             handleOpenSidebarFromLogIncident={() => setIsSidebarOpen(true)}
           />
-          <div className={styles.docsListing}>
-            <Box component="div" className={styles.searchBoard}>
-              <Box component="div" className={styles.docBoard}>
-                <Input
-                  id="input-with-icon-adornment"
-                  className={styles.searchInput}
-                  placeholder="Search your documents"
-                  onChange={(e) => handleSearchInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSearch();
+          <div className={styles.docsMain}>
+            <div className={styles.docsListing}>
+              <Box component="div" className={styles.searchBoard}>
+                <Box component="div" className={styles.docBoard}>
+                  <Input
+                    id="input-with-icon-adornment"
+                    className={styles.searchInput}
+                    placeholder="Search your documents"
+                    onChange={(e) => handleSearchInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearch();
+                      }
+                    }}
+                    endAdornment={
+                      <InputAdornment
+                        position="end"
+                        className={styles.searchIcon}
+                      >
+                        <span
+                          className={styles.search}
+                          onClick={handleSearch}
+                        ></span>
+                      </InputAdornment>
                     }
-                  }}
-                  endAdornment={
-                    <InputAdornment
-                      position="end"
-                      className={styles.searchIcon}
-                    >
-                      <span
-                        className={styles.search}
-                        onClick={handleSearch}
-                      ></span>
-                    </InputAdornment>
-                  }
-                />
-                <Button className="btn btn-pluse filter-date">
-                  <Image
-                    src="/images/filter_list.svg"
-                    alt="re"
-                    width={24}
-                    height={24}
                   />
-                </Button>
-                <Button
-                  className="btn btn-pluse download-document-btn"
-                  onClick={downloadSelectedDocReport}
-                >
-                  Generate Report ({selectedDocsDownload.length})
-                  <Image
-                    src="/images/document-download.svg"
-                    alt="re"
-                    width={20}
-                    height={20}
-                  />
-                </Button>
-              </Box>
-            </Box>
-            <Box className={styles.allSelect}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={
-                      selectedDocsDownload.length === documents.length &&
-                      documents.length > 0
+                  <Button className="btn btn-pluse filter-date">
+                    <Image
+                      src="/images/filter_list.svg"
+                      alt="re"
+                      width={24}
+                      height={24}
+                    />
+                  </Button>
+                  <Button
+                    className="btn btn-pluse download-document-btn"
+                    onClick={downloadSelectedDocReport}
+                  >
+                    Generate Report ({selectedDocsDownload.length})
+                    <Image
+                      src="/images/document-download.svg"
+                      alt="re"
+                      width={20}
+                      height={20}
+                    />
+                  </Button>
+                </Box>
+                <Box className={styles.allSelect}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={
+                          selectedDocsDownload.length === documents.length &&
+                          documents.length > 0
+                        }
+                        onChange={handleSelectAllDoc}
+                        icon={
+                          <Box
+                            sx={{
+                              width: 24,
+                              height: 24,
+                              border: '2px solid #3A3A4B',
+                              borderRadius: '8px',
+                              backgroundColor: 'transparent',
+                            }}
+                          />
+                        }
+                        checkedIcon={
+                          <Box
+                            sx={{
+                              width: 24,
+                              height: 24,
+                              background: 'var(--Main-Gradient)',
+                              borderRadius: '8px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="12"
+                              height="8"
+                              viewBox="0 0 12 8"
+                              fill="none"
+                            >
+                              <path
+                                d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
+                                stroke="white"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </Box>
+                        }
+                        sx={{ padding: '0' }}
+                      />
                     }
-                    onChange={handleSelectAllDoc}
+                    label="Select All"
                     sx={{
-                      '&.Mui-checked': {
-                        color: 'var(--Main-Gradient) !important',
-                      },
-                      '& .MuiSvgIcon-root': {
-                        border: '1.2px solid var(--Stroke-Color)',
-                        borderRadius: '6px',
-                      },
+                      paddingTop: '16px',
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      gap: '8px',
                     }}
                   />
-                }
-                label="Select All"
-              />
-            </Box>
-            <Box className={styles.docBoxMain} component="div">
-              <Box component="div" className={styles.docBoxInner}>
-                {catId && documents?.length > 0 ? (
-                  Array.isArray(documents) &&
-                  documents?.map((doc: Document) => (
-                    <Box key={doc?.id} className={styles.docGridBox}>
-                      <div className={styles.docBox}>
-                        <Image
-                          src={getDocumentImage(doc?.file_type)}
-                          alt="pdf"
-                          width={19}
-                          height={24}
-                          className={styles.pdfImg}
-                        />
-                        <Typography variant="body1" className={styles.docTitle}>
-                          {doc?.file_name}
-                        </Typography>
-                        <Checkbox
-                          {...label}
-                          checked={selectedDocsDownload.includes(
-                            doc?.uuid || ''
-                          )}
-                          onChange={() => handleSelectDoc(doc?.uuid || '')}
-                          // sx={{
-                          //   '&.Mui-checked': {
-                          //     color: 'var(--Main-Gradient) !important',
-                          //   },
-                          //   '& .MuiSvgIcon-root': {
-                          //     border: '1.2px solid var(--Stroke-Color)',
-                          //     borderRadius: '6px',
-                          //   },
-                          // }}
-                        />
-                      </div>
-                      <div className={styles.docDateBox}>
-                        <div className={styles.docTagBox}>
-                          {doc?.tags?.slice(0, 1)?.map((tag) => (
-                            <span key={tag?.id} className={styles.docTag}>
-                              {tag?.name}
-                            </span>
-                          ))}
-                          {doc?.tags?.length > 1 && (
-                            <span className={styles.docTagCount}>
-                              +{doc?.tags?.length - 1}
-                            </span>
-                          )}
-                        </div>
-                        <Typography variant="body1">
-                          {convertDateFormat(doc?.upload_on)}
-                        </Typography>
-                      </div>
-                    </Box>
-                  ))
-                ) : (
-                  <Typography variant="body1" className={styles.noRecordsFound}>
-                    No records found
-                  </Typography>
-                )}
+                </Box>
               </Box>
-            </Box>
-            <Box
-              component="div"
-              className="pagination-box"
-              sx={{
-                padding: '19px 33px 24px 33px',
-                marginBottom: '-24px',
-              }}
-            >
-              <Pagination
-                count={Math.ceil(count / 12)}
-                page={page}
-                onChange={handlePageChange}
-                shape="rounded"
-                className="pagination"
+
+              <Box className={styles.docBoxMain} component="div">
+                <Box component="div" className={styles.docBoxInner}>
+                  {catId && documents?.length > 0 ? (
+                    Array.isArray(documents) &&
+                    documents?.map((doc: Document) => (
+                      <Box key={doc?.id} className={styles.docGridBox}>
+                        <div className={styles.docBox}>
+                          <Image
+                            src={getDocumentImage(doc?.file_type)}
+                            alt="pdf"
+                            width={19}
+                            height={24}
+                            className={styles.pdfImg}
+                          />
+                          <Typography
+                            variant="body1"
+                            className={styles.docTitle}
+                          >
+                            {doc?.file_name}
+                          </Typography>
+                          <Box className={styles.allSelect}>
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={selectedDocsDownload.includes(
+                                    doc?.uuid || ''
+                                  )}
+                                  onChange={() =>
+                                    handleSelectDoc(doc?.uuid || '')
+                                  }
+                                  icon={
+                                    <Box
+                                      sx={{
+                                        width: 24,
+                                        height: 24,
+                                        border: '2px solid #3A3A4B',
+                                        borderRadius: '8px',
+                                        backgroundColor: 'transparent',
+                                      }}
+                                    />
+                                  }
+                                  checkedIcon={
+                                    <Box
+                                      sx={{
+                                        width: 24,
+                                        height: 24,
+                                        background: 'var(--Main-Gradient)',
+                                        borderRadius: '8px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                      }}
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="12"
+                                        height="8"
+                                        viewBox="0 0 12 8"
+                                        fill="none"
+                                      >
+                                        <path
+                                          d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
+                                          stroke="white"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                        />
+                                      </svg>
+                                    </Box>
+                                  }
+                                  sx={{ padding: 0 }}
+                                />
+                              }
+                              label=""
+                            />
+                          </Box>
+                        </div>
+                        <div className={styles.docDateBox}>
+                          <div className={styles.docTagBox}>
+                            {doc?.tags?.slice(0, 1)?.map((tag) => (
+                              <span key={tag?.id} className={styles.docTag}>
+                                {tag?.name}
+                              </span>
+                            ))}
+                            {doc?.tags?.length > 1 && (
+                              <span className={styles.docTagCount}>
+                                +{doc?.tags?.length - 1}
+                              </span>
+                            )}
+                          </div>
+                          <Typography variant="body1">
+                            {convertDateFormat(doc?.upload_on)}
+                          </Typography>
+                        </div>
+                      </Box>
+                    ))
+                  ) : (
+                    <Typography
+                      variant="body1"
+                      className={styles.noRecordsFound}
+                    >
+                      No records found
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+              <Box
+                component="div"
+                className="pagination-box"
                 sx={{
-                  padding: '8px 33px',
+                  padding: '19px 33px 24px 33px',
+                  marginBottom: '-24px',
                 }}
-              />
-            </Box>
+              >
+                <Pagination
+                  count={Math.ceil(count / 12)}
+                  page={page}
+                  onChange={handlePageChange}
+                  shape="rounded"
+                  className="pagination"
+                  sx={{
+                    padding: '8px 33px',
+                  }}
+                />
+              </Box>
+            </div>
           </div>
         </section>
       </main>

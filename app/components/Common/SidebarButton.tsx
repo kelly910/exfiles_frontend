@@ -17,22 +17,24 @@ export default function SidebarButton({
     <Button
       className={`${Style.customAccordionHeading}`}
       sx={{
+        display: 'flex',
         marginBottom:
-          btnTitle === 'Documents' || btnTitle === 'Reports' ? '5px' : '12px',
+          btnTitle === 'Documents' || btnTitle === 'Report' ? '5px' : '12px',
         '.MuiTouchRipple-root': {
           display: 'none !important',
         },
+        width:
+          btnTitle === 'Documents' || btnTitle === 'Report'
+            ? 'calc(100% - 26px)'
+            : '100%',
+        marginLeft:
+          btnTitle === 'Documents' || btnTitle === 'Report' ? 'auto' : '0',
+        marginRight:
+          btnTitle === 'Documents' || btnTitle === 'Report' ? '0' : '0',
       }}
       onClick={handleBtnClick}
     >
-      <Typography
-        component="span"
-        className={Style['heading']}
-        style={{
-          marginLeft:
-            btnTitle === 'Documents' || btnTitle === 'Reports' ? '40px' : '0',
-        }}
-      >
+      <Typography component="span" className={Style['heading']}>
         <Image src={iconPath} alt="icon" width={18} height={18} />
         {btnTitle}
       </Typography>

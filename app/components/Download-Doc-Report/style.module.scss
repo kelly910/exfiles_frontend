@@ -87,18 +87,40 @@
   }
 
   .allSelect {
-    width: 100%;
-    padding-left: 33px;
     background-color: var(--Background-Color);
     position: sticky;
     top: 0;
     z-index: 2;
+
+    label {
+      cursor: pointer;
+      margin-left: 0;
+      margin-right: 0;
+
+      input {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        accent-color: var(--Main-Gradient);
+      }
+
+      span {
+        font-weight: var(--Regular);
+        font-size: var(--SubTitle-3);
+        line-height: 1.4;
+        padding: 0;
+
+        svg {
+          border: none;
+        }
+      }
+    }
   }
 
   .docBoxMain {
     width: 100%;
     padding: 12px 33px 24px 33px;
-    height: calc(100% - 74px - 91px);
+    height: calc(100% - 140px - 91px);
     overflow-y: auto;
 
     @media (max-width: 1440px) {
