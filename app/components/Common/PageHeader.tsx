@@ -68,6 +68,7 @@ export default function PageHeader({
   const isChatPage = pathname?.includes('/ai-chats');
   const isDocumentsPage = pathname?.includes('/documents');
   const isLogIncidentPage = pathname?.includes('/log-incident');
+  const isDocumentDownloadPage = pathname?.includes('/download-doc-report');
 
   useEffect(() => {
     if (selectedActiveChat?.name) {
@@ -176,6 +177,14 @@ export default function PageHeader({
                 {isDocumentsPage && (
                   <Image
                     src="/images/document-text.svg"
+                    alt="Documents-icon"
+                    width={18}
+                    height={18}
+                  />
+                )}
+                {isDocumentDownloadPage && (
+                  <Image
+                    src="/images/report-icon.svg"
                     alt="Documents-icon"
                     width={18}
                     height={18}

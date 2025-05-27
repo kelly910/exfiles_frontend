@@ -27,12 +27,14 @@ interface DocumentListingResponse {
 
 interface DocumentListingState {
   documents: Document[];
+  allDocuments: Document[];
   count: number;
 }
 
 const initialState: DocumentListingState = {
   documents: [],
   count: 0,
+  allDocuments: [],
 };
 
 export const fetchDocumentsByCategory = createAsyncThunk<
@@ -54,6 +56,54 @@ export const fetchDocumentsByCategory = createAsyncThunk<
       const searchQuery = `?search=${encodeURIComponent(search)}&page=${page}&page_size=${page_size ?? 12}`;
       const response = await api.get<DocumentListingResponse>(
         `${urlMapper.getDocumentByCategory}${categoryId}${searchQuery}`
+      );
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        (error as { response?: { data?: { messages?: string[] } } })?.response
+          ?.data?.messages?.[0] || 'Something went wrong. Please try again.';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const fetchAllDocuments = createAsyncThunk<
+  DocumentListingResponse,
+  {
+    search?: string;
+    page?: number;
+    page_size?: number | 'all';
+    before_date?: string;
+    after_date?: string;
+    categoryId?: string;
+  },
+  { rejectValue: string }
+>(
+  'documents/fetchAllDocuments',
+  async (
+    {
+      search = '',
+      page = 1,
+      page_size = 24,
+      before_date,
+      after_date,
+      categoryId,
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const params = new URLSearchParams();
+
+      if (search) params.append('search', search);
+      if (page) params.append('page', String(page));
+      if (page_size) params.append('page_size', String(page_size));
+      if (before_date) params.append('before_date', before_date);
+      if (after_date) params.append('after_date', after_date);
+      if (categoryId) params.append('categoryId', categoryId);
+
+      const queryString = params.toString() ? `?${params.toString()}` : '';
+      const response = await api.get<DocumentListingResponse>(
+        `${urlMapper.getDocumentByCategory}${queryString}`
       );
       return response.data;
     } catch (error) {
@@ -94,6 +144,10 @@ const documentListSlice = createSlice({
     builder
       .addCase(fetchDocumentsByCategory.fulfilled, (state, action) => {
         state.documents = action.payload.results;
+        state.count = action.payload.count;
+      })
+      .addCase(fetchAllDocuments.fulfilled, (state, action) => {
+        state.allDocuments = action.payload.results;
         state.count = action.payload.count;
       })
       .addCase(deleteDocumentByDocId.fulfilled, (state, action) => {
