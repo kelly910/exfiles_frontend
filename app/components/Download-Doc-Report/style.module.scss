@@ -41,6 +41,19 @@
       gap: 16px;
       width: 100%;
 
+      .search-btn {
+        background-color: var(--Card-Color);
+        padding: 6px;
+        border: 1px solid var(--Stroke-Color);
+        min-width: unset;
+        border-radius: 10px;
+        aspect-ratio: 1 / 1;
+
+        &.active {
+          background: var(--Main-Gradient);
+        }
+      }
+
       .searchInput {
         border: 1px solid var(--Stroke-Color);
         border-radius: 10px;
@@ -1040,6 +1053,52 @@
       @media (max-width: 550px) {
         width: calc(100%);
       }
+    }
+  }
+}
+
+.date-chip-box {
+  overflow: hidden;
+  transition: all 0.4s;
+  margin-top: 16px;
+  width: fit-content;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+
+  .date-chip-inner {
+    padding: 4px 8px;
+    border-radius: 500px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--Input-Box-Colors);
+    border: 1px solid var(--Stroke-Color);
+
+    .date-chip-heading {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      span {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 17px;
+        color: #898b94;
+        margin-right: 8px;
+
+        &:last-child {
+          color: var(--Primary-Text-Color);
+        }
+      }
+    }
+
+    .chip-btn {
+      min-width: unset;
+      padding: 4px;
+      border: 1px solid var(--Stroke-Color);
+      background: var(--Card-Color);
     }
   }
 }

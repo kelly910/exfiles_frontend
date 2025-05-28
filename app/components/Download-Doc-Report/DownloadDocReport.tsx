@@ -28,6 +28,7 @@ import { setPageHeaderData } from '@/app/redux/slices/login';
 import { fetchAllDocuments } from '@/app/redux/slices/documentByCategory';
 import { getDocumentImage } from '@/app/utils/functions';
 import { convertDateFormat } from '@/app/utils/constants';
+import FilterModal from './FilterModal';
 
 type Tag = {
   id: number;
@@ -180,6 +181,10 @@ const DownloadDocReport = () => {
     }
   };
 
+  // filtter
+
+  const [filterOpen, setFilterOpen] = useState(false);
+
   return (
     <>
       <main className="chat-body">
@@ -223,14 +228,23 @@ const DownloadDocReport = () => {
                       </InputAdornment>
                     }
                   />
-                  <Button className="btn btn-pluse filter-date">
-                    <Image
-                      src="/images/filter_list.svg"
-                      alt="re"
-                      width={24}
-                      height={24}
-                    />
-                  </Button>
+                  <Box className={styles['filter-btn-box']}>
+                    <Button
+                      className={`${styles['search-btn']} ${styles['filter-btn']}`}
+                      onClick={() => setFilterOpen(true)}
+                    >
+                      <Image
+                        src="/images/filter_list.svg"
+                        alt="filter_list"
+                        width={24}
+                        height={24}
+                      />
+                    </Button>
+                  </Box>
+                  <FilterModal
+                    open={filterOpen}
+                    onClose={() => setFilterOpen(false)}
+                  />
                   <Button
                     className="btn btn-pluse download-document-btn"
                     onClick={downloadSelectedDocReport}
@@ -245,6 +259,67 @@ const DownloadDocReport = () => {
                   </Button>
                 </Box>
                 <Box className={styles.allSelect}>
+                  <div className={`${styles['date-chip-box']}`}>
+                    <div className={styles['date-chip-inner']}>
+                      <Typography
+                        variant="body1"
+                        className={styles['date-chip-heading']}
+                      >
+                        <span>Marketing </span>
+                      </Typography>
+                      <Button className={styles['chip-btn']}>
+                        <Image
+                          src="/images/close.svg"
+                          alt="sidebar-hide-icon"
+                          width={10}
+                          height={10}
+                        />
+                      </Button>
+                    </div>
+                    <div className={styles['date-chip-inner']}>
+                      <Typography
+                        variant="body1"
+                        className={styles['date-chip-heading']}
+                      >
+                        <span>HR </span>
+                      </Typography>
+                      <Button className={styles['chip-btn']}>
+                        <Image
+                          src="/images/close.svg"
+                          alt="sidebar-hide-icon"
+                          width={10}
+                          height={10}
+                        />
+                      </Button>
+                    </div>
+                    <div className={styles['date-chip-inner']}>
+                      <Typography
+                        variant="body1"
+                        className={styles['date-chip-heading']}
+                      >
+                        <span>From :</span>
+                        {/* <span>{fromDate?.format('MM-DD-YYYY') || '-'}</span> */}
+                        <span>01-01-2020</span>
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        className={styles['date-chip-heading']}
+                      >
+                        <span>To :</span>
+
+                        {/* <span>{toDate?.format('MM-DD-YYYY') || '-'}</span> */}
+                        <span>01-01-2020</span>
+                      </Typography>
+                      <Button className={styles['chip-btn']}>
+                        <Image
+                          src="/images/close.svg"
+                          alt="sidebar-hide-icon"
+                          width={10}
+                          height={10}
+                        />
+                      </Button>
+                    </div>
+                  </div>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -299,6 +374,7 @@ const DownloadDocReport = () => {
                     label="Select All"
                     sx={{
                       paddingTop: '16px',
+                      width: 'fit-content',
                       display: 'flex',
                       justifyContent: 'flex-start',
                       alignItems: 'center',
