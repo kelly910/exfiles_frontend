@@ -229,6 +229,7 @@ export default function FilterModal({
             borderRadius: '12px',
             marginTop: '4px',
             border: '1px solid var(--Stroke-Color)',
+            maxHeight: '250px !important',
           },
         },
       },

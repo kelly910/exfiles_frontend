@@ -820,6 +820,8 @@
         line-height: 17px;
         color: #898b94;
         margin-right: 8px;
+        white-space: nowrap;
+        overflow: hidden;
 
         &:last-child {
           color: var(--Primary-Text-Color);
