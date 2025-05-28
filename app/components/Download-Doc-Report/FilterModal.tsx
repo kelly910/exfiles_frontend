@@ -12,39 +12,44 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useState } from 'react';
 import { Dayjs } from 'dayjs';
-import Style from '@components/Common/Sidebar.module.scss'; // assuming you're using CSS Modules
+import Style from '@components/Common/Sidebar.module.scss';
 import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
 import { ListItemText } from '@mui/material';
 import Image from 'next/image';
+import { RootState } from '@/app/redux/store';
+import { useSelector } from 'react-redux';
 
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
+  fromDate: Dayjs | null;
+  toDate: Dayjs | null;
+  setFromDate: (date: Dayjs | null) => void;
+  setToDate: (date: Dayjs | null) => void;
+  onApply: () => void;
+  selectedCategories: number[];
+  setSelectedCategories: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
-export default function FilterModal({ open, onClose }: FilterModalProps) {
-  const [tag, setTag] = useState('');
-  const [fromDate, setFromDate] = useState<Dayjs | null>(null);
-  const [toDate, setToDate] = useState<Dayjs | null>(null);
+export default function FilterModal({
+  open,
+  onClose,
+  fromDate,
+  toDate,
+  setFromDate,
+  setToDate,
+  onApply,
+  selectedCategories,
+  setSelectedCategories,
+}: FilterModalProps) {
   const [isFromDatePickerOpen, setIsFromDatePickerOpen] = useState(false);
   const [isToDatePickerOpen, setIsToDatePickerOpen] = useState(false);
-
-  const allTags = [
-    'Missed Visit',
-    'Late Visit',
-    'Denied Call',
-    'Safety Concerns',
-    'Missed Parenting Time',
-    'Denied Communication',
-    'Unapproved Decision',
-    'No Response',
-    'Other',
-  ];
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
-  const tags = ['Tag 1', 'Tag 2', 'Tag 3'];
+  const { categories } = useSelector(
+    (state: RootState) => state.categoryListing
+  );
 
   const handleApplyDateFilter = () => {
+    onApply();
     onClose();
   };
 
@@ -176,16 +181,6 @@ export default function FilterModal({ open, onClose }: FilterModalProps) {
             root: {
               backgroundColor: 'transparent',
               boxShadow: 'none',
-              // backdropFilter: 'blur(10px)',
-              // width: '100vw',
-              // height: '100vh',
-              // paddingTop: '130px',
-              // paddingLeft: '20px',
-              // display: 'flex',
-              // justifyContent: 'flex-start',
-              // alignItems: 'flex-start',
-              // transform: 'unset !important',
-
               [theme.breakpoints.down('md')]: {
                 inset: 'auto 0 0 0px !important',
                 alignItems: 'center',
@@ -268,13 +263,13 @@ export default function FilterModal({ open, onClose }: FilterModalProps) {
               fullWidth
               SelectProps={{
                 multiple: true,
-                value: selectedTags,
+                value: selectedCategories,
                 onChange: (e) => {
                   const value =
                     typeof e.target.value === 'string'
-                      ? e.target.value.split(',')
+                      ? e.target.value.split(',').map(Number)
                       : e.target.value;
-                  setSelectedTags(value as string[]);
+                  setSelectedCategories(value as number[]);
                 },
                 renderValue: (selected) => (
                   <Box
@@ -284,42 +279,45 @@ export default function FilterModal({ open, onClose }: FilterModalProps) {
                       gap: 0.5,
                     }}
                   >
-                    {(selected as string[]).map((value) => (
-                      <Box
-                        key={value}
-                        sx={{
-                          backgroundColor: '#2C2A38',
-                          fontSize: 'var(--SubTitle-3)',
-                          fontWeight: 'var(--Lighter)',
-                          color: '#fff',
-                          borderRadius: '100px',
-                          px: 1.5,
-                          py: 0.5,
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 1,
-                          border: '1px solid #3A3948',
-                        }}
-                      >
-                        {value}
-                        <span
-                          style={{ cursor: 'pointer' }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedTags((prev) =>
-                              prev.filter((tag) => tag !== value)
-                            );
+                    {(selected as number[]).map((id) => {
+                      const category = categories.find((cat) => cat.id === id);
+                      return category ? (
+                        <Box
+                          key={id}
+                          sx={{
+                            backgroundColor: '#2C2A38',
+                            fontSize: 'var(--SubTitle-3)',
+                            fontWeight: 'var(--Lighter)',
+                            color: '#fff',
+                            borderRadius: '100px',
+                            px: 1.5,
+                            py: 0.5,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                            border: '1px solid #3A3948',
                           }}
                         >
-                          <Image
-                            src="/images/close.svg"
-                            alt="close-icon"
-                            width={12}
-                            height={12}
-                          />
-                        </span>
-                      </Box>
-                    ))}
+                          {category.name}
+                          <span
+                            style={{ cursor: 'pointer' }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedCategories((prev) =>
+                                prev.filter((tagId) => tagId !== id)
+                              );
+                            }}
+                          >
+                            <Image
+                              src="/images/close.svg"
+                              alt="close-icon"
+                              width={12}
+                              height={12}
+                            />
+                          </span>
+                        </Box>
+                      ) : null;
+                    })}
                   </Box>
                 ),
               }}
@@ -356,14 +354,14 @@ export default function FilterModal({ open, onClose }: FilterModalProps) {
                 },
               }}
             >
-              {allTags.map((tag) => (
-                <MenuItem key={tag} value={tag}>
+              {categories.map((category) => (
+                <MenuItem key={category.id} value={category.id}>
                   <ListItemText
-                    primary={tag}
+                    primary={category.name}
                     primaryTypographyProps={{ sx: { color: '#fff' } }}
                   />
                   <Checkbox
-                    checked={selectedTags.indexOf(tag) > -1}
+                    checked={selectedCategories.includes(category.id)}
                     icon={
                       <Box
                         sx={{
@@ -610,11 +608,7 @@ export default function FilterModal({ open, onClose }: FilterModalProps) {
           </ThemeProvider>
         </Box>
 
-        <Button
-          className={Style['apply-btn']}
-          onClick={handleApplyDateFilter}
-          disabled={!fromDate || !toDate}
-        >
+        <Button className={Style['apply-btn']} onClick={handleApplyDateFilter}>
           Apply
         </Button>
       </Box>

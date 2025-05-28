@@ -25,10 +25,17 @@ import { RootState } from '@/app/redux/store';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useRouter } from 'next/navigation';
 import { setPageHeaderData } from '@/app/redux/slices/login';
-import { fetchAllDocuments } from '@/app/redux/slices/documentByCategory';
+import {
+  // downloadSelectedDocsReport,
+  fetchAllDocuments,
+} from '@/app/redux/slices/documentByCategory';
 import { getDocumentImage } from '@/app/utils/functions';
-import { convertDateFormat } from '@/app/utils/constants';
+import {
+  convertDateFormat,
+  convertDateFormatForIncident,
+} from '@/app/utils/constants';
 import FilterModal from './FilterModal';
+import { Dayjs } from 'dayjs';
 
 type Tag = {
   id: number;
@@ -60,6 +67,18 @@ const DownloadDocReport = () => {
   const [searchParams, setSearchParams] = useState('');
   const [page, setPage] = useState(1);
   const router = useRouter();
+  const [filters, setFilters] = useState({
+    createdBefore: '',
+    createdAfter: '',
+    category: [] as number[],
+  });
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [fromDate, setFromDate] = useState<Dayjs | null>(null);
+  const [toDate, setToDate] = useState<Dayjs | null>(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const { categories } = useSelector(
+    (state: RootState) => state.categoryListing
+  );
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -123,12 +142,16 @@ const DownloadDocReport = () => {
   const handleSearch = () => {
     if (searchParams.length > 3 || searchParams.length === 0) {
       dispatch(setLoader(true));
+      setSelectedDocsDownload([]);
       setTimeout(async () => {
         try {
           await dispatch(
             fetchAllDocuments({
               search: searchParams.length > 3 ? searchParams : '',
               page: 1,
+              created_before: filters.createdBefore,
+              created_after: filters.createdAfter,
+              category: selectedCategories.join(','),
             })
           ).unwrap();
         } catch (error) {
@@ -149,6 +172,9 @@ const DownloadDocReport = () => {
       fetchAllDocuments({
         search: searchParams.length > 3 ? searchParams : '',
         page: newPage,
+        created_before: filters.createdBefore,
+        created_after: filters.createdAfter,
+        category: selectedCategories.join(','),
       })
     ).unwrap();
     setPage(newPage);
@@ -168,22 +194,43 @@ const DownloadDocReport = () => {
 
   const downloadSelectedDocReport = () => {
     if (selectedDocsDownload.length) {
-      console.log(selectedDocsDownload, 'downloadSelectedDocReport');
-    }
-  };
-
-  const handleSelectAllDoc = async () => {
-    if (selectedDocsDownload.length === allDocuments.length) {
-      setSelectedDocsDownload([]);
+      // const payload = {
+      //   document_uuid: selectedDocsDownload.join(','),
+      // };
+      // dispatch(downloadSelectedDocsReport(payload));
+      console.log('selected document');
     } else {
-      const allDocSelect = allDocuments.map((doc) => doc.uuid);
-      setSelectedDocsDownload(allDocSelect);
+      // const payload = {
+      //   created_before: filters.createdBefore || '',
+      //   created_after: filters.createdAfter || '',
+      //   category: filters.category.length > 0 ? filters.category.join(',') : '',
+      //   search: searchParams.length > 3 ? searchParams : '',
+      //   type: 'all',
+      // };
+      // dispatch(downloadSelectedDocsReport(payload));
+      console.log('all document');
     }
   };
 
-  // filtter
-
-  const [filterOpen, setFilterOpen] = useState(false);
+  const handleFilterApply = () => {
+    const createdAfter = fromDate?.format('YYYY-MM-DD') || '';
+    const createdBefore = toDate?.format('YYYY-MM-DD') || '';
+    const categories = selectedCategories;
+    setFilters({
+      createdBefore,
+      createdAfter,
+      category: categories,
+    });
+    dispatch(
+      fetchAllDocuments({
+        created_before: createdBefore,
+        created_after: createdAfter,
+        category: categories.join(','),
+        search: searchParams.length > 3 ? searchParams : '',
+        page: 1,
+      })
+    ).unwrap();
+  };
 
   return (
     <>
@@ -242,14 +289,21 @@ const DownloadDocReport = () => {
                     </Button>
                   </Box>
                   <FilterModal
+                    fromDate={fromDate}
+                    toDate={toDate}
+                    setFromDate={setFromDate}
+                    setToDate={setToDate}
                     open={filterOpen}
                     onClose={() => setFilterOpen(false)}
+                    onApply={handleFilterApply}
+                    selectedCategories={selectedCategories}
+                    setSelectedCategories={setSelectedCategories}
                   />
                   <Button
                     className="btn btn-pluse download-document-btn"
                     onClick={downloadSelectedDocReport}
                   >
-                    Generate Report ({selectedDocsDownload.length})
+                    Generate Report ({selectedDocsDownload.length || 'ALL'})
                     <Image
                       src="/images/document-download.svg"
                       alt="re"
@@ -260,127 +314,108 @@ const DownloadDocReport = () => {
                 </Box>
                 <Box className={styles.allSelect}>
                   <div className={`${styles['date-chip-box']}`}>
-                    <div className={styles['date-chip-inner']}>
-                      <Typography
-                        variant="body1"
-                        className={styles['date-chip-heading']}
-                      >
-                        <span>Marketing </span>
-                      </Typography>
-                      <Button className={styles['chip-btn']}>
-                        <Image
-                          src="/images/close.svg"
-                          alt="sidebar-hide-icon"
-                          width={10}
-                          height={10}
-                        />
-                      </Button>
-                    </div>
-                    <div className={styles['date-chip-inner']}>
-                      <Typography
-                        variant="body1"
-                        className={styles['date-chip-heading']}
-                      >
-                        <span>HR </span>
-                      </Typography>
-                      <Button className={styles['chip-btn']}>
-                        <Image
-                          src="/images/close.svg"
-                          alt="sidebar-hide-icon"
-                          width={10}
-                          height={10}
-                        />
-                      </Button>
-                    </div>
-                    <div className={styles['date-chip-inner']}>
-                      <Typography
-                        variant="body1"
-                        className={styles['date-chip-heading']}
-                      >
-                        <span>From :</span>
-                        {/* <span>{fromDate?.format('MM-DD-YYYY') || '-'}</span> */}
-                        <span>01-01-2020</span>
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        className={styles['date-chip-heading']}
-                      >
-                        <span>To :</span>
-
-                        {/* <span>{toDate?.format('MM-DD-YYYY') || '-'}</span> */}
-                        <span>01-01-2020</span>
-                      </Typography>
-                      <Button className={styles['chip-btn']}>
-                        <Image
-                          src="/images/close.svg"
-                          alt="sidebar-hide-icon"
-                          width={10}
-                          height={10}
-                        />
-                      </Button>
-                    </div>
-                  </div>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={
-                          selectedDocsDownload.length === allDocuments.length &&
-                          allDocuments.length > 0
-                        }
-                        onChange={handleSelectAllDoc}
-                        icon={
-                          <Box
-                            sx={{
-                              width: 24,
-                              height: 24,
-                              border: '2px solid #3A3A4B',
-                              borderRadius: '8px',
-                              backgroundColor: 'transparent',
-                            }}
-                          />
-                        }
-                        checkedIcon={
-                          <Box
-                            sx={{
-                              width: 24,
-                              height: 24,
-                              background: 'var(--Main-Gradient)',
-                              borderRadius: '8px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
+                    {filters.category.map((id) => {
+                      const category = categories.find((cat) => cat.id === id);
+                      if (!category) return null;
+                      return (
+                        <div key={id} className={styles['date-chip-inner']}>
+                          <Typography
+                            variant="body1"
+                            className={styles['date-chip-heading']}
+                          >
+                            <span>{category.name} </span>
+                          </Typography>
+                          <Button
+                            className={styles['chip-btn']}
+                            onClick={() => {
+                              setFilters((prev) => {
+                                const updatedCategories = prev.category.filter(
+                                  (catId) => catId !== id
+                                );
+                                setSelectedCategories(updatedCategories);
+                                dispatch(
+                                  fetchAllDocuments({
+                                    created_before: prev.createdBefore,
+                                    created_after: prev.createdAfter,
+                                    category: updatedCategories.join(','),
+                                    search:
+                                      searchParams.length > 3
+                                        ? searchParams
+                                        : '',
+                                    page: 1,
+                                  })
+                                ).unwrap();
+                                return {
+                                  ...prev,
+                                  category: updatedCategories,
+                                };
+                              });
                             }}
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="12"
-                              height="8"
-                              viewBox="0 0 12 8"
-                              fill="none"
-                            >
-                              <path
-                                d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
-                                stroke="white"
-                                stroke-width="1.8"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </Box>
-                        }
-                        sx={{ padding: '0' }}
-                      />
-                    }
-                    label="Select All"
-                    sx={{
-                      paddingTop: '16px',
-                      width: 'fit-content',
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      gap: '8px',
-                    }}
-                  />
+                            <Image
+                              src="/images/close.svg"
+                              alt="sidebar-hide-icon"
+                              width={10}
+                              height={10}
+                            />
+                          </Button>
+                        </div>
+                      );
+                    })}
+                    {filters.createdAfter && filters.createdBefore && (
+                      <div className={styles['date-chip-inner']}>
+                        <Typography
+                          variant="body1"
+                          className={styles['date-chip-heading']}
+                        >
+                          <span>From :</span>
+                          <span>
+                            {convertDateFormatForIncident(filters.createdAfter)}
+                          </span>
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          className={styles['date-chip-heading']}
+                        >
+                          <span>To :</span>
+                          <span>
+                            {convertDateFormatForIncident(
+                              filters.createdBefore
+                            )}
+                          </span>
+                        </Typography>
+                        <Button
+                          className={styles['chip-btn']}
+                          onClick={() => {
+                            setFromDate(null);
+                            setToDate(null);
+                            setFilters((prev) => ({
+                              ...prev,
+                              createdAfter: '',
+                              createdBefore: '',
+                            }));
+                            dispatch(
+                              fetchAllDocuments({
+                                created_before: '',
+                                created_after: '',
+                                category: filters.category.join(','),
+                                search:
+                                  searchParams.length > 3 ? searchParams : '',
+                                page: 1,
+                              })
+                            ).unwrap();
+                          }}
+                        >
+                          <Image
+                            src="/images/close.svg"
+                            alt="sidebar-hide-icon"
+                            width={10}
+                            height={10}
+                          />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </Box>
               </Box>
               <Box className={styles.docBoxMain} component="div">
