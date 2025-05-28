@@ -15,7 +15,6 @@ import { Dayjs } from 'dayjs';
 import Style from '@components/Common/Sidebar.module.scss';
 import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
 import { ListItemText } from '@mui/material';
-import Image from 'next/image';
 import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
 
@@ -280,7 +279,7 @@ export default function FilterModal({
                       gap: 0.5,
                     }}
                   >
-                    {(selected as number[]).map((id) => {
+                    {(selected as number[])?.slice(0, 2)?.map((id) => {
                       const category = categories.find((cat) => cat.id === id);
                       return category ? (
                         <Box
@@ -300,25 +299,28 @@ export default function FilterModal({
                           }}
                         >
                           {category.name}
-                          <span
-                            style={{ cursor: 'pointer' }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedCategories((prev) =>
-                                prev.filter((tagId) => tagId !== id)
-                              );
-                            }}
-                          >
-                            <Image
-                              src="/images/close.svg"
-                              alt="close-icon"
-                              width={12}
-                              height={12}
-                            />
-                          </span>
                         </Box>
                       ) : null;
                     })}
+                    {(selected as number[]).length > 2 && (
+                      <Box
+                        sx={{
+                          backgroundColor: '#2C2A38',
+                          fontSize: 'var(--SubTitle-3)',
+                          fontWeight: 'var(--Lighter)',
+                          color: '#fff',
+                          borderRadius: '100px',
+                          px: 1.5,
+                          py: 0.5,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1,
+                          border: '1px solid #3A3948',
+                        }}
+                      >
+                        +{(selected as number[]).length - 2}
+                      </Box>
+                    )}
                   </Box>
                 ),
               }}
