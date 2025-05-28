@@ -1,13 +1,13 @@
 import dynamic from 'next/dynamic';
 
-const DynamicDownloadDocComponent = dynamic<{ catId: number | null }>(
+const DynamicDownloadDocComponent = dynamic(
   () => import('@components/Download-Doc-Report/DownloadDocReport')
 );
 
 export default function Page() {
   return (
     <main>
-      <DynamicDownloadDocComponent catId={3} />
+      <DynamicDownloadDocComponent />
     </main>
   );
 }

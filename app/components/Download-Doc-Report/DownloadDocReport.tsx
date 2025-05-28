@@ -25,12 +25,16 @@ import { RootState } from '@/app/redux/store';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useRouter } from 'next/navigation';
 import { setPageHeaderData } from '@/app/redux/slices/login';
-import { fetchDocumentsByCategory } from '@/app/redux/slices/documentByCategory';
+import { fetchAllDocuments } from '@/app/redux/slices/documentByCategory';
 import { getDocumentImage } from '@/app/utils/functions';
 import { convertDateFormat } from '@/app/utils/constants';
-import { Check, CheckCircleOutline } from '@mui/icons-material';
 
 type Tag = {
+  id: number;
+  name: string;
+};
+
+type Category = {
   id: number;
   name: string;
 };
@@ -45,15 +49,10 @@ type Document = {
   upload_on: string;
   uuid?: string;
   can_download_summary_pdf?: string;
+  category?: Category;
 };
 
-type DocumentReportDownloadProps = {
-  catId: number | null;
-};
-
-const DownloadDocReport: React.FC<DocumentReportDownloadProps> = ({
-  catId,
-}) => {
+const DownloadDocReport = () => {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const dispatch = useAppDispatch();
@@ -83,57 +82,50 @@ const DownloadDocReport: React.FC<DocumentReportDownloadProps> = ({
     router.push(`/ai-chats/${thread}`); // Navigate to thread page
   };
 
-  const { documents, count } = useSelector(
+  const { allDocuments, count } = useSelector(
     (state: RootState) => state.documentListing
   );
 
   useEffect(() => {
-    if (catId) {
-      dispatch(setLoader(true));
-      setTimeout(async () => {
-        try {
-          await dispatch(
-            fetchDocumentsByCategory({
-              categoryId: catId,
-              search: searchParams,
-            })
-          )
-            .unwrap()
-            .then((res) => {
-              if (res.count) {
-                dispatch(
-                  setPageHeaderData({
-                    title: 'Document Report',
-                    subTitle: `No. of Document Report : ${res.count}`,
-                  })
-                );
-              }
-            });
-        } catch (error) {
-          handleError(error as ErrorResponse);
-          dispatch(setLoader(false));
-        } finally {
-          dispatch(setLoader(false));
-        }
-      }, 1000);
-    }
-  }, [dispatch, catId]);
+    dispatch(setLoader(true));
+    setTimeout(async () => {
+      try {
+        await dispatch(
+          fetchAllDocuments({
+            search: searchParams,
+          })
+        )
+          .unwrap()
+          .then((res) => {
+            if (res?.no_of_docs || res?.count) {
+              dispatch(
+                setPageHeaderData({
+                  title: 'Document Report',
+                  subTitle: `No. of Document Report : ${res?.no_of_docs}`,
+                })
+              );
+            }
+          });
+      } catch (error) {
+        handleError(error as ErrorResponse);
+        dispatch(setLoader(false));
+      } finally {
+        dispatch(setLoader(false));
+      }
+    }, 1000);
+  }, [dispatch]);
 
   const handleSearchInput = (inputValue: string) => {
     setSearchParams(inputValue.length > 3 ? inputValue : '');
   };
 
   const handleSearch = () => {
-    if (
-      (searchParams.length > 3 || searchParams.length === 0) &&
-      catId !== null
-    ) {
+    if (searchParams.length > 3 || searchParams.length === 0) {
       dispatch(setLoader(true));
       setTimeout(async () => {
         try {
           await dispatch(
-            fetchDocumentsByCategory({
-              categoryId: catId,
+            fetchAllDocuments({
               search: searchParams.length > 3 ? searchParams : '',
               page: 1,
             })
@@ -153,8 +145,7 @@ const DownloadDocReport: React.FC<DocumentReportDownloadProps> = ({
     newPage: number
   ) => {
     await dispatch(
-      fetchDocumentsByCategory({
-        categoryId: catId as number,
+      fetchAllDocuments({
         search: searchParams.length > 3 ? searchParams : '',
         page: newPage,
       })
@@ -180,11 +171,11 @@ const DownloadDocReport: React.FC<DocumentReportDownloadProps> = ({
     }
   };
 
-  const handleSelectAllDoc = () => {
-    if (selectedDocsDownload.length === documents.length) {
+  const handleSelectAllDoc = async () => {
+    if (selectedDocsDownload.length === allDocuments.length) {
       setSelectedDocsDownload([]);
     } else {
-      const allDocSelect = documents.map((doc) => doc.uuid);
+      const allDocSelect = allDocuments.map((doc) => doc.uuid);
       setSelectedDocsDownload(allDocSelect);
     }
   };
@@ -258,8 +249,8 @@ const DownloadDocReport: React.FC<DocumentReportDownloadProps> = ({
                     control={
                       <Checkbox
                         checked={
-                          selectedDocsDownload.length === documents.length &&
-                          documents.length > 0
+                          selectedDocsDownload.length === allDocuments.length &&
+                          allDocuments.length > 0
                         }
                         onChange={handleSelectAllDoc}
                         icon={
@@ -316,12 +307,11 @@ const DownloadDocReport: React.FC<DocumentReportDownloadProps> = ({
                   />
                 </Box>
               </Box>
-
               <Box className={styles.docBoxMain} component="div">
                 <Box component="div" className={styles.docBoxInner}>
-                  {catId && documents?.length > 0 ? (
-                    Array.isArray(documents) &&
-                    documents?.map((doc: Document) => (
+                  {allDocuments?.length > 0 ? (
+                    Array.isArray(allDocuments) &&
+                    allDocuments?.map((doc: Document) => (
                       <Box key={doc?.id} className={styles.docGridBox}>
                         <div className={styles.docBox}>
                           <Image
@@ -396,16 +386,9 @@ const DownloadDocReport: React.FC<DocumentReportDownloadProps> = ({
                         </div>
                         <div className={styles.docDateBox}>
                           <div className={styles.docTagBox}>
-                            {doc?.tags?.slice(0, 1)?.map((tag) => (
-                              <span key={tag?.id} className={styles.docTag}>
-                                {tag?.name}
-                              </span>
-                            ))}
-                            {doc?.tags?.length > 1 && (
-                              <span className={styles.docTagCount}>
-                                +{doc?.tags?.length - 1}
-                              </span>
-                            )}
+                            <span className={styles.docTag}>
+                              {doc?.category?.name}
+                            </span>
                           </div>
                           <Typography variant="body1">
                             {convertDateFormat(doc?.upload_on)}
@@ -432,7 +415,7 @@ const DownloadDocReport: React.FC<DocumentReportDownloadProps> = ({
                 }}
               >
                 <Pagination
-                  count={Math.ceil(count / 12)}
+                  count={Math.ceil(count / 24)}
                   page={page}
                   onChange={handlePageChange}
                   shape="rounded"
