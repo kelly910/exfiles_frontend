@@ -17,10 +17,20 @@ export default function SidebarButton({
     <Button
       className={`${Style.customAccordionHeading}`}
       sx={{
-        marginBottom: '12px',
+        display: 'flex',
+        marginBottom:
+          btnTitle === 'Documents' || btnTitle === 'Report' ? '5px' : '12px',
         '.MuiTouchRipple-root': {
           display: 'none !important',
         },
+        width:
+          btnTitle === 'Documents' || btnTitle === 'Report'
+            ? 'calc(100% - 26px)'
+            : '100%',
+        marginLeft:
+          btnTitle === 'Documents' || btnTitle === 'Report' ? 'auto' : '0',
+        marginRight:
+          btnTitle === 'Documents' || btnTitle === 'Report' ? '0' : '0',
       }}
       onClick={handleBtnClick}
     >

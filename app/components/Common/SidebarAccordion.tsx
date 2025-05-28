@@ -6,7 +6,7 @@ import Style from '@components/Common/Sidebar.module.scss';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 interface SidebarAccordionProps {
   title: string;
@@ -31,10 +31,10 @@ const SidebarAccordion = ({
   closeDocumentSummary,
   expandPanel,
 }: SidebarAccordionProps) => {
-  const router = useRouter();
+  // const router = useRouter();
   const redirection = (expanded: string) => {
     if (expanded == 'panel3') {
-      router.push('/documents');
+      // router.push('/documents');
     } else if (expanded == 'panel1' || expanded == 'panel2') {
       closeDocumentSummary?.();
     }
@@ -60,11 +60,11 @@ const SidebarAccordion = ({
           <Image
             className={Style['img-none']}
             src={
-              panelKey === 'panel3' || panelKey === 'panel4'
-                ? '/images/arrow-down-right.svg'
-                : expanded === panelKey
-                  ? '/images/arrow-down.svg'
-                  : '/images/arrow-down-right.svg'
+              // panelKey === 'panel3' || panelKey === 'panel4'
+              //   ? '/images/arrow-down-right.svg' :
+              expanded === panelKey
+                ? '/images/arrow-down.svg'
+                : '/images/arrow-down-right.svg'
             }
             alt="expand-collapse"
             width={16}

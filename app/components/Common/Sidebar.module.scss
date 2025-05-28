@@ -835,3 +835,17 @@
     }
   }
 }
+
+// date-pickerbox-inner
+
+.date-pickerbox-inner {
+  max-width: 300px;
+  border: 1px solid var(--Stroke-Color);
+  background-color: var(--Card-Color);
+  padding: 20px 12px;
+  border-radius: 12px;
+  margin-right: 250px;
+  margin-left: auto;
+  margin-top: 140px;
+  text-align: end;
+}

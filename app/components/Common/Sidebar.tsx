@@ -95,6 +95,10 @@ const Sidebar = ({
       });
   };
 
+  const handleDocReport = () => {
+    router.push('/download-doc-report');
+  };
+
   const handleStartNewChat = () => {
     dispatch(setActiveThread(null));
     dispatch(clearPageHeaderData());
@@ -331,11 +335,32 @@ const Sidebar = ({
               />
             </SidebarAccordion>
 
-            <SidebarButton
+            <SidebarAccordion
+              title="Documents"
+              icon="/images/document-text.svg"
+              expanded={expanded}
+              panelKey="panel3"
+              handleAccordionChange={handleAccordionChange}
+              expandPanel={() => setExpanded('panel3')}
+            >
+              <SidebarButton
+                btnTitle={'Documents'}
+                iconPath={'/images/document-text.svg'}
+                handleBtnClick={handleDocumentClick}
+              />
+
+              <SidebarButton
+                btnTitle={'Report'}
+                iconPath={'/images/report-icon.svg'}
+                handleBtnClick={handleDocReport}
+              />
+            </SidebarAccordion>
+
+            {/* <SidebarButton
               btnTitle={'Documents'}
               iconPath={'/images/document-text.svg'}
               handleBtnClick={handleDocumentClick}
-            />
+            /> */}
 
             <SidebarButton
               btnTitle={'Log Incident'}

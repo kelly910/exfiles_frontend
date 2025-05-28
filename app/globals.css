@@ -356,12 +356,33 @@ input {
   background: var(--Main-Gradient);
   border-radius: 12px;
   display: flex;
+  flex: 0 0 auto;
   justify-content: center;
   align-items: center;
   min-width: 140px;
   white-space: nowrap;
   outline: 0.5px solid transparent;
   transition: all 0.4s;
+}
+
+.download-document-btn {
+  padding: 8px 24px !important;
+}
+
+.download-document-btn img {
+  margin-left: 4px;
+}
+
+.filter-date {
+  background: transparent !important;
+  border-radius: 10px !important;
+  min-width: 36px !important;
+  border: 1px solid var(--Stroke-Color) !important;
+  padding: 6px 9px !important;
+}
+
+.filter-date img {
+  margin-right: 0 !important;
 }
 
 .btn.btn-pluse:hover {
