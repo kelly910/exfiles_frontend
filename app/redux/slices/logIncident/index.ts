@@ -103,6 +103,46 @@ export const fetchLogIncidents = createAsyncThunk<
   }
 );
 
+export const downloadSelectedLogsReport = createAsyncThunk<
+  void,
+  {
+    document_uuid?: string;
+    created_before?: string;
+    created_after?: string;
+    tags?: string;
+    search?: string;
+    type?: string;
+  },
+  { rejectValue: string }
+>(
+  'documents/downloadSelectedLogsReport',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await api.post(
+        `${urlMapper.downloadLogReport}`,
+        payload,
+        {
+          responseType: 'blob',
+        }
+      );
+      const blob = new Blob([response.data], {
+        type: response.headers['content-type'],
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'LogIncidentReport.pdf';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      const errorMessage =
+        (error as { response?: { data?: { messages?: string[] } } })?.response
+          ?.data?.messages?.[0] || 'Something went wrong. Please try again.';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 export const addIncident = createAsyncThunk<
   void,
   FormData,

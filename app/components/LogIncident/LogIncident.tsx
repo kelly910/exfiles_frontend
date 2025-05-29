@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import {
   Button,
   Checkbox,
+  CircularProgress,
   FormControlLabel,
   IconButton,
   Input,
@@ -20,7 +21,10 @@ import Sidebar from '../Common/Sidebar';
 import PageHeader from '../Common/PageHeader';
 import DeleteDialog from '../LogoutDialog/DeleteDialog';
 import { useState, useEffect } from 'react';
-import { fetchLogIncidents } from '@/app/redux/slices/logIncident';
+import {
+  fetchLogIncidents,
+  downloadSelectedLogsReport,
+} from '@/app/redux/slices/logIncident';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { setLoader } from '@/app/redux/slices/loader';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
@@ -32,8 +36,9 @@ import { useRouter } from 'next/navigation';
 import { setPageHeaderData } from '@/app/redux/slices/login';
 import LogDetailsModel from '../LogModel/LogDetailsModel';
 import LogModel from '../LogModel/LogModel';
-import dayjs from 'dayjs';
-import FilterModal from '../Download-Doc-Report/FilterModal';
+import dayjs, { Dayjs } from 'dayjs';
+import FilterModal from './FilterModal';
+import { convertDateFormatForIncident } from '@/app/utils/constants';
 
 export interface FileDataImage {
   file_url: string;
@@ -105,6 +110,18 @@ export default function LogIncident() {
   const router = useRouter();
   const open = Boolean(anchorEl);
   const [openAddIncident, setOpenAddIncident] = useState(false);
+  const [filters, setFilters] = useState({
+    createdBefore: '',
+    createdAfter: '',
+    tags: [] as number[],
+  });
+  const { tags } = useSelector((state: RootState) => state.tagList);
+  const [selectedTags, setSelectedTags] = useState<number[]>([]);
+  const [fromDate, setFromDate] = useState<Dayjs | null>(null);
+  const [toDate, setToDate] = useState<Dayjs | null>(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [editLogIncidentData, setEditLogIncidentData] =
     useState<LogIncidentDetails | null>(null);
 
@@ -188,6 +205,9 @@ export default function LogIncident() {
       fetchLogIncidents({
         search: searchParams.length > 3 ? searchParams : '',
         page: newPage,
+        created_before: filters.createdBefore,
+        created_after: filters.createdAfter,
+        tags: selectedTags.join(','),
       })
     ).unwrap();
     setPage(newPage);
@@ -206,6 +226,9 @@ export default function LogIncident() {
             fetchLogIncidents({
               search: searchParams.length > 3 ? searchParams : '',
               page: 1,
+              created_before: filters.createdBefore,
+              created_after: filters.createdAfter,
+              tags: selectedTags.join(','),
             })
           ).unwrap();
         } catch (error) {
@@ -231,9 +254,62 @@ export default function LogIncident() {
     setDetailsItem(detailsItem);
   };
 
-  // filtter
+  const [selectedLogsDownload, setSelectedLogsDownload] = useState<string[]>(
+    []
+  );
 
-  const [filterOpen, setFilterOpen] = useState(false);
+  const handleSelectLog = (docId: string) => {
+    setSelectedLogsDownload((prevSelected) =>
+      prevSelected.includes(docId)
+        ? prevSelected.filter((id) => id !== docId)
+        : [...prevSelected, docId]
+    );
+  };
+
+  const downloadLogsReport = async () => {
+    if (incidents.length) {
+      setLoading(true);
+      if (selectedLogsDownload.length) {
+        const payload = {
+          document_uuid: selectedLogsDownload.join(','),
+        };
+        await dispatch(downloadSelectedLogsReport(payload));
+        setLoading(false);
+      } else {
+        const payload = {
+          created_before: filters.createdBefore || '',
+          created_after: filters.createdAfter || '',
+          tags: filters.tags.length > 0 ? filters.tags.join(',') : '',
+          search: searchParams.length > 3 ? searchParams : '',
+          type: 'all',
+        };
+        await dispatch(downloadSelectedLogsReport(payload));
+        setLoading(false);
+      }
+      setLoading(false);
+    }
+  };
+
+  const handleFilterApply = () => {
+    const createdAfter = fromDate?.format('YYYY-MM-DD') || '';
+    const createdBefore = toDate?.format('YYYY-MM-DD') || '';
+    const chooseTags = selectedTags;
+    setFilters({
+      createdBefore,
+      createdAfter,
+      tags: chooseTags,
+    });
+    console.log(typeof chooseTags.join(','), 'chooseTags');
+    dispatch(
+      fetchLogIncidents({
+        created_before: createdBefore,
+        created_after: createdAfter,
+        tags: chooseTags.join(','),
+        search: searchParams.length > 3 ? searchParams : '',
+        page: 1,
+      })
+    ).unwrap();
+  };
 
   return (
     <>
@@ -369,10 +445,17 @@ export default function LogIncident() {
                         />
                       </Button>
                     </Box>
-                    {/* <FilterModal
+                    <FilterModal
+                      fromDate={fromDate}
+                      toDate={toDate}
+                      setFromDate={setFromDate}
+                      setToDate={setToDate}
                       open={filterOpen}
                       onClose={() => setFilterOpen(false)}
-                    /> */}
+                      onApply={handleFilterApply}
+                      selectedTags={selectedTags}
+                      setSelectedTags={setSelectedTags}
+                    />
                     <Button
                       className="btn btn-pluse"
                       onClick={handleOpenAddIncident}
@@ -388,77 +471,131 @@ export default function LogIncident() {
                   </Box>
                   <Box className={styles.allSelect}>
                     <div className={`${styles['date-chip-box']}`}>
-                      <div className={styles['date-chip-inner']}>
-                        <Typography
-                          variant="body1"
-                          className={styles['date-chip-heading']}
-                        >
-                          <span>Marketing </span>
-                        </Typography>
-                        <Button className={styles['chip-btn']}>
-                          <Image
-                            src="/images/close.svg"
-                            alt="sidebar-hide-icon"
-                            width={10}
-                            height={10}
-                          />
-                        </Button>
-                      </div>
-                      <div className={styles['date-chip-inner']}>
-                        <Typography
-                          variant="body1"
-                          className={styles['date-chip-heading']}
-                        >
-                          <span>HR </span>
-                        </Typography>
-                        <Button className={styles['chip-btn']}>
-                          <Image
-                            src="/images/close.svg"
-                            alt="sidebar-hide-icon"
-                            width={10}
-                            height={10}
-                          />
-                        </Button>
-                      </div>
-                      <div className={styles['date-chip-inner']}>
-                        <Typography
-                          variant="body1"
-                          className={styles['date-chip-heading']}
-                        >
-                          <span>From :</span>
-                          {/* <span>{fromDate?.format('MM-DD-YYYY') || '-'}</span> */}
-                          <span>01-01-2020</span>
-                        </Typography>
-                        <Typography
-                          variant="body1"
-                          className={styles['date-chip-heading']}
-                        >
-                          <span>To :</span>
-
-                          {/* <span>{toDate?.format('MM-DD-YYYY') || '-'}</span> */}
-                          <span>01-01-2020</span>
-                        </Typography>
-                        <Button className={styles['chip-btn']}>
-                          <Image
-                            src="/images/close.svg"
-                            alt="sidebar-hide-icon"
-                            width={10}
-                            height={10}
-                          />
-                        </Button>
-                      </div>
+                      {filters.tags.map((id) => {
+                        const tagDisp = tags.find(
+                          (tag) => Number(tag.id) === id
+                        );
+                        if (!tagDisp) return null;
+                        return (
+                          <div key={id} className={styles['date-chip-inner']}>
+                            <Typography
+                              variant="body1"
+                              className={styles['date-chip-heading']}
+                            >
+                              <span>{tagDisp.name} </span>
+                            </Typography>
+                            <Button
+                              className={styles['chip-btn']}
+                              onClick={() => {
+                                setFilters((prev) => {
+                                  const updatedTags = prev.tags.filter(
+                                    (tagId) => tagId !== id
+                                  );
+                                  setSelectedTags(updatedTags);
+                                  dispatch(
+                                    fetchLogIncidents({
+                                      created_before: prev.createdBefore,
+                                      created_after: prev.createdAfter,
+                                      tags: updatedTags.join(','),
+                                      search:
+                                        searchParams.length > 3
+                                          ? searchParams
+                                          : '',
+                                      page: 1,
+                                    })
+                                  ).unwrap();
+                                  return {
+                                    ...prev,
+                                    tags: updatedTags,
+                                  };
+                                });
+                              }}
+                            >
+                              <Image
+                                src="/images/close.svg"
+                                alt="sidebar-hide-icon"
+                                width={10}
+                                height={10}
+                              />
+                            </Button>
+                          </div>
+                        );
+                      })}
+                      {filters.createdAfter && filters.createdBefore && (
+                        <div className={styles['date-chip-inner']}>
+                          <Typography
+                            variant="body1"
+                            className={styles['date-chip-heading']}
+                          >
+                            <span>From :</span>
+                            <span>
+                              {convertDateFormatForIncident(
+                                filters.createdAfter
+                              )}
+                            </span>
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            className={styles['date-chip-heading']}
+                          >
+                            <span>To :</span>
+                            <span>
+                              {convertDateFormatForIncident(
+                                filters.createdBefore
+                              )}
+                            </span>
+                          </Typography>
+                          <Button
+                            className={styles['chip-btn']}
+                            onClick={() => {
+                              setFromDate(null);
+                              setToDate(null);
+                              setFilters((prev) => ({
+                                ...prev,
+                                createdAfter: '',
+                                createdBefore: '',
+                              }));
+                              dispatch(
+                                fetchLogIncidents({
+                                  created_before: '',
+                                  created_after: '',
+                                  tags: filters.tags.join(','),
+                                  search:
+                                    searchParams.length > 3 ? searchParams : '',
+                                  page: 1,
+                                })
+                              ).unwrap();
+                            }}
+                          >
+                            <Image
+                              src="/images/close.svg"
+                              alt="sidebar-hide-icon"
+                              width={10}
+                              height={10}
+                            />
+                          </Button>
+                        </div>
+                      )}
                     </div>
                     <Button
                       className="btn btn-pluse generate-document-btn"
-                      // onClick={handleOpenAddIncident}
+                      onClick={downloadLogsReport}
+                      disabled={loading}
                     >
-                      Generate Report (4)
-                      <Image
-                        src="/images/document-download.svg"
-                        alt="re"
-                        width={20}
-                        height={20}
-                      />
+                      {loading ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : (
+                        <>
+                          Generate Report (
+                          {selectedLogsDownload.length || 'ALL'})
+                          <Image
+                            src="/images/document-download.svg"
+                            alt="re"
+                            width={20}
+                            height={20}
+                          />
+                        </>
+                      )}
                     </Button>
                   </Box>
                 </Box>
@@ -480,12 +617,12 @@ export default function LogIncident() {
                                 <FormControlLabel
                                   control={
                                     <Checkbox
-                                      // checked={selectedDocsDownload.includes(
-                                      //   doc?.uuid || ''
-                                      // )}
-                                      // onChange={() =>
-                                      //   handleSelectDoc(doc?.uuid || '')
-                                      // }
+                                      checked={selectedLogsDownload.includes(
+                                        item?.id || ''
+                                      )}
+                                      onChange={() =>
+                                        handleSelectLog(item?.id || '')
+                                      }
                                       icon={
                                         <Box
                                           sx={{

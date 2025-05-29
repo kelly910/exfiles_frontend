@@ -30,6 +30,7 @@ const urlMapper = {
   generatedDownloadSummary: `${BASE_URL}generate-summary-pdf/`,
   // reports download
   downloadDocReport: `${BASE_URL}multiple-documents-summary-pdf/`,
+  downloadLogReport: `${BASE_URL}incident-report-pdf/`,
 };
 
 export default urlMapper;
