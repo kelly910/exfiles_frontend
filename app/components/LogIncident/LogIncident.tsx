@@ -271,7 +271,7 @@ export default function LogIncident() {
       setLoading(true);
       if (selectedLogsDownload.length) {
         const payload = {
-          document_uuid: selectedLogsDownload.join(','),
+          incidents_id: selectedLogsDownload.join(','),
         };
         await dispatch(downloadSelectedLogsReport(payload));
         setLoading(false);

@@ -106,7 +106,7 @@ export const fetchLogIncidents = createAsyncThunk<
 export const downloadSelectedLogsReport = createAsyncThunk<
   void,
   {
-    document_uuid?: string;
+    incidents_id?: string;
     created_before?: string;
     created_after?: string;
     tags?: string;
