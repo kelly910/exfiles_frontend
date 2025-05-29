@@ -335,32 +335,44 @@ const Sidebar = ({
               />
             </SidebarAccordion>
 
-            <SidebarAccordion
-              title="Documents"
-              icon="/images/document-text.svg"
-              expanded={expanded}
-              panelKey="panel3"
-              handleAccordionChange={handleAccordionChange}
-              expandPanel={() => setExpanded('panel3')}
-            >
-              <SidebarButton
-                btnTitle={'Documents'}
-                iconPath={'/images/document-text.svg'}
-                handleBtnClick={handleDocumentClick}
-              />
+            {isOpen ? (
+              <SidebarAccordion
+                title="Documents"
+                icon="/images/document-text.svg"
+                expanded={expanded}
+                panelKey="panel3"
+                handleAccordionChange={handleAccordionChange}
+                expandPanel={() => setExpanded('panel3')}
+              >
+                <SidebarButton
+                  btnTitle={'Documents'}
+                  iconPath={'/images/document-text.svg'}
+                  handleBtnClick={handleDocumentClick}
+                />
 
-              <SidebarButton
-                btnTitle={'Report'}
-                iconPath={'/images/report-icon.svg'}
-                handleBtnClick={handleDocReport}
-              />
-            </SidebarAccordion>
+                <SidebarButton
+                  btnTitle={'Report'}
+                  iconPath={'/images/report-icon.svg'}
+                  handleBtnClick={handleDocReport}
+                />
+              </SidebarAccordion>
+            ) : (
+              <>
+                <SidebarButton
+                  btnTitle={'Documents'}
+                  iconPath={'/images/document-text.svg'}
+                  handleBtnClick={handleDocumentClick}
+                  // isOpen={isOpen}
+                />
 
-            {/* <SidebarButton
-              btnTitle={'Documents'}
-              iconPath={'/images/document-text.svg'}
-              handleBtnClick={handleDocumentClick}
-            /> */}
+                <SidebarButton
+                  btnTitle={'Report'}
+                  iconPath={'/images/report-icon.svg'}
+                  handleBtnClick={handleDocReport}
+                  // isOpen={isOpen}
+                />
+              </>
+            )}
 
             <SidebarButton
               btnTitle={'Log Incident'}
