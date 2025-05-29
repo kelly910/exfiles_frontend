@@ -75,9 +75,12 @@
 }
 
 .loIncidentTable {
-  min-height: calc(100% - 95px - 88px) !important;
-  height: auto !important;
+  // min-height: calc(100% - 95px - 88px) !important;
+  // height: auto !important;
+  flex-grow: 1;
+  flex: 1;
   padding: 0 24px;
+  overflow-y: auto;
 }
 
 .mainDropdown {

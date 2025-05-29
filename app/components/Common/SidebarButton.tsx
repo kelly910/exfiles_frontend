@@ -8,10 +8,12 @@ export default function SidebarButton({
   btnTitle,
   iconPath,
   handleBtnClick,
+  // isOpen,
 }: {
   btnTitle: string;
   iconPath: string;
   handleBtnClick: () => void;
+  // isOpen?: boolean;
 }) {
   return (
     <Button
@@ -38,15 +40,6 @@ export default function SidebarButton({
         <Image src={iconPath} alt="icon" width={18} height={18} />
         {btnTitle}
       </Typography>
-      {/* <Typography component="span" className={Style['heading-side-img']}>
-        <Image
-          className={Style['img-none']}
-          src="/images/arrow-down-right.svg"
-          alt="expand-collapse"
-          width={16}
-          height={16}
-        />
-      </Typography> */}
     </Button>
   );
 }

@@ -17,7 +17,7 @@ import {
 import Image from 'next/image';
 import Sidebar from '../Common/Sidebar';
 import PageHeader from '../Common/PageHeader';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { setLoader } from '@/app/redux/slices/loader';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
@@ -37,6 +37,7 @@ import {
 } from '@/app/utils/constants';
 import FilterModal from './FilterModal';
 import { Dayjs } from 'dayjs';
+import Slider from 'react-slick';
 
 type Tag = {
   id: number;
@@ -239,6 +240,70 @@ const DownloadDocReport = () => {
     ).unwrap();
   };
 
+  const CustomArrow = ({
+    direction,
+    onClick,
+    disabled,
+  }: {
+    direction: 'left' | 'right';
+    onClick?: () => void;
+    disabled?: boolean;
+  }) => (
+    <button
+      className={`${styles.arrow} ${styles[direction]} ${disabled ? styles.disabled : ''}`}
+      onClick={onClick}
+      disabled={disabled}
+      aria-disabled={disabled}
+    >
+      <Image
+        src={`/images/arrow-${direction}.svg`}
+        alt={`${direction}-arrow`}
+        width={20}
+        height={20}
+      />
+    </button>
+  );
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [slideCount, setSlideCount] = useState(0);
+  const sliderRef = useRef<Slider>(null);
+
+  useEffect(() => {
+    setSlideCount(filters.category.length);
+  }, [filters.category]);
+
+  const goToNext = () => {
+    sliderRef.current?.slickNext();
+  };
+  const goToPrev = () => {
+    sliderRef.current?.slickPrev();
+  };
+
+  const settings = {
+    infinite: false,
+    speed: 500,
+    slidesToScroll: 1,
+    swipeToSlide: true,
+    variableWidth: true,
+    arrows: true,
+    dots: false,
+    afterChange: (index: number) => setCurrentSlide(index),
+    nextArrow: (
+      <CustomArrow
+        direction="right"
+        disabled={currentSlide >= slideCount - 1}
+        onClick={goToNext}
+      />
+    ),
+    prevArrow: (
+      <CustomArrow
+        direction="left"
+        disabled={currentSlide === 0}
+        onClick={goToPrev}
+      />
+    ),
+  };
+
   return (
     <>
       <main className="chat-body">
@@ -328,54 +393,6 @@ const DownloadDocReport = () => {
                 </Box>
                 <Box className={styles.allSelect}>
                   <div className={`${styles['date-chip-box']}`}>
-                    {filters.category.map((id) => {
-                      const category = categories.find((cat) => cat.id === id);
-                      if (!category) return null;
-                      return (
-                        <div key={id} className={styles['date-chip-inner']}>
-                          <Typography
-                            variant="body1"
-                            className={styles['date-chip-heading']}
-                          >
-                            <span>{category.name} </span>
-                          </Typography>
-                          <Button
-                            className={styles['chip-btn']}
-                            onClick={() => {
-                              setFilters((prev) => {
-                                const updatedCategories = prev.category.filter(
-                                  (catId) => catId !== id
-                                );
-                                setSelectedCategories(updatedCategories);
-                                dispatch(
-                                  fetchAllDocuments({
-                                    created_before: prev.createdBefore,
-                                    created_after: prev.createdAfter,
-                                    category: updatedCategories.join(','),
-                                    search:
-                                      searchParams.length > 3
-                                        ? searchParams
-                                        : '',
-                                    page: 1,
-                                  })
-                                ).unwrap();
-                                return {
-                                  ...prev,
-                                  category: updatedCategories,
-                                };
-                              });
-                            }}
-                          >
-                            <Image
-                              src="/images/close.svg"
-                              alt="sidebar-hide-icon"
-                              width={10}
-                              height={10}
-                            />
-                          </Button>
-                        </div>
-                      );
-                    })}
                     {filters.createdAfter && filters.createdBefore && (
                       <div className={styles['date-chip-inner']}>
                         <Typography
@@ -429,6 +446,64 @@ const DownloadDocReport = () => {
                         </Button>
                       </div>
                     )}
+                    <div className={styles.sliderWrapper}>
+                      <Slider ref={sliderRef} {...settings}>
+                        {filters.category.map((id) => {
+                          const category = categories.find(
+                            (cat) => cat.id === id
+                          );
+                          if (!category) return null;
+                          return (
+                            <div
+                              key={id}
+                              className={`${styles['date-chip-inner']} ${styles.slide}`}
+                            >
+                              <Typography
+                                variant="body1"
+                                className={styles['date-chip-heading']}
+                              >
+                                <span>{category.name} </span>
+                              </Typography>
+                              <Button
+                                className={styles['chip-btn']}
+                                onClick={() => {
+                                  setFilters((prev) => {
+                                    const updatedCategories =
+                                      prev.category.filter(
+                                        (catId) => catId !== id
+                                      );
+                                    setSelectedCategories(updatedCategories);
+                                    dispatch(
+                                      fetchAllDocuments({
+                                        created_before: prev.createdBefore,
+                                        created_after: prev.createdAfter,
+                                        category: updatedCategories.join(','),
+                                        search:
+                                          searchParams.length > 3
+                                            ? searchParams
+                                            : '',
+                                        page: 1,
+                                      })
+                                    ).unwrap();
+                                    return {
+                                      ...prev,
+                                      category: updatedCategories,
+                                    };
+                                  });
+                                }}
+                              >
+                                <Image
+                                  src="/images/close.svg"
+                                  alt="sidebar-hide-icon"
+                                  width={10}
+                                  height={10}
+                                />
+                              </Button>
+                            </div>
+                          );
+                        })}
+                      </Slider>
+                    </div>
                   </div>
                 </Box>
               </Box>
@@ -495,9 +570,9 @@ const DownloadDocReport = () => {
                                         <path
                                           d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
                                           stroke="white"
-                                          stroke-width="1.8"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
+                                          strokeWidth="1.8"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
                                         />
                                       </svg>
                                     </Box>
@@ -536,7 +611,6 @@ const DownloadDocReport = () => {
                 className="pagination-box"
                 sx={{
                   padding: '19px 33px 24px 33px',
-                  marginBottom: '-24px',
                 }}
               >
                 <Pagination
