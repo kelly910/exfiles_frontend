@@ -334,11 +334,13 @@ export default function LogIncident() {
                 sx={{
                   height: 'calc(100vh - 65px)',
                   position: 'relative',
-                  overflowY: 'auto',
+                  overflow: 'hidden',
                   width: '100%',
                   backgroundColor: '#11101B',
                   borderRadius: '8px',
                   boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                  display: 'flex',
+                  flexDirection: 'column',
                   '& .MuiDataGrid-root': {
                     backgroundColor: '#11101B',
                     color: '#DADAE1',
@@ -805,7 +807,6 @@ export default function LogIncident() {
                   className="pagination-box"
                   sx={{
                     padding: '19px 24px 28px 24px',
-                    marginBottom: '-28px',
                   }}
                 >
                   <Pagination

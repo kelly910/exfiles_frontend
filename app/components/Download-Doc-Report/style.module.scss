@@ -9,14 +9,18 @@
   align-items: stretch;
   width: 100%;
   height: calc(100dvh - 65px);
+  display: flex;
+  flex-direction: column;
 }
 
 .docsListing {
   position: relative;
-  // height: calc(100dvh - 65px);
-  height: unset;
+  height: calc(100dvh - 65px);
+  display: flex;
+  flex-direction: column;
+  // height: unset;
   width: 100%;
-  overflow-y: auto;
+  overflow-y: hidden;
 
   .searchBoard {
     width: 100%;
@@ -105,6 +109,14 @@
     top: 0;
     z-index: 2;
 
+    &:empty {
+      display: none;
+    }
+
+    div:empty {
+      display: none;
+    }
+
     label {
       cursor: pointer;
       margin-left: 0;
@@ -132,9 +144,12 @@
 
   .docBoxMain {
     width: 100%;
-    padding: 12px 33px 24px 33px;
-    height: calc(100% - 140px - 91px);
+    padding: 0 33px 0 33px;
+    // padding: 12px 33px 24px 33px;
+    // height: calc(100% - 140px - 91px);
     overflow-y: auto;
+    flex-grow: 1;
+    flex: 1;
 
     @media (max-width: 1440px) {
       height: calc(100% - 74px - 91px + 12px);
@@ -1060,15 +1075,21 @@
 .date-chip-box {
   overflow: hidden;
   transition: all 0.4s;
-  margin-top: 16px;
-  width: fit-content;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  max-width: 100%;
+  max-width: 100%; /* Prevents overflow */
+  overflow-x: hidden; /* Optional: hides horizontal scroll if needed */
+  display: flex !important;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
+
+  @media (max-width: 500px) {
+    flex-wrap: wrap;
+    gap: 0;
+  }
 
   .date-chip-inner {
+    flex: 0 0 auto;
     padding: 4px 8px;
     border-radius: 500px;
     display: flex;
@@ -1076,6 +1097,12 @@
     align-items: center;
     background-color: var(--Input-Box-Colors);
     border: 1px solid var(--Stroke-Color);
+    display: flex !important;
+    width: fit-content !important;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 16px;
 
     .date-chip-heading {
       display: flex;
@@ -1103,3 +1130,65 @@
     }
   }
 }
+// Slider
+
+.sliderWrapper {
+  position: relative;
+  padding: 0 20px;
+}
+
+.slide {
+  background-color: #ddd;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  margin: 0 5px;
+}
+
+.arrow {
+  position: absolute;
+  top: calc(50% + 8px);
+  transform: translateY(-50%);
+  z-index: 10;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+}
+
+.left {
+  left: -20px;
+}
+
+.right {
+  right: -20px;
+}
+
+.sliderWrapper,
+.slick-slider {
+  min-width: calc(100% - 270px);
+  width: auto;
+}
+
+.slick-initialized,
+.slick-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slick-list {
+  padding: 0 20px;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.slick-track {
+  margin-top: 16px;
+}
+// Slider
