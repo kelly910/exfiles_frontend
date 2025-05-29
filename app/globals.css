@@ -373,6 +373,15 @@ input {
   margin-left: 4px;
 }
 
+.generate-document-btn {
+  background: transparent !important;
+  outline: 1px solid var(--Card-Border) !important;
+}
+
+.generate-document-btn img {
+  margin-left: 4px;
+}
+
 .filter-date {
   background: transparent !important;
   border-radius: 10px !important;

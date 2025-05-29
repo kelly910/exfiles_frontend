@@ -45,7 +45,7 @@ export const fetchCategories = createAsyncThunk<
   async ({ page, page_size }, { rejectWithValue }) => {
     try {
       const response = await api.get<DocumentListingResponse>(
-        `${urlMapper.getCategories}?page=${page}&page_size=${page_size ?? 20}&default=true`
+        `${urlMapper.getCategories}?page=${page}&page_size=${page_size ?? 50}&default=true`
       );
       return response.data;
     } catch (error) {

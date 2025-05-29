@@ -428,7 +428,7 @@ export default function LogModel({
   };
 
   useEffect(() => {
-    dispatch(fetchCategories({ page: 1, page_size: 30 }));
+    dispatch(fetchCategories({ page: 1, page_size: 50 }));
     dispatch(fetchTagList());
   }, [dispatch]);
 

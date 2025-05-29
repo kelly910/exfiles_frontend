@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import {
   Button,
   Checkbox,
+  CircularProgress,
   FormControlLabel,
   Input,
   InputAdornment,
@@ -26,7 +27,7 @@ import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useRouter } from 'next/navigation';
 import { setPageHeaderData } from '@/app/redux/slices/login';
 import {
-  // downloadSelectedDocsReport,
+  downloadSelectedDocsReport,
   fetchAllDocuments,
 } from '@/app/redux/slices/documentByCategory';
 import { getDocumentImage } from '@/app/utils/functions';
@@ -79,6 +80,7 @@ const DownloadDocReport = () => {
   const { categories } = useSelector(
     (state: RootState) => state.categoryListing
   );
+  const [loading, setLoading] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -192,23 +194,28 @@ const DownloadDocReport = () => {
     );
   };
 
-  const downloadSelectedDocReport = () => {
-    if (selectedDocsDownload.length) {
-      // const payload = {
-      //   document_uuid: selectedDocsDownload.join(','),
-      // };
-      // dispatch(downloadSelectedDocsReport(payload));
-      console.log('selected document');
-    } else {
-      // const payload = {
-      //   created_before: filters.createdBefore || '',
-      //   created_after: filters.createdAfter || '',
-      //   category: filters.category.length > 0 ? filters.category.join(',') : '',
-      //   search: searchParams.length > 3 ? searchParams : '',
-      //   type: 'all',
-      // };
-      // dispatch(downloadSelectedDocsReport(payload));
-      console.log('all document');
+  const downloadSelectedDocReport = async () => {
+    if (allDocuments.length) {
+      setLoading(true);
+      if (selectedDocsDownload.length) {
+        const payload = {
+          document_uuid: selectedDocsDownload.join(','),
+        };
+        await dispatch(downloadSelectedDocsReport(payload));
+        setLoading(false);
+      } else {
+        const payload = {
+          created_before: filters.createdBefore || '',
+          created_after: filters.createdAfter || '',
+          category:
+            filters.category.length > 0 ? filters.category.join(',') : '',
+          search: searchParams.length > 3 ? searchParams : '',
+          type: 'all',
+        };
+        await dispatch(downloadSelectedDocsReport(payload));
+        setLoading(false);
+      }
+      setLoading(false);
     }
   };
 
@@ -302,14 +309,21 @@ const DownloadDocReport = () => {
                   <Button
                     className="btn btn-pluse download-document-btn"
                     onClick={downloadSelectedDocReport}
+                    disabled={loading}
                   >
-                    Generate Report ({selectedDocsDownload.length || 'ALL'})
-                    <Image
-                      src="/images/document-download.svg"
-                      alt="re"
-                      width={20}
-                      height={20}
-                    />
+                    {loading ? (
+                      <CircularProgress size={24} color="inherit" />
+                    ) : (
+                      <>
+                        Generate Report ({selectedDocsDownload.length || 'ALL'})
+                        <Image
+                          src="/images/document-download.svg"
+                          alt="re"
+                          width={20}
+                          height={20}
+                        />
+                      </>
+                    )}
                   </Button>
                 </Box>
                 <Box className={styles.allSelect}>

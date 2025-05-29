@@ -24,7 +24,7 @@
     background-color: var(--Background-Color);
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 3;
 
     @media (max-width: 1440px) {
       padding: 12px 24px 12px 24px;
@@ -1063,6 +1063,7 @@
   margin-top: 16px;
   width: fit-content;
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
   gap: 10px;

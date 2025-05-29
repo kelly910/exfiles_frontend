@@ -26,8 +26,8 @@ interface FilterModalProps {
   setFromDate: (date: Dayjs | null) => void;
   setToDate: (date: Dayjs | null) => void;
   onApply: () => void;
-  selectedCategories: number[];
-  setSelectedCategories: React.Dispatch<React.SetStateAction<number[]>>;
+  selectedTags: number[];
+  setSelectedTags: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 export default function FilterModal({
@@ -38,14 +38,12 @@ export default function FilterModal({
   setFromDate,
   setToDate,
   onApply,
-  selectedCategories,
-  setSelectedCategories,
+  selectedTags,
+  setSelectedTags,
 }: FilterModalProps) {
   const [isFromDatePickerOpen, setIsFromDatePickerOpen] = useState(false);
   const [isToDatePickerOpen, setIsToDatePickerOpen] = useState(false);
-  const { categories } = useSelector(
-    (state: RootState) => state.categoryListing
-  );
+  const { tags } = useSelector((state: RootState) => state.tagList);
 
   const handleApplyDateFilter = () => {
     onApply();
@@ -248,7 +246,7 @@ export default function FilterModal({
           variant="body2"
           sx={{ color: '#A0A0B0', marginBottom: '4px', textAlign: 'left' }}
         >
-          Categories
+          Tag
         </Typography>
         <Box
           style={{
@@ -263,13 +261,13 @@ export default function FilterModal({
               fullWidth
               SelectProps={{
                 multiple: true,
-                value: selectedCategories,
+                value: selectedTags,
                 onChange: (e) => {
                   const value =
                     typeof e.target.value === 'string'
                       ? e.target.value.split(',').map(Number)
                       : e.target.value;
-                  setSelectedCategories(value as number[]);
+                  setSelectedTags(value as number[]);
                 },
                 renderValue: (selected) => (
                   <Box
@@ -280,8 +278,8 @@ export default function FilterModal({
                     }}
                   >
                     {(selected as number[])?.slice(0, 2)?.map((id) => {
-                      const category = categories.find((cat) => cat.id === id);
-                      return category ? (
+                      const tagDisp = tags.find((tag) => Number(tag.id) === id);
+                      return tagDisp ? (
                         <Box
                           key={id}
                           sx={{
@@ -298,7 +296,7 @@ export default function FilterModal({
                             border: '1px solid #3A3948',
                           }}
                         >
-                          {category.name}
+                          {tagDisp.name}
                         </Box>
                       ) : null;
                     })}
@@ -324,7 +322,7 @@ export default function FilterModal({
                   </Box>
                 ),
               }}
-              placeholder="Select Categories"
+              placeholder="Select Tags"
               sx={{
                 backgroundColor: '#252431',
                 borderRadius: '12px',
@@ -357,14 +355,14 @@ export default function FilterModal({
                 },
               }}
             >
-              {categories.map((category) => (
-                <MenuItem key={category.id} value={category.id}>
+              {tags.map((tag) => (
+                <MenuItem key={tag.id} value={tag.id}>
                   <ListItemText
-                    primary={category.name}
+                    primary={tag.name}
                     primaryTypographyProps={{ sx: { color: '#fff' } }}
                   />
                   <Checkbox
-                    checked={selectedCategories.includes(category.id)}
+                    checked={selectedTags.includes(Number(tag.id))}
                     icon={
                       <Box
                         sx={{

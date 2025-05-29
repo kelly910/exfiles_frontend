@@ -4,6 +4,9 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import {
   Button,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
   IconButton,
   Input,
   InputAdornment,
@@ -18,7 +21,10 @@ import Sidebar from '../Common/Sidebar';
 import PageHeader from '../Common/PageHeader';
 import DeleteDialog from '../LogoutDialog/DeleteDialog';
 import { useState, useEffect } from 'react';
-import { fetchLogIncidents } from '@/app/redux/slices/logIncident';
+import {
+  fetchLogIncidents,
+  downloadSelectedLogsReport,
+} from '@/app/redux/slices/logIncident';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { setLoader } from '@/app/redux/slices/loader';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
@@ -30,7 +36,9 @@ import { useRouter } from 'next/navigation';
 import { setPageHeaderData } from '@/app/redux/slices/login';
 import LogDetailsModel from '../LogModel/LogDetailsModel';
 import LogModel from '../LogModel/LogModel';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import FilterModal from './FilterModal';
+import { convertDateFormatForIncident } from '@/app/utils/constants';
 
 export interface FileDataImage {
   file_url: string;
@@ -102,6 +110,18 @@ export default function LogIncident() {
   const router = useRouter();
   const open = Boolean(anchorEl);
   const [openAddIncident, setOpenAddIncident] = useState(false);
+  const [filters, setFilters] = useState({
+    createdBefore: '',
+    createdAfter: '',
+    tags: [] as number[],
+  });
+  const { tags } = useSelector((state: RootState) => state.tagList);
+  const [selectedTags, setSelectedTags] = useState<number[]>([]);
+  const [fromDate, setFromDate] = useState<Dayjs | null>(null);
+  const [toDate, setToDate] = useState<Dayjs | null>(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [editLogIncidentData, setEditLogIncidentData] =
     useState<LogIncidentDetails | null>(null);
 
@@ -185,6 +205,9 @@ export default function LogIncident() {
       fetchLogIncidents({
         search: searchParams.length > 3 ? searchParams : '',
         page: newPage,
+        created_before: filters.createdBefore,
+        created_after: filters.createdAfter,
+        tags: selectedTags.join(','),
       })
     ).unwrap();
     setPage(newPage);
@@ -203,6 +226,9 @@ export default function LogIncident() {
             fetchLogIncidents({
               search: searchParams.length > 3 ? searchParams : '',
               page: 1,
+              created_before: filters.createdBefore,
+              created_after: filters.createdAfter,
+              tags: selectedTags.join(','),
             })
           ).unwrap();
         } catch (error) {
@@ -226,6 +252,63 @@ export default function LogIncident() {
     };
     setOpenDetailDialog(true);
     setDetailsItem(detailsItem);
+  };
+
+  const [selectedLogsDownload, setSelectedLogsDownload] = useState<string[]>(
+    []
+  );
+
+  const handleSelectLog = (docId: string) => {
+    setSelectedLogsDownload((prevSelected) =>
+      prevSelected.includes(docId)
+        ? prevSelected.filter((id) => id !== docId)
+        : [...prevSelected, docId]
+    );
+  };
+
+  const downloadLogsReport = async () => {
+    if (incidents.length) {
+      setLoading(true);
+      if (selectedLogsDownload.length) {
+        const payload = {
+          document_uuid: selectedLogsDownload.join(','),
+        };
+        await dispatch(downloadSelectedLogsReport(payload));
+        setLoading(false);
+      } else {
+        const payload = {
+          created_before: filters.createdBefore || '',
+          created_after: filters.createdAfter || '',
+          tags: filters.tags.length > 0 ? filters.tags.join(',') : '',
+          search: searchParams.length > 3 ? searchParams : '',
+          type: 'all',
+        };
+        await dispatch(downloadSelectedLogsReport(payload));
+        setLoading(false);
+      }
+      setLoading(false);
+    }
+  };
+
+  const handleFilterApply = () => {
+    const createdAfter = fromDate?.format('YYYY-MM-DD') || '';
+    const createdBefore = toDate?.format('YYYY-MM-DD') || '';
+    const chooseTags = selectedTags;
+    setFilters({
+      createdBefore,
+      createdAfter,
+      tags: chooseTags,
+    });
+    console.log(typeof chooseTags.join(','), 'chooseTags');
+    dispatch(
+      fetchLogIncidents({
+        created_before: createdBefore,
+        created_after: createdAfter,
+        tags: chooseTags.join(','),
+        search: searchParams.length > 3 ? searchParams : '',
+        page: 1,
+      })
+    ).unwrap();
   };
 
   return (
@@ -325,41 +408,196 @@ export default function LogIncident() {
                   },
                 }}
               >
-                <Box component="div" className={styles.logIncidentSearch}>
-                  <Input
-                    id="input-with-icon-adornment"
-                    className={styles.searchInput}
-                    placeholder="Search here..."
-                    onChange={(e) => handleSearchInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        handleSearch();
+                <Box component="div" className={styles.logIncidentSearchMain}>
+                  <Box component="div" className={styles.logIncidentSearch}>
+                    <Input
+                      id="input-with-icon-adornment"
+                      className={styles.searchInput}
+                      placeholder="Search here..."
+                      onChange={(e) => handleSearchInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleSearch();
+                        }
+                      }}
+                      endAdornment={
+                        <InputAdornment
+                          position="end"
+                          className={styles.searchIcon}
+                        >
+                          <span
+                            className={styles.search}
+                            onClick={handleSearch}
+                          ></span>
+                        </InputAdornment>
                       }
-                    }}
-                    endAdornment={
-                      <InputAdornment
-                        position="end"
-                        className={styles.searchIcon}
-                      >
-                        <span
-                          className={styles.search}
-                          onClick={handleSearch}
-                        ></span>
-                      </InputAdornment>
-                    }
-                  />
-                  <Button
-                    className="btn btn-pluse"
-                    onClick={handleOpenAddIncident}
-                  >
-                    <Image
-                      src="/images/add-icon.svg"
-                      alt="re"
-                      width={20}
-                      height={20}
                     />
-                    Add Incident
-                  </Button>
+                    <Box className={styles['filter-btn-box']}>
+                      <Button
+                        className={`${styles['search-btn']} ${styles['filter-btn']}`}
+                        onClick={() => setFilterOpen(true)}
+                      >
+                        <Image
+                          src="/images/filter_list.svg"
+                          alt="filter_list"
+                          width={24}
+                          height={24}
+                        />
+                      </Button>
+                    </Box>
+                    <FilterModal
+                      fromDate={fromDate}
+                      toDate={toDate}
+                      setFromDate={setFromDate}
+                      setToDate={setToDate}
+                      open={filterOpen}
+                      onClose={() => setFilterOpen(false)}
+                      onApply={handleFilterApply}
+                      selectedTags={selectedTags}
+                      setSelectedTags={setSelectedTags}
+                    />
+                    <Button
+                      className="btn btn-pluse"
+                      onClick={handleOpenAddIncident}
+                    >
+                      <Image
+                        src="/images/add-icon.svg"
+                        alt="re"
+                        width={20}
+                        height={20}
+                      />
+                      Add Incident
+                    </Button>
+                  </Box>
+                  <Box className={styles.allSelect}>
+                    <div className={`${styles['date-chip-box']}`}>
+                      {filters.tags.map((id) => {
+                        const tagDisp = tags.find(
+                          (tag) => Number(tag.id) === id
+                        );
+                        if (!tagDisp) return null;
+                        return (
+                          <div key={id} className={styles['date-chip-inner']}>
+                            <Typography
+                              variant="body1"
+                              className={styles['date-chip-heading']}
+                            >
+                              <span>{tagDisp.name} </span>
+                            </Typography>
+                            <Button
+                              className={styles['chip-btn']}
+                              onClick={() => {
+                                setFilters((prev) => {
+                                  const updatedTags = prev.tags.filter(
+                                    (tagId) => tagId !== id
+                                  );
+                                  setSelectedTags(updatedTags);
+                                  dispatch(
+                                    fetchLogIncidents({
+                                      created_before: prev.createdBefore,
+                                      created_after: prev.createdAfter,
+                                      tags: updatedTags.join(','),
+                                      search:
+                                        searchParams.length > 3
+                                          ? searchParams
+                                          : '',
+                                      page: 1,
+                                    })
+                                  ).unwrap();
+                                  return {
+                                    ...prev,
+                                    tags: updatedTags,
+                                  };
+                                });
+                              }}
+                            >
+                              <Image
+                                src="/images/close.svg"
+                                alt="sidebar-hide-icon"
+                                width={10}
+                                height={10}
+                              />
+                            </Button>
+                          </div>
+                        );
+                      })}
+                      {filters.createdAfter && filters.createdBefore && (
+                        <div className={styles['date-chip-inner']}>
+                          <Typography
+                            variant="body1"
+                            className={styles['date-chip-heading']}
+                          >
+                            <span>From :</span>
+                            <span>
+                              {convertDateFormatForIncident(
+                                filters.createdAfter
+                              )}
+                            </span>
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            className={styles['date-chip-heading']}
+                          >
+                            <span>To :</span>
+                            <span>
+                              {convertDateFormatForIncident(
+                                filters.createdBefore
+                              )}
+                            </span>
+                          </Typography>
+                          <Button
+                            className={styles['chip-btn']}
+                            onClick={() => {
+                              setFromDate(null);
+                              setToDate(null);
+                              setFilters((prev) => ({
+                                ...prev,
+                                createdAfter: '',
+                                createdBefore: '',
+                              }));
+                              dispatch(
+                                fetchLogIncidents({
+                                  created_before: '',
+                                  created_after: '',
+                                  tags: filters.tags.join(','),
+                                  search:
+                                    searchParams.length > 3 ? searchParams : '',
+                                  page: 1,
+                                })
+                              ).unwrap();
+                            }}
+                          >
+                            <Image
+                              src="/images/close.svg"
+                              alt="sidebar-hide-icon"
+                              width={10}
+                              height={10}
+                            />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                    <Button
+                      className="btn btn-pluse generate-document-btn"
+                      onClick={downloadLogsReport}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : (
+                        <>
+                          Generate Report (
+                          {selectedLogsDownload.length || 'ALL'})
+                          <Image
+                            src="/images/document-download.svg"
+                            alt="re"
+                            width={20}
+                            height={20}
+                          />
+                        </>
+                      )}
+                    </Button>
+                  </Box>
                 </Box>
                 <Box component="div" className={styles.loIncidentTable}>
                   <Box component="div" className={styles.logListingBox}>
@@ -371,6 +609,121 @@ export default function LogIncident() {
                           key={index}
                         >
                           <Box component="div" className={styles.logListHeader}>
+                            <Box
+                              component="div"
+                              className={styles.logListHeaderLeft}
+                            >
+                              <Box className={styles.allSelect}>
+                                <FormControlLabel
+                                  control={
+                                    <Checkbox
+                                      checked={selectedLogsDownload.includes(
+                                        item?.id || ''
+                                      )}
+                                      onChange={() =>
+                                        handleSelectLog(item?.id || '')
+                                      }
+                                      icon={
+                                        <Box
+                                          sx={{
+                                            width: 24,
+                                            height: 24,
+                                            border: '2px solid #3A3A4B',
+                                            borderRadius: '8px',
+                                            backgroundColor: 'transparent',
+                                          }}
+                                        />
+                                      }
+                                      checkedIcon={
+                                        <Box
+                                          sx={{
+                                            width: 24,
+                                            height: 24,
+                                            background: 'var(--Main-Gradient)',
+                                            borderRadius: '8px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                          }}
+                                        >
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="12"
+                                            height="8"
+                                            viewBox="0 0 12 8"
+                                            fill="none"
+                                          >
+                                            <path
+                                              d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
+                                              stroke="white"
+                                              stroke-width="1.8"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                            />
+                                          </svg>
+                                        </Box>
+                                      }
+                                      sx={{ padding: 0 }}
+                                    />
+                                  }
+                                  label=""
+                                />
+                              </Box>
+                              <>
+                                <IconButton
+                                  onClick={(event) =>
+                                    handleClick(event, item.id, item)
+                                  }
+                                >
+                                  <Image
+                                    src="/images/more.svg"
+                                    alt="more"
+                                    width={20}
+                                    height={20}
+                                  />
+                                </IconButton>
+                                <Menu
+                                  anchorEl={anchorEl}
+                                  open={open}
+                                  onClose={handleClose}
+                                  MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                  }}
+                                  className={styles.mainDropdown}
+                                  sx={{
+                                    '& .MuiPaper-root': {
+                                      backgroundColor: 'transparent',
+                                      borderRadius: '12px',
+                                    },
+                                  }}
+                                >
+                                  <MenuItem
+                                    className={styles.menuDropdown}
+                                    onClick={editLogIncident}
+                                  >
+                                    <Image
+                                      src="/images/edit-2.svg"
+                                      alt="edit"
+                                      width={18}
+                                      height={18}
+                                    />
+                                    <Typography>Edit Incident</Typography>
+                                  </MenuItem>
+                                  <MenuItem
+                                    className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
+                                    onClick={deleteDialogOpen}
+                                  >
+                                    <Image
+                                      src="/images/trash.svg"
+                                      alt="delet"
+                                      width={18}
+                                      height={18}
+                                    />
+                                    <Typography>Delete Incident</Typography>
+                                  </MenuItem>
+                                </Menu>
+                              </>
+                            </Box>
                             <Typography
                               variant="body1"
                               className={styles.logTitle}
@@ -378,90 +731,41 @@ export default function LogIncident() {
                             >
                               {item.description}
                             </Typography>
-                            <>
-                              <IconButton
-                                onClick={(event) =>
-                                  handleClick(event, item.id, item)
-                                }
-                              >
-                                <Image
-                                  src="/images/more.svg"
-                                  alt="more"
-                                  width={20}
-                                  height={20}
-                                />
-                              </IconButton>
-                              <Menu
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={handleClose}
-                                MenuListProps={{
-                                  'aria-labelledby': 'basic-button',
-                                }}
-                                className={styles.mainDropdown}
-                                sx={{
-                                  '& .MuiPaper-root': {
-                                    backgroundColor: 'transparent',
-                                    borderRadius: '12px',
-                                  },
-                                }}
-                              >
-                                <MenuItem
-                                  className={styles.menuDropdown}
-                                  onClick={editLogIncident}
-                                >
-                                  <Image
-                                    src="/images/edit-2.svg"
-                                    alt="edit"
-                                    width={18}
-                                    height={18}
-                                  />
-                                  <Typography>Edit Incident</Typography>
-                                </MenuItem>
-                                <MenuItem
-                                  className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
-                                  onClick={deleteDialogOpen}
-                                >
-                                  <Image
-                                    src="/images/trash.svg"
-                                    alt="delet"
-                                    width={18}
-                                    height={18}
-                                  />
-                                  <Typography>Delete Incident</Typography>
-                                </MenuItem>
-                              </Menu>
-                            </>
                           </Box>
-                          <Box component="div" className={styles.logListBody}>
-                            {item?.tags_data.map((tag, index) => (
-                              <Box
-                                className={styles.logListBodyTag}
-                                key={index}
-                              >
-                                {tag?.file_data?.file_url ? (
-                                  <Image
-                                    src={tag?.file_data?.file_url}
-                                    alt={tag.name}
-                                    width={16}
-                                    height={16}
-                                  />
-                                ) : (
-                                  <Image
-                                    src="/images/other.svg"
-                                    alt="close icon"
-                                    width={16}
-                                    height={16}
-                                  />
-                                )}
-                                <Typography
-                                  variant="body1"
-                                  className={styles.logListBodyTagTitle}
+                          <Box
+                            component="div"
+                            className={styles.logListBodyMain}
+                          >
+                            <Box component="div" className={styles.logListBody}>
+                              {item?.tags_data.map((tag, index) => (
+                                <Box
+                                  className={styles.logListBodyTag}
+                                  key={index}
                                 >
-                                  {tag?.name}
-                                </Typography>
-                              </Box>
-                            ))}
+                                  {tag?.file_data?.file_url ? (
+                                    <Image
+                                      src={tag?.file_data?.file_url}
+                                      alt={tag.name}
+                                      width={16}
+                                      height={16}
+                                    />
+                                  ) : (
+                                    <Image
+                                      src="/images/other.svg"
+                                      alt="close icon"
+                                      width={16}
+                                      height={16}
+                                    />
+                                  )}
+                                  <Typography
+                                    variant="body1"
+                                    className={styles.logListBodyTagTitle}
+                                  >
+                                    {tag?.name}
+                                  </Typography>
+                                </Box>
+                              ))}
+                            </Box>
                           </Box>
                           <Box component="div" className={styles.logListFooter}>
                             <Typography
