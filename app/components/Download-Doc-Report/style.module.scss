@@ -109,14 +109,6 @@
     top: 0;
     z-index: 2;
 
-    &:empty {
-      display: none;
-    }
-
-    div:empty {
-      display: none;
-    }
-
     label {
       cursor: pointer;
       margin-left: 0;
@@ -1076,8 +1068,10 @@
   overflow: hidden;
   transition: all 0.4s;
   max-width: 100%;
-  max-width: 100%; /* Prevents overflow */
-  overflow-x: hidden; /* Optional: hides horizontal scroll if needed */
+  max-width: 100%;
+  /* Prevents overflow */
+  overflow-x: hidden;
+  /* Optional: hides horizontal scroll if needed */
   display: flex !important;
   justify-content: space-between;
   align-items: center;
@@ -1130,6 +1124,7 @@
     }
   }
 }
+
 // Slider
 
 .sliderWrapper {
@@ -1191,4 +1186,5 @@
 .slick-track {
   margin-top: 16px;
 }
+
 // Slider
