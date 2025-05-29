@@ -521,6 +521,7 @@
         background-color: unset;
         width: fit-content;
         display: block;
+        margin-left: 0;
         &:hover {
           border: 1px solid var(--Stroke-Color);
           background-color: none;
@@ -686,6 +687,7 @@
     background-color: unset;
     width: fit-content;
     display: block;
+    margin-left: 0;
     &:hover {
       border: 1px solid var(--Stroke-Color);
       background-color: none;

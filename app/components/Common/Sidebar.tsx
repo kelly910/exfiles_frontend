@@ -362,14 +362,11 @@ const Sidebar = ({
                   btnTitle={'Documents'}
                   iconPath={'/images/document-text.svg'}
                   handleBtnClick={handleDocumentClick}
-                  // isOpen={isOpen}
                 />
-
                 <SidebarButton
                   btnTitle={'Report'}
                   iconPath={'/images/report-icon.svg'}
                   handleBtnClick={handleDocReport}
-                  // isOpen={isOpen}
                 />
               </>
             )}
