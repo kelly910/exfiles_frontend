@@ -8,12 +8,10 @@ export default function SidebarButton({
   btnTitle,
   iconPath,
   handleBtnClick,
-  // isOpen,
 }: {
   btnTitle: string;
   iconPath: string;
   handleBtnClick: () => void;
-  // isOpen?: boolean;
 }) {
   return (
     <Button
