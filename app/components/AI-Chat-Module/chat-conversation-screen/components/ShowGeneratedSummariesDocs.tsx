@@ -13,6 +13,7 @@ import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
 import { formatTo12HourTimeManually } from '@/app/utils/functions';
 import {
   DOCUMENT_STATUS,
+  highlightText,
   processText,
   QUESTION_TYPES,
 } from '@/app/utils/constants';
@@ -27,6 +28,7 @@ import {
 // Custom Types
 import { SocketPayload } from '@components/AI-Chat-Module/types/aiChat.types';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { useSearch } from '../../context/SearchContext';
 
 const FileSummarySkeleton = () => {
   return (
@@ -89,7 +91,7 @@ export default function ShowGeneratedSummariesDocs({
   const summaryGeneratedDocList = messageObj.summary_documents;
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
-
+  const { searchingChat } = useSearch();
   const handleRetryDoc = async (docObj: UploadedDocument) => {
     setIsLoading(true);
 
@@ -201,9 +203,13 @@ export default function ShowGeneratedSummariesDocs({
                       <Typography
                         variant="body1"
                         className={chatMessagesStyles.chatAlText}
-                      >
-                        {file_data.file_name}{' '}
-                      </Typography>
+                        dangerouslySetInnerHTML={{
+                          __html: highlightText(
+                            file_data.file_name,
+                            searchingChat
+                          ),
+                        }}
+                      />
                     </Box>
 
                     <Box>
@@ -275,7 +281,14 @@ export default function ShowGeneratedSummariesDocs({
                               height={14}
                               className={chatMessagesStyles.pdfImg}
                             />
-                            <Typography>{category_data.name}</Typography>
+                            <Typography
+                              dangerouslySetInnerHTML={{
+                                __html: highlightText(
+                                  category_data.name,
+                                  searchingChat
+                                ),
+                              }}
+                            />
                             <Image
                               src="/images/open-new.svg"
                               alt="pdf"
@@ -316,7 +329,9 @@ export default function ShowGeneratedSummariesDocs({
           >
             <div
               dangerouslySetInnerHTML={{
-                __html: processText(messageObj.message),
+                __html: processText(
+                  highlightText(messageObj.message, searchingChat)
+                ),
               }}
             />
           </Typography>

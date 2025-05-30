@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat-Module/styles/ChatMessagesStyle.module.scss';
-
+import { useSearch } from '../../context/SearchContext';
 import { ChatMessage } from '@store/slices/Chat/chatTypes';
 import { LoginResponse } from '@store/slices/login';
 import {
@@ -8,6 +8,7 @@ import {
   formatTo12HourTimeManually,
 } from '@/app/utils/functions';
 import UserNameAvatar from '@components/AI-Chat-Module/chat-conversation-screen/components/UserNameAvatar';
+import { highlightText } from '@/app/utils/constants';
 
 export default function QuestionComponent({
   messageObj,
@@ -17,7 +18,7 @@ export default function QuestionComponent({
   userDetails: LoginResponse;
 }) {
   const fileList = extractFileNames(messageObj.message);
-
+  const { searchingChat } = useSearch();
   return (
     <Box
       component="div"
@@ -29,15 +30,24 @@ export default function QuestionComponent({
             <Typography
               variant="body1"
               className={chatMessagesStyles.chatAlContentText}
-            >
-              {messageObj.message.split('[')?.[0]}
-            </Typography>
+              dangerouslySetInnerHTML={{
+                __html: highlightText(
+                  messageObj.message.split('[')?.[0],
+                  searchingChat
+                ),
+              }}
+            />
             <Box
               component="div"
               className={chatMessagesStyles.chatAlGenerating}
             >
               {fileList.map((fileName) => (
-                <span key={fileName}>{fileName}</span>
+                <span
+                  key={fileName}
+                  dangerouslySetInnerHTML={{
+                    __html: highlightText(fileName, searchingChat),
+                  }}
+                ></span>
               ))}
             </Box>
           </>
@@ -45,9 +55,10 @@ export default function QuestionComponent({
           <Typography
             variant="body1"
             className={chatMessagesStyles.chatAlContentText}
-          >
-            {messageObj.message}
-          </Typography>
+            dangerouslySetInnerHTML={{
+              __html: highlightText(messageObj.message, searchingChat),
+            }}
+          />
         )}
         <span className={chatMessagesStyles.chatTime}>
           {formatTo12HourTimeManually(messageObj.created)}
