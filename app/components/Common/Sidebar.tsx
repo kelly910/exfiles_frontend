@@ -34,6 +34,7 @@ import {
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
+import { useSearch } from '../AI-Chat-Module/context/SearchContext';
 
 const Sidebar = ({
   isOpen,
@@ -63,6 +64,7 @@ const Sidebar = ({
   const [isFilterSelected, setIsFilterSelected] = useState(false);
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
   const [toDate, setToDate] = useState<Dayjs | null>(null);
+  const { setSearchingChat } = useSearch();
 
   const openLogIncidentModel = () => {
     setOpenIncidentModel(true);
@@ -137,6 +139,7 @@ const Sidebar = ({
 
   const handleTextInput = (inputValue: string) => {
     setSearch(inputValue);
+    setSearchingChat?.(inputValue);
     const trimmed = inputValue.trim();
     if (inputValue == '') {
       handleClearSearch();
