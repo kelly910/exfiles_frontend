@@ -18,18 +18,19 @@ import { setPageHeaderData } from '@/app/redux/slices/login';
 export default function DocumentListComponent({ catId }: { catId: number }) {
   const mobileView = useMediaQuery('(min-width:800px)');
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchingParams = useSearchParams();
   const [selectedDocId, setSelectedsDocId] = useState<string>('');
   const dispatch = useAppDispatch();
   const [showEmptyCategoryComponent, setShowEmptyCategoryComponent] =
     useState(false);
+  const [searchParams, setSearchParams] = useState('');
 
   useEffect(() => {
-    const urlDocId = searchParams.get('docId');
+    const urlDocId = searchingParams.get('docId');
     if (urlDocId) {
       setSelectedsDocId(urlDocId);
     }
-  }, [searchParams]);
+  }, [searchingParams]);
 
   useEffect(() => {
     dispatch(fetchCategories({ page: 1 }))
@@ -49,9 +50,9 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
 
   const handleSelectedDocSummary = (docId: string) => {
     setSelectedsDocId(docId);
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.set('docId', docId.toString());
-    router.replace(`/documents/${catId}?${searchParams.toString()}`, {
+    const searchingParams = new URLSearchParams(window.location.search);
+    searchingParams.set('docId', docId.toString());
+    router.replace(`/documents/${catId}?${searchingParams.toString()}`, {
       scroll: false,
     });
   };
@@ -148,12 +149,15 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
                 handleOpenDocumentSummary={handleSelectedDocSummary}
                 selectedDoc={selectedDocId}
                 handleOpenCategoryDrawer={(value) => openCategoryDrawer(value)}
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
               />
               {selectedDocId && (
                 <DocumentSummary
                   catId={catId}
                   docId={selectedDocId}
                   selectedDocIdNull={closeSummaryDrawer}
+                  searchParams={searchParams}
                 />
               )}
             </>

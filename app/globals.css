@@ -839,3 +839,13 @@ input::-webkit-inner-spin-button {
   color: #0d47a1;
   border-radius: 6px;
 }
+
+.highlighted {
+  background-color: #B948FF !important;
+  font-weight: var(--Medium) !important;
+  color: var(--Background-Color) !important;
+  font-size: inherit !important;
+  font-family: inherit !important;
+  display: inline !important;
+  word-break: break-word !important;
+}

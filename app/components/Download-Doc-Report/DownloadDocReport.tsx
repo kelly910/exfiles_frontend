@@ -34,6 +34,7 @@ import { getDocumentImage } from '@/app/utils/functions';
 import {
   convertDateFormat,
   convertDateFormatForIncident,
+  highlightText,
 } from '@/app/utils/constants';
 import FilterModal from './FilterModal';
 import { Dayjs } from 'dayjs';
@@ -524,9 +525,13 @@ const DownloadDocReport = () => {
                           <Typography
                             variant="body1"
                             className={styles.docTitle}
-                          >
-                            {doc?.file_name}
-                          </Typography>
+                            dangerouslySetInnerHTML={{
+                              __html: highlightText(
+                                doc?.file_name,
+                                searchParams
+                              ),
+                            }}
+                          />
                           <Box className={styles.allSelect}>
                             <FormControlLabel
                               control={

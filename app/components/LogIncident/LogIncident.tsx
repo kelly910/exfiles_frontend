@@ -38,7 +38,10 @@ import LogDetailsModel from '../LogModel/LogDetailsModel';
 import LogModel from '../LogModel/LogModel';
 import dayjs, { Dayjs } from 'dayjs';
 import FilterModal from './FilterModal';
-import { convertDateFormatForIncident } from '@/app/utils/constants';
+import {
+  convertDateFormatForIncident,
+  highlightText,
+} from '@/app/utils/constants';
 
 export interface FileDataImage {
   file_url: string;
@@ -730,9 +733,13 @@ export default function LogIncident() {
                               variant="body1"
                               className={styles.logTitle}
                               onClick={() => viewDetails(item)}
-                            >
-                              {item.description}
-                            </Typography>
+                              dangerouslySetInnerHTML={{
+                                __html: highlightText(
+                                  item.description,
+                                  searchParams
+                                ),
+                              }}
+                            />
                           </Box>
                           <Box
                             component="div"
@@ -762,9 +769,13 @@ export default function LogIncident() {
                                   <Typography
                                     variant="body1"
                                     className={styles.logListBodyTagTitle}
-                                  >
-                                    {tag?.name}
-                                  </Typography>
+                                    dangerouslySetInnerHTML={{
+                                      __html: highlightText(
+                                        tag?.name,
+                                        searchParams
+                                      ),
+                                    }}
+                                  />
                                 </Box>
                               ))}
                             </Box>
