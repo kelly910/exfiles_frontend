@@ -21,6 +21,7 @@ import { selectActiveThread } from '@/app/redux/slices/Chat';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { Dayjs } from 'dayjs';
+import { highlightText } from '@/app/utils/constants';
 const NoRecordFound = dynamic(() => import('@components/Common/NoRecordFound'));
 interface DynamicThreadsListProps {
   handleThreadClick: (threadUUID: string) => void;
@@ -278,9 +279,15 @@ export default function DynamicThreadsList({
             className={`${Style['accordion-content']} ${selectedActiveChat?.uuid == chat.uuid ? Style['active'] : ''}`}
           >
             <div className={Style['left']} style={{ cursor: 'pointer' }}>
-              <p onClick={() => handleThreadClick(chat.uuid)}>
-                {chat.name ? chat.name : 'New Thread'}
-              </p>
+              <p
+                onClick={() => handleThreadClick(chat.uuid)}
+                dangerouslySetInnerHTML={{
+                  __html: highlightText(
+                    chat.name ? chat.name : 'New Thread',
+                    searchVal
+                  ),
+                }}
+              ></p>
             </div>
             <div className={Style['right']}>
               <div>

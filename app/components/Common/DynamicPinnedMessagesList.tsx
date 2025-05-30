@@ -14,6 +14,7 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { Dayjs } from 'dayjs';
+import { highlightText } from '@/app/utils/constants';
 const NoRecordFound = dynamic(() => import('@components/Common/NoRecordFound'));
 
 interface DynamicPinnedMessagesListProps {
@@ -213,7 +214,11 @@ export default function DynamicPinnedMessagesList({
             onClick={() => handlePinnedAnswerClick(chat)}
           >
             <div className={Style['left']}>
-              <p>{chat.message}</p>
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: highlightText(chat.message, searchVal),
+                }}
+              ></p>
             </div>
             <div className={Style['right']}>
               <div className={Style['pin-img']}>

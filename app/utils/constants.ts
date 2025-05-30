@@ -114,3 +114,12 @@ export const processText = (text: string) => {
 
   return text;
 };
+
+export const highlightText = (text: string, keyword: string): string => {
+  if (!keyword || keyword.length < 2) return text;
+
+  const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`(${escapedKeyword})`, 'gi');
+
+  return text?.replace(regex, '<span class="highlighted">$1</span>');
+};
