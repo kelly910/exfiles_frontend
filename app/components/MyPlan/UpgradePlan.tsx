@@ -20,7 +20,7 @@ import Image from 'next/image';
 // import { RootState } from '@/app/redux/store';
 import { fetchPlansList } from '@/app/redux/slices/subscriptionPlan';
 import { useAppDispatch } from '@/app/redux/hooks';
-import Slider from 'react-slick';
+import Slider, { Settings } from 'react-slick';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -256,7 +256,7 @@ const UpgradePlan = () => {
 
   type MaybeSliderProps = {
     condition: boolean;
-    settings: any;
+    settings: Settings;
     children: React.ReactNode;
   };
 
