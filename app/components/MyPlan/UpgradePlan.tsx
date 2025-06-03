@@ -20,6 +20,7 @@ import Image from 'next/image';
 // import { RootState } from '@/app/redux/store';
 import { fetchPlansList } from '@/app/redux/slices/subscriptionPlan';
 import { useAppDispatch } from '@/app/redux/hooks';
+import Slider from 'react-slick';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -211,6 +212,68 @@ const UpgradePlan = () => {
     dispatch(fetchPlansList(billingCycle));
   }, [dispatch]);
 
+  const settings = {
+    infinite: false,
+    slidesToShow: 1.3,
+    slidesToScroll: 1,
+    swipeToSlide: true,
+    centerMode: false,
+    centerPadding: '50px',
+    arrows: false,
+    dots: false,
+    autoPlay: false,
+    variableWidth: false,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          centerMode: true, // Disable for mobile
+        },
+      },
+      {
+        breakpoint: 500,
+        settings: {
+          slidesToShow: 1,
+          centerPadding: '30px',
+          centerMode: true,
+        },
+      },
+    ],
+  };
+
+  const [isSliderActive, setIsSliderActive] = useState(false);
+
+  useEffect(() => {
+    const checkSlider = () => {
+      setIsSliderActive(window.innerWidth < 1101);
+    };
+
+    checkSlider();
+    window.addEventListener('resize', checkSlider);
+    return () => window.removeEventListener('resize', checkSlider);
+  }, []);
+
+  type MaybeSliderProps = {
+    condition: boolean;
+    settings: any;
+    children: React.ReactNode;
+  };
+
+  const MaybeSlider: React.FC<MaybeSliderProps> = ({
+    condition,
+    settings,
+    children,
+  }) => {
+    return condition ? (
+      <Slider className="plan-slider" {...settings}>
+        {children}
+      </Slider>
+    ) : (
+      <>{children}</>
+    );
+  };
+
   return (
     <>
       <Accordion
@@ -318,138 +381,143 @@ const UpgradePlan = () => {
               </Box>
             </Box>
             <Box className={styles['subscription-package-main']}>
-              {plans.map((plan, index) => {
-                let buttonLabel = 'Not Applicable';
-                const activePlan = plans.find((p) => p.is_trial);
-                if (activePlan) {
-                  if (plan.plan_type === activePlan.plan_type) {
-                    buttonLabel = 'Current Plan';
-                  } else if (activePlan.plan_type === 'free') {
-                    buttonLabel = 'Upgrade Now';
-                  } else if (activePlan.plan_type === 'essential') {
-                    if (plan.plan_type === 'pro') {
+              <MaybeSlider condition={isSliderActive} settings={settings}>
+                {plans.map((plan, index) => {
+                  let buttonLabel = 'Not Applicable';
+                  const activePlan = plans.find((p) => p.is_trial);
+                  if (activePlan) {
+                    if (plan.plan_type === activePlan.plan_type) {
+                      buttonLabel = 'Current Plan';
+                    } else if (activePlan.plan_type === 'free') {
                       buttonLabel = 'Upgrade Now';
+                    } else if (activePlan.plan_type === 'essential') {
+                      if (plan.plan_type === 'pro') {
+                        buttonLabel = 'Upgrade Now';
+                      }
+                    } else if (activePlan.plan_type === 'pro') {
+                      buttonLabel = 'Not Applicable';
                     }
-                  } else if (activePlan.plan_type === 'pro') {
-                    buttonLabel = 'Not Applicable';
+                  } else {
+                    buttonLabel =
+                      plan.plan_type === 'free'
+                        ? 'Not Applicable'
+                        : 'Upgrade Now';
                   }
-                } else {
-                  buttonLabel =
-                    plan.plan_type === 'free'
-                      ? 'Not Applicable'
-                      : 'Upgrade Now';
-                }
-                return (
-                  <Box
-                    className={styles['subscription-package-body']}
-                    key={index}
-                  >
-                    <Box className={styles['subscription-package-container']}>
-                      <Box className={styles['subscription-package-header']}>
-                        <Box
-                          className={
-                            styles['subscription-package-header-title']
-                          }
-                        >
+                  return (
+                    <Box
+                      className={styles['subscription-package-body']}
+                      key={index}
+                    >
+                      <Box className={styles['subscription-package-container']}>
+                        <Box className={styles['subscription-package-header']}>
                           <Box
                             className={
-                              styles['subscription-package-header-title-text']
+                              styles['subscription-package-header-title']
                             }
                           >
-                            <Typography variant="h2" component="h2">
-                              {plan.name}
-                            </Typography>
-                            <Typography variant="body1" component="p">
-                              ${plan.amount.split('.')[0]}{' '}
-                              <Typography
-                                component="span"
-                                style={{ textTransform: 'capitalize' }}
-                              >
-                                /{plan.duration_unit}
+                            <Box
+                              className={
+                                styles['subscription-package-header-title-text']
+                              }
+                            >
+                              <Typography variant="h2" component="h2">
+                                {plan.name}
                               </Typography>
-                            </Typography>
-                          </Box>
-                          <Box
-                            className={
-                              styles['subscription-package-header-image']
-                            }
-                          >
-                            {plan.plan_type === 'free' ? (
-                              <Image
-                                src="/images/FreeTier.svg"
-                                alt="FreeTier Plan"
-                                width={84}
-                                height={84}
-                              />
-                            ) : plan.plan_type === 'essential' ? (
-                              <Image
-                                src="/images/Essential.svg"
-                                alt="Essential Plan"
-                                width={84}
-                                height={84}
-                              />
-                            ) : (
-                              <Image
-                                src="/images/Pro.svg"
-                                alt="Pro Plan"
-                                width={84}
-                                height={84}
-                              />
-                            )}
-                          </Box>
-                        </Box>
-                        <Typography variant="body1" component="p">
-                          {plan.description}
-                        </Typography>
-                        <Button
-                          className={`${styles['subscription-package-button']} ${buttonLabel === 'Not Applicable' && styles['default']}`}
-                          variant="outlined"
-                        >
-                          {buttonLabel}
-                        </Button>
-                      </Box>
-                      <Box className={styles['subscription-package-footer']}>
-                        {plan.features.map((feature, idx) => (
-                          <Box key={idx} className={styles['feature-item']}>
-                            {feature.display_label === 'True' ||
-                            feature.display_label === 'true' ? (
-                              <Box component="figure">
-                                <Image
-                                  src="/images/tick-circle.svg"
-                                  width={28}
-                                  height={28}
-                                  alt="Feature Available"
-                                />
-                              </Box>
-                            ) : feature.display_label === 'False' ||
-                              feature.display_label === 'false' ? (
-                              <Box component="figure">
-                                <Image
-                                  src="/images/close-circle.svg"
-                                  width={28}
-                                  height={28}
-                                  alt="Feature Not Available"
-                                />
-                              </Box>
-                            ) : (
                               <Typography variant="body1" component="p">
-                                {feature.display_label}
+                                ${plan.amount.split('.')[0]}{' '}
+                                <Typography
+                                  component="span"
+                                  style={{ textTransform: 'capitalize' }}
+                                >
+                                  /{plan.duration_unit}
+                                </Typography>
                               </Typography>
-                            )}
+                            </Box>
+                            <Box
+                              className={
+                                styles['subscription-package-header-image']
+                              }
+                            >
+                              {plan.plan_type === 'free' ? (
+                                <Image
+                                  src="/images/FreeTier.svg"
+                                  alt="FreeTier Plan"
+                                  width={84}
+                                  height={84}
+                                />
+                              ) : plan.plan_type === 'essential' ? (
+                                <Image
+                                  src="/images/Essential.svg"
+                                  alt="Essential Plan"
+                                  width={84}
+                                  height={84}
+                                />
+                              ) : (
+                                <Image
+                                  src="/images/Pro.svg"
+                                  alt="Pro Plan"
+                                  width={84}
+                                  height={84}
+                                />
+                              )}
+                            </Box>
                           </Box>
-                        ))}
-                        <Box className={styles['feature-item']}>
-                          <Box component="figure">
-                            <Typography variant="body1" component="p">
-                              {plan.best_for}
-                            </Typography>
+                          <Typography variant="body1" component="p">
+                            {plan.description}
+                          </Typography>
+                          <Button
+                            className={`${styles['subscription-package-button']} ${buttonLabel === 'Not Applicable' && styles['default']}`}
+                            variant="outlined"
+                          >
+                            {buttonLabel}
+                          </Button>
+                        </Box>
+                        <Box className={styles['subscription-package-footer']}>
+                          {plan.features.map((feature, idx) => (
+                            <Box key={idx} className={styles['feature-item']}>
+                              {feature.display_label === 'True' ||
+                              feature.display_label === 'true' ? (
+                                <Box component="figure">
+                                  <span>{feature.title}</span>
+                                  <Image
+                                    src="/images/tick-circle.svg"
+                                    width={28}
+                                    height={28}
+                                    alt="Feature Available"
+                                  />
+                                </Box>
+                              ) : feature.display_label === 'False' ||
+                                feature.display_label === 'false' ? (
+                                <Box component="figure">
+                                  <span>{feature.title}</span>
+                                  <Image
+                                    src="/images/close-circle.svg"
+                                    width={28}
+                                    height={28}
+                                    alt="Feature Not Available"
+                                  />
+                                </Box>
+                              ) : (
+                                <Typography variant="body1" component="p">
+                                  <span>{feature.title}</span>
+                                  {feature.display_label}
+                                </Typography>
+                              )}
+                            </Box>
+                          ))}
+                          <Box className={styles['feature-item']}>
+                            <Box component="figure">
+                              <Typography variant="body1" component="p">
+                                {plan.best_for}
+                              </Typography>
+                            </Box>
                           </Box>
                         </Box>
                       </Box>
                     </Box>
-                  </Box>
-                );
-              })}
+                  );
+                })}
+              </MaybeSlider>
             </Box>
           </Box>
         </AccordionDetails>

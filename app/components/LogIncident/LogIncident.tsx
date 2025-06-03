@@ -615,213 +615,226 @@ export default function LogIncident() {
                   </Box>
                 </Box>
                 <Box component="div" className={styles.loIncidentTable}>
-                  <Box component="div" className={styles.logListingBox}>
-                    {incidents?.length ? (
-                      incidents.map((item, index) => (
-                        <Box
-                          component="div"
-                          className={styles.logListing}
-                          key={index}
-                        >
-                          <Box component="div" className={styles.logListHeader}>
-                            <Box
-                              component="div"
-                              className={styles.logListHeaderLeft}
-                            >
-                              <Box className={styles.allSelect}>
-                                <FormControlLabel
-                                  control={
-                                    <Checkbox
-                                      checked={selectedLogsDownload.includes(
-                                        item?.id || ''
-                                      )}
-                                      onChange={() =>
-                                        handleSelectLog(item?.id || '')
-                                      }
-                                      icon={
-                                        <Box
-                                          sx={{
-                                            width: 24,
-                                            height: 24,
-                                            border: '2px solid #3A3A4B',
-                                            borderRadius: '8px',
-                                            backgroundColor: 'transparent',
-                                          }}
-                                        />
-                                      }
-                                      checkedIcon={
-                                        <Box
-                                          sx={{
-                                            width: 24,
-                                            height: 24,
-                                            background: 'var(--Main-Gradient)',
-                                            borderRadius: '8px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                          }}
-                                        >
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="12"
-                                            height="8"
-                                            viewBox="0 0 12 8"
-                                            fill="none"
-                                          >
-                                            <path
-                                              d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
-                                              stroke="white"
-                                              stroke-width="1.8"
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                            />
-                                          </svg>
-                                        </Box>
-                                      }
-                                      sx={{ padding: 0 }}
-                                    />
-                                  }
-                                  label=""
-                                />
-                              </Box>
-                              <>
-                                <IconButton
-                                  onClick={(event) =>
-                                    handleClick(event, item.id, item)
-                                  }
-                                >
-                                  <Image
-                                    src="/images/more.svg"
-                                    alt="more"
-                                    width={20}
-                                    height={20}
-                                  />
-                                </IconButton>
-                                <Menu
-                                  anchorEl={anchorEl}
-                                  open={open}
-                                  onClose={handleClose}
-                                  MenuListProps={{
-                                    'aria-labelledby': 'basic-button',
-                                  }}
-                                  className={styles.mainDropdown}
-                                  sx={{
-                                    '& .MuiPaper-root': {
-                                      backgroundColor: 'transparent',
-                                      borderRadius: '12px',
-                                    },
-                                  }}
-                                >
-                                  <MenuItem
-                                    className={styles.menuDropdown}
-                                    onClick={editLogIncident}
-                                  >
-                                    <Image
-                                      src="/images/edit-2.svg"
-                                      alt="edit"
-                                      width={18}
-                                      height={18}
-                                    />
-                                    <Typography>Edit Incident</Typography>
-                                  </MenuItem>
-                                  <MenuItem
-                                    className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
-                                    onClick={deleteDialogOpen}
-                                  >
-                                    <Image
-                                      src="/images/trash.svg"
-                                      alt="delet"
-                                      width={18}
-                                      height={18}
-                                    />
-                                    <Typography>Delete Incident</Typography>
-                                  </MenuItem>
-                                </Menu>
-                              </>
-                            </Box>
-                            <Typography
-                              variant="body1"
-                              className={styles.logTitle}
-                              onClick={() => viewDetails(item)}
-                              dangerouslySetInnerHTML={{
-                                __html: highlightText(
-                                  item.description,
-                                  searchParams
-                                ),
-                              }}
-                            />
-                          </Box>
+                  {incidents?.length ? (
+                    <Box component="div" className={styles.logListingBox}>
+                      {incidents?.length ? (
+                        incidents.map((item, index) => (
                           <Box
                             component="div"
-                            className={styles.logListBodyMain}
+                            className={styles.logListing}
+                            key={index}
                           >
-                            <Box component="div" className={styles.logListBody}>
-                              {item?.tags_data.map((tag, index) => (
-                                <Box
-                                  className={styles.logListBodyTag}
-                                  key={index}
-                                >
-                                  {tag?.file_data?.file_url ? (
-                                    <Image
-                                      src={tag?.file_data?.file_url}
-                                      alt={tag.name}
-                                      width={16}
-                                      height={16}
-                                    />
-                                  ) : (
-                                    <Image
-                                      src="/images/other.svg"
-                                      alt="close icon"
-                                      width={16}
-                                      height={16}
-                                    />
-                                  )}
-                                  <Typography
-                                    variant="body1"
-                                    className={styles.logListBodyTagTitle}
-                                    dangerouslySetInnerHTML={{
-                                      __html: highlightText(
-                                        tag?.name,
-                                        searchParams
-                                      ),
-                                    }}
+                            <Box
+                              component="div"
+                              className={styles.logListHeader}
+                            >
+                              <Box
+                                component="div"
+                                className={styles.logListHeaderLeft}
+                              >
+                                <Box className={styles.allSelect}>
+                                  <FormControlLabel
+                                    control={
+                                      <Checkbox
+                                        checked={selectedLogsDownload.includes(
+                                          item?.id || ''
+                                        )}
+                                        onChange={() =>
+                                          handleSelectLog(item?.id || '')
+                                        }
+                                        icon={
+                                          <Box
+                                            sx={{
+                                              width: 24,
+                                              height: 24,
+                                              border: '2px solid #3A3A4B',
+                                              borderRadius: '8px',
+                                              backgroundColor: 'transparent',
+                                            }}
+                                          />
+                                        }
+                                        checkedIcon={
+                                          <Box
+                                            sx={{
+                                              width: 24,
+                                              height: 24,
+                                              background:
+                                                'var(--Main-Gradient)',
+                                              borderRadius: '8px',
+                                              display: 'flex',
+                                              alignItems: 'center',
+                                              justifyContent: 'center',
+                                            }}
+                                          >
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="12"
+                                              height="8"
+                                              viewBox="0 0 12 8"
+                                              fill="none"
+                                            >
+                                              <path
+                                                d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
+                                                stroke="white"
+                                                stroke-width="1.8"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                              />
+                                            </svg>
+                                          </Box>
+                                        }
+                                        sx={{ padding: 0 }}
+                                      />
+                                    }
+                                    label=""
                                   />
                                 </Box>
-                              ))}
+                                <>
+                                  <IconButton
+                                    onClick={(event) =>
+                                      handleClick(event, item.id, item)
+                                    }
+                                  >
+                                    <Image
+                                      src="/images/more.svg"
+                                      alt="more"
+                                      width={20}
+                                      height={20}
+                                    />
+                                  </IconButton>
+                                  <Menu
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                      'aria-labelledby': 'basic-button',
+                                    }}
+                                    className={styles.mainDropdown}
+                                    sx={{
+                                      '& .MuiPaper-root': {
+                                        backgroundColor: 'transparent',
+                                        borderRadius: '12px',
+                                        boxShadow:
+                                          '-5px 8px 21px 0px #00000010 !important',
+                                      },
+                                    }}
+                                  >
+                                    <MenuItem
+                                      className={styles.menuDropdown}
+                                      onClick={editLogIncident}
+                                    >
+                                      <Image
+                                        src="/images/edit-2.svg"
+                                        alt="edit"
+                                        width={18}
+                                        height={18}
+                                      />
+                                      <Typography>Edit Incident</Typography>
+                                    </MenuItem>
+                                    <MenuItem
+                                      className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
+                                      onClick={deleteDialogOpen}
+                                    >
+                                      <Image
+                                        src="/images/trash.svg"
+                                        alt="delet"
+                                        width={18}
+                                        height={18}
+                                      />
+                                      <Typography>Delete Incident</Typography>
+                                    </MenuItem>
+                                  </Menu>
+                                </>
+                              </Box>
+                              <Typography
+                                variant="body1"
+                                className={styles.logTitle}
+                                onClick={() => viewDetails(item)}
+                                dangerouslySetInnerHTML={{
+                                  __html: highlightText(
+                                    item.description,
+                                    searchParams
+                                  ),
+                                }}
+                              />
+                            </Box>
+                            <Box
+                              component="div"
+                              className={styles.logListBodyMain}
+                            >
+                              <Box
+                                component="div"
+                                className={styles.logListBody}
+                              >
+                                {item?.tags_data.map((tag, index) => (
+                                  <Box
+                                    className={styles.logListBodyTag}
+                                    key={index}
+                                  >
+                                    {tag?.file_data?.file_url ? (
+                                      <Image
+                                        src={tag?.file_data?.file_url}
+                                        alt={tag.name}
+                                        width={16}
+                                        height={16}
+                                      />
+                                    ) : (
+                                      <Image
+                                        src="/images/other.svg"
+                                        alt="close icon"
+                                        width={16}
+                                        height={16}
+                                      />
+                                    )}
+                                    <Typography
+                                      variant="body1"
+                                      className={styles.logListBodyTagTitle}
+                                      dangerouslySetInnerHTML={{
+                                        __html: highlightText(
+                                          tag?.name,
+                                          searchParams
+                                        ),
+                                      }}
+                                    />
+                                  </Box>
+                                ))}
+                              </Box>
+                            </Box>
+                            <Box
+                              component="div"
+                              className={styles.logListFooter}
+                            >
+                              <Typography
+                                variant="body1"
+                                className={styles.logListFooterTitle}
+                              >
+                                Date & Time
+                              </Typography>
+                              <Typography
+                                variant="body1"
+                                className={styles.logListFooterDetails}
+                              >
+                                {item.incident_time
+                                  ? dayjs(
+                                      item.incident_time.replace(
+                                        /([+-]\d{2}:\d{2}):\d{2}$/,
+                                        '$1'
+                                      )
+                                    ).format('MM/DD/YYYY hh:mm A')
+                                  : '-'}
+                              </Typography>
                             </Box>
                           </Box>
-                          <Box component="div" className={styles.logListFooter}>
-                            <Typography
-                              variant="body1"
-                              className={styles.logListFooterTitle}
-                            >
-                              Date & Time
-                            </Typography>
-                            <Typography
-                              variant="body1"
-                              className={styles.logListFooterDetails}
-                            >
-                              {item.incident_time
-                                ? dayjs(
-                                    item.incident_time.replace(
-                                      /([+-]\d{2}:\d{2}):\d{2}$/,
-                                      '$1'
-                                    )
-                                  ).format('MM/DD/YYYY hh:mm A')
-                                : '-'}
-                            </Typography>
-                          </Box>
-                        </Box>
-                      ))
-                    ) : (
-                      <Typography
-                        variant="body1"
-                        className={styles.noDataFound}
-                      >
-                        No records found.
-                      </Typography>
-                    )}
-                  </Box>
+                        ))
+                      ) : (
+                        <></>
+                      )}
+                    </Box>
+                  ) : (
+                    <Typography variant="body1" className={styles.noDataFound}>
+                      No records found.
+                    </Typography>
+                  )}
                 </Box>
                 <Box
                   component="div"
