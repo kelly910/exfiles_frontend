@@ -94,7 +94,7 @@ export default function ActivePlan() {
 }
 
 // Custom styled CircularProgress with gradient
-const GradientCircularProgress = styled(CircularProgress)(({ theme }) => ({
+const GradientCircularProgress = styled(CircularProgress)(() => ({
   circle: {
     strokeLinecap: 'round',
   },

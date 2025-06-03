@@ -20,7 +20,7 @@ import DeleteAccount from '@components/UserSetting/DeleteAccount';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import LogoutDialog from '../LogoutDialog/LogoutDialog';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 export default function TemporaryDrawer() {
   const [isFirstDrawerOpen, setFirstDrawerOpen] = useState(false);
@@ -33,7 +33,7 @@ export default function TemporaryDrawer() {
   );
   const firstName = loggedInUser?.data?.first_name;
   const lastName = loggedInUser?.data?.last_name;
-  const router = useRouter();
+  // const router = useRouter();
   const storedUser = localStorage.getItem('loggedInUser');
   const loggedInUserData = storedUser ? JSON.parse(storedUser) : null;
   const googleLogin = loggedInUserData?.data?.google_login;
@@ -171,9 +171,12 @@ export default function TemporaryDrawer() {
                       height={16}
                     />
                   </Button>
-                  <Button
+                  {/* <Button
                     className={styles.menuDropdown}
-                    onClick={() => router.push('/plans')}
+                    onClick={() => {
+                      setFirstDrawerOpen(false);
+                      router.push('/plans');
+                    }}
                   >
                     <Image
                       src="/images/myPlan.svg"
@@ -188,7 +191,7 @@ export default function TemporaryDrawer() {
                       width={16}
                       height={16}
                     />
-                  </Button>
+                  </Button> */}
                   {!googleLogin && (
                     <Button
                       className={styles.menuDropdown}

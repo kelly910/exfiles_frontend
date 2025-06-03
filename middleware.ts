@@ -34,5 +34,6 @@ export const config = {
     '/documents/:path*',
     '/log-incident',
     '/download-doc-report',
+    '/plans',
   ], // Define which routes should trigger the middleware
 };

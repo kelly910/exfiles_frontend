@@ -32,7 +32,6 @@ import DynamicThreadsList from '@components/Common/DynamicThreadsList';
 import DynamicPinnedMessagesList from '@components/Common/DynamicPinnedMessagesList';
 import SidebarButton from '@components/Common/SidebarButton';
 import DateSelectionFilter from '@components/Common/DateSelectionFilter';
-import LogModel from '@components/LogModel/LogModel';
 
 // Redux imports
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
@@ -66,7 +65,6 @@ const Sidebar = ({
   const [search, setSearch] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const isMobile = useMediaQuery('(max-width:768px)');
-  const [openIncidentModel, setOpenIncidentModel] = useState(false);
   const threadList = useAppSelector(selectThreadsList);
   const pinnedChats = useAppSelector(selectPinnedMessagesList);
   const [resetTrigger, setResetTrigger] = useState(0);
@@ -75,10 +73,6 @@ const Sidebar = ({
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
   const [toDate, setToDate] = useState<Dayjs | null>(null);
   const { setSearchingChat } = useSearch();
-
-  const openLogIncidentModel = () => {
-    setOpenIncidentModel(true);
-  };
 
   if (isSearchOpen && !isOpen) {
     setIsSearchOpen(false);
@@ -161,6 +155,7 @@ const Sidebar = ({
   const handleClearSearch = () => {
     setSearch('');
     setSearchValue('');
+    setSearchingChat?.('');
     setResetTrigger((prev) => prev + 1);
   };
 
@@ -171,7 +166,7 @@ const Sidebar = ({
   };
 
   const ColoredLinearProgress = styled(LinearProgress)<{ $barColor: string }>(
-    ({ theme, $barColor }) => ({
+    ({ $barColor }) => ({
       height: 4,
       borderRadius: 50,
       marginBottom: 0,

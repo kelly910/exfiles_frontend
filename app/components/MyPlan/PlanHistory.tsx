@@ -61,7 +61,7 @@ export default function PlanHistory() {
                   <TableCell sx={{ textAlign: 'center', width: '100px' }}>
                     <IconButton aria-label="import">
                       <Image
-                        src="/images/Import.svg"
+                        src="/images/import.svg"
                         alt="import Icon"
                         width={24}
                         height={24}

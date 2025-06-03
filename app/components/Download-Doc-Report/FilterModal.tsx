@@ -46,6 +46,7 @@ export default function FilterModal({
   const { categories } = useSelector(
     (state: RootState) => state.categoryListing
   );
+  const isDisabledFilter = !((fromDate && toDate) || selectedCategories.length);
 
   const handleApplyDateFilter = () => {
     onApply();
@@ -635,6 +636,7 @@ export default function FilterModal({
           <Button
             className={Style['apply-btn']}
             onClick={handleApplyDateFilter}
+            disabled={isDisabledFilter}
           >
             Apply
           </Button>
