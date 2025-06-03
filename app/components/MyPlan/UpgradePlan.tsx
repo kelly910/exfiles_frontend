@@ -18,7 +18,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 // import { useSelector } from 'react-redux';
 // import { RootState } from '@/app/redux/store';
-import { fetchPlansList } from '@/app/redux/slices/subscriptionPlan';
+// import { fetchPlansList } from '@/app/redux/slices/subscriptionPlan';
 import { useAppDispatch } from '@/app/redux/hooks';
 import Slider, { Settings } from 'react-slick';
 
@@ -209,7 +209,7 @@ const UpgradePlan = () => {
   ];
 
   useEffect(() => {
-    dispatch(fetchPlansList(billingCycle));
+    // dispatch(fetchPlansList(billingCycle));
   }, [dispatch]);
 
   const settings = {
@@ -340,7 +340,7 @@ const UpgradePlan = () => {
                           onChange={(_, newValue) => {
                             if (newValue) {
                               setBillingCycle(newValue);
-                              dispatch(fetchPlansList(newValue));
+                              // dispatch(fetchPlansList(newValue));
                             }
                           }}
                           aria-label="text alignment"

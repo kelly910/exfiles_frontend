@@ -307,7 +307,7 @@ export default function FilterModal({
                             textAlign: 'start',
                           }}
                         >
-                          Select Tags
+                          Select Categories
                         </Box>
                       );
                     }
