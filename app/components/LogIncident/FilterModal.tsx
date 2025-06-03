@@ -44,6 +44,7 @@ export default function FilterModal({
   const [isFromDatePickerOpen, setIsFromDatePickerOpen] = useState(false);
   const [isToDatePickerOpen, setIsToDatePickerOpen] = useState(false);
   const { tags } = useSelector((state: RootState) => state.tagList);
+  const isDisabledFilter = !((fromDate && toDate) || selectedTags.length);
 
   const handleApplyDateFilter = () => {
     onApply();
@@ -609,7 +610,11 @@ export default function FilterModal({
           </ThemeProvider>
         </Box>
 
-        <Button className={Style['apply-btn']} onClick={handleApplyDateFilter}>
+        <Button
+          className={Style['apply-btn']}
+          onClick={handleApplyDateFilter}
+          disabled={isDisabledFilter}
+        >
           Apply
         </Button>
       </Box>

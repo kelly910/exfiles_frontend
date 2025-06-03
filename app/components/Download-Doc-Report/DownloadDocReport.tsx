@@ -283,11 +283,14 @@ const DownloadDocReport = () => {
   const settings = {
     infinite: false,
     speed: 500,
+    cssEase: 'ease-in-out',
     slidesToScroll: 1,
     swipeToSlide: true,
     variableWidth: true,
     arrows: true,
     dots: false,
+    draggable: true,
+    touchMove: true,
     afterChange: (index: number) => setCurrentSlide(index),
     nextArrow: (
       <CustomArrow

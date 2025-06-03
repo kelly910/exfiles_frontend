@@ -302,7 +302,6 @@ export default function LogIncident() {
       createdAfter,
       tags: chooseTags,
     });
-    console.log(typeof chooseTags.join(','), 'chooseTags');
     dispatch(
       fetchLogIncidents({
         created_before: createdBefore,
@@ -312,6 +311,17 @@ export default function LogIncident() {
         page: 1,
       })
     ).unwrap();
+  };
+
+  const clearFilter = () => {
+    setFilters({
+      createdBefore: '',
+      createdAfter: '',
+      tags: [] as number[],
+    });
+    setFromDate(null);
+    setToDate(null);
+    setSelectedTags([]);
   };
 
   return (
@@ -855,6 +865,7 @@ export default function LogIncident() {
         open={openAddIncident}
         handleClose={() => setOpenAddIncident(false)}
         editedData={editLogIncidentData}
+        handleClearFilter={clearFilter}
       />
     </>
   );

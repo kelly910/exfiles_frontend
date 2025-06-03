@@ -24,7 +24,7 @@
 
   .searchBoard {
     width: 100%;
-    padding: 24px 33px 12px 33px;
+    padding: 24px 33px 24px 33px;
     background-color: var(--Background-Color);
     position: sticky;
     top: 0;
@@ -45,6 +45,11 @@
       gap: 16px;
       width: 100%;
 
+      @media (max-width: 600px) {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
       .search-btn {
         background-color: var(--Card-Color);
         padding: 6px;
@@ -52,6 +57,10 @@
         min-width: unset;
         border-radius: 10px;
         aspect-ratio: 1 / 1;
+
+        @media (max-width: 600px) {
+          width: calc(100%);
+        }
 
         &.active {
           background: var(--Main-Gradient);
@@ -78,6 +87,19 @@
           padding: 0;
           font-size: var(--SubTitle-3);
           font-weight: var(--Lighter);
+        }
+      }
+
+      .filter-btn-box {
+        @media (max-width: 600px) {
+          order: 3;
+        }
+      }
+
+      button {
+        @media (max-width: 600px) {
+          width: calc(100% - 38px - 16px);
+          order: 2;
         }
       }
     }
@@ -1026,15 +1048,15 @@
     max-width: 100%;
 
     .docGridBox {
-      width: calc(25% - 12.66px);
+      width: calc(33.33% - 10.66px);
       max-width: 100%;
 
-      @media (max-width: 1300px) {
-        width: calc(33.33% - 10.66px);
+      @media (max-width: 1200px) {
+        width: calc(50% - 8px);
       }
 
       @media (max-width: 550px) {
-        width: calc(50% - 8px);
+        width: calc(100%);
       }
     }
   }

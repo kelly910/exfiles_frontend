@@ -56,6 +56,7 @@ export default function PageHeader({
   const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
   const settings = [
     { title: 'Settings', img: '/images/setting.svg' },
+    // { title: 'My Plan', img: '/images/myPlan.svg' },
     { title: 'Log out', img: '/images/logout.svg' },
   ];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -95,6 +96,8 @@ export default function PageHeader({
     setAnchorElUser(null);
     if (settingTitle === 'Settings') {
       setOpenSettingDialog(true);
+      // } else if (settingTitle === 'My Plan') {
+      //   router.push('/plans');
     } else {
       setOpenLogoutDialog(true);
     }

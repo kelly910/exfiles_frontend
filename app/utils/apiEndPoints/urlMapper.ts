@@ -31,6 +31,8 @@ const urlMapper = {
   // reports download
   downloadDocReport: `${BASE_URL}multiple-documents-summary-pdf/`,
   downloadLogReport: `${BASE_URL}incident-report-pdf/`,
+  // subscription plan
+  subscriptionPlan: `${BASE_URL}plans/`,
 };
 
 export default urlMapper;
