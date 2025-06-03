@@ -849,3 +849,21 @@ input::-webkit-inner-spin-button {
   display: inline !important;
   word-break: break-word !important;
 }
+
+.plan-slider .slick-track .slick-slide {
+  padding-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .plan-slider .slick-track .slick-slide {
+    padding-right: 0;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .plan-slider .slick-track .slick-slide {
+    padding-right: 0;
+    padding: 0 10px;
+  }
+}

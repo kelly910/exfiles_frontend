@@ -180,18 +180,21 @@ export default function FilterModal({
           styleOverrides: {
             root: {
               backgroundColor: 'transparent',
+              height: '100dvh',
               boxShadow: 'none',
+              transform: 'none',
+              // inset: '0 0 auto 0px !important',
+              // alignItems: 'center',
+              // justifyContent: 'center',
+              // position: 'fixed !important',
+              top: '0 !important',
               [theme.breakpoints.down('md')]: {
-                width: '100vw',
-                display: 'flex',
                 inset: 'auto 0 0 0px !important',
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingTop: '0',
                 paddingLeft: '0',
-                height: 'calc(100dvh - 64px)',
-                transform: 'unset !important',
-                backdropFilter: 'blur(10px)',
+                height: '100dvh',
               },
             },
           },
@@ -283,6 +286,7 @@ export default function FilterModal({
                 fullWidth
                 SelectProps={{
                   multiple: true,
+                  displayEmpty: true,
                   value: selectedCategories,
                   onChange: (e) => {
                     const value =
@@ -291,21 +295,57 @@ export default function FilterModal({
                         : e.target.value;
                     setSelectedCategories(value as number[]);
                   },
-                  renderValue: (selected) => (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: 0.5,
-                      }}
-                    >
-                      {(selected as number[])?.slice(0, 2)?.map((id) => {
-                        const category = categories.find(
-                          (cat) => cat.id === id
-                        );
-                        return category ? (
+                  renderValue: (selected) => {
+                    if ((selected as number[]).length === 0) {
+                      return (
+                        <Box
+                          sx={{
+                            fontSize: 'var(--SubTitle-3)',
+                            fontWeight: 'var(--Regular)',
+                            color: 'var(--Placeholder-Text)',
+                            padding: '2px 0',
+                            textAlign: 'start',
+                          }}
+                        >
+                          Select Categories
+                        </Box>
+                      );
+                    }
+                    return (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: 0.5,
+                        }}
+                      >
+                        {(selected as number[])?.slice(0, 2)?.map((id) => {
+                          const category = categories.find(
+                            (cat) => cat.id === id
+                          );
+                          return category ? (
+                            <Box
+                              key={id}
+                              sx={{
+                                backgroundColor: '#2C2A38',
+                                fontSize: 'var(--SubTitle-3)',
+                                fontWeight: 'var(--Lighter)',
+                                color: '#fff',
+                                borderRadius: '100px',
+                                px: 1.5,
+                                py: 0.5,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                                border: '1px solid #3A3948',
+                              }}
+                            >
+                              {category.name}
+                            </Box>
+                          ) : null;
+                        })}
+                        {(selected as number[]).length > 2 && (
                           <Box
-                            key={id}
                             sx={{
                               backgroundColor: '#2C2A38',
                               fontSize: 'var(--SubTitle-3)',
@@ -320,31 +360,12 @@ export default function FilterModal({
                               border: '1px solid #3A3948',
                             }}
                           >
-                            {category.name}
+                            +{(selected as number[]).length - 2}
                           </Box>
-                        ) : null;
-                      })}
-                      {(selected as number[]).length > 2 && (
-                        <Box
-                          sx={{
-                            backgroundColor: '#2C2A38',
-                            fontSize: 'var(--SubTitle-3)',
-                            fontWeight: 'var(--Lighter)',
-                            color: '#fff',
-                            borderRadius: '100px',
-                            px: 1.5,
-                            py: 0.5,
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 1,
-                            border: '1px solid #3A3948',
-                          }}
-                        >
-                          +{(selected as number[]).length - 2}
-                        </Box>
-                      )}
-                    </Box>
-                  ),
+                        )}
+                      </Box>
+                    );
+                  },
                 }}
                 placeholder="Select Categories"
                 sx={{
@@ -354,6 +375,16 @@ export default function FilterModal({
                   fontWeight: 'var(--Regular)',
                   color: 'var(--Primary-Text-Color)',
                   width: '100%',
+                  '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline':
+                    {
+                      borderColor: 'var(--Subtext-Color)',
+                      borderWidth: '1px',
+                    },
+                  '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
+                    {
+                      borderColor: 'var(--Subtext-Color)',
+                      borderWidth: '1px',
+                    },
                   '& .MuiOutlinedInput-notchedOutline': {
                     top: '-8px !important',
                     borderColor: '#3A3948',
@@ -476,6 +507,11 @@ export default function FilterModal({
                       textField: {
                         placeholder: 'Select date',
                         sx: {
+                          '&.Mui-disabled': {
+                            '& span': {
+                              color: '#9e9e9e',
+                            },
+                          },
                           '& .MuiPickersInputBase-root': {
                             padding: '4px',
                           },
@@ -576,6 +612,11 @@ export default function FilterModal({
                       textField: {
                         placeholder: 'Select date',
                         sx: {
+                          '&.Mui-disabled': {
+                            '& span': {
+                              color: '#9e9e9e',
+                            },
+                          },
                           '& .MuiPickersInputBase-root': {
                             padding: '4px',
                           },

@@ -241,6 +241,15 @@
   flex: 0 0 25%;
   overflow: hidden;
 
+  @media (max-width: 1100px) {
+    flex: 0 0 35%;
+    max-width: 35%;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+
   .subscription-plan-sidebar {
     background: linear-gradient(
       90deg,
@@ -368,6 +377,11 @@
     transition: all 0.4s;
     overflow: hidden;
 
+    @media (max-width: 1100px) {
+      border-radius: 16px !important;
+      border: 1px solid var(--Stroke-Color);
+    }
+
     .subscription-package-header {
       padding: 24px 20px;
       width: 100%;
@@ -472,6 +486,25 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          flex-wrap: wrap;
+
+          @media (max-width: 768px) {
+            height: auto;
+            padding: 16px;
+          }
+
+          span {
+            color: var(--Subtext-Color);
+            display: none;
+            width: 100%;
+            font-size: var(--SubTitle-3);
+            font-weight: var(--Lighter);
+            margin-bottom: 6px;
+
+            @media (max-width: 768px) {
+              display: block;
+            }
+          }
         }
         figure {
           padding: 6px 20px;
@@ -484,6 +517,25 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          flex-wrap: wrap;
+
+          @media (max-width: 768px) {
+            height: auto;
+            padding: 16px;
+          }
+
+          span {
+            color: var(--Subtext-Color);
+            display: none;
+            width: 100%;
+            font-size: var(--SubTitle-3);
+            font-weight: var(--Lighter);
+            margin-bottom: 6px;
+
+            @media (max-width: 768px) {
+              display: block;
+            }
+          }
         }
       }
     }
@@ -498,9 +550,38 @@
   border-radius: 16px;
   // overflow: hidden;
   flex: 0 0 75%;
+  max-width: 75%;
 
-  & > :last-child {
+  @media (max-width: 1100px) {
+    border: none !important;
+    border-radius: 0 !important;
+    flex: 0 0 60%;
+    max-width: 60%;
+  }
+
+  @media (max-width: 768px) {
+    flex: 0 0 90%;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 500px) {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  & > div {
+    max-width: 100%;
+  }
+
+  & > :last-child,
+  & > .slick-slide :last-child .subscription-package-body {
     border-right: 0;
+
+    @media (max-width: 1100px) {
+      border: none !important;
+    }
   }
 
   & > :last-child .subscription-package-container {
@@ -511,8 +592,13 @@
     border-radius: 16px 0 0 16px;
   }
 
-  & > div {
+  & > div,
+  & > div .subscription-package-body {
     border-right: 1px solid var(--Stroke-Color);
+
+    @media (max-width: 1100px) {
+      border: none !important;
+    }
   }
 }
 
@@ -528,40 +614,42 @@
 
 // upgrade-subscription-plan Hover Effect
 
-.subscription-package-body:hover .subscription-package-container {
-  border-radius: 16px;
-}
+@media (min-width: 1101px) {
+  .subscription-package-body:hover .subscription-package-container {
+    border-radius: 16px;
+  }
 
-.subscription-package-body:hover
-  .subscription-package-container
-  .subscription-package-header
-  .subscription-package-button {
-  background: var(--Main-Gradient);
-  color: var(--Primary-Text-Color);
-  border: 1px solid var(--Card-Color);
-}
+  .subscription-package-body:hover
+    .subscription-package-container
+    .subscription-package-header
+    .subscription-package-button {
+    background: var(--Main-Gradient);
+    color: var(--Primary-Text-Color);
+    border: 1px solid var(--Card-Color);
+  }
 
-.subscription-package-body::after {
-  content: '';
-  position: absolute;
-  top: -16px;
-  left: -1px;
-  right: -1px;
-  bottom: -16px;
-  opacity: 0;
-  z-index: -1;
-  transition: all 0.4s;
-}
+  .subscription-package-body::after {
+    content: '';
+    position: absolute;
+    top: -16px;
+    left: -1px;
+    right: -1px;
+    bottom: -16px;
+    opacity: 0;
+    z-index: -1;
+    transition: all 0.4s;
+  }
 
-.subscription-package-body:hover .subscription-package-container {
-  z-index: 3;
-}
+  .subscription-package-body:hover .subscription-package-container {
+    z-index: 3;
+  }
 
-.subscription-package-body:hover::after {
-  background: var(--Main-Gradient);
-  border-radius: 12px;
-  opacity: 1;
-  z-index: 0;
+  .subscription-package-body:hover::after {
+    background: var(--Main-Gradient);
+    border-radius: 12px;
+    opacity: 1;
+    z-index: 0;
+  }
 }
 
 // upgrade-plan-accordion

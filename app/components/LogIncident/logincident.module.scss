@@ -81,16 +81,23 @@
   flex: 1;
   padding: 0 24px;
   overflow-y: auto;
+
+  .noDataFound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
 }
 
 .mainDropdown {
   ul {
     border-radius: 12px;
     padding: 0;
-    background-color: #1b1a25;
+    background-color: var(--Input-Box-Colors);
     color: #dadae1;
     padding: 4px;
-    box-shadow: -5px 8px 21px 0px #00000026;
+    // box-shadow: -5px 8px 21px 0px #00000026;
   }
 
   .menuDropdown {
@@ -283,7 +290,6 @@
 // Listing
 
 .allSelect {
-  background-color: var(--Background-Color);
   position: sticky;
   top: 0;
   z-index: 2;
