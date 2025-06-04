@@ -13,7 +13,17 @@ import { Dayjs } from 'dayjs';
 
 // MUI Components
 import ListItem from '@mui/material/ListItem';
-import { Box, List, TextField, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  // LinearProgress,
+  // linearProgressClasses,
+  List,
+  // Modal,
+  // styled,
+  TextField,
+  // Typography,
+  useMediaQuery,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import SidebarAccordion from '@components/Common/SidebarAccordion';
 
@@ -22,7 +32,6 @@ import DynamicThreadsList from '@components/Common/DynamicThreadsList';
 import DynamicPinnedMessagesList from '@components/Common/DynamicPinnedMessagesList';
 import SidebarButton from '@components/Common/SidebarButton';
 import DateSelectionFilter from '@components/Common/DateSelectionFilter';
-import LogModel from '@components/LogModel/LogModel';
 
 // Redux imports
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
@@ -34,6 +43,8 @@ import {
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
+import { useSearch } from '../AI-Chat-Module/context/SearchContext';
+import LogModel from '../LogModel/LogModel';
 
 const Sidebar = ({
   isOpen,
@@ -63,6 +74,7 @@ const Sidebar = ({
   const [isFilterSelected, setIsFilterSelected] = useState(false);
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
   const [toDate, setToDate] = useState<Dayjs | null>(null);
+  const { setSearchingChat } = useSearch();
 
   const openLogIncidentModel = () => {
     setOpenIncidentModel(true);
@@ -93,6 +105,10 @@ const Sidebar = ({
           router.push('/documents');
         }
       });
+  };
+
+  const handleDocReport = () => {
+    router.push('/download-doc-report');
   };
 
   const handleStartNewChat = () => {
@@ -133,6 +149,7 @@ const Sidebar = ({
 
   const handleTextInput = (inputValue: string) => {
     setSearch(inputValue);
+    setSearchingChat?.(inputValue);
     const trimmed = inputValue.trim();
     if (inputValue == '') {
       handleClearSearch();
@@ -144,8 +161,41 @@ const Sidebar = ({
   const handleClearSearch = () => {
     setSearch('');
     setSearchValue('');
+    setSearchingChat?.('');
     setResetTrigger((prev) => prev + 1);
   };
+
+  // const getColor = (value: number) => {
+  //   if (value <= 80) return 'var(--Main-Gradient)'; // Gradient
+  //   if (value <= 90) return '#FF7E22'; // Orange
+  //   return '#E72240'; // Red
+  // };
+
+  // const ColoredLinearProgress = styled(LinearProgress)<{ $barColor: string }>(
+  //   ({ $barColor }) => ({
+  //     height: 4,
+  //     borderRadius: 50,
+  //     marginBottom: 0,
+  //     marginTop: '8px',
+  //     [`&.${linearProgressClasses.colorPrimary}`]: {
+  //       backgroundColor: 'var(--Stroke-Color)',
+  //     },
+  //     [`& .${linearProgressClasses.bar}`]: {
+  //       borderRadius: 5,
+  //       background: $barColor,
+  //     },
+  //   })
+  // );
+
+  // const usageData = [
+  //   { label: 'Summaries used', used: 47, total: 100 },
+  //   { label: 'Chats used', used: 45, total: 50 },
+  //   { label: 'Reports generated', used: 3, total: 3 },
+  // ];
+
+  // const [open, setOpen] = React.useState(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
 
   return (
     <>
@@ -331,11 +381,41 @@ const Sidebar = ({
               />
             </SidebarAccordion>
 
-            <SidebarButton
-              btnTitle={'Documents'}
-              iconPath={'/images/document-text.svg'}
-              handleBtnClick={handleDocumentClick}
-            />
+            {isOpen ? (
+              <SidebarAccordion
+                title="Documents"
+                icon="/images/document-text.svg"
+                expanded={expanded}
+                panelKey="panel3"
+                handleAccordionChange={handleAccordionChange}
+                expandPanel={() => setExpanded('panel3')}
+              >
+                <SidebarButton
+                  btnTitle={'Documents'}
+                  iconPath={'/images/document-text.svg'}
+                  handleBtnClick={handleDocumentClick}
+                />
+
+                <SidebarButton
+                  btnTitle={'Report'}
+                  iconPath={'/images/report-icon.svg'}
+                  handleBtnClick={handleDocReport}
+                />
+              </SidebarAccordion>
+            ) : (
+              <>
+                <SidebarButton
+                  btnTitle={'Documents'}
+                  iconPath={'/images/document-text.svg'}
+                  handleBtnClick={handleDocumentClick}
+                />
+                <SidebarButton
+                  btnTitle={'Report'}
+                  iconPath={'/images/report-icon.svg'}
+                  handleBtnClick={handleDocReport}
+                />
+              </>
+            )}
 
             <SidebarButton
               btnTitle={'Log Incident'}
@@ -344,6 +424,78 @@ const Sidebar = ({
             />
           </div>
         </div>
+
+        {/* <div className={Style['storage-main-body']}>
+          <div className={Style['storage-main']}>
+            {usageData.map((item, idx) => {
+              const value = (item.used / item.total) * 100;
+
+              return (
+                <Box key={idx} className={Style['storage-body']}>
+                  <Typography variant="body1" className={Style['storage-head']}>
+                    {item.label}{' '}
+                    <Typography component="span">
+                      {item.used}/{item.total}
+                    </Typography>
+                  </Typography>
+
+                  <ColoredLinearProgress
+                    variant="determinate"
+                    value={value}
+                    $barColor={getColor(value)}
+                  />
+                </Box>
+              );
+            })}
+          </div>
+          <Box className={Style['close-storage']}>
+            <Box onClick={handleOpen} className={Style['close-storage-inner']}>
+              <Image
+                src="/images/graph.svg"
+                alt="graph"
+                width={18}
+                height={18}
+              />
+            </Box>
+          </Box>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            BackdropProps={{
+              sx: {
+                backgroundColor: 'transparent',
+              },
+            }}
+            className={Style['modal-box']}
+          >
+            <Box className={Style['storage-main']}>
+              {usageData.map((item, idx) => {
+                const value = (item.used / item.total) * 100;
+
+                return (
+                  <Box key={idx} className={Style['storage-body']}>
+                    <Typography
+                      variant="body1"
+                      className={Style['storage-head']}
+                    >
+                      {item.label}{' '}
+                      <Typography component="span">
+                        {item.used}/{item.total}
+                      </Typography>
+                    </Typography>
+
+                    <ColoredLinearProgress
+                      variant="determinate"
+                      value={value}
+                      $barColor={getColor(value)}
+                    />
+                  </Box>
+                );
+              })}
+            </Box>
+          </Modal>
+        </div> */}
+
         <div className={Style['sidebar-btm']}>
           <div className={Style['sidebar-btm-card']}>
             <div className={Style['sidebar-btm-card-inner']}>

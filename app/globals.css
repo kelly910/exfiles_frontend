@@ -356,12 +356,42 @@ input {
   background: var(--Main-Gradient);
   border-radius: 12px;
   display: flex;
+  flex: 0 0 auto;
   justify-content: center;
   align-items: center;
   min-width: 140px;
   white-space: nowrap;
   outline: 0.5px solid transparent;
   transition: all 0.4s;
+}
+
+.download-document-btn {
+  padding: 8px 24px !important;
+}
+
+.download-document-btn img {
+  margin-left: 4px;
+}
+
+.generate-document-btn {
+  background: transparent !important;
+  outline: 1px solid var(--Card-Border) !important;
+}
+
+.generate-document-btn img {
+  margin-left: 4px;
+}
+
+.filter-date {
+  background: transparent !important;
+  border-radius: 10px !important;
+  min-width: 36px !important;
+  border: 1px solid var(--Stroke-Color) !important;
+  padding: 6px 9px !important;
+}
+
+.filter-date img {
+  margin-right: 0 !important;
 }
 
 .btn.btn-pluse:hover {
@@ -808,4 +838,32 @@ input::-webkit-inner-spin-button {
   font-size: 16px;
   color: #0d47a1;
   border-radius: 6px;
+}
+
+.highlighted {
+  background-color: #B948FF !important;
+  font-weight: var(--Medium) !important;
+  color: var(--Background-Color) !important;
+  font-size: inherit !important;
+  font-family: inherit !important;
+  display: inline !important;
+  word-break: break-word !important;
+}
+
+.plan-slider .slick-track .slick-slide {
+  padding-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .plan-slider .slick-track .slick-slide {
+    padding-right: 0;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .plan-slider .slick-track .slick-slide {
+    padding-right: 0;
+    padding: 0 10px;
+  }
 }

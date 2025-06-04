@@ -1,0 +1,12 @@
+.search-btn {
+  background-color: var(--Card-Color);
+  padding: 7px;
+  border: 1px solid var(--Stroke-Color);
+  min-width: unset;
+  border-radius: 7px;
+  aspect-ratio: 1 / 1;
+
+  &.active {
+    background: var(--Main-Gradient);
+  }
+}

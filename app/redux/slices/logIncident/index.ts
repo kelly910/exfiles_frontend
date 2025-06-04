@@ -57,21 +57,87 @@ const initialState: LogIncidentState = {
 
 export const fetchLogIncidents = createAsyncThunk<
   LogIncidentResponse,
-  { page?: number; search?: string },
+  {
+    page?: number;
+    search?: string;
+    page_size?: number | 'all';
+    created_before?: string;
+    created_after?: string;
+    tags?: string;
+  },
   { rejectValue: string }
 >(
   'logIncidents/fetch',
-  async ({ search = '', page = 1 }, { rejectWithValue }) => {
+  async (
+    {
+      search = '',
+      page = 1,
+      page_size = 12,
+      created_before,
+      created_after,
+      tags,
+    },
+    { rejectWithValue }
+  ) => {
     try {
-      const searchQuery = `?search=${encodeURIComponent(search)}&page=${page}&page_size=12`;
+      const params = new URLSearchParams();
+
+      if (search) params.append('search', search);
+      if (page) params.append('page', String(page));
+      if (page_size) params.append('page_size', String(page_size));
+      if (created_before) params.append('created_before', created_before);
+      if (created_after) params.append('created_after', created_after);
+      if (tags) params.append('tags', tags);
+
+      const queryString = params.toString() ? `?${params.toString()}` : '';
       const response = await api.get<LogIncidentResponse>(
-        `${urlMapper.logIncidents}${searchQuery}`
+        `${urlMapper.logIncidents}${queryString}`
       );
       return response.data;
     } catch (error) {
       const errorMessage =
         (error as { response?: { data?: { message?: string } } })?.response
           ?.data?.message || 'Failed to fetch log incidents.';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const downloadSelectedLogsReport = createAsyncThunk<
+  void,
+  {
+    incidents_id?: string;
+    created_before?: string;
+    created_after?: string;
+    tags?: string;
+    search?: string;
+    type?: string;
+  },
+  { rejectValue: string }
+>(
+  'documents/downloadSelectedLogsReport',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await api.post(
+        `${urlMapper.downloadLogReport}`,
+        payload,
+        {
+          responseType: 'blob',
+        }
+      );
+      const blob = new Blob([response.data], {
+        type: response.headers['content-type'],
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'LogIncidentReport.pdf';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      const errorMessage =
+        (error as { response?: { data?: { messages?: string[] } } })?.response
+          ?.data?.messages?.[0] || 'Something went wrong. Please try again.';
       return rejectWithValue(errorMessage);
     }
   }

@@ -269,6 +269,11 @@ export default function DateSelectionFilter({
                       textField: {
                         placeholder: 'Select date',
                         sx: {
+                          '&.Mui-disabled': {
+                            '& span': {
+                              color: '#9e9e9e',
+                            },
+                          },
                           '& .MuiPickersInputBase-root': {
                             padding: '4px',
                           },
@@ -368,6 +373,11 @@ export default function DateSelectionFilter({
                       textField: {
                         placeholder: 'Select date',
                         sx: {
+                          '&.Mui-disabled': {
+                            '& span': {
+                              color: '#9e9e9e',
+                            },
+                          },
                           '& .MuiPickersInputBase-root': {
                             padding: '4px',
                           },

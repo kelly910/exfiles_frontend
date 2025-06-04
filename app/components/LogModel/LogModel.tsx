@@ -303,6 +303,7 @@ interface LogIncidentDialogProps {
   open: boolean;
   handleClose: () => void;
   editedData: LogIncidentDetails | null;
+  handleClearFilter?: () => void;
 }
 const newThemeSelect = createTheme({
   components: {
@@ -361,6 +362,7 @@ export default function LogModel({
   open,
   handleClose,
   editedData,
+  handleClearFilter,
 }: LogIncidentDialogProps) {
   const [isChecked, setIsChecked] = useState(false);
   const dispatch = useAppDispatch();
@@ -428,7 +430,7 @@ export default function LogModel({
   };
 
   useEffect(() => {
-    dispatch(fetchCategories({ page: 1, page_size: 30 }));
+    dispatch(fetchCategories({ page: 1, page_size: 50 }));
     dispatch(fetchTagList());
   }, [dispatch]);
 
@@ -530,6 +532,7 @@ export default function LogModel({
       } else {
         await dispatch(addIncident(formData)).unwrap();
       }
+      handleClearFilter?.();
       dispatch(fetchLogIncidents({ page: 1 }));
       router.push('/log-incident');
       handleClose();
