@@ -772,11 +772,12 @@ export default function LogIncident() {
                                     key={index}
                                   >
                                     {tag?.file_data?.file_url ? (
-                                      <Image
+                                      // eslint-disable-next-line @next/next/no-img-element
+                                      <img
                                         src={tag?.file_data?.file_url}
                                         alt={tag.name}
-                                        width={16}
-                                        height={16}
+                                        width="16"
+                                        height="16"
                                       />
                                     ) : (
                                       <Image
