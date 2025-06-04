@@ -2,7 +2,8 @@ import { Box, IconButton, Typography } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat-Module/styles/ChatMessagesStyle.module.scss';
 
 import Image from 'next/image';
-import { processText } from '@/app/utils/constants';
+import { highlightText, processText } from '@/app/utils/constants';
+import { useSearch } from '../../context/SearchContext';
 
 interface StreamingResponseProps {
   inputText: string;
@@ -11,6 +12,7 @@ interface StreamingResponseProps {
 
 export default function StreamingAnswer(props: StreamingResponseProps) {
   const { inputText } = props;
+  const { searchingChat } = useSearch();
 
   return (
     <Box
@@ -34,7 +36,7 @@ export default function StreamingAnswer(props: StreamingResponseProps) {
         >
           <div
             dangerouslySetInnerHTML={{
-              __html: processText(inputText),
+              __html: processText(highlightText(inputText, searchingChat)),
             }}
           />
         </Typography>

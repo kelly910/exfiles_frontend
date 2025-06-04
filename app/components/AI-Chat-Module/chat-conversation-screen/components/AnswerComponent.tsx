@@ -4,7 +4,7 @@ import { Box, Button, IconButton, Typography } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat-Module/styles/ChatMessagesStyle.module.scss';
 import { ChatMessage, ThumbReaction } from '@store/slices/Chat/chatTypes';
 import { formatTo12HourTimeManually } from '@/app/utils/functions';
-import { processText } from '@/app/utils/constants';
+import { highlightText, processText } from '@/app/utils/constants';
 import { showToast } from '@/app/shared/toast/ShowToast';
 // import striptags from 'striptags';
 import {
@@ -16,6 +16,7 @@ import {
 import { useAppDispatch } from '@/app/redux/hooks';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useState } from 'react';
+import { useSearch } from '../../context/SearchContext';
 
 const DynamicEditCombineSummaryModal = dynamic(
   () => import('@/app/components/AI-Chat-Module/modals/EditCombinedSummaryAns')
@@ -28,7 +29,7 @@ export default function AnswerComponent({
 }) {
   const dispatch = useAppDispatch();
   const [isOpenEditSummary, setIsOpenEditSummary] = useState(false);
-
+  const { searchingChat } = useSearch();
   // Copy Message
   const handleCopyThread = async (messageObj: ChatMessage) => {
     let targetData;
@@ -224,14 +225,19 @@ export default function AnswerComponent({
                 <div
                   dangerouslySetInnerHTML={{
                     __html: processText(
-                      messageObj.combined_summary_data.summary
+                      highlightText(
+                        messageObj.combined_summary_data.summary,
+                        searchingChat
+                      )
                     ),
                   }}
                 />
               ) : (
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: processText(messageObj.message),
+                    __html: processText(
+                      highlightText(messageObj.message, searchingChat)
+                    ),
                   }}
                 />
               )}

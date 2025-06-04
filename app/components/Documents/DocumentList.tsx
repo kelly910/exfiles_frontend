@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import styles from './document.module.scss';
-import { convertDateFormat } from '@/app/utils/constants';
+import { convertDateFormat, highlightText } from '@/app/utils/constants';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { fetchDocumentsByCategory } from '@/app/redux/slices/documentByCategory';
@@ -49,6 +49,8 @@ type DocumentListProps = {
   handleOpenDocumentSummary: (docId: string) => void;
   selectedDoc: string | '';
   handleOpenCategoryDrawer: (value: boolean) => void;
+  searchParams: string;
+  setSearchParams: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const DocumentList: React.FC<DocumentListProps> = ({
@@ -56,10 +58,11 @@ const DocumentList: React.FC<DocumentListProps> = ({
   handleOpenDocumentSummary,
   selectedDoc,
   handleOpenCategoryDrawer,
+  searchParams,
+  setSearchParams,
 }) => {
   const mobileView = useMediaQuery('(min-width:800px)');
   const dispatch = useAppDispatch();
-  const [searchParams, setSearchParams] = useState('');
   const { documents, count } = useSelector(
     (state: RootState) => state.documentListing
   );
@@ -310,9 +313,10 @@ const DocumentList: React.FC<DocumentListProps> = ({
                           onClick={() =>
                             handleOpenDocumentSummary(String(doc?.uuid))
                           }
-                        >
-                          {doc?.file_name}
-                        </Typography>
+                          dangerouslySetInnerHTML={{
+                            __html: highlightText(doc?.file_name, searchParams),
+                          }}
+                        ></Typography>
                         <IconButton
                           onClick={(e) =>
                             handleOpenUserMenu(e, String(doc?.uuid))

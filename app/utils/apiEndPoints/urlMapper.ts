@@ -28,6 +28,11 @@ const urlMapper = {
   combinedSummary: `${BASE_URL}combined-summary/`,
   tagList: `${BASE_URL}default-tags-list/`,
   generatedDownloadSummary: `${BASE_URL}generate-summary-pdf/`,
+  // reports download
+  downloadDocReport: `${BASE_URL}multiple-documents-summary-pdf/`,
+  downloadLogReport: `${BASE_URL}incident-report-pdf/`,
+  // subscription plan
+  subscriptionPlan: `${BASE_URL}plans/`,
 };
 
 export default urlMapper;

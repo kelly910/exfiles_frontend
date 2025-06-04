@@ -13,6 +13,8 @@ import {
 import { ChatMessage, UploadedDocument } from '@store/slices/Chat/chatTypes';
 import { LoginResponse } from '@store/slices/login';
 import UserNameAvatar from '@components/AI-Chat-Module/chat-conversation-screen/components/UserNameAvatar';
+import { highlightText } from '@/app/utils/constants';
+import { useSearch } from '../../context/SearchContext';
 
 export default function QuestionCardWithFiles({
   messageObj,
@@ -23,7 +25,7 @@ export default function QuestionCardWithFiles({
 }) {
   const documementsList = messageObj.uploaded_documents;
   const fileList = extractFileNames(messageObj.message);
-
+  const { searchingChat } = useSearch();
   return (
     <Box
       component="div"
@@ -44,17 +46,22 @@ export default function QuestionCardWithFiles({
                   <span
                     key={fileName}
                     className={chatMessagesStyles.chatAlFileChip}
-                  >
-                    {fileName}
-                  </span>
+                    dangerouslySetInnerHTML={{
+                      __html: highlightText(fileName, searchingChat),
+                    }}
+                  ></span>
                 ))}
               </Box>
               <Typography
                 variant="body1"
                 className={chatMessagesStyles.chatAlMessageText}
-              >
-                {messageObj.message.split(']')?.[1]}
-              </Typography>
+                dangerouslySetInnerHTML={{
+                  __html: highlightText(
+                    messageObj.message.split(']')?.[1],
+                    searchingChat
+                  ),
+                }}
+              />
             </>
           </Box>
         ) : (
@@ -84,7 +91,15 @@ export default function QuestionCardWithFiles({
                       variant="body1"
                       className={chatMessagesStyles.fileTitle}
                     >
-                      {file_data.file_name}
+                      <Typography
+                        variant="body1"
+                        dangerouslySetInnerHTML={{
+                          __html: highlightText(
+                            file_data.file_name,
+                            searchingChat
+                          ),
+                        }}
+                      />
                       <span>{formatFileSizeLabel(file_data.file_size)}</span>
                     </Typography>
                   </div>
