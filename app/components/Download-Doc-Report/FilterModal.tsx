@@ -17,6 +17,7 @@ import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
 import { ListItemText } from '@mui/material';
 import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
+import { deepmerge } from '@mui/utils';
 
 interface FilterModalProps {
   open: boolean;
@@ -52,7 +53,7 @@ export default function FilterModal({
     onApply();
     onClose();
   };
-
+  const baseTheme = createTheme();
   const customTheme = (theme: Theme) =>
     createTheme({
       ...theme,
@@ -162,7 +163,7 @@ export default function FilterModal({
               borderRadius: 12,
               border: '1px solid var(--Stroke-Color)',
               backgroundColor: 'var(--Card-Color)',
-              maxWidth: '90%',
+              maxWidth: '280px',
             },
           },
         },
@@ -180,20 +181,24 @@ export default function FilterModal({
           styleOverrides: {
             root: {
               backgroundColor: 'transparent',
-              height: '100dvh',
               boxShadow: 'none',
-              transform: 'none',
-              // inset: '0 0 auto 0px !important',
-              // alignItems: 'center',
-              // justifyContent: 'center',
-              // position: 'fixed !important',
-              top: '0 !important',
+              backdropFilter: 'blur(0)',
+              inset: '0 auto auto 0 !important',
+              width: '100dvw',
+              height: '100dvh',
+              paddingTop: '340px',
+              paddingRight: '260px',
+              paddingBottom: '10px',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-start',
+              transform: 'unset !important',
+              overflowY: 'auto',
+
               [theme.breakpoints.down('md')]: {
                 inset: 'auto 0 0 0px !important',
-                alignItems: 'center',
                 justifyContent: 'center',
-                paddingTop: '0',
-                paddingLeft: '0',
+                paddingRight: '0',
                 height: '100dvh',
               },
             },
@@ -201,6 +206,25 @@ export default function FilterModal({
         },
       },
     });
+
+  const toTheme = (theme: Theme) =>
+    createTheme({
+      ...theme,
+      components: {
+        MuiPickerPopper: {
+          styleOverrides: {
+            root: {
+              paddingTop: '395px',
+              [theme.breakpoints.down('md')]: {
+                // paddingTop: '290px',
+              },
+            },
+          },
+        },
+      },
+    });
+
+  const mergedTheme = deepmerge(customTheme(baseTheme), toTheme(baseTheme));
 
   const newThemeSelect = createTheme({
     components: {
@@ -251,6 +275,7 @@ export default function FilterModal({
             // backgroundColor: '#11101BCC',
             backdropFilter: 'blur(4px)',
             zIndex: 1300,
+            overflowY: 'auto',
           },
         },
       },
@@ -570,7 +595,7 @@ export default function FilterModal({
           </Box>
 
           <Box style={{ marginBottom: '16px' }}>
-            <ThemeProvider theme={customTheme}>
+            <ThemeProvider theme={createTheme(mergedTheme)}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Box
                   sx={{
