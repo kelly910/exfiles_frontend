@@ -866,11 +866,12 @@ export default function LogModel({
                                   />
                                   <label htmlFor={checkboxId}>
                                     {tag.file_data?.file_url && (
-                                      <Image
+                                      // eslint-disable-next-line @next/next/no-img-element
+                                      <img
                                         src={tag.file_data.file_url}
+                                        width="20"
+                                        height="20"
                                         alt={tag.name}
-                                        width={20}
-                                        height={20}
                                         className={LogStyle['checkbox-icon']}
                                       />
                                     )}
