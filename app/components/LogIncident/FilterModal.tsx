@@ -17,6 +17,7 @@ import { createTheme, ThemeProvider, Theme } from '@mui/material/styles';
 import { ListItemText } from '@mui/material';
 import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
+import { deepmerge } from '@mui/utils';
 
 interface FilterModalProps {
   open: boolean;
@@ -50,7 +51,7 @@ export default function FilterModal({
     onApply();
     onClose();
   };
-
+  const baseTheme = createTheme();
   const customTheme = (theme: Theme) =>
     createTheme({
       ...theme,
@@ -160,7 +161,7 @@ export default function FilterModal({
               borderRadius: 12,
               border: '1px solid var(--Stroke-Color)',
               backgroundColor: 'var(--Card-Color)',
-              maxWidth: '90%',
+              maxWidth: '280px',
             },
           },
         },
@@ -178,20 +179,24 @@ export default function FilterModal({
           styleOverrides: {
             root: {
               backgroundColor: 'transparent',
-              height: '100dvh',
               boxShadow: 'none',
-              transform: 'none',
-              // inset: '0 0 auto 0px !important',
-              // alignItems: 'center',
-              // justifyContent: 'center',
-              // position: 'fixed !important',
-              top: '0 !important',
+              backdropFilter: 'blur(0)',
+              inset: '0 auto auto 0 !important',
+              width: '100dvw',
+              height: '100dvh',
+              paddingTop: '340px',
+              paddingRight: '260px',
+              paddingBottom: '10px',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-start',
+              transform: 'unset !important',
+              overflowY: 'auto',
+
               [theme.breakpoints.down('md')]: {
                 inset: 'auto 0 0 0px !important',
-                alignItems: 'center',
                 justifyContent: 'center',
-                paddingTop: '0',
-                paddingLeft: '0',
+                paddingRight: '0',
                 height: '100dvh',
               },
             },
@@ -199,6 +204,25 @@ export default function FilterModal({
         },
       },
     });
+
+  const toTheme = (theme: Theme) =>
+    createTheme({
+      ...theme,
+      components: {
+        MuiPickerPopper: {
+          styleOverrides: {
+            root: {
+              paddingTop: '395px',
+              [theme.breakpoints.down('md')]: {
+                // paddingTop: '290px',
+              },
+            },
+          },
+        },
+      },
+    });
+
+  const mergedTheme = deepmerge(customTheme(baseTheme), toTheme(baseTheme));
 
   const newThemeSelect = createTheme({
     components: {
@@ -241,74 +265,110 @@ export default function FilterModal({
     },
   });
 
-  return (
-    <Modal open={open} onClose={onClose}>
-      <Box
-        className={`${Style['date-picker-box-inner']} ${Style['date-pickerbox-inner']}`}
-      >
-        <Typography variant="h6" className={Style['date-picker-heading']}>
-          Filters
-        </Typography>
+  const themeModal = createTheme({
+    components: {
+      MuiModal: {
+        styleOverrides: {
+          root: {
+            // backgroundColor: '#11101BCC',
+            backdropFilter: 'blur(4px)',
+            zIndex: 1300,
+            overflowY: 'auto',
+          },
+        },
+      },
+    },
+  });
 
-        <Typography
-          variant="body2"
-          sx={{ color: '#A0A0B0', marginBottom: '4px', textAlign: 'left' }}
-        >
-          Tag
-        </Typography>
+  return (
+    <ThemeProvider theme={themeModal}>
+      <Modal open={open} onClose={onClose}>
         <Box
-          style={{
-            marginBottom: '16px',
-            borderBottom: '1px solid #3A3948',
-            paddingBottom: '16px',
-          }}
+          className={`${Style['date-picker-box-inner']} ${Style['date-pickerbox-inner']}`}
         >
-          <ThemeProvider theme={newThemeSelect}>
-            <TextField
-              select
-              fullWidth
-              SelectProps={{
-                multiple: true,
-                displayEmpty: true,
-                value: selectedTags,
-                onChange: (e) => {
-                  const value =
-                    typeof e.target.value === 'string'
-                      ? e.target.value.split(',').map(Number)
-                      : e.target.value;
-                  setSelectedTags(value as number[]);
-                },
-                renderValue: (selected) => {
-                  if ((selected as number[]).length === 0) {
+          <Typography variant="h6" className={Style['date-picker-heading']}>
+            Filters
+          </Typography>
+
+          <Typography
+            variant="body2"
+            sx={{ color: '#A0A0B0', marginBottom: '4px', textAlign: 'left' }}
+          >
+            Tag
+          </Typography>
+          <Box
+            style={{
+              marginBottom: '16px',
+              borderBottom: '1px solid #3A3948',
+              paddingBottom: '16px',
+            }}
+          >
+            <ThemeProvider theme={newThemeSelect}>
+              <TextField
+                select
+                fullWidth
+                SelectProps={{
+                  multiple: true,
+                  displayEmpty: true,
+                  value: selectedTags,
+                  onChange: (e) => {
+                    const value =
+                      typeof e.target.value === 'string'
+                        ? e.target.value.split(',').map(Number)
+                        : e.target.value;
+                    setSelectedTags(value as number[]);
+                  },
+                  renderValue: (selected) => {
+                    if ((selected as number[]).length === 0) {
+                      return (
+                        <Box
+                          sx={{
+                            fontSize: 'var(--SubTitle-3)',
+                            fontWeight: 'var(--Regular)',
+                            color: 'var(--Placeholder-Text)',
+                            padding: '2px 0',
+                            textAlign: 'start',
+                          }}
+                        >
+                          Select Tags
+                        </Box>
+                      );
+                    }
                     return (
                       <Box
                         sx={{
-                          fontSize: 'var(--SubTitle-3)',
-                          fontWeight: 'var(--Regular)',
-                          color: 'var(--Placeholder-Text)',
-                          padding: '2px 0',
-                          textAlign: 'start',
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: 0.5,
                         }}
                       >
-                        Select Tags
-                      </Box>
-                    );
-                  }
-                  return (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: 0.5,
-                      }}
-                    >
-                      {(selected as number[])?.slice(0, 2)?.map((id) => {
-                        const tagDisp = tags.find(
-                          (tag) => Number(tag.id) === id
-                        );
-                        return tagDisp ? (
+                        {(selected as number[])?.slice(0, 2)?.map((id) => {
+                          const tagDisp = tags.find(
+                            (tag) => Number(tag.id) === id
+                          );
+                          return tagDisp ? (
+                            <Box
+                              key={id}
+                              sx={{
+                                backgroundColor: '#2C2A38',
+                                fontSize: 'var(--SubTitle-3)',
+                                fontWeight: 'var(--Lighter)',
+                                color: '#fff',
+                                borderRadius: '100px',
+                                px: 1.5,
+                                py: 0.5,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                                border: '1px solid #3A3948',
+                              }}
+                            >
+                              {tagDisp.name}
+                            </Box>
+                          ) : null;
+                        })}
+                        {(selected as number[]).length > 2 && (
                           <Box
-                            key={id}
                             sx={{
                               backgroundColor: '#2C2A38',
                               fontSize: 'var(--SubTitle-3)',
@@ -323,348 +383,329 @@ export default function FilterModal({
                               border: '1px solid #3A3948',
                             }}
                           >
-                            {tagDisp.name}
+                            +{(selected as number[]).length - 2}
                           </Box>
-                        ) : null;
-                      })}
-                      {(selected as number[]).length > 2 && (
+                        )}
+                      </Box>
+                    );
+                  },
+                }}
+                placeholder="Select Tags"
+                sx={{
+                  backgroundColor: '#252431',
+                  borderRadius: '12px',
+                  fontSize: 'var(--SubTitle-3)',
+                  fontWeight: 'var(--Regular)',
+                  color: 'var(--Primary-Text-Color)',
+                  width: '100%',
+                  '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline':
+                    {
+                      borderColor: 'var(--Subtext-Color)',
+                      borderWidth: '1px',
+                    },
+                  '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
+                    {
+                      borderColor: 'var(--Subtext-Color)',
+                      borderWidth: '1px',
+                    },
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    top: '-8px !important',
+                    borderColor: '#3A3948',
+                    borderRadius: '12px',
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#fff',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#fff',
+                    borderWidth: '1px',
+                  },
+                  '& .MuiSelect-select': {
+                    padding: '14px 16px',
+                    display: 'block',
+                  },
+                  '& .MuiSelect-placeholder': {
+                    color: '#888',
+                    fontWeight: 400,
+                  },
+                  '& svg': {
+                    color: 'var(--Primary-Text-Color)',
+                  },
+                }}
+              >
+                {tags.map((tag) => (
+                  <MenuItem key={tag.id} value={tag.id}>
+                    <ListItemText
+                      primary={tag.name}
+                      primaryTypographyProps={{ sx: { color: '#fff' } }}
+                    />
+                    <Checkbox
+                      checked={selectedTags.includes(Number(tag.id))}
+                      icon={
                         <Box
                           sx={{
-                            backgroundColor: '#2C2A38',
-                            fontSize: 'var(--SubTitle-3)',
-                            fontWeight: 'var(--Lighter)',
-                            color: '#fff',
-                            borderRadius: '100px',
-                            px: 1.5,
-                            py: 0.5,
+                            width: 24,
+                            height: 24,
+                            border: '2px solid #2d2d2d',
+                            borderRadius: '8px',
+                            backgroundColor: 'transparent',
+                          }}
+                        />
+                      }
+                      checkedIcon={
+                        <Box
+                          sx={{
+                            width: 24,
+                            height: 24,
+                            background: 'var(--Main-Gradient)',
+                            borderRadius: '8px',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: 1,
-                            border: '1px solid #3A3948',
+                            justifyContent: 'center',
                           }}
                         >
-                          +{(selected as number[]).length - 2}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="12"
+                            height="8"
+                            viewBox="0 0 12 8"
+                            fill="none"
+                          >
+                            <path
+                              d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
+                              stroke="white"
+                              stroke-width="1.8"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
                         </Box>
-                      )}
-                    </Box>
-                  );
-                },
-              }}
-              placeholder="Select Tags"
-              sx={{
-                backgroundColor: '#252431',
-                borderRadius: '12px',
-                fontSize: 'var(--SubTitle-3)',
-                fontWeight: 'var(--Regular)',
-                color: 'var(--Primary-Text-Color)',
-                width: '100%',
-                '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline':
-                  {
-                    borderColor: 'var(--Subtext-Color)',
-                    borderWidth: '1px',
-                  },
-                '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
-                  {
-                    borderColor: 'var(--Subtext-Color)',
-                    borderWidth: '1px',
-                  },
-                '& .MuiOutlinedInput-notchedOutline': {
-                  top: '-8px !important',
-                  borderColor: '#3A3948',
-                  borderRadius: '12px',
-                },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#fff',
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#fff',
-                  borderWidth: '1px',
-                },
-                '& .MuiSelect-select': {
-                  padding: '14px 16px',
-                  display: 'block',
-                },
-                '& .MuiSelect-placeholder': {
-                  color: '#888',
-                  fontWeight: 400,
-                },
-                '& svg': {
-                  color: 'var(--Primary-Text-Color)',
-                },
-              }}
-            >
-              {tags.map((tag) => (
-                <MenuItem key={tag.id} value={tag.id}>
-                  <ListItemText
-                    primary={tag.name}
-                    primaryTypographyProps={{ sx: { color: '#fff' } }}
-                  />
-                  <Checkbox
-                    checked={selectedTags.includes(Number(tag.id))}
-                    icon={
-                      <Box
-                        sx={{
-                          width: 24,
-                          height: 24,
-                          border: '2px solid #2d2d2d',
-                          borderRadius: '8px',
-                          backgroundColor: 'transparent',
-                        }}
-                      />
-                    }
-                    checkedIcon={
-                      <Box
-                        sx={{
-                          width: 24,
-                          height: 24,
-                          background: 'var(--Main-Gradient)',
-                          borderRadius: '8px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="12"
-                          height="8"
-                          viewBox="0 0 12 8"
-                          fill="none"
-                        >
-                          <path
-                            d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
-                            stroke="white"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </Box>
-                    }
-                    sx={{ padding: '0' }}
-                  />
-                </MenuItem>
-              ))}
-            </TextField>
-          </ThemeProvider>
-        </Box>
+                      }
+                      sx={{ padding: '0' }}
+                    />
+                  </MenuItem>
+                ))}
+              </TextField>
+            </ThemeProvider>
+          </Box>
 
-        <Box style={{ marginBottom: '16px' }}>
-          <ThemeProvider theme={customTheme}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'stretch',
-                  border: '1px solid #444',
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  backgroundColor: 'var(--Input-Box-Colors)',
-                  width: '100%',
-                }}
-              >
+          <Box style={{ marginBottom: '16px' }}>
+            <ThemeProvider theme={customTheme}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Box
                   sx={{
-                    padding: '8px 12px',
-                    color: 'var(--Primary-Text-Color)',
-                    borderRight: '1px solid #444',
                     display: 'flex',
-                    alignItems: 'center',
-                    fontSize: 'var(--SubTitle-3)',
-                    fontWeight: 'var(--Medium)',
-                    whiteSpace: 'nowrap',
-                    width: '63px',
-                    flex: '0 0 auto',
+                    alignItems: 'stretch',
+                    border: '1px solid #444',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    backgroundColor: 'var(--Input-Box-Colors)',
+                    width: '100%',
                   }}
                 >
-                  From
-                </Box>
-                <DesktopDatePicker
-                  value={fromDate}
-                  onChange={(newValue) => setFromDate(newValue)}
-                  onOpen={() => setIsFromDatePickerOpen(true)}
-                  onClose={() => setIsFromDatePickerOpen(false)}
-                  disableFuture
-                  className={Style['data-input']}
-                  slotProps={{
-                    textField: {
-                      placeholder: 'Select date',
-                      sx: {
-                        '&.Mui-disabled': {
-                          '& span': {
-                            color: '#9e9e9e',
+                  <Box
+                    sx={{
+                      padding: '8px 12px',
+                      color: 'var(--Primary-Text-Color)',
+                      borderRight: '1px solid #444',
+                      display: 'flex',
+                      alignItems: 'center',
+                      fontSize: 'var(--SubTitle-3)',
+                      fontWeight: 'var(--Medium)',
+                      whiteSpace: 'nowrap',
+                      width: '63px',
+                      flex: '0 0 auto',
+                    }}
+                  >
+                    From
+                  </Box>
+                  <DesktopDatePicker
+                    value={fromDate}
+                    onChange={(newValue) => setFromDate(newValue)}
+                    onOpen={() => setIsFromDatePickerOpen(true)}
+                    onClose={() => setIsFromDatePickerOpen(false)}
+                    disableFuture
+                    className={Style['data-input']}
+                    slotProps={{
+                      textField: {
+                        placeholder: 'Select date',
+                        sx: {
+                          '&.Mui-disabled': {
+                            '& span': {
+                              color: '#9e9e9e',
+                            },
                           },
-                        },
-                        '& .MuiPickersInputBase-root': {
-                          padding: '4px',
-                        },
-                        '& .MuiPickersSectionList-root': {
-                          color: 'var(--Primary-Text-Color)',
-                          borderRadius: '8px',
-                          padding: '5px 0 5px 8px',
-                          fontSize: 'var(--SubTitle-4)',
-                          fontWeight: 'var(--Regular)',
+                          '& .MuiPickersInputBase-root': {
+                            padding: '4px',
+                          },
+                          '& .MuiPickersSectionList-root': {
+                            color: 'var(--Primary-Text-Color)',
+                            borderRadius: '8px',
+                            padding: '5px 0 5px 8px',
+                            fontSize: 'var(--SubTitle-4)',
+                            fontWeight: 'var(--Regular)',
 
-                          '& span': {
-                            fontFamily: 'var(--font-fustat)',
+                            '& span': {
+                              fontFamily: 'var(--font-fustat)',
+                            },
                           },
-                        },
-                        '& .MuiInputAdornment-root': {
-                          padding: '6px',
-                          background: isFromDatePickerOpen
-                            ? 'var(--Main-Gradient)'
-                            : 'var(--Card-Color)',
-                          color: 'var(--Primary-Text-Color)',
-                          borderRadius: '8px',
-                          border: '0.72px solid var(--Stroke-Color)',
-                          maxHeight: 'unset',
-                          width: '28px',
-                          height: '28px',
-                          flex: '0 0 auto',
-                        },
-                        '& .MuiInputAdornment-root button': {
-                          padding: '0',
-                          color: 'var(--Primary-Text-Color)',
-                          backgroundImage: 'url(/images/calendar_month.svg)',
-                          backgroundSize: 'contain',
-                          backgroundRepeat: 'no-repeat',
-                          backgroundPosition: 'center center',
-                          borderRadius: '0',
-                          width: '13px',
-                          height: '14px',
-                          flex: '0 0 auto',
-                        },
-                        '& .MuiInputAdornment-root button svg': {
-                          display: 'none',
-                        },
-                        '& fieldset': {
-                          display: 'none',
+                          '& .MuiInputAdornment-root': {
+                            padding: '6px',
+                            background: isFromDatePickerOpen
+                              ? 'var(--Main-Gradient)'
+                              : 'var(--Card-Color)',
+                            color: 'var(--Primary-Text-Color)',
+                            borderRadius: '8px',
+                            border: '0.72px solid var(--Stroke-Color)',
+                            maxHeight: 'unset',
+                            width: '28px',
+                            height: '28px',
+                            flex: '0 0 auto',
+                          },
+                          '& .MuiInputAdornment-root button': {
+                            padding: '0',
+                            color: 'var(--Primary-Text-Color)',
+                            backgroundImage: 'url(/images/calendar_month.svg)',
+                            backgroundSize: 'contain',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'center center',
+                            borderRadius: '0',
+                            width: '13px',
+                            height: '14px',
+                            flex: '0 0 auto',
+                          },
+                          '& .MuiInputAdornment-root button svg': {
+                            display: 'none',
+                          },
+                          '& fieldset': {
+                            display: 'none',
+                          },
                         },
                       },
-                    },
-                    field: {
-                      readOnly: true,
-                    },
-                  }}
-                />
-              </Box>
-            </LocalizationProvider>
-          </ThemeProvider>
-        </Box>
+                      field: {
+                        readOnly: true,
+                      },
+                    }}
+                  />
+                </Box>
+              </LocalizationProvider>
+            </ThemeProvider>
+          </Box>
 
-        <Box style={{ marginBottom: '16px' }}>
-          <ThemeProvider theme={customTheme}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'stretch',
-                  border: '1px solid #444',
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  backgroundColor: 'var(--Input-Box-Colors)',
-                  width: '100%',
-                }}
-              >
+          <Box style={{ marginBottom: '16px' }}>
+            <ThemeProvider theme={createTheme(mergedTheme)}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Box
                   sx={{
-                    padding: '8px 12px',
-                    color: 'var(--Primary-Text-Color)',
-                    borderRight: '1px solid #444',
                     display: 'flex',
-                    alignItems: 'center',
-                    fontSize: 'var(--SubTitle-3)',
-                    fontWeight: 'var(--Medium)',
-                    whiteSpace: 'nowrap',
-                    width: '63px',
-                    flex: '0 0 auto',
+                    alignItems: 'stretch',
+                    border: '1px solid #444',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    backgroundColor: 'var(--Input-Box-Colors)',
+                    width: '100%',
                   }}
                 >
-                  To
-                </Box>
-                <DesktopDatePicker
-                  value={toDate}
-                  onChange={(newValue) => setToDate(newValue)}
-                  onOpen={() => setIsToDatePickerOpen(true)}
-                  onClose={() => setIsToDatePickerOpen(false)}
-                  minDate={fromDate || undefined}
-                  disableFuture
-                  disabled={!fromDate}
-                  className={Style['data-input']}
-                  slotProps={{
-                    textField: {
-                      placeholder: 'Select date',
-                      sx: {
-                        '&.Mui-disabled': {
-                          '& span': {
-                            color: '#9e9e9e',
+                  <Box
+                    sx={{
+                      padding: '8px 12px',
+                      color: 'var(--Primary-Text-Color)',
+                      borderRight: '1px solid #444',
+                      display: 'flex',
+                      alignItems: 'center',
+                      fontSize: 'var(--SubTitle-3)',
+                      fontWeight: 'var(--Medium)',
+                      whiteSpace: 'nowrap',
+                      width: '63px',
+                      flex: '0 0 auto',
+                    }}
+                  >
+                    To
+                  </Box>
+                  <DesktopDatePicker
+                    value={toDate}
+                    onChange={(newValue) => setToDate(newValue)}
+                    onOpen={() => setIsToDatePickerOpen(true)}
+                    onClose={() => setIsToDatePickerOpen(false)}
+                    minDate={fromDate || undefined}
+                    disableFuture
+                    disabled={!fromDate}
+                    className={Style['data-input']}
+                    slotProps={{
+                      textField: {
+                        placeholder: 'Select date',
+                        sx: {
+                          '&.Mui-disabled': {
+                            '& span': {
+                              color: '#9e9e9e',
+                            },
                           },
-                        },
-                        '& .MuiPickersInputBase-root': {
-                          padding: '4px',
-                        },
-                        '& .MuiPickersSectionList-root': {
-                          color: 'var(--Primary-Text-Color)',
-                          borderRadius: '8px',
-                          padding: '5px 0 5px 8px',
-                          fontSize: 'var(--SubTitle-4)',
-                          fontWeight: 'var(--Regular)',
+                          '& .MuiPickersInputBase-root': {
+                            padding: '4px',
+                          },
+                          '& .MuiPickersSectionList-root': {
+                            color: 'var(--Primary-Text-Color)',
+                            borderRadius: '8px',
+                            padding: '5px 0 5px 8px',
+                            fontSize: 'var(--SubTitle-4)',
+                            fontWeight: 'var(--Regular)',
 
-                          '& span': {
-                            fontFamily: 'var(--font-fustat)',
+                            '& span': {
+                              fontFamily: 'var(--font-fustat)',
+                            },
                           },
-                        },
-                        '& .MuiInputAdornment-root': {
-                          padding: '6px',
-                          background: isToDatePickerOpen
-                            ? 'var(--Main-Gradient)'
-                            : 'var(--Card-Color)',
-                          color: 'var(--Primary-Text-Color)',
-                          borderRadius: '8px',
-                          border: '0.72px solid var(--Stroke-Color)',
-                          maxHeight: 'unset',
-                          width: '28px',
-                          height: '28px',
-                          flex: '0 0 auto',
-                        },
-                        '& .MuiInputAdornment-root button': {
-                          padding: '0',
-                          color: 'var(--Primary-Text-Color)',
-                          backgroundImage: 'url(/images/calendar_month.svg)',
-                          backgroundSize: 'contain',
-                          backgroundRepeat: 'no-repeat',
-                          backgroundPosition: 'center center',
-                          borderRadius: '0',
-                          width: '13px',
-                          height: '14px',
-                          flex: '0 0 auto',
-                        },
-                        '& .MuiInputAdornment-root button svg': {
-                          display: 'none',
-                        },
-                        '& fieldset': {
-                          display: 'none',
+                          '& .MuiInputAdornment-root': {
+                            padding: '6px',
+                            background: isToDatePickerOpen
+                              ? 'var(--Main-Gradient)'
+                              : 'var(--Card-Color)',
+                            color: 'var(--Primary-Text-Color)',
+                            borderRadius: '8px',
+                            border: '0.72px solid var(--Stroke-Color)',
+                            maxHeight: 'unset',
+                            width: '28px',
+                            height: '28px',
+                            flex: '0 0 auto',
+                          },
+                          '& .MuiInputAdornment-root button': {
+                            padding: '0',
+                            color: 'var(--Primary-Text-Color)',
+                            backgroundImage: 'url(/images/calendar_month.svg)',
+                            backgroundSize: 'contain',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'center center',
+                            borderRadius: '0',
+                            width: '13px',
+                            height: '14px',
+                            flex: '0 0 auto',
+                          },
+                          '& .MuiInputAdornment-root button svg': {
+                            display: 'none',
+                          },
+                          '& fieldset': {
+                            display: 'none',
+                          },
                         },
                       },
-                    },
-                    field: {
-                      readOnly: true,
-                    },
-                  }}
-                />
-              </Box>
-            </LocalizationProvider>
-          </ThemeProvider>
-        </Box>
+                      field: {
+                        readOnly: true,
+                      },
+                    }}
+                  />
+                </Box>
+              </LocalizationProvider>
+            </ThemeProvider>
+          </Box>
 
-        <Button
-          className={Style['apply-btn']}
-          onClick={handleApplyDateFilter}
-          disabled={isDisabledFilter}
-        >
-          Apply
-        </Button>
-      </Box>
-    </Modal>
+          <Button
+            className={Style['apply-btn']}
+            onClick={handleApplyDateFilter}
+            disabled={isDisabledFilter}
+          >
+            Apply
+          </Button>
+        </Box>
+      </Modal>
+    </ThemeProvider>
   );
 }
