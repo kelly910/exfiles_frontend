@@ -1,0 +1,1 @@
+<!DOCTYPE html> <html> <head><title>Auth Check</title></head> <body> <script> (function () { const tokenMatch = document.cookie.match(/accessToken=([^;]+)/); const name = localStorage.getItem("userName"); window.parent.postMessage( { type: "LOGIN_STATUS", token: tokenMatch ? tokenMatch[1] : null, name: name || null, }, "*" ); })(); </script> </body> </html>
