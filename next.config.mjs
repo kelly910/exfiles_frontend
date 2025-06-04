@@ -15,7 +15,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: process.env.NEXT_PUBLIC_FETCH_TAG_IMAGES,
-        pathname: '/media/icons/**',
+        pathname: process.env.NEXT_PUBLIC_IMAGE_PATHNAME,
       },
     ],
   },
