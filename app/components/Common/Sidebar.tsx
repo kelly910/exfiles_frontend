@@ -15,13 +15,13 @@ import { Dayjs } from 'dayjs';
 import ListItem from '@mui/material/ListItem';
 import {
   Box,
-  LinearProgress,
-  linearProgressClasses,
+  // LinearProgress,
+  // linearProgressClasses,
   List,
-  Modal,
-  styled,
+  // Modal,
+  // styled,
   TextField,
-  Typography,
+  // Typography,
   useMediaQuery,
 } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -44,6 +44,7 @@ import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useSearch } from '../AI-Chat-Module/context/SearchContext';
+import LogModel from '../LogModel/LogModel';
 
 const Sidebar = ({
   isOpen,
@@ -65,6 +66,7 @@ const Sidebar = ({
   const [search, setSearch] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const isMobile = useMediaQuery('(max-width:768px)');
+  const [openIncidentModel, setOpenIncidentModel] = useState(false);
   const threadList = useAppSelector(selectThreadsList);
   const pinnedChats = useAppSelector(selectPinnedMessagesList);
   const [resetTrigger, setResetTrigger] = useState(0);
@@ -73,6 +75,10 @@ const Sidebar = ({
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
   const [toDate, setToDate] = useState<Dayjs | null>(null);
   const { setSearchingChat } = useSearch();
+
+  const openLogIncidentModel = () => {
+    setOpenIncidentModel(true);
+  };
 
   if (isSearchOpen && !isOpen) {
     setIsSearchOpen(false);
@@ -159,37 +165,37 @@ const Sidebar = ({
     setResetTrigger((prev) => prev + 1);
   };
 
-  const getColor = (value: number) => {
-    if (value <= 80) return 'var(--Main-Gradient)'; // Gradient
-    if (value <= 90) return '#FF7E22'; // Orange
-    return '#E72240'; // Red
-  };
+  // const getColor = (value: number) => {
+  //   if (value <= 80) return 'var(--Main-Gradient)'; // Gradient
+  //   if (value <= 90) return '#FF7E22'; // Orange
+  //   return '#E72240'; // Red
+  // };
 
-  const ColoredLinearProgress = styled(LinearProgress)<{ $barColor: string }>(
-    ({ $barColor }) => ({
-      height: 4,
-      borderRadius: 50,
-      marginBottom: 0,
-      marginTop: '8px',
-      [`&.${linearProgressClasses.colorPrimary}`]: {
-        backgroundColor: 'var(--Stroke-Color)',
-      },
-      [`& .${linearProgressClasses.bar}`]: {
-        borderRadius: 5,
-        background: $barColor,
-      },
-    })
-  );
+  // const ColoredLinearProgress = styled(LinearProgress)<{ $barColor: string }>(
+  //   ({ $barColor }) => ({
+  //     height: 4,
+  //     borderRadius: 50,
+  //     marginBottom: 0,
+  //     marginTop: '8px',
+  //     [`&.${linearProgressClasses.colorPrimary}`]: {
+  //       backgroundColor: 'var(--Stroke-Color)',
+  //     },
+  //     [`& .${linearProgressClasses.bar}`]: {
+  //       borderRadius: 5,
+  //       background: $barColor,
+  //     },
+  //   })
+  // );
 
-  const usageData = [
-    { label: 'Summaries used', used: 47, total: 100 },
-    { label: 'Chats used', used: 45, total: 50 },
-    { label: 'Reports generated', used: 3, total: 3 },
-  ];
+  // const usageData = [
+  //   { label: 'Summaries used', used: 47, total: 100 },
+  //   { label: 'Chats used', used: 45, total: 50 },
+  //   { label: 'Reports generated', used: 3, total: 3 },
+  // ];
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const [open, setOpen] = React.useState(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
 
   return (
     <>
@@ -419,7 +425,7 @@ const Sidebar = ({
           </div>
         </div>
 
-        <div className={Style['storage-main-body']}>
+        {/* <div className={Style['storage-main-body']}>
           <div className={Style['storage-main']}>
             {usageData.map((item, idx) => {
               const value = (item.used / item.total) * 100;
@@ -462,7 +468,6 @@ const Sidebar = ({
             }}
             className={Style['modal-box']}
           >
-            {/* <Fade in={open}> */}
             <Box className={Style['storage-main']}>
               {usageData.map((item, idx) => {
                 const value = (item.used / item.total) * 100;
@@ -488,10 +493,42 @@ const Sidebar = ({
                 );
               })}
             </Box>
-            {/* </Fade> */}
           </Modal>
+        </div> */}
+
+        <div className={Style['sidebar-btm']}>
+          <div className={Style['sidebar-btm-card']}>
+            <div className={Style['sidebar-btm-card-inner']}>
+              <p>Add to your timeline?</p>
+              <p>
+                <Link href="" onClick={openLogIncidentModel}>
+                  Click Here
+                </Link>{' '}
+                to Log Incident
+              </p>
+            </div>
+          </div>
+          <Link
+            href="#"
+            className={Style['close-sidebar-btm']}
+            onClick={openLogIncidentModel}
+          >
+            <Image
+              src="/images/close-sidebar-btm-img.svg"
+              alt=""
+              width={38}
+              height={38}
+            />{' '}
+          </Link>
         </div>
       </div>
+      {openIncidentModel && (
+        <LogModel
+          open={openIncidentModel}
+          handleClose={() => setOpenIncidentModel(false)}
+          editedData={null}
+        />
+      )}
     </>
   );
 };

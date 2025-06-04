@@ -508,6 +508,7 @@ const UpgradePlan = () => {
                           <Box className={styles['feature-item']}>
                             <Box component="figure">
                               <Typography variant="body1" component="p">
+                                <span>Best For</span>
                                 {plan.best_for}
                               </Typography>
                             </Box>
