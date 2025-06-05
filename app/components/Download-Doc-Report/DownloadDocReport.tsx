@@ -39,6 +39,8 @@ import {
 import FilterModal from './FilterModal';
 import { Dayjs } from 'dayjs';
 import Slider from 'react-slick';
+import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
+import DocumentSummaryPopup from './DocumentSummaryPopup';
 
 type Tag = {
   id: number;
@@ -61,6 +63,14 @@ type Document = {
   uuid?: string;
   can_download_summary_pdf?: string;
   category?: Category;
+};
+
+export type DocumentSummary = {
+  file_name: string;
+  summary: string;
+  ai_description: string;
+  tags: Tag[];
+  upload_on: string;
 };
 
 const DownloadDocReport = () => {
@@ -141,6 +151,27 @@ const DownloadDocReport = () => {
 
   const handleSearchInput = (inputValue: string) => {
     setSearchParams(inputValue.length > 3 ? inputValue : '');
+  };
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [passDocumentSummary, setPassDocumentSummary] =
+    useState<DocumentSummary | null>(null);
+  const [docType, setDocType] = useState('');
+
+  const handleOpenDialog = async (uuid: string, fileType: string) => {
+    if (uuid) {
+      await dispatch(fetchDocumentSummaryById(uuid))
+        .unwrap()
+        .then((res) => {
+          if (res) {
+            setPassDocumentSummary(res);
+            setDocType(fileType);
+            setOpenDialog(true);
+          }
+        });
+    } else {
+      setOpenDialog(false);
+    }
   };
 
   const handleSearch = () => {
@@ -359,8 +390,8 @@ const DownloadDocReport = () => {
                       <Image
                         src="/images/filter_list.svg"
                         alt="filter_list"
-                        width={24}
-                        height={24}
+                        width={20}
+                        height={20}
                       />
                     </Button>
                   </Box>
@@ -520,6 +551,12 @@ const DownloadDocReport = () => {
                         <div className={styles.docBox}>
                           <Image
                             src={getDocumentImage(doc?.file_type)}
+                            onClick={() =>
+                              handleOpenDialog(
+                                doc.uuid || '',
+                                doc?.file_type || ''
+                              )
+                            }
                             alt="pdf"
                             width={19}
                             height={24}
@@ -527,6 +564,12 @@ const DownloadDocReport = () => {
                           />
                           <Typography
                             variant="body1"
+                            onClick={() =>
+                              handleOpenDialog(
+                                doc.uuid || '',
+                                doc?.file_type || ''
+                              )
+                            }
                             className={styles.docTitle}
                             dangerouslySetInnerHTML={{
                               __html: highlightText(
@@ -636,6 +679,12 @@ const DownloadDocReport = () => {
           </div>
         </section>
       </main>
+      <DocumentSummaryPopup
+        passDocumentSummary={passDocumentSummary}
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        docType={docType}
+      />
     </>
   );
 };

@@ -52,6 +52,10 @@ const Page = () => {
             const token: string | null = response?.data?.token || null;
             if (token) {
               document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+              window.opener?.postMessage(
+                { type: 'LOGIN_SUCCESS', token },
+                'https://exfiles.trooinbounddevs.com'
+              );
               router.push('/ai-chats');
             }
           }

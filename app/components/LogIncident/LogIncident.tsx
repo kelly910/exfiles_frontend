@@ -20,7 +20,7 @@ import Image from 'next/image';
 import Sidebar from '../Common/Sidebar';
 import PageHeader from '../Common/PageHeader';
 import DeleteDialog from '../LogoutDialog/DeleteDialog';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   fetchLogIncidents,
   downloadSelectedLogsReport,
@@ -42,6 +42,7 @@ import {
   convertDateFormatForIncident,
   highlightText,
 } from '@/app/utils/constants';
+import Slider from 'react-slick';
 
 export interface FileDataImage {
   file_url: string;
@@ -324,6 +325,73 @@ export default function LogIncident() {
     setSelectedTags([]);
   };
 
+  const CustomArrow = ({
+    direction,
+    onClick,
+    disabled,
+  }: {
+    direction: 'left' | 'right';
+    onClick?: () => void;
+    disabled?: boolean;
+  }) => (
+    <button
+      className={`${styles.arrow} ${styles[direction]} ${disabled ? styles.disabled : ''}`}
+      onClick={onClick}
+      disabled={disabled}
+      aria-disabled={disabled}
+    >
+      <Image
+        src={`/images/arrow-${direction}.svg`}
+        alt={`${direction}-arrow`}
+        width={20}
+        height={20}
+      />
+    </button>
+  );
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [slideCount, setSlideCount] = useState(0);
+  const sliderRef = useRef<Slider>(null);
+
+  useEffect(() => {
+    setSlideCount(filters.tags.length);
+  }, [filters.tags]);
+
+  const goToNext = () => {
+    sliderRef.current?.slickNext();
+  };
+  const goToPrev = () => {
+    sliderRef.current?.slickPrev();
+  };
+
+  const settings = {
+    infinite: false,
+    speed: 500,
+    cssEase: 'ease-in-out',
+    slidesToScroll: 1,
+    swipeToSlide: true,
+    variableWidth: true,
+    arrows: true,
+    dots: false,
+    draggable: true,
+    touchMove: true,
+    afterChange: (index: number) => setCurrentSlide(index),
+    nextArrow: (
+      <CustomArrow
+        direction="right"
+        disabled={currentSlide >= slideCount - 1}
+        onClick={goToNext}
+      />
+    ),
+    prevArrow: (
+      <CustomArrow
+        direction="left"
+        disabled={currentSlide === 0}
+        onClick={goToPrev}
+      />
+    ),
+  };
+
   return (
     <>
       <main className="chat-body">
@@ -455,8 +523,8 @@ export default function LogIncident() {
                         <Image
                           src="/images/filter_list.svg"
                           alt="filter_list"
-                          width={24}
-                          height={24}
+                          width={20}
+                          height={20}
                         />
                       </Button>
                     </Box>
@@ -486,56 +554,6 @@ export default function LogIncident() {
                   </Box>
                   <Box className={styles.allSelect}>
                     <div className={`${styles['date-chip-box']}`}>
-                      {filters.tags.map((id) => {
-                        const tagDisp = tags.find(
-                          (tag) => Number(tag.id) === id
-                        );
-                        if (!tagDisp) return null;
-                        return (
-                          <div key={id} className={styles['date-chip-inner']}>
-                            <Typography
-                              variant="body1"
-                              className={styles['date-chip-heading']}
-                            >
-                              <span>{tagDisp.name} </span>
-                            </Typography>
-                            <Button
-                              className={styles['chip-btn']}
-                              onClick={() => {
-                                setFilters((prev) => {
-                                  const updatedTags = prev.tags.filter(
-                                    (tagId) => tagId !== id
-                                  );
-                                  setSelectedTags(updatedTags);
-                                  dispatch(
-                                    fetchLogIncidents({
-                                      created_before: prev.createdBefore,
-                                      created_after: prev.createdAfter,
-                                      tags: updatedTags.join(','),
-                                      search:
-                                        searchParams.length > 3
-                                          ? searchParams
-                                          : '',
-                                      page: 1,
-                                    })
-                                  ).unwrap();
-                                  return {
-                                    ...prev,
-                                    tags: updatedTags,
-                                  };
-                                });
-                              }}
-                            >
-                              <Image
-                                src="/images/close.svg"
-                                alt="sidebar-hide-icon"
-                                width={10}
-                                height={10}
-                              />
-                            </Button>
-                          </div>
-                        );
-                      })}
                       {filters.createdAfter && filters.createdBefore && (
                         <div className={styles['date-chip-inner']}>
                           <Typography
@@ -591,9 +609,66 @@ export default function LogIncident() {
                           </Button>
                         </div>
                       )}
+                      <div className={styles.sliderWrapper}>
+                        <Slider ref={sliderRef} {...settings}>
+                          {filters.tags.map((id) => {
+                            const tagDisp = tags.find(
+                              (tag) => Number(tag.id) === id
+                            );
+                            if (!tagDisp) return null;
+                            return (
+                              <div
+                                key={id}
+                                className={`${styles['date-chip-inner']} ${styles.slide}`}
+                              >
+                                <Typography
+                                  variant="body1"
+                                  className={styles['date-chip-heading']}
+                                >
+                                  <span>{tagDisp.name} </span>
+                                </Typography>
+                                <Button
+                                  className={styles['chip-btn']}
+                                  onClick={() => {
+                                    setFilters((prev) => {
+                                      const updatedTags = prev.tags.filter(
+                                        (tagId) => tagId !== id
+                                      );
+                                      setSelectedTags(updatedTags);
+                                      dispatch(
+                                        fetchLogIncidents({
+                                          created_before: prev.createdBefore,
+                                          created_after: prev.createdAfter,
+                                          tags: updatedTags.join(','),
+                                          search:
+                                            searchParams.length > 3
+                                              ? searchParams
+                                              : '',
+                                          page: 1,
+                                        })
+                                      ).unwrap();
+                                      return {
+                                        ...prev,
+                                        tags: updatedTags,
+                                      };
+                                    });
+                                  }}
+                                >
+                                  <Image
+                                    src="/images/close.svg"
+                                    alt="sidebar-hide-icon"
+                                    width={10}
+                                    height={10}
+                                  />
+                                </Button>
+                              </div>
+                            );
+                          })}
+                        </Slider>
+                      </div>
                     </div>
                     <Button
-                      className="btn btn-pluse generate-document-btn"
+                      className={`${'btn btn-pluse generate-document-btn'} ${styles.generateDocBtn}`}
                       onClick={downloadLogsReport}
                       disabled={loading}
                     >

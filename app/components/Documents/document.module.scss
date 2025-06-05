@@ -900,11 +900,15 @@
   }
 
   .categoryBox .categoriesTitle {
-    font-weight: var(--Regular);
-    font-size: var(--SubTitle-1);
-    line-height: 1.4;
-    letter-spacing: 0%;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 34px;
     color: var(--Primary-Text-Color);
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
   }
 }
 
