@@ -45,7 +45,7 @@
       gap: 16px;
       width: 100%;
 
-      @media (max-width: 600px) {
+      @media (max-width: 550px) {
         flex-wrap: wrap;
         justify-content: flex-end;
       }
@@ -58,7 +58,7 @@
         border-radius: 10px;
         aspect-ratio: 1 / 1;
 
-        @media (max-width: 600px) {
+        @media (max-width: 550px) {
           width: calc(100%);
         }
 
@@ -91,14 +91,14 @@
       }
 
       .filter-btn-box {
-        @media (max-width: 600px) {
+        @media (max-width: 550px) {
           order: 3;
         }
       }
 
       button {
-        @media (max-width: 600px) {
-          width: calc(100% - 38px - 16px);
+        @media (max-width: 550px) {
+          width: calc(100% - 34px - 16px);
           order: 2;
         }
       }
@@ -1142,6 +1142,10 @@
       padding: 4px;
       border: 1px solid var(--Stroke-Color);
       background: var(--Card-Color);
+
+      @media (max-width: 500px) {
+        width: fit-content;
+      }
     }
   }
 }

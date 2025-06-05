@@ -359,8 +359,8 @@ const DownloadDocReport = () => {
                       <Image
                         src="/images/filter_list.svg"
                         alt="filter_list"
-                        width={24}
-                        height={24}
+                        width={20}
+                        height={20}
                       />
                     </Button>
                   </Box>
