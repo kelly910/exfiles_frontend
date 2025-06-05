@@ -82,9 +82,6 @@ export default function DocumentSummaryPopup({
               <Typography variant="h6" className={LogStyle.dialogTitle}>
                 {passDocumentSummary?.file_name}
               </Typography>
-              {/* <Typography variant="body1" className={LogStyle.dialogSemiTitle}>
-                {passDocumentSummary?.file_name}
-              </Typography> */}
             </Box>
           </DialogTitle>
           <IconButton
@@ -111,9 +108,6 @@ export default function DocumentSummaryPopup({
         </Box>
 
         <DialogContent className={LogStyle.dialogFormContentDetailsBox}>
-          {/* <Typography variant="body1" className={LogStyle.logTitle}>
-            Test
-          </Typography> */}
           <Box component="div" className={LogStyle.logListBody}>
             {passDocumentSummary?.tags?.map((tag, index) => (
               <Box className={LogStyle.logListBodyTag} key={index}>
