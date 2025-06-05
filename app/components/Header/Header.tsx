@@ -83,7 +83,7 @@ export default function Header() {
             <Box sx={{ width: '100%' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Image
-                  src="/images/document-text.svg"
+                  src="/images/note-2.svg"
                   alt="menu"
                   width={20}
                   height={20}
