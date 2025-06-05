@@ -383,8 +383,8 @@ const Sidebar = ({
 
             {isOpen ? (
               <SidebarAccordion
-                title="Documents"
-                icon="/images/document-text.svg"
+                title="Manage Documents"
+                icon="/images/manage-document.svg"
                 expanded={expanded}
                 panelKey="panel3"
                 handleAccordionChange={handleAccordionChange}
@@ -392,12 +392,12 @@ const Sidebar = ({
               >
                 <SidebarButton
                   btnTitle={'Documents'}
-                  iconPath={'/images/document-text.svg'}
+                  iconPath={'/images/note-2.svg'}
                   handleBtnClick={handleDocumentClick}
                 />
 
                 <SidebarButton
-                  btnTitle={'Report'}
+                  btnTitle={'Reports'}
                   iconPath={'/images/report-icon.svg'}
                   handleBtnClick={handleDocReport}
                 />
@@ -406,11 +406,11 @@ const Sidebar = ({
               <>
                 <SidebarButton
                   btnTitle={'Documents'}
-                  iconPath={'/images/document-text.svg'}
+                  iconPath={'/images/note-2.svg'}
                   handleBtnClick={handleDocumentClick}
                 />
                 <SidebarButton
-                  btnTitle={'Report'}
+                  btnTitle={'Reports'}
                   iconPath={'/images/report-icon.svg'}
                   handleBtnClick={handleDocReport}
                 />

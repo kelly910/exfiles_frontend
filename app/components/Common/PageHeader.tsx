@@ -179,7 +179,7 @@ export default function PageHeader({
                 )}
                 {isDocumentsPage && (
                   <Image
-                    src="/images/document-text.svg"
+                    src="/images/note-2.svg"
                     alt="Documents-icon"
                     width={18}
                     height={18}
