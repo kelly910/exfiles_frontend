@@ -96,7 +96,7 @@ export interface LogIncidentDetails {
 }
 
 export default function LogIncident() {
-  const isMobile = useMediaQuery('(max-width:768px)');
+  const isMobile = useMediaQuery('(max-width:1100px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedRowId, setSelectedRowId] = useState<string>('');
@@ -161,6 +161,8 @@ export default function LogIncident() {
   useEffect(() => {
     if (isMobile) {
       setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
     }
   }, []);
 

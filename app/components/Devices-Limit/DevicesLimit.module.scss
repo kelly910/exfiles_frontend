@@ -71,6 +71,7 @@
       min-width: 140px;
       background: var(--Main-Gradient);
       color: var(--Txt-On-Gradient);
+      outline: 1px solid transparent;
       border-radius: 12px;
       padding: 16px 34px;
       transition: all 0.2s;
@@ -80,7 +81,7 @@
       }
 
       &:hover {
-        background: var(--Main-Gradient-hover);
+        outline: 1px solid var(--Card-Border);
       }
     }
   }

@@ -89,9 +89,13 @@ export default function LogDetailsModel({
             onClick={onClose}
             sx={(theme) => ({
               position: 'absolute',
-              right: 8,
-              top: 8,
+              right: '24px',
+              top: '16px',
+              padding: '0',
               color: theme.palette.grey[500],
+              [theme.breakpoints.down('sm')]: {
+                right: '16px',
+              },
             })}
           >
             <Image
