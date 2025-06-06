@@ -155,6 +155,7 @@ export default function DateSelectionFilter({
               // Target only the Paper used by PickerPopper
               '&.MuiPickerPopper-paper': {
                 backgroundColor: 'transparent', // or 'none'
+                boxShadow: 'none',
               },
             },
           },

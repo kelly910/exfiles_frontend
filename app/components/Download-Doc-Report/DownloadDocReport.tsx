@@ -74,7 +74,7 @@ export type DocumentSummary = {
 };
 
 const DownloadDocReport = () => {
-  const isMobile = useMediaQuery('(max-width:768px)');
+  const isMobile = useMediaQuery('(max-width:1100px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useState('');
@@ -101,6 +101,8 @@ const DownloadDocReport = () => {
   useEffect(() => {
     if (isMobile) {
       setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
     }
   }, []);
 
