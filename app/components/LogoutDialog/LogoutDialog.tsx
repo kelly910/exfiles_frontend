@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './logout.module.scss';
 import {
   Box,
@@ -57,6 +57,22 @@ export default function LogoutDialog({
   );
 
   const loggedInUserToken = loggedInUser?.data?.token ?? '';
+
+  useEffect(() => {
+    console.log('useEffect');
+    window.addEventListener('message', (event) => {
+      console.log(event, 'event');
+      if (event.origin !== 'https://exfiles.trooinbounddevs.com') return;
+      if (event.data.type === 'LOGOUT') {
+        console.log(event.data.type, 'inside if');
+        logoutUser();
+      }
+    });
+
+    return () => {
+      window.removeEventListener('message', () => {});
+    };
+  }, []);
 
   const logoutUser = async () => {
     setLoading(true);
