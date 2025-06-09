@@ -44,10 +44,10 @@ export const fetchPlansList = createAsyncThunk<
   PlansResponse,
   string | undefined,
   { rejectValue: string }
->('plans/fetch', async (billingCycle = 'monthly', { rejectWithValue }) => {
+>('plans/fetch', async (billingCycle = 'month', { rejectWithValue }) => {
   try {
     const response = await api.get<PlansResponse>(
-      `${urlMapper.subscriptionPlan}?duration=${billingCycle}`
+      `${urlMapper.subscriptionPlan}?duration_unit=${billingCycle}`
     );
     return response.data;
   } catch (error) {

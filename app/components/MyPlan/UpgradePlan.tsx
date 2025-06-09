@@ -16,11 +16,12 @@ import {
 import styles from './style.module.scss';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-// import { useSelector } from 'react-redux';
-// import { RootState } from '@/app/redux/store';
-// import { fetchPlansList } from '@/app/redux/slices/subscriptionPlan';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
+import { fetchPlansList } from '@/app/redux/slices/subscriptionPlan';
 import { useAppDispatch } from '@/app/redux/hooks';
 import Slider, { Settings } from 'react-slick';
+import { setLoader } from '@/app/redux/slices/loader';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -40,176 +41,11 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 const UpgradePlan = () => {
   const dispatch = useAppDispatch();
-  const [billingCycle, setBillingCycle] = useState('monthly');
-  // const { plans } = useSelector((state: RootState) => state.plans);
-
-  const plans = [
-    {
-      id: 1,
-      name: 'Free Trial Plan (14 Days)',
-      description: 'Start Free, Stress Less',
-      best_for: 'Getting started, no pressure',
-      is_trial: true,
-      status: 1,
-      activate_date: '2025-05-28T17:31:40+05:30',
-      deactivate_date: null,
-      amount: '0.00',
-      trial_days: 14,
-      duration_unit: 'month',
-      duration_value: 14,
-      currency: 'USD',
-      plan_type: 'free',
-      features: [
-        {
-          title: 'Messages & Documents',
-          display_label: 'Unlimited(14 days)',
-        },
-        {
-          title: 'AI Summaries',
-          display_label: 'Unlimited',
-        },
-        {
-          title: 'Copilot AI Chats',
-          display_label: 'Unlimited',
-        },
-        {
-          title: 'Court-Ready Reports',
-          display_label: '3 included',
-        },
-        {
-          title: 'Document Vault',
-          display_label: 'True',
-        },
-        {
-          title: 'Keyword Tagging & Timelines',
-          display_label: 'True',
-        },
-        {
-          title: 'Pattern Detection & Analysis',
-          display_label: 'False',
-        },
-        {
-          title: 'Multi Device Support',
-          display_label: 'False',
-        },
-        {
-          title: 'Storage',
-          display_label: '1 GB',
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: 'Essential Plan',
-      description: 'Steady Support',
-      best_for: 'Active co-parents Description',
-      is_trial: false,
-      status: 1,
-      activate_date: '2025-05-29T15:17:21+05:30',
-      deactivate_date: null,
-      amount: '19.00',
-      trial_days: 0,
-      duration_unit: 'month',
-      duration_value: 1,
-      currency: 'USD',
-      plan_type: 'essential',
-      features: [
-        {
-          title: 'Messages & Documents',
-          display_label: '250/month',
-        },
-        {
-          title: 'AI Summaries',
-          display_label: '100/month',
-        },
-        {
-          title: 'Copilot AI Chats',
-          display_label: '50/month',
-        },
-        {
-          title: 'Court-Ready Reports',
-          display_label: '3/month',
-        },
-        {
-          title: 'Document Vault',
-          display_label: 'True',
-        },
-        {
-          title: 'Keyword Tagging & Timelines',
-          display_label: 'True',
-        },
-        {
-          title: 'Pattern Detection & Analysis',
-          display_label: 'False',
-        },
-        {
-          title: 'Multi Device Support',
-          display_label: '3',
-        },
-        {
-          title: 'Storage',
-          display_label: '4 GB',
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: 'Pro Plan',
-      description: 'Litigation mode',
-      best_for: 'High-conflict cases, legal prep',
-      is_trial: false,
-      status: 1,
-      activate_date: '2025-05-29T15:44:41+05:30',
-      deactivate_date: null,
-      amount: '39.00',
-      trial_days: 0,
-      duration_unit: 'month',
-      duration_value: 1,
-      currency: 'USD',
-      plan_type: 'pro',
-      features: [
-        {
-          title: 'Messages & Documents',
-          display_label: 'Unlimited',
-        },
-        {
-          title: 'AI Summaries',
-          display_label: 'Unlimited',
-        },
-        {
-          title: 'Copilot AI Chats',
-          display_label: 'Unlimited',
-        },
-        {
-          title: 'Court-Ready Reports',
-          display_label: 'Unlimited',
-        },
-        {
-          title: 'Document Vault',
-          display_label: 'True',
-        },
-        {
-          title: 'Keyword Tagging & Timelines',
-          display_label: 'True',
-        },
-        {
-          title: 'Pattern Detection & Analysis',
-          display_label: 'Coming Soon',
-        },
-        {
-          title: 'Multi Device Support',
-          display_label: '8',
-        },
-        {
-          title: 'Storage',
-          display_label: '10 GB',
-        },
-      ],
-    },
-  ];
+  const [billingCycle, setBillingCycle] = useState('month');
+  const { plans } = useSelector((state: RootState) => state.plans);
 
   useEffect(() => {
-    // dispatch(fetchPlansList(billingCycle));
+    dispatch(fetchPlansList(billingCycle));
   }, [dispatch]);
 
   const settings = {
@@ -339,22 +175,26 @@ const UpgradePlan = () => {
                           exclusive
                           onChange={(_, newValue) => {
                             if (newValue) {
+                              dispatch(setLoader(true));
                               setBillingCycle(newValue);
-                              // dispatch(fetchPlansList(newValue));
+                              setTimeout(() => {
+                                dispatch(fetchPlansList(newValue));
+                                dispatch(setLoader(false));
+                              }, 1000);
                             }
                           }}
                           aria-label="text alignment"
                         >
                           <ToggleButton
-                            className={`${styles['toggle-button']} ${billingCycle === 'monthly' && styles['active']}`}
-                            value="monthly"
+                            className={`${styles['toggle-button']} ${billingCycle === 'month' && styles['active']}`}
+                            value="month"
                             aria-label="left aligned"
                           >
                             Monthly
                           </ToggleButton>
                           <ToggleButton
-                            className={`${styles['toggle-button']} ${billingCycle === 'yearly' && styles['active']}`}
-                            value="yearly"
+                            className={`${styles['toggle-button']} ${billingCycle === 'year' && styles['active']}`}
+                            value="year"
                             aria-label="right aligned"
                           >
                             Annually
@@ -363,8 +203,11 @@ const UpgradePlan = () => {
                       </Paper>
                     </Box>
                     <Typography variant="body1" component="p">
-                      <Typography component="span">20% Off</Typography> on{' '}
-                      <Typography component="span">Annual</Typography> Plan
+                      You Can Buy{' '}
+                      <Typography component="span">Annual Plans</Typography> In{' '}
+                      <Typography component="span">
+                        Discounted Prices.
+                      </Typography>
                     </Typography>
                   </Box>
                   <Box className={styles['subscription-plan-footer']}>
@@ -386,20 +229,20 @@ const UpgradePlan = () => {
                   let buttonLabel = 'Not Applicable';
                   const activePlan = plans.find((p) => p.is_trial);
                   if (activePlan) {
-                    if (plan.plan_type === activePlan.plan_type) {
+                    if (plan.name === activePlan.name) {
                       buttonLabel = 'Current Plan';
-                    } else if (activePlan.plan_type === 'free') {
+                    } else if (activePlan.name === 'Free Tier') {
                       buttonLabel = 'Upgrade Now';
-                    } else if (activePlan.plan_type === 'essential') {
-                      if (plan.plan_type === 'pro') {
+                    } else if (activePlan.name === 'Essential') {
+                      if (plan.name === 'Pro') {
                         buttonLabel = 'Upgrade Now';
                       }
-                    } else if (activePlan.plan_type === 'pro') {
+                    } else if (activePlan.name === 'Pro') {
                       buttonLabel = 'Not Applicable';
                     }
                   } else {
                     buttonLabel =
-                      plan.plan_type === 'free'
+                      plan.name === 'Free Tier'
                         ? 'Not Applicable'
                         : 'Upgrade Now';
                   }
@@ -429,7 +272,10 @@ const UpgradePlan = () => {
                                   component="span"
                                   style={{ textTransform: 'capitalize' }}
                                 >
-                                  /{plan.duration_unit}
+                                  /
+                                  {plan.name === 'Free Tier'
+                                    ? 'Day'
+                                    : plan.duration_unit}
                                 </Typography>
                               </Typography>
                             </Box>
@@ -438,14 +284,14 @@ const UpgradePlan = () => {
                                 styles['subscription-package-header-image']
                               }
                             >
-                              {plan.plan_type === 'free' ? (
+                              {plan.name === 'Free Tier' ? (
                                 <Image
                                   src="/images/FreeTier.svg"
                                   alt="FreeTier Plan"
                                   width={84}
                                   height={84}
                                 />
-                              ) : plan.plan_type === 'essential' ? (
+                              ) : plan.name === 'Essential' ? (
                                 <Image
                                   src="/images/Essential.svg"
                                   alt="Essential Plan"
@@ -506,12 +352,10 @@ const UpgradePlan = () => {
                             </Box>
                           ))}
                           <Box className={styles['feature-item']}>
-                            <Box component="figure">
-                              <Typography variant="body1" component="p">
-                                <span>Best For</span>
-                                {plan.best_for}
-                              </Typography>
-                            </Box>
+                            <Typography variant="body1" component="p">
+                              <span>Best For</span>
+                              {plan.best_for}
+                            </Typography>
                           </Box>
                         </Box>
                       </Box>
