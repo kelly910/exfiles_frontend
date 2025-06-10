@@ -59,9 +59,7 @@ export default function LogoutDialog({
   const loggedInUserToken = loggedInUser?.data?.token ?? '';
 
   useEffect(() => {
-    console.log('useEffect');
     window.addEventListener('message', (event) => {
-      console.log(event, 'event');
       if (event.origin !== 'https://exfiles.trooinbounddevs.com') return;
       if (event.data.type === 'LOGOUT') {
         console.log(event.data.type, 'inside if');

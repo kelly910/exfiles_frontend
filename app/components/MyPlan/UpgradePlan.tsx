@@ -43,6 +43,8 @@ const UpgradePlan = () => {
   const dispatch = useAppDispatch();
   const [billingCycle, setBillingCycle] = useState('month');
   const { plans } = useSelector((state: RootState) => state.plans);
+  const storedUser = localStorage.getItem('loggedInUser');
+  const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
 
   useEffect(() => {
     dispatch(fetchPlansList(billingCycle));
@@ -269,7 +271,11 @@ const UpgradePlan = () => {
               <MaybeSlider condition={isSliderActive} settings={settings}>
                 {plans.map((plan, index) => {
                   let buttonLabel = 'Not Applicable';
-                  const activePlan = plans.find((p) => p.is_trial);
+                  const activePlanName =
+                    loggedInUser?.data?.active_subscription?.plan?.name;
+                  const activePlan = plans.find(
+                    (p) => p?.name === activePlanName
+                  );
                   if (activePlan) {
                     if (plan.name === activePlan.name) {
                       buttonLabel = 'Current Plan';
