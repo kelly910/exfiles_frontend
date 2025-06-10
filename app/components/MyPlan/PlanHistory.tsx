@@ -35,10 +35,10 @@ export default function PlanHistory() {
   return (
     <Box className={styles['history-plan-main']}>
       <Box className={styles['history-plan']}>
+        <Typography variant="h2" component="h2">
+          Plan History
+        </Typography>
         <TableContainer component={Paper} className={styles['table-container']}>
-          <Typography variant="h2" component="h2">
-            Plan History
-          </Typography>
           <Table>
             <TableHead>
               <TableRow>

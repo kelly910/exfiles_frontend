@@ -37,7 +37,9 @@ export default function ActivePlan() {
   const value = (used / total) * 100;
   return (
     <>
-      <Box className={styles['active-plan-body']}>
+      <Box
+        className={`${loggedInUser?.data?.active_subscription.status === 1 ? styles['active-plan-body'] : `${styles['active-plan-body-expired']} ${styles['active-plan-body']}`}`}
+      >
         <Box className={styles['active-plan-main']}>
           <Box className={styles['active-plan']}>
             <Box className={styles['plan-details']}>

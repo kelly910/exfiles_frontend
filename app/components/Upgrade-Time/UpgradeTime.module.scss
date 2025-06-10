@@ -29,19 +29,23 @@
           );
           border-radius: 16px;
           padding: 1.2px;
+          width: 80px;
+
+          @media (max-width: 500px) {
+            width: 60px;
+          }
+
+          @media (max-width: 400px) {
+            width: 45px;
+          }
 
           .dialogSetTimeLog {
             background: var(--Background-Color);
             border-radius: 16px;
             aspect-ratio: 1 / 1;
-            width: 80px;
             display: flex;
             justify-content: center;
             align-items: center;
-
-            @media (max-width: 500px) {
-              width: 60px;
-            }
 
             .dialogSetText {
               margin: 0;
@@ -83,6 +87,7 @@
       margin-top: 40px;
 
       @media (max-width: 500px) {
+        font-size: var(--Heading-3);
         margin-top: 20px;
       }
     }
@@ -94,6 +99,10 @@
       max-width: 360px;
       margin: 0 auto;
       margin-top: 8px;
+
+      @media (max-width: 500px) {
+        font-size: var(--SubTitle-3);
+      }
     }
   }
 
