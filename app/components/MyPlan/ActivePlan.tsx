@@ -37,7 +37,9 @@ export default function ActivePlan() {
   const value = (used / total) * 100;
   return (
     <>
-      <Box className={styles['active-plan-body']}>
+      <Box
+        className={`${styles['active-plan-body']}`} // if plan expired active-plan-body-expired
+      >
         <Box className={styles['active-plan-main']}>
           <Box className={styles['active-plan']}>
             <Box className={styles['plan-details']}>
