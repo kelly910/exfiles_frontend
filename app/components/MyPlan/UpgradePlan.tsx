@@ -223,6 +223,48 @@ const UpgradePlan = () => {
                 </Box>
               </Box>
             </Box>
+            <Box className={styles['toggle-button-group-mobile']}>
+              <Box>
+                <Paper elevation={0} className={styles['toggle-button-group']}>
+                  <StyledToggleButtonGroup
+                    size="small"
+                    value={billingCycle}
+                    exclusive
+                    onChange={(_, newValue) => {
+                      if (newValue) {
+                        dispatch(setLoader(true));
+                        setBillingCycle(newValue);
+                        setTimeout(() => {
+                          dispatch(fetchPlansList(newValue));
+                          dispatch(setLoader(false));
+                        }, 1000);
+                      }
+                    }}
+                    aria-label="text alignment"
+                  >
+                    <ToggleButton
+                      className={`${styles['toggle-button']} ${billingCycle === 'month' && styles['active']}`}
+                      value="month"
+                      aria-label="left aligned"
+                    >
+                      Monthly
+                    </ToggleButton>
+                    <ToggleButton
+                      className={`${styles['toggle-button']} ${billingCycle === 'year' && styles['active']}`}
+                      value="year"
+                      aria-label="right aligned"
+                    >
+                      Annually
+                    </ToggleButton>
+                  </StyledToggleButtonGroup>
+                </Paper>
+              </Box>
+              <Typography variant="body1" component="p">
+                You Can Buy{' '}
+                <Typography component="span">Annual Plans</Typography> In{' '}
+                <Typography component="span">Discounted Prices.</Typography>
+              </Typography>
+            </Box>
             <Box className={styles['subscription-package-main']}>
               <MaybeSlider condition={isSliderActive} settings={settings}>
                 {plans.map((plan, index) => {

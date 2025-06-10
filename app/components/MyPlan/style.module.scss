@@ -614,6 +614,63 @@
   }
 }
 
+.toggle-button-group-mobile {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+
+  .toggle-button-group {
+    border: 1.2px solid var(--Stroke-Color);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    width: fit-content;
+    background-color: transparent;
+    border-radius: 14px;
+    padding: 4px;
+    margin: 20px auto 0 auto;
+    background: var(--Card-Color);
+
+    .toggle-button {
+      margin: 0;
+      border: none;
+      padding: 6px 20px;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--Subtext-Color);
+      cursor: pointer;
+      transition: all 0.4s;
+
+      font-size: var(--SubTitle-3);
+      font-weight: var(--Medium);
+      text-transform: capitalize;
+
+      &:last-child {
+        margin-left: 4px;
+      }
+
+      &:hover,
+      &.active {
+        background: var(--Main-Gradient);
+        color: var(--Txt-On-Gradient);
+      }
+    }
+  }
+
+  p {
+    font-size: var(--SubTitle-3);
+    font-weight: var(--Lighter);
+    color: var(--Primary-Text-Color);
+    margin-top: 10px;
+    text-align: center;
+
+    span {
+      color: var(--Card-Border);
+    }
+  }
+}
 .subscription-package-main {
   display: flex;
   justify-content: start;
@@ -682,6 +739,12 @@
   align-items: stretch;
   padding: 16px 0;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+  }
 }
 
 // upgrade-subscription-plan Hover Effect
