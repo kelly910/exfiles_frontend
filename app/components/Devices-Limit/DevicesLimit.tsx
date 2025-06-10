@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Style from '@components/Devices-Limit/DevicesLimit.module.scss';
-import { Box, Button, Dialog, styled } from '@mui/material';
+import { Box, Button, CircularProgress, Dialog, styled } from '@mui/material';
 import Image from 'next/image';
+import { LoginFormValues } from '../Login/Login';
+import { setLoader } from '@/app/redux/slices/loader';
+import { loginUser } from '@/app/redux/slices/login';
+import { useRouter } from 'next/navigation';
+import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { useAppDispatch } from '@/app/redux/hooks';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -23,23 +29,62 @@ const BootstrapDialog = styled(Dialog)(() => ({
   },
 }));
 
-export default function DevicesLimit() {
-  const [open, setOpen] = React.useState(false);
+interface DevicesLimitDialogProps {
+  open: boolean;
+  onClose: () => void;
+  loginDetails: LoginFormValues | null;
+}
 
-  const handleClickOpen = () => {
-    setOpen(true);
+export default function DevicesLimit({
+  open,
+  onClose,
+  loginDetails,
+}: DevicesLimitDialogProps) {
+  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const handleLoginContinue = async () => {
+    if (!loginDetails) return;
+    try {
+      setLoading(true);
+      dispatch(setLoader(true));
+      setTimeout(async () => {
+        try {
+          const response = await dispatch(loginUser(loginDetails)).unwrap();
+          if (response && response.data && response.data.token) {
+            onClose();
+            localStorage.setItem('loggedInUser', JSON.stringify(response));
+            const token: string | null = response?.data?.token || null;
+            if (token) {
+              document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+              window.opener?.postMessage(
+                { type: 'LOGIN_SUCCESS', user: response.data },
+                'https://exfiles.trooinbounddevs.com'
+              );
+              router.push('/ai-chats');
+            }
+          }
+        } catch (error) {
+          handleError(error as ErrorResponse);
+        } finally {
+          setLoading(false);
+          dispatch(setLoader(false));
+        }
+      }, 1000);
+    } catch (error) {
+      handleError(error as ErrorResponse);
+      setLoading(false);
+      dispatch(setLoader(false));
+    }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   return (
     <>
-      <Button onClick={handleClickOpen}>Test</Button>
       <React.Fragment>
         <BootstrapDialog
           open={open}
-          onClose={handleClose}
+          onClose={onClose}
           aria-labelledby="customized-dialog-title"
           className={Style.headerDialogBox}
           sx={{
@@ -62,11 +107,19 @@ export default function DevicesLimit() {
               Logout other Device and continue?
             </p>
             <Box component="div" className={Style.dialogFormButtonBox}>
-              <Button className={Style.formCancelBtn} onClick={handleClose}>
+              <Button className={Style.formCancelBtn} onClick={onClose}>
                 Not Now
               </Button>
-              <Button className={Style.formContinueBtn} onClick={handleClose}>
-                Yes, Continue
+              <Button
+                className={Style.formContinueBtn}
+                onClick={handleLoginContinue}
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress size={16} color="inherit" />
+                ) : (
+                  'Yes, Continue'
+                )}
               </Button>
             </Box>
           </Box>

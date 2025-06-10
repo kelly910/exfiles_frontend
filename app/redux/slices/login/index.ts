@@ -61,6 +61,7 @@ export interface SocialGoogleLoginResponse {
 interface LoginPayload {
   email: string;
   password: string;
+  logout_device?: boolean;
 }
 
 export interface LoginResponse {
@@ -75,7 +76,33 @@ export interface LoginResponse {
     is_email_verified: boolean;
     token: string;
     google_login: boolean;
+    active_subscription?: ActiveSubscription;
   };
+}
+
+export interface ActiveSubscription {
+  id?: number;
+  status?: number;
+  activate_date?: string;
+  deactivate_date?: string | null;
+  used_limit_counts?: number | null;
+  plan?: Plan;
+}
+
+export interface Plan {
+  id?: number;
+  name?: string;
+  description?: string | null;
+  best_for?: string;
+  is_trial?: boolean;
+  status?: number;
+  activate_date?: string;
+  deactivate_date?: string | null;
+  amount?: string;
+  trial_days?: number;
+  duration_unit?: string;
+  duration_value?: number;
+  currency?: string;
 }
 
 interface UpdateProfileResponse {
@@ -94,9 +121,20 @@ export const loginUser = createAsyncThunk<
   { rejectValue: string }
 >('login/loginUser', async (payload, { rejectWithValue }) => {
   try {
-    const response = await api.post<LoginResponse>(urlMapper.login, payload);
-    showToast('success', 'Login is successfully.');
-    return response.data;
+    if (payload?.logout_device) {
+      delete payload.logout_device;
+      const response = await api.post<LoginResponse>(
+        `${urlMapper.login}?logout_device=true`,
+        payload
+      );
+      showToast('success', 'Login is successfully.');
+      return response.data;
+    } else {
+      delete payload.logout_device;
+      const response = await api.post<LoginResponse>(urlMapper.login, payload);
+      showToast('success', 'Login is successfully.');
+      return response.data;
+    }
   } catch (error: unknown) {
     if (typeof error === 'object' && error !== null && 'response' in error) {
       const err = error as { response?: { data?: string } };

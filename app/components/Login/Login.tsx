@@ -23,7 +23,7 @@ import { loginUser, socialGoogleLogin } from '@/app/redux/slices/login';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { setLoader } from '@/app/redux/slices/loader';
 import Link from 'next/link';
-// import DevicesLimit from '../Devices-Limit/DevicesLimit';
+import DevicesLimit from '../Devices-Limit/DevicesLimit';
 
 export interface LoginFormValues {
   email: string;
@@ -40,10 +40,10 @@ const Page = () => {
     password: '',
   };
   const dispatch = useAppDispatch();
-  // const [exceedLimitDialog, setExceedLimitDialog] = useState(false);
-  // const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
-  //   null
-  // );
+  const [exceedLimitDialog, setExceedLimitDialog] = useState(false);
+  const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
+    null
+  );
 
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {
@@ -52,17 +52,21 @@ const Page = () => {
       setTimeout(async () => {
         try {
           const response = await dispatch(loginUser(values)).unwrap();
-          if (response && response.data && response.data.token) {
-            // setLoginDetails(values);
-            localStorage.setItem('loggedInUser', JSON.stringify(response));
-            const token: string | null = response?.data?.token || null;
-            if (token) {
-              document.cookie = `accessToken=${token}; path=/; max-age=86400`;
-              window.opener?.postMessage(
-                { type: 'LOGIN_SUCCESS', user: response.data },
-                'https://exfiles.trooinbounddevs.com'
-              );
-              router.push('/ai-chats');
+          if (response.messages[0] === 'LimitExceeded') {
+            setLoginDetails(values);
+            setExceedLimitDialog(true);
+          } else {
+            if (response && response.data && response.data.token) {
+              localStorage.setItem('loggedInUser', JSON.stringify(response));
+              const token: string | null = response?.data?.token || null;
+              if (token) {
+                document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+                window.opener?.postMessage(
+                  { type: 'LOGIN_SUCCESS', user: response.data },
+                  'https://exfiles.trooinbounddevs.com'
+                );
+                router.push('/ai-chats');
+              }
             }
           }
         } catch (error) {
@@ -126,11 +130,7 @@ const Page = () => {
             <Box component="section">
               <div className={styles.formCard}>
                 <div className={styles.formHeader}>
-                  <Typography
-                    variant="h2"
-                    className={styles.formTitle}
-                    // onClick={() => setExceedLimitDialog(true)}
-                  >
+                  <Typography variant="h2" className={styles.formTitle}>
                     Welcome to Exfiles
                   </Typography>
                   <Typography variant="body1" className={styles.formSubtitle}>
@@ -431,11 +431,11 @@ const Page = () => {
         </div>
       </div>
     </main>
-      {/* <DevicesLimit
+      <DevicesLimit
         open={exceedLimitDialog}
         onClose={() => setExceedLimitDialog(false)}
         loginDetails={loginDetails}
-      /> */}
+      />
     </>
   );
 };
