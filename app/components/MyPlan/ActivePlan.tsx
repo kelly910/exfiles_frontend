@@ -38,7 +38,7 @@ export default function ActivePlan() {
   return (
     <>
       <Box
-        className={`${styles['active-plan-body']}`} // if plan expired active-plan-body-expired
+        className={`${loggedInUser?.data?.active_subscription.status === 1 ? styles['active-plan-body'] : `${styles['active-plan-body-expired']} ${styles['active-plan-body']}`}`}
       >
         <Box className={styles['active-plan-main']}>
           <Box className={styles['active-plan']}>
