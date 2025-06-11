@@ -22,6 +22,7 @@ import { fetchPlansList } from '@/app/redux/slices/subscriptionPlan';
 import { useAppDispatch } from '@/app/redux/hooks';
 import Slider, { Settings } from 'react-slick';
 import { setLoader } from '@/app/redux/slices/loader';
+import { useRouter } from 'next/navigation';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -45,6 +46,7 @@ const UpgradePlan = () => {
   const { plans } = useSelector((state: RootState) => state.plans);
   const storedUser = localStorage.getItem('loggedInUser');
   const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
+  const router = useRouter();
 
   useEffect(() => {
     dispatch(fetchPlansList(billingCycle));
@@ -110,6 +112,12 @@ const UpgradePlan = () => {
     ) : (
       <>{children}</>
     );
+  };
+
+  const handleUpgradePlan = (planId: number, buttonLabel: string) => {
+    if (buttonLabel === 'Upgrade Now') {
+      router.push(`/order-summary?planId=${planId}`);
+    }
   };
 
   return (
@@ -271,12 +279,10 @@ const UpgradePlan = () => {
               <MaybeSlider condition={isSliderActive} settings={settings}>
                 {plans.map((plan, index) => {
                   let buttonLabel = 'Not Applicable';
-                  const activePlanName =
-                    loggedInUser?.data?.active_subscription?.plan?.name;
-                  const activePlan = plans.find(
-                    (p) => p?.name === activePlanName
-                  );
-                  if (activePlan) {
+                  const activePlanId =
+                    loggedInUser?.data?.active_subscription?.plan?.id;
+                  const activePlan = plans.find((p) => p?.id === activePlanId);
+                  if (activePlan?.duration_unit === billingCycle) {
                     if (plan.name === activePlan.name) {
                       buttonLabel = 'Current Plan';
                     } else if (activePlan.name === 'Free Tier') {
@@ -288,11 +294,13 @@ const UpgradePlan = () => {
                     } else if (activePlan.name === 'Pro') {
                       buttonLabel = 'Not Applicable';
                     }
-                  } else {
+                  } else if (activePlan?.name === 'Free Tier') {
                     buttonLabel =
                       plan.name === 'Free Tier'
-                        ? 'Not Applicable'
+                        ? 'Current Plan'
                         : 'Upgrade Now';
+                  } else {
+                    buttonLabel = 'Not Applicable';
                   }
                   return (
                     <Box
@@ -362,6 +370,9 @@ const UpgradePlan = () => {
                           <Button
                             className={`${styles['subscription-package-button']} ${buttonLabel === 'Not Applicable' && styles['default']}`}
                             variant="outlined"
+                            onClick={() =>
+                              handleUpgradePlan(plan.id, buttonLabel)
+                            }
                           >
                             {buttonLabel}
                           </Button>

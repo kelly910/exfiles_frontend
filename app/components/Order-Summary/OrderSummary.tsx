@@ -4,14 +4,44 @@ import Styles from '@components/Order-Summary/OrderSummary.module.scss';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import PageHeader from '../Common/PageHeader';
-import UpgradeTime from '../Upgrade-Time/UpgradeTime';
-import LimitOver from '../Limit-Over/LimitOver';
-import PlanExpired from '../Plan-Expired/PlanExpired';
-import PlanExpiredMG from '../Plan-Expired-MG/PlanExpiredMG';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { setPageHeaderData } from '@/app/redux/slices/login';
+import { fetchOrderSummaryById } from '@/app/redux/slices/orderSummery';
+import { setLoader } from '@/app/redux/slices/loader';
 
 export default function OrderSummary() {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const dynamicPlanId = useSearchParams();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const { orderDetail } = useSelector(
+    (state: RootState) => state.orderDetailSummary
+  );
+
+  useEffect(() => {
+    const planid = dynamicPlanId.get('planId');
+    if (planid) {
+      const planIdNumber = Number(planid);
+      if (!isNaN(planIdNumber)) {
+        dispatch(setLoader(true));
+        setTimeout(() => {
+          dispatch(fetchOrderSummaryById(planIdNumber));
+          dispatch(
+            setPageHeaderData({
+              title: '',
+              subTitle: '',
+            })
+          );
+          dispatch(setLoader(false));
+        }, 1000);
+      }
+    }
+  }, [dispatch]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -33,185 +63,142 @@ export default function OrderSummary() {
             handleOpenSidebarFromLogIncident={() => setIsSidebarOpen(true)}
           />
           <Box className={Styles['my-plan-container']}>
-            <OrderSummaryCard />
+            <Box className={Styles.OrderSummaryContainer}>
+              <Box className={Styles.OrderSummaryHead}>
+                <Box className={Styles.ButtonGroup}>
+                  <Button
+                    className={Styles.backButton}
+                    onClick={() => router.push('/plans')}
+                  >
+                    <Image
+                      src="/images/arrow-left.svg"
+                      alt="user"
+                      width={16}
+                      height={16}
+                    />
+                  </Button>
+                  <Typography variant="h2" className={Styles.OrderSummaryTitle}>
+                    Order Summary
+                  </Typography>
+                </Box>
+                <Typography
+                  variant="body2"
+                  component="p"
+                  className={Styles.OrderSummarySemiTitle}
+                >
+                  scelerisque viverra convallis. ex libero, Nullam odio Quisque
+                  porta faucibus fringilla non
+                </Typography>
+              </Box>
+              <Box className={Styles.OrderSummaryBody}>
+                <Box className={Styles.OrderSummaryBodyInner}>
+                  <Box className={Styles.PlanDetails}>
+                    <Box className={Styles.PlanTitle}>
+                      <Typography variant="h2" component="h2">
+                        {orderDetail?.name}
+                      </Typography>
+                      <Typography variant="body2" component="span">
+                        {orderDetail?.description}
+                      </Typography>
+                    </Box>
+                    <Box className={Styles.PlanPrice}>
+                      <Typography variant="body1" component="p">
+                        ${orderDetail?.amount?.split('.')[0]}
+                        <Typography
+                          variant="body2"
+                          component="span"
+                          style={{ textTransform: 'capitalize' }}
+                        >
+                          /{orderDetail?.duration_unit}
+                        </Typography>
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box className={Styles.PlanPriceList}>
+                    {orderDetail?.features?.map((feat, index) => (
+                      <Box key={index} className={Styles.PlanPriceListHead}>
+                        <Typography variant="body1" component="p">
+                          {feat?.title}
+                        </Typography>
+                        {feat.display_label === 'true' ||
+                        feat.display_label === 'True' ? (
+                          <Image
+                            src="/images/tick-circle.svg"
+                            width={24}
+                            height={24}
+                            alt="Feature Available"
+                          />
+                        ) : feat.display_label === 'false' ||
+                          feat.display_label === 'False' ? (
+                          <Image
+                            src="/images/close-circle.svg"
+                            width={24}
+                            height={24}
+                            alt="Feature Not Available"
+                          />
+                        ) : (
+                          <Typography variant="body2" component="span">
+                            {feat?.display_label}
+                          </Typography>
+                        )}
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+                <Box className={Styles.OrderSummaryPayment}>
+                  <Typography
+                    variant="body1"
+                    component="p"
+                    className={Styles.PaymentHead}
+                  >
+                    Payment Summary
+                  </Typography>
+                  <Box className={Styles.PaymentPriceList}>
+                    <Box className={Styles.PaymentPriceListHead}>
+                      <Typography variant="body1" component="p">
+                        Plan Price
+                      </Typography>
+                      <Typography variant="body2" component="span">
+                        ${orderDetail?.plan_price}
+                      </Typography>
+                    </Box>
+                    {/* <Box className={Styles.PaymentPriceListHead}>
+                      <Typography variant="body1" component="p">
+                        Discount
+                      </Typography>
+                      <Typography variant="body2" component="span">
+                        -${orderDetail?.plan_price}
+                      </Typography>
+                    </Box> */}
+                    <Box className={Styles.PaymentPriceListHead}>
+                      <Typography variant="body1" component="p">
+                        Sales Tax (8%)
+                      </Typography>
+                      <Typography variant="body2" component="span">
+                        +${orderDetail?.sales_tax}
+                      </Typography>
+                    </Box>
+                    <Box className={Styles.PaymentTotalPrice}>
+                      <Typography variant="body1" component="p">
+                        Total Payable Amount
+                      </Typography>
+                      <Typography variant="body2" component="span">
+                        {orderDetail?.total_payable_amount}
+                      </Typography>
+                    </Box>
+                    <Button
+                      className="btn-primary btn"
+                      sx={{ width: '100% !important', marginTop: '24px' }}
+                    >
+                      Pay Now
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
           </Box>
         </section>
       </main>
-    </>
-  );
-}
-
-function OrderSummaryCard() {
-  const planDetails = [
-    {
-      title: 'Messages & Documents',
-      label: '250/month',
-    },
-    {
-      title: 'AI Summaries ',
-      label: '100/month',
-    },
-    {
-      title: 'Copilot AI Chats',
-      label: '50/month',
-    },
-    {
-      title: 'Court-Ready Reports',
-      label: '3/month',
-    },
-    {
-      title: 'Document Vault ',
-      label: true,
-    },
-    {
-      title: 'Keyword Tagging & Timeline ',
-      label: true,
-    },
-    {
-      title: 'Pattern Detection & Analysis',
-      label: false,
-    },
-    {
-      title: 'Multi Device  Support',
-      label: '3',
-    },
-    {
-      title: 'Storage',
-      label: '4 GB',
-    },
-    {
-      title: 'Best For',
-      label: 'Active co-parents  Description',
-    },
-  ];
-
-  const planPrice = [
-    {
-      title: 'Plan Price',
-      display_label: '$228.00',
-    },
-    {
-      title: 'Discount',
-      display_label: '-$38.00',
-    },
-    {
-      title: 'Sales Tax (8%)',
-      display_label: '+$15.00',
-    },
-  ];
-
-  return (
-    <>
-      <Box className={Styles.OrderSummaryContainer}>
-        <Box className={Styles.OrderSummaryHead}>
-          <Box className={Styles.ButtonGroup}>
-            <Button className={Styles.backButton}>
-              <Image
-                src="/images/arrow-left.svg"
-                alt="user"
-                width={16}
-                height={16}
-              />
-            </Button>
-            <Typography variant="h2" className={Styles.OrderSummaryTitle}>
-              Order Summary
-            </Typography>
-          </Box>
-          <Typography
-            variant="body2"
-            component="p"
-            className={Styles.OrderSummarySemiTitle}
-          >
-            scelerisque viverra convallis. ex libero, Nullam odio Quisque porta
-            faucibus fringilla non
-          </Typography>
-        </Box>
-        <Box className={Styles.OrderSummaryBody}>
-          <Box className={Styles.OrderSummaryBodyInner}>
-            <Box className={Styles.PlanDetails}>
-              <Box className={Styles.PlanTitle}>
-                <Typography variant="h2" component="h2">
-                  Essential
-                </Typography>
-                <Typography variant="body2" component="span">
-                  Steady Support
-                </Typography>
-              </Box>
-              <Box className={Styles.PlanPrice}>
-                <Typography variant="body1" component="p">
-                  $190
-                  <Typography variant="body2" component="span">
-                    /Year
-                  </Typography>
-                </Typography>
-              </Box>
-            </Box>
-            <Box className={Styles.PlanPriceList}>
-              {planDetails.map((plan, ind) => (
-                <Box key={ind} className={Styles.PlanPriceListHead}>
-                  <Typography variant="body1" component="p">
-                    {plan.title}
-                  </Typography>
-                  {plan.label === true ? (
-                    <Image
-                      src="/images/tick-circle.svg"
-                      width={24}
-                      height={24}
-                      alt="Feature Available"
-                    />
-                  ) : plan.label === false ? (
-                    <Image
-                      src="/images/close-circle.svg"
-                      width={24}
-                      height={24}
-                      alt="Feature Not Available"
-                    />
-                  ) : (
-                    <Typography variant="body2" component="span">
-                      {plan.label}
-                    </Typography>
-                  )}
-                </Box>
-              ))}
-            </Box>
-          </Box>
-          <Box className={Styles.OrderSummaryPayment}>
-            <Typography
-              variant="body1"
-              component="p"
-              className={Styles.PaymentHead}
-            >
-              Payment Summary
-            </Typography>
-            <Box className={Styles.PaymentPriceList}>
-              {planPrice.map((price, ind) => (
-                <Box key={ind} className={Styles.PaymentPriceListHead}>
-                  <Typography variant="body1" component="p">
-                    {price.title}
-                  </Typography>
-                  <Typography variant="body2" component="span">
-                    {price.display_label}
-                  </Typography>
-                </Box>
-              ))}
-              <Box className={Styles.PaymentTotalPrice}>
-                <Typography variant="body1" component="p">
-                  Total Payable Amount
-                </Typography>
-                <Typography variant="body2" component="span">
-                  205.00
-                </Typography>
-              </Box>
-              <Button
-                className="btn-primary btn"
-                sx={{ width: '100% !important', marginTop: '24px' }}
-              >
-                Pay Now
-              </Button>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
     </>
   );
 }

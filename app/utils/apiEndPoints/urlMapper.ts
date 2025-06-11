@@ -33,6 +33,7 @@ const urlMapper = {
   downloadLogReport: `${BASE_URL}incident-report-pdf/`,
   // subscription plan
   subscriptionPlan: `${BASE_URL}plans/`,
+  orderSummaryDetails: `${BASE_URL}order-summary-details/`,
 };
 
 export default urlMapper;
