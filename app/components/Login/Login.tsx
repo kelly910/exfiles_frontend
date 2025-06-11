@@ -24,6 +24,7 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { setLoader } from '@/app/redux/slices/loader';
 import Link from 'next/link';
 import DevicesLimit from '../Devices-Limit/DevicesLimit';
+import PlanExpired from '../Plan-Expired/PlanExpired';
 
 export interface LoginFormValues {
   email: string;
@@ -41,6 +42,7 @@ const Page = () => {
   };
   const dispatch = useAppDispatch();
   const [exceedLimitDialog, setExceedLimitDialog] = useState(false);
+  const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
   const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
     null
   );
@@ -65,6 +67,10 @@ const Page = () => {
                   { type: 'LOGIN_SUCCESS', user: response.data },
                   'https://exfiles.trooinbounddevs.com'
                 );
+              }
+              if (response.data.active_subscription?.status === 1) {
+                setOpenExpiredDialog(true);
+              } else {
                 router.push('/ai-chats');
               }
             }
@@ -251,7 +257,9 @@ const Page = () => {
                             id="password"
                             name="password"
                             placeholder="Enter Password here"
-                            error={Boolean(errors.password && touched.password)}
+                            error={Boolean(
+                              errors.password && touched.password
+                            )}
                             sx={{
                               marginTop: '8px',
                               '& .MuiOutlinedInput-root': {
@@ -435,6 +443,10 @@ const Page = () => {
         open={exceedLimitDialog}
         onClose={() => setExceedLimitDialog(false)}
         loginDetails={loginDetails}
+      />
+      <PlanExpired
+        open={openExpiredDialog}
+        onClose={() => setOpenExpiredDialog(false)}
       />
     </>
   );
