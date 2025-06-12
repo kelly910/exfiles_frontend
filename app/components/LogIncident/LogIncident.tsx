@@ -722,10 +722,10 @@ export default function LogIncident() {
                                         icon={
                                           <Box
                                             sx={{
-                                              width: 24,
-                                              height: 24,
-                                              border: '2px solid #3A3A4B',
-                                              borderRadius: '8px',
+                                              width: 20,
+                                              height: 20,
+                                              border: '1px solid #ffffff99',
+                                              borderRadius: '6px',
                                               backgroundColor: 'transparent',
                                             }}
                                           />
@@ -733,11 +733,11 @@ export default function LogIncident() {
                                         checkedIcon={
                                           <Box
                                             sx={{
-                                              width: 24,
-                                              height: 24,
+                                              width: 20,
+                                              height: 20,
                                               background:
                                                 'var(--Main-Gradient)',
-                                              borderRadius: '8px',
+                                              borderRadius: '6px',
                                               display: 'flex',
                                               alignItems: 'center',
                                               justifyContent: 'center',

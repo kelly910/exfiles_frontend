@@ -44,7 +44,6 @@ import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useSearch } from '../AI-Chat-Module/context/SearchContext';
-import LogModel from '../LogModel/LogModel';
 
 const Sidebar = ({
   isOpen,
@@ -66,7 +65,6 @@ const Sidebar = ({
   const [search, setSearch] = useState('');
   const [searchValue, setSearchValue] = useState('');
   const isMobile = useMediaQuery('(max-width:768px)');
-  const [openIncidentModel, setOpenIncidentModel] = useState(false);
   const threadList = useAppSelector(selectThreadsList);
   const pinnedChats = useAppSelector(selectPinnedMessagesList);
   const [resetTrigger, setResetTrigger] = useState(0);
@@ -75,10 +73,6 @@ const Sidebar = ({
   const [fromDate, setFromDate] = useState<Dayjs | null>(null);
   const [toDate, setToDate] = useState<Dayjs | null>(null);
   const { setSearchingChat } = useSearch();
-
-  const openLogIncidentModel = () => {
-    setOpenIncidentModel(true);
-  };
 
   if (isSearchOpen && !isOpen) {
     setIsSearchOpen(false);
@@ -193,7 +187,7 @@ const Sidebar = ({
   //   { label: 'Reports generated', used: 3, total: 3 },
   // ];
 
-  // const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
   // const handleClose = () => setOpen(false);
 
@@ -381,7 +375,24 @@ const Sidebar = ({
               />
             </SidebarAccordion>
 
-            {isOpen ? (
+            <SidebarButton
+              btnTitle={'Log Incident'}
+              iconPath={'/images/log-incident-sidebar.svg'}
+              handleBtnClick={handleLogIncidentClick}
+            />
+
+            <SidebarButton
+              btnTitle={'Manage Documents'}
+              iconPath={'/images/note-2.svg'}
+              handleBtnClick={handleDocumentClick}
+            />
+            <SidebarButton
+              btnTitle={'Export Summaries'}
+              iconPath={'/images/report-icon.svg'}
+              handleBtnClick={handleDocReport}
+            />
+
+            {/* {isOpen ? (
               <SidebarAccordion
                 title="Manage Documents"
                 icon="/images/manage-document.svg"
@@ -415,13 +426,7 @@ const Sidebar = ({
                   handleBtnClick={handleDocReport}
                 />
               </>
-            )}
-
-            <SidebarButton
-              btnTitle={'Log Incident'}
-              iconPath={'/images/log-incident-sidebar.svg'}
-              handleBtnClick={handleLogIncidentClick}
-            />
+            )} */}
           </div>
         </div>
 
@@ -495,40 +500,7 @@ const Sidebar = ({
             </Box>
           </Modal>
         </div> */}
-
-        <div className={Style['sidebar-btm']}>
-          <div className={Style['sidebar-btm-card']}>
-            <div className={Style['sidebar-btm-card-inner']}>
-              <p>Add to your timeline?</p>
-              <p>
-                <Link href="" onClick={openLogIncidentModel}>
-                  Click Here
-                </Link>{' '}
-                to Log Incident
-              </p>
-            </div>
-          </div>
-          <Link
-            href="#"
-            className={Style['close-sidebar-btm']}
-            onClick={openLogIncidentModel}
-          >
-            <Image
-              src="/images/close-sidebar-btm-img.svg"
-              alt=""
-              width={38}
-              height={38}
-            />{' '}
-          </Link>
-        </div>
       </div>
-      {openIncidentModel && (
-        <LogModel
-          open={openIncidentModel}
-          handleClose={() => setOpenIncidentModel(false)}
-          editedData={null}
-        />
-      )}
     </>
   );
 };

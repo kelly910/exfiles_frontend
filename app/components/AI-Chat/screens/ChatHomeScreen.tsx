@@ -25,8 +25,8 @@ export default function ChatHomeScreen() {
   const router = useRouter();
 
   const CHAT_PROMPS = [
-    'Upload a message or document - let AI summarize, analyze, and tag it for you',
-    'What is the best way to respond to this message?',
+    'Upload a document - AI will summarize and organize it for you.',
+    'How do I respond to this message?',
   ];
 
   const CHAT_TITLES = [
@@ -185,32 +185,8 @@ export default function ChatHomeScreen() {
                 md={4}
                 className={AIChatStyles.gridBoxInner}
               >
-                <div className={AIChatStyles.chatGridBox}>
-                  <div className={AIChatStyles.chatBox}>
-                    <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
-                    <Button
-                      type="button"
-                      variant="contained"
-                      className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
-                      color="primary"
-                      fullWidth
-                      onClick={() => handlePromptClick(CHAT_PROMPS[0])}
-                    >
-                      Start with this question
-                      <span className="arrow"></span>
-                    </Button>
-                  </div>
-                </div>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={4}
-                className={AIChatStyles.gridBoxInner}
-              >
                 <div
-                  className={`${AIChatStyles.chatGridBox} ${AIChatStyles.chatLogIncident}`} //${AIChatStyles.chatLogIncident} use only Log Incident
+                  className={`${AIChatStyles.chatGridBox} ${AIChatStyles.chatLogIncident}`}
                   onClick={openLogIncidentModel}
                 >
                   <div className={AIChatStyles.chatBox}>
@@ -226,6 +202,30 @@ export default function ChatHomeScreen() {
                     >
                       Log Incident
                       <span className="incident"></span>
+                    </Button>
+                  </div>
+                </div>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={4}
+                className={AIChatStyles.gridBoxInner}
+              >
+                <div className={AIChatStyles.chatGridBox}>
+                  <div className={AIChatStyles.chatBox}>
+                    <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
+                      color="primary"
+                      fullWidth
+                      onClick={() => handlePromptClick(CHAT_PROMPS[0])}
+                    >
+                      Start with this question
+                      <span className="arrow"></span>
                     </Button>
                   </div>
                 </div>
