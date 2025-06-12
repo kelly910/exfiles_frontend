@@ -339,7 +339,7 @@ const Sidebar = ({
             </List>
           </div>
           <div className={Style['sidebar-accordian']}>
-            <SidebarAccordion
+            {/* <SidebarAccordion
               title={`Pinned Chats ${pinnedChats ? `(${pinnedChats?.count})` : ''}`}
               icon="/images/sidebar-Pin.svg"
               expanded={expanded}
@@ -355,10 +355,10 @@ const Sidebar = ({
                 handlePinnedAnswerClick={handlePinnedAnswerClick}
                 resetTrigger={resetTrigger}
               />
-            </SidebarAccordion>
+            </SidebarAccordion> */}
 
             <SidebarAccordion
-              title={`All Chats ${threadList ? `(${threadList.count})` : ''}`}
+              title={`All Chats ${threadList ? `(${threadList.count + pinnedChats?.count})` : ''}`}
               icon="/images/messages.svg"
               expanded={expanded}
               panelKey="panel2"
@@ -366,13 +366,26 @@ const Sidebar = ({
               closeDocumentSummary={selectedDocIdNull}
               expandPanel={() => setExpanded('panel2')}
             >
-              <DynamicThreadsList
-                searchVal={searchValue}
-                fromDateVal={fromDate}
-                toDateVal={toDate}
-                handleThreadClick={handleThreadClick}
-                resetTrigger={resetTrigger}
-              />
+              <div className={Style['sidebar-pinned-chats']}>
+                <span>Pinned Chats</span>
+                <DynamicPinnedMessagesList
+                  searchVal={searchValue}
+                  fromDateVal={fromDate}
+                  toDateVal={toDate}
+                  handlePinnedAnswerClick={handlePinnedAnswerClick}
+                  resetTrigger={resetTrigger}
+                />
+              </div>
+              <div className={Style['sidebar-pinned-chats']}>
+                <span>Chat History</span>
+                <DynamicThreadsList
+                  searchVal={searchValue}
+                  fromDateVal={fromDate}
+                  toDateVal={toDate}
+                  handleThreadClick={handleThreadClick}
+                  resetTrigger={resetTrigger}
+                />
+              </div>
             </SidebarAccordion>
 
             <SidebarButton
