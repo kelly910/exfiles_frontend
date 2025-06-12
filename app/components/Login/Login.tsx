@@ -43,9 +43,9 @@ const Page = () => {
   const dispatch = useAppDispatch();
   const [exceedLimitDialog, setExceedLimitDialog] = useState(false);
   const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
-  const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
-    null
-  );
+  // const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
+  //   null
+  // );
 
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {
@@ -54,26 +54,26 @@ const Page = () => {
       setTimeout(async () => {
         try {
           const response = await dispatch(loginUser(values)).unwrap();
-          if (response.messages[0] === 'LimitExceeded') {
-            setLoginDetails(values);
-            setExceedLimitDialog(true);
-          } else {
-            if (response && response.data && response.data.token) {
-              localStorage.setItem('loggedInUser', JSON.stringify(response));
-              const token: string | null = response?.data?.token || null;
-              if (token) {
-                document.cookie = `accessToken=${token}; path=/; max-age=86400`;
-                window.opener?.postMessage(
-                  { type: 'LOGIN_SUCCESS', user: response.data },
-                  'https://exfiles.trooinbounddevs.com'
-                );
-              }
-              if (response.data.active_subscription?.status === 0) {
-                setOpenExpiredDialog(true);
-              } else {
-                router.push('/ai-chats');
-              }
+          // if (response.messages[0] === 'LimitExceeded') {
+          //   setLoginDetails(values);
+          //   setExceedLimitDialog(true);
+          // } else {
+          if (response && response.data && response.data.token) {
+            localStorage.setItem('loggedInUser', JSON.stringify(response));
+            const token: string | null = response?.data?.token || null;
+            if (token) {
+              document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+              window.opener?.postMessage(
+                { type: 'LOGIN_SUCCESS', user: response.data },
+                'https://exfiles.trooinbounddevs.com'
+              );
             }
+            // if (response.data.active_subscription?.status === 0) {
+            //   setOpenExpiredDialog(true);
+            // } else {
+            //   router.push('/ai-chats');
+            // }
+            // }
           }
         } catch (error) {
           handleError(error as ErrorResponse);
@@ -443,7 +443,7 @@ const Page = () => {
       <DevicesLimit
         open={exceedLimitDialog}
         onClose={() => setExceedLimitDialog(false)}
-        loginDetails={loginDetails}
+        // loginDetails={loginDetails}
       />
       <PlanExpired
         open={openExpiredDialog}
