@@ -32,7 +32,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
 interface DevicesLimitDialogProps {
   open: boolean;
   onClose: () => void;
-  loginDetails: LoginFormValues | null;
+  loginDetails?: LoginFormValues | null;
 }
 
 export default function DevicesLimit({
