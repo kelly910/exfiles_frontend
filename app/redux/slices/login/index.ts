@@ -55,6 +55,7 @@ export interface SocialGoogleLoginResponse {
     is_email_verified: boolean;
     token: string;
     google_login: boolean;
+    active_subscription?: ActiveSubscription;
   };
 }
 
