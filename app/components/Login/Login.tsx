@@ -67,11 +67,12 @@ const Page = () => {
                 { type: 'LOGIN_SUCCESS', user: response.data },
                 'https://exfiles.trooinbounddevs.com'
               );
+              router.push('/ai-chats');
             }
             // if (response.data.active_subscription?.status === 0) {
             //   setOpenExpiredDialog(true);
             // } else {
-            //   router.push('/ai-chats');
+            //
             // }
             // }
           }
