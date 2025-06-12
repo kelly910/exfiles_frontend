@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import LogStyle from './logmodel.module.scss';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
   Dialog,
@@ -656,7 +653,7 @@ export default function LogModel({
                             : '#676972',
                       }}
                     >
-                      Description
+                      Description (required)
                     </Typography>
                     <Field
                       as={TextField}
@@ -719,6 +716,85 @@ export default function LogModel({
                   <div className={LogStyle.dialogFormGroup}>
                     <Typography
                       variant="body2"
+                      className={LogStyle.dialogFormLabel}
+                      sx={{
+                        display: 'block',
+                        fontSize: 'var(--SubTitle-3)',
+                        fontWeight: 'var(--Regular)',
+                      }}
+                    >
+                      Support Evidence
+                    </Typography>
+                    {!values?.evidence && (
+                      <Box
+                        className={`${LogStyle.dialogContent}`}
+                        role="button"
+                        tabIndex={0}
+                        style={{
+                          cursor: 'pointer',
+                          userSelect: 'none',
+                        }}
+                        onClick={handleOpenUserFileInput}
+                        onDrop={(e) => handleDrop(e, setFieldValue)}
+                        onDragOver={(e) => e.preventDefault()}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            handleOpenUserFileInput();
+                          }
+                        }}
+                      >
+                        <Box>
+                          <Image
+                            src="/images/upload-img-new.png"
+                            alt="Upload-img"
+                            width={51}
+                            height={55}
+                          />
+                          <Typography gutterBottom>
+                            Click here to upload Supported Evidences
+                          </Typography>
+                        </Box>
+
+                        <VisuallyHiddenInput
+                          id="chat-file-uploads"
+                          type="file"
+                          name="file-uploads"
+                          accept={ALLOWED_FILE_TYPES.join(',')}
+                          multiple
+                          ref={fileInputRef}
+                          onChange={(e) => handleFileChange(e, setFieldValue)}
+                        />
+                      </Box>
+                    )}
+                    <Box component="div" className={LogStyle.fileBoxBody}>
+                      {values?.evidence && (
+                        <UploadFileItem
+                          fileName={
+                            selectedFile
+                              ? selectedFile.name
+                              : editedData?.evidence?.split('/').pop() ||
+                                'Uploaded_File'
+                          }
+                          fileId={''}
+                          fileSize={selectedFile ? selectedFile.size : 0}
+                          progress={100}
+                          isUploading={false}
+                          hasUploaded={true}
+                          fileErrorMsg={''}
+                          hasError={false}
+                          onRemove={() => {
+                            setSelectedFile(null);
+                            setFieldValue('evidence', '');
+                          }}
+                          type={'LogIncident'}
+                          handleFileDesc={() => {}}
+                        />
+                      )}
+                    </Box>
+                  </div>
+                  <div className={LogStyle.dialogFormGroup}>
+                    <Typography
+                      variant="body2"
                       component="label"
                       htmlFor="incident_time"
                       className={LogStyle.dialogFormLabel}
@@ -729,7 +805,7 @@ export default function LogModel({
                             : '#676972',
                       }}
                     >
-                      Date & Time
+                      Date & Time (required)
                     </Typography>
                     <ThemeProvider theme={newTheme}>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -831,7 +907,7 @@ export default function LogModel({
                         fontWeight: 'var(--Regular)',
                       }}
                     >
-                      Quick Tags
+                      Quick Tags (required)
                     </Typography>
                     <Box className={LogStyle['card-options']}>
                       <FieldArray name="tags">
@@ -987,24 +1063,6 @@ export default function LogModel({
                       )}
                     </Box>
                   </div>
-                </Box>
-                <Accordion className={LogStyle.accordionBox}>
-                  <AccordionSummary
-                    expandIcon={
-                      <Image
-                        className={LogStyle['img-none']}
-                        src="/images/arrow-down.svg"
-                        alt="expand-collapse"
-                        width={16}
-                        height={16}
-                      />
-                    }
-                    aria-controls="panel1-content"
-                    id="panel1-header"
-                  >
-                    <Typography component="span">Optional Details</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
                     <div className={LogStyle.dialogFormGroup}>
                       <Typography
                         variant="body2"
@@ -1193,11 +1251,10 @@ export default function LogModel({
                               '&:hover .MuiOutlinedInput-notchedOutline': {
                                 borderColor: '#fff',
                               },
-                              '&.Mui-focused .MuiOutlinedInput-notchedOutline':
-                                {
-                                  borderColor: '#fff',
-                                  borderWidth: '1px',
-                                },
+                              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: '#fff',
+                                borderWidth: '1px',
+                              },
                               '& .MuiSelect-select': {
                                 padding: '14px 16px',
                                 display: 'block',
@@ -1261,11 +1318,10 @@ export default function LogModel({
                               '&:hover .MuiOutlinedInput-notchedOutline': {
                                 borderColor: '#fff',
                               },
-                              '&.Mui-focused .MuiOutlinedInput-notchedOutline':
-                                {
-                                  borderColor: '#fff',
-                                  borderWidth: '1px',
-                                },
+                              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: '#fff',
+                                borderWidth: '1px',
+                              },
                               '& .MuiSelect-select': {
                                 padding: '14px 16px',
                                 display: 'block',
@@ -1288,87 +1344,7 @@ export default function LogModel({
                         </ThemeProvider>
                       </div>
                     </div>
-                    <div className={LogStyle.dialogFormGroup}>
-                      <Typography
-                        variant="body2"
-                        className={LogStyle.dialogFormLabel}
-                        sx={{
-                          display: 'block',
-                          fontSize: 'var(--SubTitle-3)',
-                          fontWeight: 'var(--Regular)',
-                        }}
-                      >
-                        Support Evidence
-                      </Typography>
-                      {!values?.evidence && (
-                        <Box
-                          className={`${LogStyle.dialogContent}`}
-                          role="button"
-                          tabIndex={0}
-                          style={{
-                            cursor: 'pointer',
-                            userSelect: 'none',
-                          }}
-                          onClick={handleOpenUserFileInput}
-                          onDrop={(e) => handleDrop(e, setFieldValue)}
-                          onDragOver={(e) => e.preventDefault()}
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              handleOpenUserFileInput();
-                            }
-                          }}
-                        >
-                          <Box>
-                            <Image
-                              src="/images/upload-img-new.png"
-                              alt="Upload-img"
-                              width={51}
-                              height={55}
-                            />
-                            <Typography gutterBottom>
-                              Click here to upload Supported Evidences
-                            </Typography>
-                          </Box>
-
-                          <VisuallyHiddenInput
-                            id="chat-file-uploads"
-                            type="file"
-                            name="file-uploads"
-                            accept={ALLOWED_FILE_TYPES.join(',')}
-                            multiple
-                            ref={fileInputRef}
-                            onChange={(e) => handleFileChange(e, setFieldValue)}
-                          />
-                        </Box>
-                      )}
-                      <Box component="div" className={LogStyle.fileBoxBody}>
-                        {values?.evidence && (
-                          <UploadFileItem
-                            fileName={
-                              selectedFile
-                                ? selectedFile.name
-                                : editedData?.evidence?.split('/').pop() ||
-                                  'Uploaded_File'
-                            }
-                            fileId={''}
-                            fileSize={selectedFile ? selectedFile.size : 0}
-                            progress={100}
-                            isUploading={false}
-                            hasUploaded={true}
-                            fileErrorMsg={''}
-                            hasError={false}
-                            onRemove={() => {
-                              setSelectedFile(null);
-                              setFieldValue('evidence', '');
-                            }}
-                            type={'LogIncident'}
-                            handleFileDesc={() => {}}
-                          />
-                        )}
-                      </Box>
-                    </div>
-                  </AccordionDetails>
-                </Accordion>
+                </Box>
               </DialogContent>
 
               <DialogActions className={LogStyle.dialogFormButtonBoxMain}>
