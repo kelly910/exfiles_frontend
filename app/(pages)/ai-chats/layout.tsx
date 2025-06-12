@@ -6,6 +6,7 @@ import Sidebar from '@components/Common/Sidebar';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
+import { useMediaQuery } from '@mui/material';
 
 export default function AiChatsLayout({
   children,
@@ -46,17 +47,24 @@ export default function AiChatsLayout({
   // New code
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 1100) {
-        setIsSidebarOpen(false);
-      } else {
-        setIsSidebarOpen(true);
-      }
+      // if (window.innerWidth <= 1100) {
+      //   setIsSidebarOpen(false);
+      // } else {
+      //   setIsSidebarOpen(true);
+      // }
     };
 
     handleResize(); // Call on mount to ensure it sets correctly
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = useMediaQuery('(max-width:768px)');
+  useEffect(() => {
+    if (isMobile) {
+      setIsSidebarOpen(false);
+    }
   }, []);
 
   return (

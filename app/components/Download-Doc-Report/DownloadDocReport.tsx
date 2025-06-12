@@ -74,7 +74,7 @@ export type DocumentSummary = {
 };
 
 const DownloadDocReport = () => {
-  const isMobile = useMediaQuery('(max-width:768px)');
+  const isMobile = useMediaQuery('(max-width:1100px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useState('');
@@ -101,6 +101,8 @@ const DownloadDocReport = () => {
   useEffect(() => {
     if (isMobile) {
       setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
     }
   }, []);
 
@@ -134,8 +136,8 @@ const DownloadDocReport = () => {
             if (res?.no_of_docs || res?.count) {
               dispatch(
                 setPageHeaderData({
-                  title: 'Document Report',
-                  subTitle: `No. of Document Report : ${res?.no_of_docs}`,
+                  title: 'Export Summaries',
+                  subTitle: `No. of Export Summaries : ${res?.no_of_docs}`,
                 })
               );
             }
@@ -591,10 +593,10 @@ const DownloadDocReport = () => {
                                   icon={
                                     <Box
                                       sx={{
-                                        width: 24,
-                                        height: 24,
-                                        border: '2px solid #3A3A4B',
-                                        borderRadius: '8px',
+                                        width: 20,
+                                        height: 20,
+                                        border: '1px solid #ffffff99',
+                                        borderRadius: '6px',
                                         backgroundColor: 'transparent',
                                       }}
                                     />
@@ -602,10 +604,10 @@ const DownloadDocReport = () => {
                                   checkedIcon={
                                     <Box
                                       sx={{
-                                        width: 24,
-                                        height: 24,
+                                        width: 20,
+                                        height: 20,
                                         background: 'var(--Main-Gradient)',
-                                        borderRadius: '8px',
+                                        borderRadius: '6px',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',

@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './style.module.scss';
 import Image from 'next/image';
 import {
@@ -9,42 +8,105 @@ import {
   styled,
   Typography,
 } from '@mui/material';
+import dayjs from 'dayjs';
 
 export default function ActivePlan() {
+  const storedUser = localStorage.getItem('loggedInUser');
+  const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
+
+  const startDate = loggedInUser?.data?.active_subscription?.activate_date
+    ? dayjs(
+        loggedInUser?.data?.active_subscription?.activate_date?.replace(
+          /([+-]\d{2}:\d{2}):\d{2}$/,
+          '$1'
+        )
+      ).format('MM/DD/YYYY')
+    : '-';
+
+  const endDate = loggedInUser?.data?.active_subscription?.deactivate_date
+    ? dayjs(
+        loggedInUser?.data?.active_subscription?.deactivate_date?.replace(
+          /([+-]\d{2}:\d{2}):\d{2}$/,
+          '$1'
+        )
+      ).format('MM/DD/YYYY')
+    : '-';
+
   const used = 1.6;
   const total = 4;
   const value = (used / total) * 100;
   return (
     <>
-      <Box className={styles['active-plan-body']}>
+      <Box
+        className={`${loggedInUser?.data?.active_subscription.status === 1 ? styles['active-plan-body'] : `${styles['active-plan-body-expired']} ${styles['active-plan-body']}`}`}
+      >
         <Box className={styles['active-plan-main']}>
           <Box className={styles['active-plan']}>
             <Box className={styles['plan-details']}>
               <Box component="figure">
-                <Image
-                  src="/images/Essential.svg"
-                  alt="Plan Image"
-                  width={48}
-                  height={48}
-                />
+                {loggedInUser?.data?.active_subscription?.plan?.name ===
+                'Free Tier' ? (
+                  <Image
+                    src="/images/FreeTier.svg"
+                    alt="FreeTier Plan"
+                    width={48}
+                    height={48}
+                  />
+                ) : loggedInUser?.data?.active_subscription?.plan?.name ===
+                  'Essential' ? (
+                  <Image
+                    src="/images/Essential.svg"
+                    alt="Essential Plan"
+                    width={48}
+                    height={48}
+                  />
+                ) : (
+                  <Image
+                    src="/images/Pro.svg"
+                    alt="Pro Plan"
+                    width={48}
+                    height={48}
+                  />
+                )}
               </Box>
               <Box className={styles['plan-description']}>
                 <Box>
                   <Typography variant="h6" component="h3">
-                    Essential
+                    {loggedInUser?.data?.active_subscription?.plan?.name || '-'}
                   </Typography>
-                  <Typography variant="body2">Steady Support</Typography>
+                  <Typography variant="body2">
+                    {loggedInUser?.data?.active_subscription?.plan
+                      ?.description || '-'}
+                  </Typography>
                 </Box>
                 <Box className={styles['plan-status']}>
-                  <Typography variant="body2">Active Plan</Typography>
+                  <Typography variant="body2">
+                    {loggedInUser?.data?.active_subscription?.status === 1
+                      ? 'Active Plan'
+                      : 'Expired Plan'}
+                  </Typography>
                 </Box>
               </Box>
             </Box>
             <Box className={styles['plan-actions']}>
               <Typography variant="body2">
-                $190{' '}
-                <Typography component="span" variant="body2">
-                  /Year
+                $
+                {
+                  loggedInUser?.data?.active_subscription?.plan?.amount?.split(
+                    '.'
+                  )[0]
+                }{' '}
+                <Typography
+                  component="span"
+                  variant="body2"
+                  style={{ textTransform: 'capitalize' }}
+                >
+                  /
+                  {loggedInUser?.data?.active_subscription?.plan?.name ===
+                  'Free Tier'
+                    ? 'Day'
+                    : loggedInUser?.data?.active_subscription?.plan
+                        ?.duration_unit}
                 </Typography>
               </Typography>
             </Box>
@@ -54,7 +116,7 @@ export default function ActivePlan() {
                   <Typography component="span" variant="body2">
                     Start Date
                   </Typography>{' '}
-                  25/01/2025
+                  {startDate}
                 </Typography>
                 <Typography component="span" variant="body2">
                   |
@@ -63,12 +125,15 @@ export default function ActivePlan() {
                   <Typography component="span" variant="body2">
                     End Date
                   </Typography>{' '}
-                  25/01/2026
+                  {endDate}
                 </Typography>
               </Box>
               <Box className={styles['plan-footer-actions']}>
                 <Button className={styles['cancel-plan-btn']}>
-                  Cancel Plan
+                  {loggedInUser?.data?.active_subscription?.plan?.name ===
+                  'Free Tier'
+                    ? ''
+                    : 'Cancel Plan'}
                 </Button>
               </Box>
             </Box>
@@ -81,7 +146,6 @@ export default function ActivePlan() {
               justifyContent: 'center',
               alignItems: 'center',
               height: '100%',
-              // bgcolor: 'var(--Card-Color)',
               padding: 0,
             }}
           >

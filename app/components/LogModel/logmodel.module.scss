@@ -17,6 +17,7 @@
   align-items: center;
   gap: 12px;
   padding: 0 !important;
+  max-width: calc(100% - 30px);
 }
 
 .dialogIcon {
@@ -28,12 +29,14 @@
   align-items: center;
   justify-content: center;
 }
-.dialogTitle {
-  font-weight: var(--Bold);
-  font-size: var(--SubTitle-1);
-  line-height: 1.4;
-  letter-spacing: 0%;
-  color: var(--Txt-On-Gradient);
+.headerDialogBox {
+  .dialogTitle {
+    font-weight: var(--Bold);
+    font-size: var(--SubTitle-1);
+    line-height: 1.4;
+    letter-spacing: 0%;
+    color: var(--Txt-On-Gradient);
+  }
 }
 .dialogHeaderInner .dialogSemiTitle {
   font-weight: var(--Regular);

@@ -6,14 +6,6 @@
     margin-top: 28px;
 
     .gridBoxInner {
-      order: unset;
-
-      @media (max-width: 900px) {
-        &:last-child,
-        &:first-child {
-          order: 1;
-        }
-      }
 
       .chatBox {
         height: 100%;
@@ -323,6 +315,7 @@
   margin: 0 !important;
   margin-right: 12px !important;
 }
+
 .chatResBox {
   padding: 8px 16px;
   background-color: var(--Card-Color);
@@ -336,11 +329,13 @@
   @media (max-width: 800px) {
     display: block;
   }
+
   .chatResBoxInner {
     display: flex;
     justify-content: flex-start;
     align-items: center;
   }
+
   .chatResSemiTitle {
     font-weight: var(--Regular);
     font-size: var(--SubTitle-5);
@@ -361,6 +356,7 @@
   text-overflow: ellipsis;
   width: 100%;
 }
+
 // Drag and drop styles
 .dropOverlay {
   position: fixed;
@@ -408,6 +404,7 @@
     margin: 0 auto;
   }
 }
+
 .fileBoxDrag {
   display: grid;
   width: 100%;
@@ -426,8 +423,9 @@
     grid-template-columns: repeat(1, 1fr);
   }
 
-  > div {
+  >div {
     margin-top: 0 !important;
   }
 }
+
 // Drag and drop styles

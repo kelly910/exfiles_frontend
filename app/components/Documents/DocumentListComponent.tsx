@@ -40,7 +40,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
           setShowEmptyCategoryComponent(true);
           dispatch(
             setPageHeaderData({
-              title: 'Documents',
+              title: 'Manage Documents',
               subTitle: `No. of Documents : ${res?.no_of_docs}`,
             })
           );
@@ -76,19 +76,29 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
     }
   }, [selectedDocId]);
 
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     if (window.innerWidth <= 1100) {
+  //       setIsSidebarOpen(false);
+  //     } else {
+  //       setIsSidebarOpen(true);
+  //     }
+  //   };
+
+  //   handleResize(); // Call on mount to ensure it sets correctly
+  //   window.addEventListener('resize', handleResize);
+
+  //   console.log('Effect', isSidebarOpen);
+  //   return () => window.removeEventListener('resize', handleResize);
+  // }, []);
+
+  const isMobile = useMediaQuery('(max-width:1100px)');
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 1100) {
-        setIsSidebarOpen(false);
-      } else {
-        setIsSidebarOpen(true);
-      }
-    };
-
-    handleResize(); // Call on mount to ensure it sets correctly
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
+    if (isMobile) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
   }, []);
 
   const handleThreadClick = (thread: string) => {
@@ -126,14 +136,14 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
         toggleSidebar={toggleSidebar}
         handleThreadClick={handleThreadClick}
         handlePinnedAnswerClick={handlePinnedAnswerClick}
-        title="Documents"
+        title="Manage Documents"
         selectedDocIdNull={closeSummaryDrawer}
       />
       <section className="main-body">
         <PageHeader
           isSidebarOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
-          title="Documents"
+          title="Manage Documents"
         />
         <div className={styles.docsMain}>
           {showEmptyCategoryComponent ? (

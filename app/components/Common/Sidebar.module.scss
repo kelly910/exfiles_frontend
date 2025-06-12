@@ -310,6 +310,12 @@
 .bottom-content {
   padding: 0 !important;
   margin-top: 12px;
+  .sidebar-pinned-chats span {
+    margin-left: 5px;
+    font-size: var(--SubTitle-3);
+    font-weight: var(--Lighter);
+    color: var(--Subtext-Color);
+  }
   &:empty {
     margin: 0 !important;
   }

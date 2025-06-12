@@ -96,7 +96,7 @@ export interface LogIncidentDetails {
 }
 
 export default function LogIncident() {
-  const isMobile = useMediaQuery('(max-width:768px)');
+  const isMobile = useMediaQuery('(max-width:1100px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedRowId, setSelectedRowId] = useState<string>('');
@@ -161,6 +161,8 @@ export default function LogIncident() {
   useEffect(() => {
     if (isMobile) {
       setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
     }
   }, []);
 
@@ -720,10 +722,10 @@ export default function LogIncident() {
                                         icon={
                                           <Box
                                             sx={{
-                                              width: 24,
-                                              height: 24,
-                                              border: '2px solid #3A3A4B',
-                                              borderRadius: '8px',
+                                              width: 20,
+                                              height: 20,
+                                              border: '1px solid #ffffff99',
+                                              borderRadius: '6px',
                                               backgroundColor: 'transparent',
                                             }}
                                           />
@@ -731,11 +733,11 @@ export default function LogIncident() {
                                         checkedIcon={
                                           <Box
                                             sx={{
-                                              width: 24,
-                                              height: 24,
+                                              width: 20,
+                                              height: 20,
                                               background:
                                                 'var(--Main-Gradient)',
-                                              borderRadius: '8px',
+                                              borderRadius: '6px',
                                               display: 'flex',
                                               alignItems: 'center',
                                               justifyContent: 'center',

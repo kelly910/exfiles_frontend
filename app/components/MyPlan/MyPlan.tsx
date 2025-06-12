@@ -11,17 +11,26 @@ import { useRouter } from 'next/navigation';
 import ActivePlan from './ActivePlan';
 import UpgradePlan from './UpgradePlan';
 import PlanHistory from './PlanHistory';
+import { useDispatch } from 'react-redux';
+import { setPageHeaderData } from '@/app/redux/slices/login';
 
 const MyPlan = () => {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
 
   useEffect(() => {
+    dispatch(
+      setPageHeaderData({
+        title: 'My Plan',
+        subTitle: 'Essential - Steady Support',
+      })
+    );
     if (isMobile) {
       setIsSidebarOpen(false);
     }
