@@ -42,7 +42,12 @@ export default function PlanExpired({ open, onClose }: PlanExpiredDialogProps) {
       <React.Fragment>
         <BootstrapDialog
           open={open}
-          onClose={onClose}
+          onClose={(event, reason) => {
+            console.log(event, 'evnet');
+            if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+              onClose();
+            }
+          }}
           aria-labelledby="customized-dialog-title"
           className={Style.headerDialogBox}
           sx={{
