@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import Style from '@components/Upgrade-Time/UpgradeTime.module.scss';
 import { Box, Button, Dialog, styled, Typography } from '@mui/material';
-import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -24,17 +24,13 @@ const BootstrapDialog = styled(Dialog)(() => ({
   },
 }));
 
-export default function UpgradeTime() {
-  const [open, setOpen] = React.useState(false);
+interface UpgradeTimeDialogProps {
+  open: boolean;
+  onClose: () => void;
+}
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+export default function UpgradeTime({ open, onClose }: UpgradeTimeDialogProps) {
+  const router = useRouter();
   const [timerData, setTimerData] = useState([
     { value: '00', label: 'Days' },
     { value: '00', label: 'Hours' },
@@ -80,41 +76,18 @@ export default function UpgradeTime() {
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  const upgradeNow = () => {
+    onClose();
+    router.push('/plans');
+  };
+
   return (
     <>
-      <Button onClick={handleClickOpen} className={Style.timeLog}>
-        <Box className={Style.timeLogInner}>
-          <Box className={Style.timeLogImage}>
-            <Image
-              src="/images/timer.svg"
-              alt="search"
-              width={20}
-              height={20}
-            />
-          </Box>
-          <Box className={Style.timeLogTime}>
-            {timerData.map((item, index) => (
-              <>
-                <Typography variant="body2" component="p">
-                  {item.value}
-                </Typography>
-
-                {index !== timerData.length - 1 && (
-                  <>
-                    <Typography variant="body2" component="span">
-                      :
-                    </Typography>
-                  </>
-                )}
-              </>
-            ))}
-          </Box>
-        </Box>
-      </Button>
       <React.Fragment>
         <BootstrapDialog
           open={open}
-          onClose={handleClose}
+          onClose={onClose}
           aria-labelledby="customized-dialog-title"
           className={Style.headerDialogBox}
           sx={{
@@ -155,10 +128,10 @@ export default function UpgradeTime() {
               facilisi fringilla purus lacus
             </Typography>
             <Box component="div" className={Style.dialogFormButtonBox}>
-              <Button className={Style.formCancelBtn} onClick={handleClose}>
+              <Button className={Style.formCancelBtn} onClick={onClose}>
                 Not Now
               </Button>
-              <Button className={Style.formContinueBtn} onClick={handleClose}>
+              <Button className={Style.formContinueBtn} onClick={upgradeNow}>
                 Upgrade Now
               </Button>
             </Box>
