@@ -115,11 +115,12 @@ export default function LogDetailsModel({
             {itemDetails?.tags_data?.map((tag, index) => (
               <Box className={LogStyle.logListBodyTag} key={index}>
                 {tag?.file_data?.file_url ? (
-                  <Image
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
                     src={tag?.file_data?.file_url}
                     alt="Log-success"
-                    width={16}
-                    height={16}
+                    width="16"
+                    height="16"
                   />
                 ) : (
                   <Image
@@ -237,7 +238,7 @@ export default function LogDetailsModel({
                   variant="body1"
                   className={LogStyle.logDetailsListDetailsInner}
                 >
-                  {itemDetails?.evidence?.split('log_incidents/')[1] || '-'}
+                  {itemDetails?.evidence?.split('?')[0].split('/').pop() || '-'}
                 </Typography>
               </Box>
             </Box>
