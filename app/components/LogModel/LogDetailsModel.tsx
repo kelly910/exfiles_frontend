@@ -186,7 +186,7 @@ export default function LogDetailsModel({
                   variant="body1"
                   className={LogStyle.logDetailsListDetailsInner}
                 >
-                  {itemDetails?.involved_person_name}
+                  {itemDetails?.involved_person_name || '-'}
                 </Typography>
               </Box>
             </Box>

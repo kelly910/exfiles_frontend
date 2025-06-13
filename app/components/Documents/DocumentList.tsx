@@ -26,6 +26,9 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import DeleteDialog from '../LogoutDialog/DeleteDialog';
 import DocumentsEmpty from '../DocumentsEmpty/DocumentsEmpty';
 import { getDocumentImage } from '@/app/utils/functions';
+import RenameDocDialog from './Dialog/RenameDocDialog';
+import { useSearchParams } from 'next/navigation';
+import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
 
 type Tag = {
   id: number;
@@ -40,7 +43,7 @@ type Document = {
   description?: string;
   tags: Tag[];
   upload_on: string;
-  uuid?: string;
+  uuid?: string | string;
   can_download_summary_pdf?: string;
 };
 
@@ -78,6 +81,13 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleletDocId, setDeleletDocId] = useState<string>('');
   const [menuDocUUID, setMenuDocUUID] = useState<string | null>(null);
+  const [renameDocDialog, setRenameDocDialog] = useState(false);
+  const [renameDoc, setRenameDoc] = useState<{
+    file_name: string;
+    uuid: string | number;
+  } | null>(null);
+  const docid = useSearchParams();
+  const paramsDocId = docid.get('docId');
 
   useEffect(() => {
     if (catId) {
@@ -161,7 +171,6 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const handleDeleteOption = () => {
     if (menuDocUUID) {
       setDeleletDocId(menuDocUUID);
-      console.log('Deleting:', menuDocUUID);
       setOpenDeleteDialog(true);
     }
     handleCloseUserMenu();
@@ -192,40 +201,28 @@ const DocumentList: React.FC<DocumentListProps> = ({
     handleCloseUserMenu();
   };
 
-  // const getExtensionFromUrl = (url: string) => {
-  //   const fileName = url.split('/').pop() || '';
-  //   return fileName.split('.').pop() || 'unknown';
-  // };
+  const handleRenameDocument = () => {
+    setRenameDocDialog(true);
+    const doc = documents.find((doc) => doc.uuid === menuDocUUID);
+    if (doc?.uuid) {
+      setRenameDoc(doc as { file_name: string; uuid: string | number });
+    }
+    handleCloseUserMenu();
+  };
 
-  // const handleDownloadReport = async () => {
-  //   const doc = documents.find((doc) => doc.uuid === menuDocUUID);
-  //   if (!doc?.file_path) {
-  //     console.error('File path is missing or invalid');
-  //     return;
-  //   }
-  //   try {
-  //     const response = await fetch(doc.file_path);
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch file');
-  //     }
-  //     const blob = await response.blob();
-  //     const link = document.createElement('a');
-  //     const extension = getExtensionFromUrl(doc.file_path);
-  //     let finalFileName = doc.file_name;
-  //     if (!finalFileName.endsWith(`.${extension}`)) {
-  //       finalFileName = `${finalFileName}.${extension}`;
-  //     }
-  //     const downloadUrl = window.URL.createObjectURL(blob);
-  //     link.href = downloadUrl;
-  //     link.setAttribute('download', finalFileName);
-  //     link.click();
-  //     window.URL.revokeObjectURL(downloadUrl);
-  //     link.remove();
-  //     handleCloseUserMenu();
-  //   } catch (error) {
-  //     console.error('Error downloading the file:', error);
-  //   }
-  // };
+  const handleCallCategoryDocs = async () => {
+    if (catId) {
+      await dispatch(
+        fetchDocumentsByCategory({
+          categoryId: catId,
+          search: searchParams,
+        })
+      ).unwrap();
+      if (paramsDocId) {
+        await dispatch(fetchDocumentSummaryById(String(paramsDocId)));
+      }
+    }
+  };
 
   return (
     <>
@@ -367,18 +364,18 @@ const DocumentList: React.FC<DocumentListProps> = ({
                             />
                             <Typography>View Document</Typography>
                           </MenuItem>
-                          {/* <MenuItem
-                            onClick={handleDownloadReport}
+                          <MenuItem
+                            onClick={handleRenameDocument}
                             className={`${styles.menuDropdown}`}
                           >
                             <Image
-                              src="/images/download_report.svg"
+                              src="/images/rename-document.svg"
                               alt="tras"
                               width={18}
                               height={18}
                             />
-                            <Typography>Download Report</Typography>
-                          </MenuItem> */}
+                            <Typography>Rename Document</Typography>
+                          </MenuItem>
                           <MenuItem
                             onClick={handleDeleteOption}
                             className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
@@ -450,6 +447,12 @@ const DocumentList: React.FC<DocumentListProps> = ({
         type="Document"
         deletedId={deleletDocId}
         onConfirmDelete={handleDeleteConfirmed}
+      />
+      <RenameDocDialog
+        open={renameDocDialog}
+        onClose={() => setRenameDocDialog(false)}
+        document={renameDoc}
+        getCategoryDocument={handleCallCategoryDocs}
       />
     </>
   );
