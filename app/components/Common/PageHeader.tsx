@@ -31,6 +31,8 @@ import {
   setPageHeaderData,
 } from '@/app/redux/slices/login';
 import { selectActiveThread } from '@/app/redux/slices/Chat';
+// import UpgradeTime from '../Upgrade-Time/UpgradeTime';
+import HelpDeskDialog from '../HelpDeskDialog/HelpDeskDialog';
 
 interface PageHeaderProps {
   toggleSidebar: () => void;
@@ -54,6 +56,7 @@ export default function PageHeader({
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
+  // const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
   const settings = [
     { title: 'Settings', img: '/images/setting.svg' },
     // { title: 'My Plan', img: '/images/myPlan.svg' },
@@ -70,6 +73,7 @@ export default function PageHeader({
   const isDocumentsPage = pathname?.includes('/documents');
   const isLogIncidentPage = pathname?.includes('/log-incident');
   const isDocumentDownloadPage = pathname?.includes('/download-doc-report');
+  // const isPlanPage = pathname?.includes('/plans');
 
   useEffect(() => {
     if (selectedActiveChat?.name) {
@@ -80,6 +84,10 @@ export default function PageHeader({
       );
     }
   }, [selectedActiveChat]);
+
+  // useEffect(() => {
+  //   console.log(".")
+  // }, [isPlanPage]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -117,6 +125,62 @@ export default function PageHeader({
   useEffect(() => {
     dispatch(fetchCategories({ page: 1 }));
   }, [dispatch]);
+
+  // const handleOpenCountdownDialog = () => {
+  //   setOpenCountDownDialog(true);
+  // };
+
+  // const [timerData, setTimerData] = useState([
+  //   { value: '00', label: 'Days' },
+  //   { value: '00', label: 'Hours' },
+  //   { value: '00', label: 'Minutes' },
+  //   { value: '00', label: 'Seconds' },
+  // ]);
+
+  // useEffect(() => {
+  //   // Set target date = now + 3 days (in IST)
+  //   const targetTime = new Date();
+  //   targetTime.setDate(targetTime.getDate() + 3);
+
+  //   const updateCountdown = () => {
+  //     const now = new Date(
+  //       new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+  //     );
+  //     const diff = targetTime.getTime() - now.getTime();
+
+  //     if (diff <= 0) {
+  //       setTimerData([
+  //         { value: '00', label: 'Days' },
+  //         { value: '00', label: 'Hours' },
+  //         { value: '00', label: 'Minutes' },
+  //         { value: '00', label: 'Seconds' },
+  //       ]);
+  //       return;
+  //     }
+
+  //     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  //     const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  //     const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  //     const seconds = Math.floor((diff / 1000) % 60);
+
+  //     setTimerData([
+  //       { value: String(days).padStart(2, '0'), label: 'Days' },
+  //       { value: String(hours).padStart(2, '0'), label: 'Hours' },
+  //       { value: String(minutes).padStart(2, '0'), label: 'Minutes' },
+  //       { value: String(seconds).padStart(2, '0'), label: 'Seconds' },
+  //     ]);
+  //   };
+
+  //   updateCountdown();
+  //   const interval = setInterval(updateCountdown, 1000);
+  //   return () => clearInterval(interval);
+  // }, []);
+
+  const [openHelpDeskDialog, setOpenHelpDeskDialog] = useState(false);
+
+  const handleClickHelpDeskDialog = () => {
+    setOpenHelpDeskDialog(true);
+  };
 
   return (
     <>
@@ -201,6 +265,14 @@ export default function PageHeader({
                     height={18}
                   />
                 )}
+                {/* {isPlanPage && (
+                  <Image
+                    src="/images/myPlan.svg"
+                    alt="Log-incidents-icon"
+                    width={18}
+                    height={18}
+                  />
+                )} */}
                 {selectedPageHeaderData && selectedPageHeaderData.title && (
                   <Typography
                     variant="body1"
@@ -290,6 +362,53 @@ export default function PageHeader({
                 ))}
               </Menu>
             </Box>
+
+            {/* <Button
+              onClick={handleOpenCountdownDialog}
+              className={styles.timeLog}
+            >
+              <Box className={styles.timeLogInner}>
+                <Box className={styles.timeLogImage}>
+                  <Image
+                    src="/images/timer.svg"
+                    alt="search"
+                    width={20}
+                    height={20}
+                  />
+                </Box>
+                <Box className={styles.timeLogTime}>
+                  {timerData.map((item, index) => (
+                    <>
+                      <Typography variant="body2" component="p">
+                        {item.value}
+                      </Typography>
+
+                      {index !== timerData.length - 1 && (
+                        <>
+                          <Typography variant="body2" component="span">
+                            :
+                          </Typography>
+                        </>
+                      )}
+                    </>
+                  ))}
+                </Box>
+              </Box>
+            </Button> */}
+            {isDocumentDownloadPage && (
+              <Button
+                sx={{ p: 0 }}
+                className={styles.messageButton}
+                onClick={handleClickHelpDeskDialog}
+              >
+                <Image
+                  src="/images/report-info.svg"
+                  alt="report-info"
+                  width={20}
+                  height={20}
+                />
+              </Button>
+            )}
             <Button
               sx={{ p: 0 }}
               className={styles.messageButton}
@@ -393,6 +512,14 @@ export default function PageHeader({
       <FeedbackDialog
         openFeedbackDialogProps={openFeedbackDialog}
         onClose={() => setOpenFeedbackDialog(false)}
+      />
+      {/* <UpgradeTime
+        open={openCountDownDialog}
+        onClose={() => setOpenCountDownDialog(false)}
+      /> */}
+      <HelpDeskDialog
+        open={openHelpDeskDialog}
+        onClose={() => setOpenHelpDeskDialog(false)}
       />
       {isLogIncidentPage && (
         <Box
