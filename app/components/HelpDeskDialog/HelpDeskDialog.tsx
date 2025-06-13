@@ -4,7 +4,6 @@ import React from 'react';
 import styles from './style.module.scss';
 import {
   Box,
-  Button,
   Dialog,
   DialogContent,
   DialogTitle,
