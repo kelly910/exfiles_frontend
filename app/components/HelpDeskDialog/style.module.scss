@@ -1,0 +1,125 @@
+.headerDialogBox {
+  background-color: var(--Card-Color);
+
+  .dialogHeader {
+    border-bottom: 1px solid var(--Stroke-Color);
+    padding: 16px;
+
+    .dialogHeaderInner {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 12px;
+
+      .dialogIcon {
+        background-color: var(--Card-Image);
+        border-radius: 8px;
+        border: 0.82px solid var(--Stroke-Color);
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dialogTitle {
+        font-weight: var(--Bold);
+        font-size: var(--SubTitle-1);
+        line-height: 1.4;
+        letter-spacing: 0%;
+        color: var(--Txt-On-Gradient);
+      }
+
+      .dialogSemiTitle {
+        font-weight: var(--Regular);
+        font-size: var(--SubTitle-3);
+        line-height: 1.4;
+        letter-spacing: 0%;
+        color: var(--Subtext-Color);
+      }
+    }
+  }
+
+  .dialogBody {
+    padding: 0;
+
+    .dialogFormBox {
+      padding: 24px;
+      padding-bottom: 0;
+
+      .dialogFormBox {
+        background-color: var(--Input-Box-Colors);
+
+        .dialogTextArea {
+          width: 100%;
+        }
+
+        .feedbackVideo {
+          max-height: 100px;
+          object-fit: cover;
+          margin-top: 10px;
+          border: 1px solid #3a3948;
+        }
+      }
+    }
+
+    .dialogFormButtonBox {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 32px;
+      padding: 24px;
+
+      .formCancelBtn {
+        text-transform: capitalize;
+        padding: 0;
+        font-weight: var(--Regular);
+        font-size: var(--SubTitle-2);
+        line-height: 1.4;
+        text-align: center;
+        color: var(--Subtext-Color);
+        transition: all 0.2s;
+
+        &:hover {
+          color: var(--Primary-Text-Color);
+        }
+      }
+
+      .formSaveBtn {
+        text-transform: capitalize;
+        font-weight: var(--Medium);
+        font-size: var(--SubTitle-3);
+        line-height: 10px;
+        letter-spacing: 0px;
+        min-width: 140px;
+        background: var(--Main-Gradient);
+        outline: 0.5px solid transparent;
+        color: var(--Txt-On-Gradient);
+        border-radius: 12px;
+        padding: 15px 24px;
+        transition: all 0.2s;
+
+        &:hover {
+          outline: 0.5px solid var(--Card-Border);
+          background-blend-mode: overlay;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .headerDialogBox .dialogHeader {
+    border-bottom: 1px solid var(--Stroke-Color);
+    padding: 10px;
+  }
+
+  .headerDialogBox .dialogBody .dialogFormBox {
+    padding: 10px;
+  }
+
+  .headerDialogBox .dialogBody .dialogFormButtonBox {
+    padding: 10px;
+    gap: 20px;
+  }
+}

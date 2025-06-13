@@ -70,6 +70,28 @@ export const fetchDocumentsByCategory = createAsyncThunk<
   }
 );
 
+export const renameDocuments = createAsyncThunk<
+  Document,
+  { uuid: number | string; file_name: string },
+  { rejectValue: string }
+>(
+  'documents/renameDocuments',
+  async ({ uuid, file_name }, { rejectWithValue }) => {
+    try {
+      const response = await api.patch<Document>(
+        `${urlMapper.getDocumentSummary}${uuid}/`,
+        { file_name }
+      );
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        (error as { response?: { data?: { messages?: string[] } } })?.response
+          ?.data?.messages?.[0] || 'Failed to rename document.';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 export const fetchAllDocuments = createAsyncThunk<
   DocumentListingResponse,
   {
