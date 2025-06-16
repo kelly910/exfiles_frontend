@@ -82,58 +82,59 @@
 
 // LogIncident class
 
-.chatLogIncident {
-  position: relative;
-  border: transparent;
-  background-color: transparent;
-  padding: 1px;
-  overflow: hidden;
+// .chatLogIncident {
+//   position: relative;
+//   border: transparent;
+//   background-color: transparent;
+//   padding: 1px;
+//   overflow: hidden;
 
-  .chatBox {
-    background-color: var(--Card-Color);
-    padding: 24px 16px;
-    border-radius: 14px;
-    position: relative;
-    z-index: 1;
+//   .chatBox {
+//     background-color: var(--Card-Color);
+//     padding: 24px 16px;
+//     border-radius: 14px;
+//     position: relative;
+//     z-index: 1;
 
-    // &::before {
-    //   content: '';
-    //   position: absolute;
-    //   width: 200px;
-    //   height: 200px;
-    //   top: 0;
-    //   right: 0;
-    //   z-index: -1;
-    //   background-image: url('/images/log-incident.png');
-    //   background-repeat: no-repeat;
-    //   background-position: top right;
-    //   background-size: contain;
-    //   border-radius: 12px;
-    // }
-  }
+//     // &::before {
+//     //   content: '';
+//     //   position: absolute;
+//     //   width: 200px;
+//     //   height: 200px;
+//     //   top: 0;
+//     //   right: 0;
+//     //   z-index: -1;
+//     //   background-image: url('/images/log-incident.png');
+//     //   background-repeat: no-repeat;
+//     //   background-position: top right;
+//     //   background-size: contain;
+//     //   border-radius: 12px;
+//     // }
+//   }
 
-  // p {
-  //   max-width: calc(100% - 70px);
-  // }
+//   // p {
+//   //   max-width: calc(100% - 70px);
+//   // }
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background: var(--Main-Gradient);
-    z-index: -1;
-    border-radius: 14px;
-  }
-}
+//   &::after {
+//     content: '';
+//     position: absolute;
+//     top: 0px;
+//     left: 0px;
+//     right: 0px;
+//     bottom: 0px;
+//     background: var(--Main-Gradient);
+//     z-index: -1;
+//     border-radius: 14px;
+//   }
+// }
 
 // LogIcon class
 
 .chatLogIcon {
   position: relative;
   background-color: transparent;
+  border: transparent;
   padding: 1px;
   overflow: hidden;
 
@@ -162,6 +163,18 @@
 
   p {
     max-width: calc(100% - 70px);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: var(--Main-Gradient);
+    z-index: -1;
+    border-radius: 14px;
   }
 }
 
@@ -466,7 +479,7 @@
     grid-template-columns: repeat(1, 1fr);
   }
 
-  > div {
+  >div {
     margin-top: 0 !important;
   }
 }

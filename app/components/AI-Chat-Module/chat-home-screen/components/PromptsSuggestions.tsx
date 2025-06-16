@@ -30,7 +30,7 @@ export default function PromptsSuggestions({
     >
       <Grid item xs={12} sm={12} md={4} className={AIChatStyles.gridBoxInner}>
         <div
-          className={`${AIChatStyles.chatGridBox} ${AIChatStyles.chatLogIncident}`}
+          className={`${AIChatStyles.chatGridBox}`}
           onClick={openLogIncidentModel}
         >
           <div className={AIChatStyles.chatBox}>

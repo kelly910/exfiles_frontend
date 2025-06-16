@@ -1,11 +1,11 @@
 'use client';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 // css
 import Style from '@components/Common/Sidebar.module.scss';
 
 // Third party imports
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import debounce from 'lodash.debounce';
@@ -82,7 +82,23 @@ const Sidebar = ({
     setIsFilterVisible((prev) => !prev);
     setIsSearchOpen((prev) => !prev);
   };
-  const [expanded, setExpanded] = useState<boolean | string>('panel2'); // Track which accordion is expanded
+
+  const pathname = usePathname();
+  const isChatPage = pathname?.includes('/ai-chats');
+  const [expanded, setExpanded] = useState<boolean | string>(
+    isChatPage ? 'panel2' : ''
+  ); // Track which accordion is expanded
+
+  useEffect(() => {
+    // console.log("");
+  }, [isChatPage, expanded]);
+
+  const handleOpenSidebar = () => {
+    if (!isOpen) {
+      setExpanded('panel2');
+      toggleSidebar();
+    }
+  };
 
   const handleAccordionChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -357,6 +373,8 @@ const Sidebar = ({
               handleAccordionChange={handleAccordionChange}
               closeDocumentSummary={selectedDocIdNull}
               expandPanel={() => setExpanded('panel2')}
+              handleClickOpenSidebar={handleOpenSidebar}
+              isOpen={isOpen}
             >
               <div className={Style['sidebar-pinned-chats']}>
                 <span>Pinned Chats</span>
@@ -384,17 +402,19 @@ const Sidebar = ({
               btnTitle={'Log Incident'}
               iconPath={'/images/log-incident-sidebar.svg'}
               handleBtnClick={handleLogIncidentClick}
+              isOpen={isOpen}
             />
-
             <SidebarButton
               btnTitle={'View Documents'}
               iconPath={'/images/note-2.svg'}
               handleBtnClick={handleDocumentClick}
+              isOpen={isOpen}
             />
             <SidebarButton
               btnTitle={'Export Summaries'}
               iconPath={'/images/report-icon.svg'}
               handleBtnClick={handleDocReport}
+              isOpen={isOpen}
             />
 
             {/* {isOpen ? (
