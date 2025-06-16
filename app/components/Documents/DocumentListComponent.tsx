@@ -40,7 +40,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
           setShowEmptyCategoryComponent(true);
           dispatch(
             setPageHeaderData({
-              title: 'Manage Documents',
+              title: 'View Documents',
               subTitle: `No. of Documents : ${res?.no_of_docs}`,
             })
           );
@@ -136,14 +136,14 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
         toggleSidebar={toggleSidebar}
         handleThreadClick={handleThreadClick}
         handlePinnedAnswerClick={handlePinnedAnswerClick}
-        title="Manage Documents"
+        title="View Documents"
         selectedDocIdNull={closeSummaryDrawer}
       />
       <section className="main-body">
         <PageHeader
           isSidebarOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
-          title="Manage Documents"
+          title="View Documents"
         />
         <div className={styles.docsMain}>
           {showEmptyCategoryComponent ? (

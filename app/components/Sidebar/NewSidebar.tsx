@@ -346,7 +346,7 @@ const Sidebar = ({
                   className={Style['sidebar-btn']}
                   onClick={handleStartNewChat}
                 >
-                  <span className={Style['btn-text']}>Start New Chat</span>{' '}
+                  <span className={Style['btn-text']}>Upload + Chat</span>{' '}
                   <span>
                     <Image
                       src="/images/add-icon.svg"

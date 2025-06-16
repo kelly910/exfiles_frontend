@@ -19,22 +19,22 @@ export default function SidebarButton({
       sx={{
         display: 'flex',
         marginBottom:
-          btnTitle === 'Manage Documents' || btnTitle === 'Export Summaries'
+          btnTitle === 'View Documents' || btnTitle === 'Export Summaries'
             ? '5px'
             : '12px',
         '.MuiTouchRipple-root': {
           display: 'none !important',
         },
         width:
-          // btnTitle === 'Manage Documents' || btnTitle === 'Export Summaries'
+          // btnTitle === 'View Documents' || btnTitle === 'Export Summaries'
           //   ? 'calc(100% - 26px)' :
           '100%',
         marginLeft:
-          btnTitle === 'Manage Documents' || btnTitle === 'Export Summaries'
+          btnTitle === 'View Documents' || btnTitle === 'Export Summaries'
             ? 'auto'
             : '0',
         marginRight:
-          btnTitle === 'Manage Documents' || btnTitle === 'Export Summaries'
+          btnTitle === 'View Documents' || btnTitle === 'Export Summaries'
             ? '0'
             : '0',
       }}
