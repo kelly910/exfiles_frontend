@@ -3,7 +3,7 @@
 .PaymentCardContainer {
   max-width: 1100px;
   margin: 0 auto;
-
+  margin-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,12 +36,14 @@
         font-size: var(--Heading-2);
       }
     }
+
     .PaymentCardSemiTitle {
       color: var(--Subtext-Color);
       font-size: var(--SubTitle-2);
       font-weight: var(--Lighter);
       margin-top: 8px;
     }
+
     .PaymentCardTime {
       color: var(--Primary-Text-Color);
       font-size: var(--SubTitle-3);
@@ -144,7 +146,7 @@
     align-items: center;
     gap: 14px;
     text-align: center;
-    margin-top: 48px;
+    margin-top: 16px;
 
     @media (max-width: 500px) {
       margin-top: 20px;

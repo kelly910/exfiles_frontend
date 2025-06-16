@@ -5,7 +5,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import PageHeader from '../Common/PageHeader';
 
-export default function PaymentSuccessful() {
+export default function PaymentPending() {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -40,7 +40,7 @@ export default function PaymentSuccessful() {
           <PageHeader
             isSidebarOpen={isSidebarOpen}
             toggleSidebar={toggleSidebar}
-            title="Successful Payment"
+            title="Pending Payment"
             handleOpenSidebarFromLogIncident={() => setIsSidebarOpen(true)}
           />
           <Box className={Styles['my-plan-container']}>
@@ -48,8 +48,8 @@ export default function PaymentSuccessful() {
               <Box>
                 <Box className={Styles.PaymentCard}>
                   <Image
-                    src="images/Payment-Successful.svg"
-                    alt="Payment Successful"
+                    src="images/pending-payment.svg"
+                    alt="Payment Pending"
                     width={100}
                     height={100}
                     className={Styles.PaymentCardImage}
@@ -59,7 +59,7 @@ export default function PaymentSuccessful() {
                     component="h1"
                     className={Styles.PaymentCardTitle}
                   >
-                    Payment Successful
+                    Waiting for Payment
                   </Typography>
                   <Typography
                     variant="body1"
@@ -85,14 +85,6 @@ export default function PaymentSuccessful() {
                       </Typography>
                       <Typography variant="body2" component="span">
                         546487845458
-                      </Typography>
-                    </Box>
-                    <Box className={Styles.PaymentCardDetailsList}>
-                      <Typography variant="body1" component="p">
-                        Plan Name
-                      </Typography>
-                      <Typography variant="body2" component="span">
-                        Essential
                       </Typography>
                     </Box>
                     <Box className={Styles.PaymentCardDetailsListPlan}>
