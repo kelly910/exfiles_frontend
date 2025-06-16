@@ -35,5 +35,8 @@ export const config = {
     '/log-incident',
     '/download-doc-report',
     '/plans',
+    '/payment-successful',
+    '/payment-pending',
+    '/payment-failed',
   ], // Define which routes should trigger the middleware
 };

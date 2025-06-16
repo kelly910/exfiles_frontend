@@ -347,14 +347,6 @@ const Sidebar = ({
                   onClick={handleStartNewChat}
                 >
                   <span className={Style['btn-text']}>Upload + Chat</span>{' '}
-                  <span>
-                    <Image
-                      src="/images/add-icon.svg"
-                      alt="icon"
-                      width={20}
-                      height={20}
-                    />
-                  </span>{' '}
                 </Link>
               </ListItem>
               <ListItem style={{ display: 'block' }}>

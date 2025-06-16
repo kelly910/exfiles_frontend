@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import Image from 'next/image';
 // import Style from './Sidebar.module.scss';
 import Style from '@components/Common/Sidebar.module.scss';
@@ -19,6 +19,8 @@ interface SidebarAccordionProps {
   children?: React.ReactNode;
   closeDocumentSummary?: () => void;
   expandPanel?: (panel: string | boolean) => void;
+  handleClickOpenSidebar?: () => void;
+  isOpen?: boolean;
 }
 
 const SidebarAccordion = ({
@@ -30,6 +32,8 @@ const SidebarAccordion = ({
   children,
   closeDocumentSummary,
   expandPanel,
+  handleClickOpenSidebar,
+  isOpen,
 }: SidebarAccordionProps) => {
   // const router = useRouter();
   const redirection = (expanded: string) => {
@@ -42,62 +46,65 @@ const SidebarAccordion = ({
   };
 
   return (
-    <Accordion
-      className={Style['accordian']}
-      expanded={expanded === panelKey}
-      onChange={handleAccordionChange(panelKey)}
-      sx={{
-        '.Mui-expanded': {
-          backgroundColor: 'var(--Input-Box-Colors) !important',
-        },
-        'span.Mui-expanded': {
-          transform: 'rotate(0deg)',
-        },
-      }}
-    >
-      <AccordionSummary
-        expandIcon={
-          <Image
-            className={Style['img-none']}
-            src={
-              // panelKey === 'panel3' || panelKey === 'panel4'
-              //   ? '/images/arrow-down-right.svg' :
-              expanded === panelKey
-                ? '/images/arrow-down.svg'
-                : '/images/arrow-down-right.svg'
-            }
-            alt="expand-collapse"
-            width={16}
-            height={16}
-          />
-        }
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            e.stopPropagation();
-          }
-        }}
-        aria-controls={`${panelKey}-content`}
-        id={`${panelKey}-header`}
-        classes={{
-          root: Style['customAccordionHeading'],
-          content: Style['customAccordionContent'],
+    <Tooltip title={!isOpen ? title : ''} placement="right" arrow>
+      <Accordion
+        className={Style['accordian']}
+        expanded={expanded === panelKey}
+        onChange={handleAccordionChange(panelKey)}
+        sx={{
+          '.Mui-expanded': {
+            backgroundColor: 'var(--Input-Box-Colors) !important',
+          },
+          'span.Mui-expanded': {
+            transform: 'rotate(0deg)',
+          },
         }}
       >
-        <Typography
-          component="span"
-          className={Style['heading']}
-          onClick={() => redirection(panelKey)}
+        <AccordionSummary
+          expandIcon={
+            <Image
+              className={Style['img-none']}
+              src={
+                // panelKey === 'panel3' || panelKey === 'panel4'
+                //   ? '/images/arrow-down-right.svg' :
+                expanded === panelKey
+                  ? '/images/arrow-down.svg'
+                  : '/images/arrow-down-right.svg'
+              }
+              alt="expand-collapse"
+              width={16}
+              height={16}
+            />
+          }
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
+          aria-controls={`${panelKey}-content`}
+          id={`${panelKey}-header`}
+          classes={{
+            root: Style['customAccordionHeading'],
+            content: Style['customAccordionContent'],
+          }}
+          onClick={handleClickOpenSidebar}
         >
-          <Image src={icon} alt="icon" width={18} height={18} />
-          {title}
-        </Typography>
-      </AccordionSummary>
+          <Typography
+            component="span"
+            className={Style['heading']}
+            onClick={() => redirection(panelKey)}
+          >
+            <Image src={icon} alt="icon" width={18} height={18} />
+            {title}
+          </Typography>
+        </AccordionSummary>
 
-      <AccordionDetails className={`${Style['bottom-content']}`}>
-        {children}
-      </AccordionDetails>
-    </Accordion>
+        <AccordionDetails className={`${Style['bottom-content']}`}>
+          {children}
+        </AccordionDetails>
+      </Accordion>
+    </Tooltip>
   );
 };
 
