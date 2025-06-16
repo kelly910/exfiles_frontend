@@ -88,6 +88,9 @@ const Sidebar = ({
   const [expanded, setExpanded] = useState<boolean | string>(
     isChatPage ? 'panel2' : ''
   ); // Track which accordion is expanded
+  const [expandedNested, setExpandedNested] = useState<string | false>(
+    'nested2'
+  );
 
   useEffect(() => {
     // console.log("");
@@ -96,6 +99,7 @@ const Sidebar = ({
   const handleOpenSidebar = () => {
     if (!isOpen) {
       setExpanded('panel2');
+      setExpandedNested('nested2');
       toggleSidebar();
     }
   };
@@ -375,6 +379,8 @@ const Sidebar = ({
               expandPanel={() => setExpanded('panel2')}
               handleClickOpenSidebar={handleOpenSidebar}
               isOpen={isOpen}
+              expandedNested={expandedNested}
+              setExpandedNested={setExpandedNested}
               innerAccordions={[
                 {
                   panelKey: 'nested1',

@@ -4,7 +4,6 @@ import Style from '@components/Common/Sidebar.module.scss';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import { useState } from 'react';
 
 interface InnerAccordionItem {
   panelKey: string;
@@ -27,6 +26,8 @@ interface SidebarAccordionProps {
   handleClickOpenSidebar?: () => void;
   isOpen?: boolean;
   innerAccordions?: InnerAccordionItem[];
+  expandedNested?: string | false;
+  setExpandedNested?: (panelKey: string | false) => void;
 }
 
 const SidebarAccordion = ({
@@ -41,6 +42,8 @@ const SidebarAccordion = ({
   handleClickOpenSidebar,
   isOpen,
   innerAccordions = [],
+  expandedNested,
+  setExpandedNested,
 }: SidebarAccordionProps) => {
   const redirection = (expanded: string) => {
     if (expanded === 'panel3') {
@@ -51,12 +54,10 @@ const SidebarAccordion = ({
     expandPanel?.('panel2');
   };
 
-  // Local state for nested accordions
-  const [innerExpanded, setInnerExpanded] = useState<string | false>(false);
-
+  const innerExpanded = expandedNested;
   const handleInnerAccordionChange =
     (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
-      setInnerExpanded(isExpanded ? panel : false);
+      setExpandedNested?.(isExpanded ? panel : false);
     };
 
   return (
