@@ -69,13 +69,14 @@ const UpgradePlan = () => {
         settings: {
           slidesToShow: 1,
           centerMode: true, // Disable for mobile
+          centerPadding: '20px 80px 20px 80px',
         },
       },
       {
         breakpoint: 500,
         settings: {
           slidesToShow: 1,
-          centerPadding: '30px',
+          centerPadding: '40px',
           centerMode: true,
         },
       },
@@ -275,7 +276,9 @@ const UpgradePlan = () => {
                 <Typography component="span">Discounted Prices.</Typography>
               </Typography>
             </Box>
-            <Box className={styles['subscription-package-main']}>
+            <Box
+              className={`${styles['subscription-package-main']} subscription-slider`}
+            >
               <MaybeSlider condition={isSliderActive} settings={settings}>
                 {plans.map((plan, index) => {
                   let buttonLabel = 'Not Applicable';
