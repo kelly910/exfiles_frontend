@@ -6,7 +6,6 @@
     margin-top: 28px;
 
     .gridBoxInner {
-
       .chatBox {
         height: 100%;
         display: flex;
@@ -97,25 +96,25 @@
     position: relative;
     z-index: 1;
 
-    &::before {
-      content: '';
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      top: 0;
-      right: 0;
-      z-index: -1;
-      background-image: url('/images/log-incident.png');
-      background-repeat: no-repeat;
-      background-position: top right;
-      background-size: contain;
-      border-radius: 12px;
-    }
+    // &::before {
+    //   content: '';
+    //   position: absolute;
+    //   width: 200px;
+    //   height: 200px;
+    //   top: 0;
+    //   right: 0;
+    //   z-index: -1;
+    //   background-image: url('/images/log-incident.png');
+    //   background-repeat: no-repeat;
+    //   background-position: top right;
+    //   background-size: contain;
+    //   border-radius: 12px;
+    // }
   }
 
-  p {
-    max-width: calc(100% - 70px);
-  }
+  // p {
+  //   max-width: calc(100% - 70px);
+  // }
 
   &::after {
     content: '';
@@ -127,6 +126,42 @@
     background: var(--Main-Gradient);
     z-index: -1;
     border-radius: 14px;
+  }
+}
+
+// LogIcon class
+
+.chatLogIcon {
+  position: relative;
+  background-color: transparent;
+  padding: 1px;
+  overflow: hidden;
+
+  .chatBox {
+    background-color: var(--Card-Color);
+    padding: 24px 16px;
+    border-radius: 14px;
+    position: relative;
+    z-index: 1;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      top: -2px;
+      right: -2px;
+      z-index: -1;
+      background-image: url('/images/log-incIcon.png');
+      background-repeat: no-repeat;
+      background-position: top right;
+      background-size: contain;
+      border-radius: 12px;
+    }
+  }
+
+  p {
+    max-width: calc(100% - 70px);
   }
 }
 
@@ -281,6 +316,14 @@
     }
   }
 
+  .chatLogIcon {
+    padding: 1px;
+
+    .chatBox {
+      padding: 18px 10px;
+    }
+  }
+
   .chatHeading {
     .gridBox {
       margin-top: 20px;
@@ -423,7 +466,7 @@
     grid-template-columns: repeat(1, 1fr);
   }
 
-  >div {
+  > div {
     margin-top: 0 !important;
   }
 }

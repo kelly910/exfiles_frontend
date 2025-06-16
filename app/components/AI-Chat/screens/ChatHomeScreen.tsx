@@ -213,7 +213,9 @@ export default function ChatHomeScreen() {
                 md={4}
                 className={AIChatStyles.gridBoxInner}
               >
-                <div className={AIChatStyles.chatGridBox}>
+                <div
+                  className={`${AIChatStyles.chatGridBox} ${AIChatStyles.chatLogIcon}`}
+                >
                   <div className={AIChatStyles.chatBox}>
                     <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
                     <Button
