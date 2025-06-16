@@ -242,7 +242,7 @@ const Sidebar = ({
                   className={Style['sidebar-btn']}
                   onClick={handleStartNewChat}
                 >
-                  <span className={Style['btn-text']}>Start New Chat</span>{' '}
+                  <span className={Style['btn-text']}>Upload + Chat</span>{' '}
                   <span>
                     <Image
                       src="/images/add-icon.svg"
@@ -395,7 +395,7 @@ const Sidebar = ({
             />
 
             <SidebarButton
-              btnTitle={'Manage Documents'}
+              btnTitle={'View Documents'}
               iconPath={'/images/note-2.svg'}
               handleBtnClick={handleDocumentClick}
             />
@@ -407,7 +407,7 @@ const Sidebar = ({
 
             {/* {isOpen ? (
               <SidebarAccordion
-                title="Manage Documents"
+                title="View Documents"
                 icon="/images/manage-document.svg"
                 expanded={expanded}
                 panelKey="panel3"
