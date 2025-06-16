@@ -4,10 +4,13 @@ import Styles from '@components/Payment-Successful/PaymentSuccessful.module.scss
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import PageHeader from '../Common/PageHeader';
+import { setPageHeaderData } from '@/app/redux/slices/login';
+import { useAppDispatch } from '@/app/redux/hooks';
 
 export default function PaymentPending() {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const dispatch = useAppDispatch();
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -18,6 +21,15 @@ export default function PaymentPending() {
       setIsSidebarOpen(false);
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(
+      setPageHeaderData({
+        title: '',
+        subTitle: '',
+      })
+    );
+  }, [dispatch]);
 
   const pricePlan = [
     {

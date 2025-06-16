@@ -396,31 +396,39 @@ export default function PageHeader({
               </Box>
             </Button> */}
             {isDocumentDownloadPage && (
+              <Tooltip
+                title={'Need Help? Watch a Quick Tour'}
+                placement="bottom"
+                arrow
+              >
+                <Button
+                  sx={{ p: 0 }}
+                  className={styles.messageButton}
+                  onClick={handleClickHelpDeskDialog}
+                >
+                  <Image
+                    src="/images/report-info.svg"
+                    alt="report-info"
+                    width={20}
+                    height={20}
+                  />
+                </Button>
+              </Tooltip>
+            )}
+            <Tooltip title={'Feedback'} placement="bottom" arrow>
               <Button
                 sx={{ p: 0 }}
                 className={styles.messageButton}
-                onClick={handleClickHelpDeskDialog}
+                onClick={handleOpenFeedback}
               >
                 <Image
-                  src="/images/report-info.svg"
-                  alt="report-info"
+                  src="/images/message-question.svg"
+                  alt="search"
                   width={20}
                   height={20}
                 />
               </Button>
-            )}
-            <Button
-              sx={{ p: 0 }}
-              className={styles.messageButton}
-              onClick={handleOpenFeedback}
-            >
-              <Image
-                src="/images/message-question.svg"
-                alt="search"
-                width={20}
-                height={20}
-              />
-            </Button>
+            </Tooltip>
             <Box className="desktop-active" sx={{ flexGrow: 0 }}>
               <Tooltip title="">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
