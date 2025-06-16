@@ -88,6 +88,9 @@ const Sidebar = ({
   const [expanded, setExpanded] = useState<boolean | string>(
     isChatPage ? 'panel2' : ''
   ); // Track which accordion is expanded
+  const [expandedNested, setExpandedNested] = useState<string | false>(
+    'nested2'
+  );
 
   useEffect(() => {
     // console.log("");
@@ -96,6 +99,7 @@ const Sidebar = ({
   const handleOpenSidebar = () => {
     if (!isOpen) {
       setExpanded('panel2');
+      setExpandedNested('nested2');
       toggleSidebar();
     }
   };
@@ -375,8 +379,40 @@ const Sidebar = ({
               expandPanel={() => setExpanded('panel2')}
               handleClickOpenSidebar={handleOpenSidebar}
               isOpen={isOpen}
+              expandedNested={expandedNested}
+              setExpandedNested={setExpandedNested}
+              innerAccordions={[
+                {
+                  panelKey: 'nested1',
+                  title: 'Pinned Chats',
+                  // icon: '',
+                  children: (
+                    <DynamicPinnedMessagesList
+                      searchVal={searchValue}
+                      fromDateVal={fromDate}
+                      toDateVal={toDate}
+                      handlePinnedAnswerClick={handlePinnedAnswerClick}
+                      resetTrigger={resetTrigger}
+                    />
+                  ),
+                },
+                {
+                  panelKey: 'nested2',
+                  title: 'Chat History',
+                  // icon: '',
+                  children: (
+                    <DynamicThreadsList
+                      searchVal={searchValue}
+                      fromDateVal={fromDate}
+                      toDateVal={toDate}
+                      handleThreadClick={handleThreadClick}
+                      resetTrigger={resetTrigger}
+                    />
+                  ),
+                },
+              ]}
             >
-              <div className={Style['sidebar-pinned-chats']}>
+              {/* <div className={Style['sidebar-pinned-chats']}>
                 <span>Pinned Chats</span>
                 <DynamicPinnedMessagesList
                   searchVal={searchValue}
@@ -385,8 +421,8 @@ const Sidebar = ({
                   handlePinnedAnswerClick={handlePinnedAnswerClick}
                   resetTrigger={resetTrigger}
                 />
-              </div>
-              <div className={Style['sidebar-pinned-chats']}>
+              </div> */}
+              {/* <div className={Style['sidebar-pinned-chats']}>
                 <span>Chat History</span>
                 <DynamicThreadsList
                   searchVal={searchValue}
@@ -395,7 +431,7 @@ const Sidebar = ({
                   handleThreadClick={handleThreadClick}
                   resetTrigger={resetTrigger}
                 />
-              </div>
+              </div> */}
             </SidebarAccordion>
 
             <SidebarButton
