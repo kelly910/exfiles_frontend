@@ -653,7 +653,7 @@ export default function LogModel({
                             : '#676972',
                       }}
                     >
-                      Description (required)
+                      Description (Required)
                     </Typography>
                     <Field
                       as={TextField}
@@ -805,7 +805,7 @@ export default function LogModel({
                             : '#676972',
                       }}
                     >
-                      Date & Time (required)
+                      Date & Time (Required)
                     </Typography>
                     <ThemeProvider theme={newTheme}>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -907,7 +907,7 @@ export default function LogModel({
                         fontWeight: 'var(--Regular)',
                       }}
                     >
-                      Quick Tags (required)
+                      Quick Tags (Required)
                     </Typography>
                     <Box className={LogStyle['card-options']}>
                       <FieldArray name="tags">

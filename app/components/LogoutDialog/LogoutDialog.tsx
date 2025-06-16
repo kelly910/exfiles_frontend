@@ -77,6 +77,10 @@ export default function LogoutDialog({
     await dispatch(setLoader(true));
     setTimeout(async () => {
       await dispatch(logout(loggedInUserToken));
+      window.opener?.postMessage(
+        { type: 'LOGOUT_SUCCESS' },
+        'https://exfiles.trooinbounddevs.com'
+      );
       setLoading(false);
       dispatch(setLoader(false));
       localStorage.removeItem('loggedInUser');
