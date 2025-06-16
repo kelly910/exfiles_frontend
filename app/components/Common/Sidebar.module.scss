@@ -302,6 +302,15 @@
             width: 18px;
           }
         }
+        .heading-inner {
+          font-size: var(--SubTitle-3);
+          font-weight: var(--Lighter);
+          color: var(--Subtext-Color);
+        }
+      }
+
+      img.img-none-inner {
+        filter: grayscale(0) invert(0.5);
       }
     }
   }
@@ -682,6 +691,11 @@
       width: 18px;
     }
   }
+  .heading-inner {
+    font-size: var(--SubTitle-3);
+    font-weight: var(--Lighter);
+    color: var(--Subtext-Color);
+  }
   .heading-side-img {
     display: flex;
     justify-content: center;
@@ -711,6 +725,9 @@
       img {
         margin-right: 0;
       }
+    }
+    .heading-inner {
+      font-size: 0;
     }
     .img-none {
       display: none;
