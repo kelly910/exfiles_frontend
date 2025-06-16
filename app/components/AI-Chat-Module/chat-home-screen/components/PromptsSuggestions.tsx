@@ -62,7 +62,7 @@ export default function PromptsSuggestions({
               fullWidth
               onClick={() => handlePromptClick(CHAT_PROMPS[0])}
             >
-              Start with this question
+              Upload for AI Summary
               <span className="arrow"></span>
             </Button>
           </div>
@@ -80,7 +80,7 @@ export default function PromptsSuggestions({
               fullWidth
               onClick={() => handlePromptClick(CHAT_PROMPS[1])}
             >
-              Start with this question
+              Ask AI to Write a Response
               <span className="arrow"></span>
             </Button>
           </div>
