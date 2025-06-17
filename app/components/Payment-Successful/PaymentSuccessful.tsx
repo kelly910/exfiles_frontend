@@ -31,20 +31,6 @@ export default function PaymentSuccessful() {
     );
   }, [dispatch]);
 
-  const pricePlan = [
-    {
-      title: 'Plan Price',
-      label: '$228.00',
-    },
-    {
-      title: 'Discount',
-      label: '-$38.00',
-    },
-    {
-      title: 'Sales Tax (8%)',
-      label: '+$15.00',
-    },
-  ];
   return (
     <>
       <main className="chat-body">
@@ -108,19 +94,22 @@ export default function PaymentSuccessful() {
                       </Typography>
                     </Box>
                     <Box className={Styles.PaymentCardDetailsListPlan}>
-                      {pricePlan.map((plan, ind) => (
-                        <Box
-                          key={ind}
-                          className={Styles.PaymentCardDetailsListPlanInner}
-                        >
-                          <Typography variant="body1" component="p">
-                            {plan.title}
-                          </Typography>
-                          <Typography variant="body2" component="span">
-                            {plan.label}
-                          </Typography>
-                        </Box>
-                      ))}
+                      <Box className={Styles.PaymentCardDetailsListPlanInner}>
+                        <Typography variant="body1" component="p">
+                          Plan Price
+                        </Typography>
+                        <Typography variant="body2" component="span">
+                          $228.00
+                        </Typography>
+                      </Box>
+                      <Box className={Styles.PaymentCardDetailsListPlanInner}>
+                        <Typography variant="body1" component="p">
+                          Sales Tax (8%)
+                        </Typography>
+                        <Typography variant="body2" component="span">
+                          +$15.00
+                        </Typography>
+                      </Box>
                     </Box>
                     <Box className={Styles.PaymentCardTotalPrice}>
                       <Typography variant="body1" component="p">

@@ -140,7 +140,7 @@ export default function ShowGeneratedSummariesDocs({
         </IconButton>
       </Box>
       <Box component="div" className={chatMessagesStyles.chatAlContent}>
-        {summaryGeneratedDocList && summaryGeneratedDocList?.length !== 1 && (
+        {summaryGeneratedDocList && summaryGeneratedDocList?.length !== 1 ? (
           <Typography
             variant="body1"
             className={chatMessagesStyles.chatAlContentText}
@@ -150,6 +150,13 @@ export default function ShowGeneratedSummariesDocs({
                 'Your summaries are ready! Click below to view them',
             }}
           />
+        ) : (
+          <Typography
+            variant="body1"
+            className={chatMessagesStyles.chatAlContentText}
+          >
+            Your summaries are ready!
+          </Typography>
         )}
         <Grid
           container
@@ -168,7 +175,7 @@ export default function ShowGeneratedSummariesDocs({
                 trained_status,
                 category_data,
                 uuid,
-                summary,
+                // summary,
               } = documentItem;
               return (
                 <Grid
@@ -298,23 +305,22 @@ export default function ShowGeneratedSummariesDocs({
                             />
                           </Box>
                         )}
-                      {trained_status === DOCUMENT_STATUS.SUCCESS &&
-                        !summary && (
-                          <Box
-                            component="div"
-                            className={chatMessagesStyles.chatAlFileSummary}
-                            onClick={() => handleDocSummaryClick(documentItem)}
-                          >
-                            <Typography>View Summary</Typography>
-                            <Image
-                              src="/images/open-new.svg"
-                              alt="pdf"
-                              width={12}
-                              height={12}
-                              className={chatMessagesStyles.pdfImg}
-                            />
-                          </Box>
-                        )}
+                      {trained_status === DOCUMENT_STATUS.SUCCESS && (
+                        <Box
+                          component="div"
+                          className={chatMessagesStyles.chatAlFileSummary}
+                          onClick={() => handleDocSummaryClick(documentItem)}
+                        >
+                          <Typography>View Summary</Typography>
+                          <Image
+                            src="/images/open-new.svg"
+                            alt="pdf"
+                            width={12}
+                            height={12}
+                            className={chatMessagesStyles.pdfImg}
+                          />
+                        </Box>
+                      )}
                     </Box>
                   </Box>
                 </Grid>
