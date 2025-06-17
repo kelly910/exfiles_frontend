@@ -162,14 +162,6 @@ export default function OrderSummary() {
                         ${orderDetail?.plan_price}
                       </Typography>
                     </Box>
-                    {/* <Box className={Styles.PaymentPriceListHead}>
-                      <Typography variant="body1" component="p">
-                        Discount
-                      </Typography>
-                      <Typography variant="body2" component="span">
-                        -${orderDetail?.plan_price}
-                      </Typography>
-                    </Box> */}
                     <Box className={Styles.PaymentPriceListHead}>
                       <Typography variant="body1" component="p">
                         Sales Tax (8%)

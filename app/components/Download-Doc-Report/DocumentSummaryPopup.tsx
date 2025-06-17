@@ -14,7 +14,11 @@ import {
 import Image from 'next/image';
 import { DocumentSummary } from './DownloadDocReport';
 import { getDocumentImage } from '@/app/utils/functions';
-import { convertDateFormat, processTextSummary } from '@/app/utils/constants';
+import {
+  convertDateFormat,
+  highlightText,
+  processTextSummary,
+} from '@/app/utils/constants';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -44,6 +48,7 @@ interface DetailsDialogProps {
   onClose: () => void;
   passDocumentSummary: DocumentSummary | null;
   docType: string;
+  searchParams?: string;
 }
 
 export default function DocumentSummaryPopup({
@@ -51,6 +56,7 @@ export default function DocumentSummaryPopup({
   onClose,
   passDocumentSummary,
   docType,
+  searchParams,
 }: DetailsDialogProps) {
   return (
     <React.Fragment>
@@ -79,9 +85,16 @@ export default function DocumentSummaryPopup({
               />
             </Box>
             <Box>
-              <Typography variant="h6" className={LogStyle.dialogTitle}>
-                {passDocumentSummary?.file_name}
-              </Typography>
+              <Typography
+                variant="h6"
+                className={LogStyle.dialogTitle}
+                dangerouslySetInnerHTML={{
+                  __html: highlightText(
+                    passDocumentSummary?.file_name || '',
+                    searchParams || ''
+                  ),
+                }}
+              />
             </Box>
           </DialogTitle>
           <IconButton
@@ -114,9 +127,10 @@ export default function DocumentSummaryPopup({
                 <Typography
                   variant="body1"
                   className={LogStyle.logListBodyTagTitle}
-                >
-                  {tag.name}
-                </Typography>
+                  dangerouslySetInnerHTML={{
+                    __html: highlightText(tag.name || '', searchParams || ''),
+                  }}
+                />
               </Box>
             ))}
           </Box>
@@ -146,7 +160,10 @@ export default function DocumentSummaryPopup({
                     className={LogStyle.logDetailsListDetailsInner}
                     dangerouslySetInnerHTML={{
                       __html: processTextSummary(
-                        passDocumentSummary?.ai_description || '-'
+                        highlightText(
+                          passDocumentSummary?.ai_description || '-',
+                          searchParams || ''
+                        )
                       ),
                     }}
                   />
@@ -166,7 +183,10 @@ export default function DocumentSummaryPopup({
                   className={LogStyle.logDetailsListDetailsInner}
                   dangerouslySetInnerHTML={{
                     __html: processTextSummary(
-                      passDocumentSummary?.summary || '-'
+                      highlightText(
+                        passDocumentSummary?.summary || '-',
+                        searchParams || ''
+                      )
                     ),
                   }}
                 />
