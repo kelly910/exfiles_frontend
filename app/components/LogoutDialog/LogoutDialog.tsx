@@ -60,7 +60,7 @@ export default function LogoutDialog({
 
   useEffect(() => {
     window.addEventListener('message', (event) => {
-      if (event.origin !== 'https://exfiles.trooinbounddevs.com') return;
+      if (event.origin !== process.env.NEXT_PUBLIC_REDIRECT_URL) return;
       if (event.data.type === 'LOGOUT') {
         console.log(event.data.type, 'inside if');
         logoutUser();
@@ -77,6 +77,10 @@ export default function LogoutDialog({
     await dispatch(setLoader(true));
     setTimeout(async () => {
       await dispatch(logout(loggedInUserToken));
+      window.opener?.postMessage(
+        { type: 'LOGOUT_SUCCESS' },
+        process.env.NEXT_PUBLIC_REDIRECT_URL
+      );
       setLoading(false);
       dispatch(setLoader(false));
       localStorage.removeItem('loggedInUser');
