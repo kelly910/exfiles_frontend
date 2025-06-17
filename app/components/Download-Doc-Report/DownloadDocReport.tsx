@@ -639,9 +639,15 @@ const DownloadDocReport = () => {
                         </div>
                         <div className={styles.docDateBox}>
                           <div className={styles.docTagBox}>
-                            <span className={styles.docTag}>
-                              {doc?.category?.name}
-                            </span>
+                            <span
+                              className={styles.docTag}
+                              dangerouslySetInnerHTML={{
+                                __html: highlightText(
+                                  doc?.category?.name || '',
+                                  searchParams || ''
+                                ),
+                              }}
+                            />
                           </div>
                           <Typography variant="body1">
                             {convertDateFormat(doc?.upload_on)}
@@ -686,6 +692,7 @@ const DownloadDocReport = () => {
         open={openDialog}
         onClose={() => setOpenDialog(false)}
         docType={docType}
+        searchParams={searchParams}
       />
     </>
   );
