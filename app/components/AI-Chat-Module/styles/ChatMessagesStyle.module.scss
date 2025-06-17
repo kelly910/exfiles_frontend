@@ -444,7 +444,7 @@
         border-radius: 8px;
         margin-top: 8px;
         cursor: pointer;
-        border: 1px solid transparent;
+        border: 1px solid var(--Card-Border);
         transition: all 0.4s;
 
         &:has(.chatAlUploadFailed) {
@@ -452,7 +452,7 @@
         }
 
         &:hover {
-          border: 1px solid var(--Card-Border);
+          // border: 1px solid var(--Card-Border);
           background: var(--Background-Color);
         }
 
