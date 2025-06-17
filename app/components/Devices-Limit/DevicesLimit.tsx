@@ -60,7 +60,7 @@ export default function DevicesLimit({
               document.cookie = `accessToken=${token}; path=/; max-age=86400`;
               window.opener?.postMessage(
                 { type: 'LOGIN_SUCCESS', user: response.data },
-                'https://exfiles.trooinbounddevs.com'
+                process.env.NEXT_PUBLIC_REDIRECT_URL
               );
               router.push('/ai-chats');
             }
