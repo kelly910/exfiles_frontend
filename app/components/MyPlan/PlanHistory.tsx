@@ -1,3 +1,4 @@
+import { fetchPlanHistory } from '@/app/redux/slices/planHistory';
 import styles from './style.module.scss';
 import {
   Table,
@@ -12,26 +13,22 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import React from 'react';
-
-const planHistory = [
-  {
-    name: 'Essential',
-    period: 'Year',
-    date: '25/01/2025',
-    payment: 'Credit Card',
-    amount: '$190',
-  },
-  {
-    name: 'Premium',
-    period: 'Year',
-    date: '25/01/2025',
-    payment: 'Credit Card',
-    amount: '$190',
-  },
-];
+import React, { useEffect } from 'react';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
+import dayjs from 'dayjs';
 
 export default function PlanHistory() {
+  const dispatch = useAppDispatch();
+  const { planHistoryData } = useSelector(
+    (state: RootState) => state.planHistory
+  );
+
+  useEffect(() => {
+    dispatch(fetchPlanHistory());
+  }, [dispatch]);
+
   return (
     <Box className={styles['history-plan-main']}>
       <Box className={styles['history-plan']}>
@@ -51,22 +48,39 @@ export default function PlanHistory() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {planHistory.map((plan, idx) => (
+              {planHistoryData?.map((plan, idx) => (
                 <TableRow key={idx}>
-                  <TableCell>{plan.name}</TableCell>
-                  <TableCell>{plan.period}</TableCell>
-                  <TableCell>{plan.date}</TableCell>
-                  <TableCell>{plan.payment}</TableCell>
-                  <TableCell>{plan.amount}</TableCell>
+                  <TableCell>{plan.plan_name || '-'}</TableCell>
+                  <TableCell style={{ textTransform: 'capitalize' }}>
+                    {plan.duration_unit === 'day'
+                      ? '14 Days'
+                      : plan.duration_unit}
+                  </TableCell>
+                  <TableCell>
+                    {plan.activate_date
+                      ? dayjs(
+                          plan.activate_date?.replace(
+                            /([+-]\d{2}:\d{2}):\d{2}$/,
+                            '$1'
+                          )
+                        ).format('MM/DD/YYYY')
+                      : '-'}
+                  </TableCell>
+                  <TableCell>{plan.payment_method || '-'}</TableCell>
+                  <TableCell>{plan.amount || '-'}</TableCell>
                   <TableCell sx={{ textAlign: 'center', width: '100px' }}>
-                    <IconButton aria-label="import">
-                      <Image
-                        src="/images/import.svg"
-                        alt="import Icon"
-                        width={24}
-                        height={24}
-                      />
-                    </IconButton>
+                    {plan.payment_invoice_link !== null ? (
+                      <IconButton aria-label="import">
+                        <Image
+                          src="/images/import.svg"
+                          alt="import Icon"
+                          width={24}
+                          height={24}
+                        />
+                      </IconButton>
+                    ) : (
+                      '-'
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

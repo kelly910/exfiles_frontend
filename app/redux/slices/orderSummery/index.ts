@@ -25,6 +25,7 @@ export interface OrderSummary {
   sales_tax: number;
   total_payable_amount: number;
   plan_price: number;
+  slug: string;
 }
 
 export interface OrderSummaryResponse {
