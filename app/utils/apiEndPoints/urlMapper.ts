@@ -35,6 +35,7 @@ const urlMapper = {
   subscriptionPlan: `${BASE_URL}plans/`,
   orderSummaryDetails: `${BASE_URL}order-summary-details/`,
   checkoutPlan: `${BASE_URL}create-checkout-session/`,
+  planHistory: `${BASE_URL}plan-history/`,
 };
 
 export default urlMapper;

@@ -11,6 +11,8 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { setPageHeaderData } from '@/app/redux/slices/login';
 import { fetchOrderSummaryById } from '@/app/redux/slices/orderSummery';
 import { setLoader } from '@/app/redux/slices/loader';
+import { checkoutSession } from '@/app/redux/slices/checkout';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 export default function OrderSummary() {
   const isMobile = useMediaQuery('(max-width:768px)');
@@ -52,6 +54,16 @@ export default function OrderSummary() {
       setIsSidebarOpen(false);
     }
   }, []);
+
+  const paynow = async (slug: string) => {
+    const result = await dispatch(checkoutSession({ plan: slug }));
+    if (checkoutSession.fulfilled.match(result)) {
+      window.location.href = result.payload;
+    } else {
+      showToast('error', result.payload || 'Checkout failed.');
+    }
+  };
+
   return (
     <>
       <main className="chat-body">
@@ -181,6 +193,7 @@ export default function OrderSummary() {
                     <Button
                       className="btn-primary btn"
                       sx={{ width: '100% !important', marginTop: '24px' }}
+                      onClick={() => paynow(orderDetail?.slug as string)}
                     >
                       Pay Now
                     </Button>

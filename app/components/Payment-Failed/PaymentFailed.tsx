@@ -85,6 +85,14 @@ export default function PaymentFailed() {
                         546487845458
                       </Typography>
                     </Box>
+                    <Box className={Styles.PaymentCardDetailsList}>
+                      <Typography variant="body1" component="p">
+                        Plan Name
+                      </Typography>
+                      <Typography variant="body2" component="span">
+                        Essential
+                      </Typography>
+                    </Box>
                     <Box className={Styles.PaymentCardDetailsListPlan}>
                       <Box className={Styles.PaymentCardDetailsListPlanInner}>
                         <Typography variant="body1" component="p">
