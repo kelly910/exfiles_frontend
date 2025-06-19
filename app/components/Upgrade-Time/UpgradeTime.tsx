@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import Style from '@components/Upgrade-Time/UpgradeTime.module.scss';
 import { Box, Button, Dialog, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -31,6 +33,13 @@ interface UpgradeTimeDialogProps {
 
 export default function UpgradeTime({ open, onClose }: UpgradeTimeDialogProps) {
   const router = useRouter();
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
+
+  const expiryPlanDate =
+    loggedInUser?.data?.active_subscription?.deactivate_date;
+
   const [timerData, setTimerData] = useState([
     { value: '00', label: 'Days' },
     { value: '00', label: 'Hours' },
@@ -39,9 +48,36 @@ export default function UpgradeTime({ open, onClose }: UpgradeTimeDialogProps) {
   ]);
 
   useEffect(() => {
-    // Set target date = now + 3 days (in IST)
-    const targetTime = new Date();
-    targetTime.setDate(targetTime.getDate() + 3);
+    if (!expiryPlanDate) return;
+
+    const targetTime = new Date(expiryPlanDate);
+    const istNow = new Date(
+      new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+    );
+
+    const isSameDate = (date1: Date, date2: Date) =>
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate();
+
+    const showPopupDates = [
+      new Date(
+        targetTime.getFullYear(),
+        targetTime.getMonth(),
+        targetTime.getDate() - 1
+      ), // 1 day before
+      new Date(
+        targetTime.getFullYear(),
+        targetTime.getMonth(),
+        targetTime.getDate() - 2
+      ), // 2 days before
+    ];
+
+    const shouldShowPopup = showPopupDates.some((d) => isSameDate(d, istNow));
+    if (!shouldShowPopup) {
+      onClose();
+      // return;
+    }
 
     const updateCountdown = () => {
       const now = new Date(
@@ -75,7 +111,7 @@ export default function UpgradeTime({ open, onClose }: UpgradeTimeDialogProps) {
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [expiryPlanDate]);
 
   const upgradeNow = () => {
     onClose();
