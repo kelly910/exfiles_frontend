@@ -44,8 +44,9 @@ const UpgradePlan = () => {
   const dispatch = useAppDispatch();
   const [billingCycle, setBillingCycle] = useState('month');
   const { plans } = useSelector((state: RootState) => state.plans);
-  const storedUser = localStorage.getItem('loggedInUser');
-  const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
   const router = useRouter();
 
   useEffect(() => {

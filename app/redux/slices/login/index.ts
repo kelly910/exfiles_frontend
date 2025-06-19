@@ -78,6 +78,7 @@ export interface LoginResponse {
     token: string;
     google_login: boolean;
     active_subscription?: ActiveSubscription;
+    remaining_days?: number;
   };
 }
 

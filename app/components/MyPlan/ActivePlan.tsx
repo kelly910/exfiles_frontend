@@ -9,10 +9,13 @@ import {
   Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
 
 export default function ActivePlan() {
-  const storedUser = localStorage.getItem('loggedInUser');
-  const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
 
   const startDate = loggedInUser?.data?.active_subscription?.activate_date
     ? dayjs(
@@ -38,7 +41,7 @@ export default function ActivePlan() {
   return (
     <>
       <Box
-        className={`${loggedInUser?.data?.active_subscription.status === 1 ? styles['active-plan-body'] : `${styles['active-plan-body-expired']} ${styles['active-plan-body']}`}`}
+        className={`${loggedInUser?.data?.active_subscription?.status === 1 ? styles['active-plan-body'] : `${styles['active-plan-body-expired']} ${styles['active-plan-body']}`}`}
       >
         <Box className={styles['active-plan-main']}>
           <Box className={styles['active-plan']}>
