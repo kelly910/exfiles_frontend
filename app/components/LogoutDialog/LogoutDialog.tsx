@@ -81,7 +81,8 @@ export default function LogoutDialog({
         { type: 'LOGOUT_SUCCESS' },
         process.env.NEXT_PUBLIC_REDIRECT_URL
       );
-      localStorage.setItem('reactLogoutBroadcast', 'loggedOut');
+      const bc = new BroadcastChannel('react-auth-channel');
+      bc.postMessage({ type: 'LOGOUT_SUCCESS' });
       setLoading(false);
       dispatch(setLoader(false));
       localStorage.removeItem('loggedInUser');

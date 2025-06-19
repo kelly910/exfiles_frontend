@@ -31,7 +31,7 @@ import {
   setPageHeaderData,
 } from '@/app/redux/slices/login';
 import { selectActiveThread } from '@/app/redux/slices/Chat';
-// import UpgradeTime from '../Upgrade-Time/UpgradeTime';
+import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 import HelpDeskDialog from '../HelpDeskDialog/HelpDeskDialog';
 
 interface PageHeaderProps {
@@ -56,7 +56,7 @@ export default function PageHeader({
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
-  // const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
+  const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
   const settings = [
     { title: 'Settings', img: '/images/setting.svg' },
     // { title: 'My Plan', img: '/images/myPlan.svg' },
@@ -86,7 +86,7 @@ export default function PageHeader({
   }, [selectedActiveChat]);
 
   // useEffect(() => {
-  //   console.log(".")
+  // console.log(".")
   // }, [isPlanPage]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -126,55 +126,89 @@ export default function PageHeader({
     dispatch(fetchCategories({ page: 1 }));
   }, [dispatch]);
 
-  // const handleOpenCountdownDialog = () => {
-  //   setOpenCountDownDialog(true);
-  // };
+  const handleOpenCountdownDialog = () => {
+    setOpenCountDownDialog(true);
+  };
 
-  // const [timerData, setTimerData] = useState([
-  //   { value: '00', label: 'Days' },
-  //   { value: '00', label: 'Hours' },
-  //   { value: '00', label: 'Minutes' },
-  //   { value: '00', label: 'Seconds' },
-  // ]);
+  const [timerData, setTimerData] = useState([
+    { value: '00', label: 'Days' },
+    { value: '00', label: 'Hours' },
+    { value: '00', label: 'Minutes' },
+    { value: '00', label: 'Seconds' },
+  ]);
 
-  // useEffect(() => {
-  //   // Set target date = now + 3 days (in IST)
-  //   const targetTime = new Date();
-  //   targetTime.setDate(targetTime.getDate() + 3);
+  const expiryPlanDate =
+    loggedInUser?.data?.active_subscription?.deactivate_date;
 
-  //   const updateCountdown = () => {
-  //     const now = new Date(
-  //       new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
-  //     );
-  //     const diff = targetTime.getTime() - now.getTime();
+  const remainingDays = loggedInUser?.data?.remaining_days;
 
-  //     if (diff <= 0) {
-  //       setTimerData([
-  //         { value: '00', label: 'Days' },
-  //         { value: '00', label: 'Hours' },
-  //         { value: '00', label: 'Minutes' },
-  //         { value: '00', label: 'Seconds' },
-  //       ]);
-  //       return;
-  //     }
+  useEffect(() => {
+    if (!expiryPlanDate) {
+      return;
+    }
 
-  //     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  //     const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  //     const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  //     const seconds = Math.floor((diff / 1000) % 60);
+    const targetTime = new Date(expiryPlanDate);
+    const istNow = new Date(
+      new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+    );
 
-  //     setTimerData([
-  //       { value: String(days).padStart(2, '0'), label: 'Days' },
-  //       { value: String(hours).padStart(2, '0'), label: 'Hours' },
-  //       { value: String(minutes).padStart(2, '0'), label: 'Minutes' },
-  //       { value: String(seconds).padStart(2, '0'), label: 'Seconds' },
-  //     ]);
-  //   };
+    const isSameDate = (date1: Date, date2: Date) =>
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate();
 
-  //   updateCountdown();
-  //   const interval = setInterval(updateCountdown, 1000);
-  //   return () => clearInterval(interval);
-  // }, []);
+    const showPopupDates = [
+      new Date(
+        targetTime.getFullYear(),
+        targetTime.getMonth(),
+        targetTime.getDate() - 1
+      ), // 1 day before
+      new Date(
+        targetTime.getFullYear(),
+        targetTime.getMonth(),
+        targetTime.getDate() - 2
+      ), // 2 days before
+    ];
+
+    const shouldShowPopup = showPopupDates.some((d) => isSameDate(d, istNow));
+    if (!shouldShowPopup) {
+      setOpenCountDownDialog(false);
+      // return;
+    }
+
+    const updateCountdown = () => {
+      const now = new Date(
+        new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+      );
+      const diff = targetTime.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        setTimerData([
+          { value: '00', label: 'Days' },
+          { value: '00', label: 'Hours' },
+          { value: '00', label: 'Minutes' },
+          { value: '00', label: 'Seconds' },
+        ]);
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      setTimerData([
+        { value: String(days).padStart(2, '0'), label: 'Days' },
+        { value: String(hours).padStart(2, '0'), label: 'Hours' },
+        { value: String(minutes).padStart(2, '0'), label: 'Minutes' },
+        { value: String(seconds).padStart(2, '0'), label: 'Seconds' },
+      ]);
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [expiryPlanDate]);
 
   const [openHelpDeskDialog, setOpenHelpDeskDialog] = useState(false);
 
@@ -363,38 +397,40 @@ export default function PageHeader({
               </Menu>
             </Box>
 
-            {/* <Button
-              onClick={handleOpenCountdownDialog}
-              className={styles.timeLog}
-            >
-              <Box className={styles.timeLogInner}>
-                <Box className={styles.timeLogImage}>
-                  <Image
-                    src="/images/timer.svg"
-                    alt="search"
-                    width={20}
-                    height={20}
-                  />
-                </Box>
-                <Box className={styles.timeLogTime}>
-                  {timerData.map((item, index) => (
-                    <>
-                      <Typography variant="body2" component="p">
-                        {item.value}
-                      </Typography>
+            {(remainingDays === 1 || remainingDays === 2) && (
+              <Button
+                onClick={handleOpenCountdownDialog}
+                className={styles.timeLog}
+              >
+                <Box className={styles.timeLogInner}>
+                  <Box className={styles.timeLogImage}>
+                    <Image
+                      src="/images/timer.svg"
+                      alt="search"
+                      width={20}
+                      height={20}
+                    />
+                  </Box>
+                  <Box className={styles.timeLogTime}>
+                    {timerData.map((item, index) => (
+                      <>
+                        <Typography variant="body2" component="p">
+                          {item.value}
+                        </Typography>
 
-                      {index !== timerData.length - 1 && (
-                        <>
-                          <Typography variant="body2" component="span">
-                            :
-                          </Typography>
-                        </>
-                      )}
-                    </>
-                  ))}
+                        {index !== timerData.length - 1 && (
+                          <>
+                            <Typography variant="body2" component="span">
+                              :
+                            </Typography>
+                          </>
+                        )}
+                      </>
+                    ))}
+                  </Box>
                 </Box>
-              </Box>
-            </Button> */}
+              </Button>
+            )}
             {isDocumentDownloadPage && (
               <Tooltip
                 title={'Need Help? Watch a Quick Tour'}
@@ -505,8 +541,6 @@ export default function PageHeader({
             </Box>
             <TemporaryDrawer />
           </Toolbar>
-
-          {/* <TemporaryDrawer /> */}
         </Container>
       </AppBar>
       <SettingDialog
@@ -521,10 +555,10 @@ export default function PageHeader({
         openFeedbackDialogProps={openFeedbackDialog}
         onClose={() => setOpenFeedbackDialog(false)}
       />
-      {/* <UpgradeTime
+      <UpgradeTime
         open={openCountDownDialog}
         onClose={() => setOpenCountDownDialog(false)}
-      /> */}
+      />
       <HelpDeskDialog
         open={openHelpDeskDialog}
         onClose={() => setOpenHelpDeskDialog(false)}

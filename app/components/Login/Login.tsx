@@ -62,10 +62,8 @@ const Page = () => {
             localStorage.setItem('loggedInUser', JSON.stringify(response));
             const token: string | null = response?.data?.token || null;
             if (token) {
-              localStorage.setItem('reactLoginBroadcast', 'loggedIn');
-              setTimeout(() => {
-                localStorage.removeItem('reactLoginBroadcast');
-              }, 1000);
+              const bc = new BroadcastChannel('react-auth-channel');
+              bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
               document.cookie = `accessToken=${token}; path=/; max-age=86400`;
               window.opener?.postMessage(
                 { type: 'LOGIN_SUCCESS', user: response.data },
