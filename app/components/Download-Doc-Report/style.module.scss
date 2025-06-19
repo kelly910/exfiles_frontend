@@ -96,6 +96,18 @@
         }
       }
 
+      .limitation {
+        background: var(--Stroke-Color);
+        color: var(--Subtext-Color);
+        cursor: no-drop;
+        &:hover {
+          outline: none;
+        }
+        img {
+          filter: brightness(0.5);
+        }
+      }
+
       button {
         @media (max-width: 550px) {
           width: calc(100% - 34px - 16px);

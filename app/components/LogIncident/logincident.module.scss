@@ -363,6 +363,19 @@
       width: 100%;
     }
   }
+  .limitation {
+    color: var(--Subtext-Color);
+    outline-color: var(--Stroke-Color) !important;
+    cursor: no-drop;
+
+    &:hover {
+      outline: none;
+    }
+
+    img {
+      filter: brightness(0.5);
+    }
+  }
 }
 
 .date-chip-box {
