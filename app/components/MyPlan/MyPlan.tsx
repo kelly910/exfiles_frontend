@@ -11,14 +11,16 @@ import { useRouter } from 'next/navigation';
 import ActivePlan from './ActivePlan';
 import UpgradePlan from './UpgradePlan';
 import PlanHistory from './PlanHistory';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPageHeaderData } from '@/app/redux/slices/login';
+import { RootState } from '@/app/redux/store';
 
 const MyPlan = () => {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const storedUser = localStorage.getItem('loggedInUser');
-  const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
   const router = useRouter();
   const dispatch = useDispatch();
 
