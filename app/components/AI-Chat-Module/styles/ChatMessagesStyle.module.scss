@@ -174,6 +174,18 @@
       padding: 9px 20px;
       border-radius: 8px;
 
+      &.limitation {
+        background: var(--Stroke-Color);
+        color: var(--Subtext-Color);
+        cursor: no-drop;
+        &:hover {
+          outline: none;
+        }
+        img {
+          filter: brightness(0.5);
+        }
+      }
+
       &:hover {
         outline: 0.5px solid var(--Card-Border);
         transition: all 0.3s;

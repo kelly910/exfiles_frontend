@@ -66,11 +66,23 @@ export default function PlanHistory() {
                         ).format('MM/DD/YYYY')
                       : '-'}
                   </TableCell>
-                  <TableCell>{plan.payment_method || '-'}</TableCell>
+                  <TableCell style={{ textTransform: 'capitalize' }}>
+                    {plan.payment_method || '-'}
+                  </TableCell>
                   <TableCell>{plan.amount || '-'}</TableCell>
                   <TableCell sx={{ textAlign: 'center', width: '100px' }}>
-                    {plan.payment_invoice_link !== null ? (
-                      <IconButton aria-label="import">
+                    {plan?.payment_invoice_link !== null ? (
+                      <IconButton
+                        aria-label="import"
+                        onClick={() => {
+                          const link = document.createElement('a');
+                          link.href = plan?.payment_invoice_link;
+                          link.download = '';
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                        }}
+                      >
                         <Image
                           src="/images/import.svg"
                           alt="import Icon"
