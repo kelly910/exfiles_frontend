@@ -866,3 +866,8 @@ input::-webkit-inner-spin-button {
     padding: 0 10px;
   }
 }
+
+.subscription-slider .slick-slider .slick-list {
+  margin: -20px 0;
+  padding: 20px 1px;
+}

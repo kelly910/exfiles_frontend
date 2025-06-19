@@ -17,6 +17,8 @@ import { setPageHeaderData } from '@/app/redux/slices/login';
 const MyPlan = () => {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const storedUser = localStorage.getItem('loggedInUser');
+  const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -28,7 +30,7 @@ const MyPlan = () => {
     dispatch(
       setPageHeaderData({
         title: 'My Plan',
-        subTitle: 'Essential - Steady Support',
+        subTitle: `${loggedInUser?.data?.active_subscription?.plan?.name}  - ${loggedInUser?.data?.active_subscription?.plan?.description}`,
       })
     );
     if (isMobile) {
