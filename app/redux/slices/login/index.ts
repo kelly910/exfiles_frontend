@@ -18,6 +18,7 @@ interface ForgotPasswordState {
   changePassword: boolean;
   loggedInUser: LoginResponse | null;
   pageHeaderData: PageHeaderDataType;
+  fetchedUser: UpdateProfileResponse | null;
 }
 
 export interface ForgotPasswordResponse {
@@ -32,6 +33,7 @@ const initialState: ForgotPasswordState = {
   forgotPasswordEmailSent: false,
   changePassword: false,
   loggedInUser: null,
+  fetchedUser: null,
   pageHeaderData: {
     title: '',
     subTitle: '',
@@ -115,6 +117,7 @@ interface UpdateProfileResponse {
   contact_number: string;
   user_type: string;
   is_email_verified: boolean;
+  active_subscription?: ActiveSubscription;
 }
 
 export const loginUser = createAsyncThunk<
@@ -311,11 +314,17 @@ const loginSlice = createSlice({
         }
       }
     );
+    builder.addCase(
+      getUserById.fulfilled,
+      (state, action: PayloadAction<UpdateProfileResponse>) => {
+        state.fetchedUser = action.payload;
+      }
+    );
   },
 });
 
 export const { setPageHeaderData, clearPageHeaderData } = loginSlice.actions;
-
+export const selectFetchedUser = (state: RootState) => state.login.fetchedUser;
 export const selectPageHeaderData = (state: RootState) =>
   state.login.pageHeaderData;
 

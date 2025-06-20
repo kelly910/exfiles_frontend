@@ -11,11 +11,15 @@ import {
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
+import { useEffect } from 'react';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
 
 export default function ActivePlan() {
   const loggedInUser = useSelector(
     (state: RootState) => state.login.loggedInUser
   );
+  const dispatch = useAppDispatch();
 
   const startDate = loggedInUser?.data?.active_subscription?.activate_date
     ? dayjs(
@@ -35,19 +39,27 @@ export default function ActivePlan() {
       ).format('MM/DD/YYYY')
     : '-';
 
+  const fetchedUser = useSelector(selectFetchedUser);
+
+  useEffect(() => {
+    if (loggedInUser?.data?.id) {
+      dispatch(getUserById(loggedInUser?.data?.id));
+    }
+  }, [dispatch]);
+
   const used = 1.6;
   const total = 4;
   const value = (used / total) * 100;
   return (
     <>
       <Box
-        className={`${loggedInUser?.data?.active_subscription?.status === 1 ? styles['active-plan-body'] : `${styles['active-plan-body-expired']} ${styles['active-plan-body']}`}`}
+        className={`${fetchedUser?.active_subscription?.status === 1 ? styles['active-plan-body'] : `${styles['active-plan-body-expired']} ${styles['active-plan-body']}`}`}
       >
         <Box className={styles['active-plan-main']}>
           <Box className={styles['active-plan']}>
             <Box className={styles['plan-details']}>
               <Box component="figure">
-                {loggedInUser?.data?.active_subscription?.plan?.name ===
+                {fetchedUser?.active_subscription?.plan?.name ===
                 'Free Tier' ? (
                   <Image
                     src="/images/FreeTier.svg"
@@ -55,7 +67,7 @@ export default function ActivePlan() {
                     width={48}
                     height={48}
                   />
-                ) : loggedInUser?.data?.active_subscription?.plan?.name ===
+                ) : fetchedUser?.active_subscription?.plan?.name ===
                   'Essential' ? (
                   <Image
                     src="/images/Essential.svg"
@@ -75,16 +87,15 @@ export default function ActivePlan() {
               <Box className={styles['plan-description']}>
                 <Box>
                   <Typography variant="h6" component="h3">
-                    {loggedInUser?.data?.active_subscription?.plan?.name || '-'}
+                    {fetchedUser?.active_subscription?.plan?.name || '-'}
                   </Typography>
                   <Typography variant="body2">
-                    {loggedInUser?.data?.active_subscription?.plan
-                      ?.description || '-'}
+                    {fetchedUser?.active_subscription?.plan?.description || '-'}
                   </Typography>
                 </Box>
                 <Box className={styles['plan-status']}>
                   <Typography variant="body2">
-                    {loggedInUser?.data?.active_subscription?.status === 1
+                    {fetchedUser?.active_subscription?.status === 1
                       ? 'Active Plan'
                       : 'Expired Plan'}
                   </Typography>
@@ -93,23 +104,16 @@ export default function ActivePlan() {
             </Box>
             <Box className={styles['plan-actions']}>
               <Typography variant="body2">
-                $
-                {
-                  loggedInUser?.data?.active_subscription?.plan?.amount?.split(
-                    '.'
-                  )[0]
-                }{' '}
+                ${fetchedUser?.active_subscription?.plan?.amount?.split('.')[0]}{' '}
                 <Typography
                   component="span"
                   variant="body2"
                   style={{ textTransform: 'capitalize' }}
                 >
                   /
-                  {loggedInUser?.data?.active_subscription?.plan?.name ===
-                  'Free Tier'
+                  {fetchedUser?.active_subscription?.plan?.name === 'Free Tier'
                     ? 'Day'
-                    : loggedInUser?.data?.active_subscription?.plan
-                        ?.duration_unit}
+                    : fetchedUser?.active_subscription?.plan?.duration_unit}
                 </Typography>
               </Typography>
             </Box>
@@ -133,8 +137,7 @@ export default function ActivePlan() {
               </Box>
               <Box className={styles['plan-footer-actions']}>
                 <Button className={styles['cancel-plan-btn']}>
-                  {loggedInUser?.data?.active_subscription?.plan?.name ===
-                  'Free Tier'
+                  {fetchedUser?.active_subscription?.plan?.name === 'Free Tier'
                     ? ''
                     : 'Cancel Plan'}
                 </Button>

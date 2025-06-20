@@ -23,6 +23,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import Slider, { Settings } from 'react-slick';
 import { setLoader } from '@/app/redux/slices/loader';
 import { useRouter } from 'next/navigation';
+import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -47,10 +48,14 @@ const UpgradePlan = () => {
   const loggedInUser = useSelector(
     (state: RootState) => state.login.loggedInUser
   );
+  const fetchedUser = useSelector(selectFetchedUser);
   const router = useRouter();
 
   useEffect(() => {
     dispatch(fetchPlansList(billingCycle));
+    if (loggedInUser?.data?.id) {
+      dispatch(getUserById(loggedInUser?.data?.id));
+    }
   }, [dispatch]);
 
   const settings = {
@@ -284,7 +289,7 @@ const UpgradePlan = () => {
                 {plans.map((plan, index) => {
                   let buttonLabel = 'Not Applicable';
                   const activePlanId =
-                    loggedInUser?.data?.active_subscription?.plan?.id;
+                    fetchedUser?.active_subscription?.plan?.id;
                   const activePlan = plans.find((p) => p?.id === activePlanId);
                   if (activePlan?.duration_unit === billingCycle) {
                     if (plan.name === activePlan.name) {
