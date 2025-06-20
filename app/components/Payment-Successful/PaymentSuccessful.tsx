@@ -6,11 +6,23 @@ import React, { useEffect, useState } from 'react';
 import PageHeader from '../Common/PageHeader';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { setPageHeaderData } from '@/app/redux/slices/login';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { getPaymentDetailsByTransactionId } from '@/app/redux/slices/paymentStatus';
+import dayjs from 'dayjs';
 
 export default function PaymentSuccessful() {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const transactionId = useSearchParams();
+  const transactionid = transactionId.get('txn_id');
+
+  const { paymentData } = useSelector(
+    (state: RootState) => state.paymentDetailsData
+  );
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -23,13 +35,16 @@ export default function PaymentSuccessful() {
   }, []);
 
   useEffect(() => {
+    if (transactionid) {
+      dispatch(getPaymentDetailsByTransactionId(transactionid as string));
+    }
     dispatch(
       setPageHeaderData({
         title: '',
         subTitle: '',
       })
     );
-  }, [dispatch]);
+  }, [dispatch, transactionid]);
 
   return (
     <>
@@ -72,7 +87,11 @@ export default function PaymentSuccessful() {
                     component="p"
                     className={Styles.PaymentCardTime}
                   >
-                    11 Apr 2025, 3:24 PM
+                    {paymentData?.modified
+                      ? dayjs(paymentData?.modified).format(
+                          'DD MMM YYYY, h:mm A'
+                        )
+                      : '-'}
                   </Typography>
                 </Box>
                 <Box className={Styles.PaymentCardBox}>
@@ -82,7 +101,7 @@ export default function PaymentSuccessful() {
                         Transaction ID
                       </Typography>
                       <Typography variant="body2" component="span">
-                        546487845458
+                        {paymentData?.uuid || '-'}
                       </Typography>
                     </Box>
                     <Box className={Styles.PaymentCardDetailsList}>
@@ -90,7 +109,7 @@ export default function PaymentSuccessful() {
                         Plan Name
                       </Typography>
                       <Typography variant="body2" component="span">
-                        Essential
+                        {paymentData?.plan_name || '-'}
                       </Typography>
                     </Box>
                     <Box className={Styles.PaymentCardDetailsListPlan}>
@@ -99,7 +118,7 @@ export default function PaymentSuccessful() {
                           Plan Price
                         </Typography>
                         <Typography variant="body2" component="span">
-                          $228.00
+                          ${paymentData?.plan_base_price || '0.00'}
                         </Typography>
                       </Box>
                       <Box className={Styles.PaymentCardDetailsListPlanInner}>
@@ -107,7 +126,7 @@ export default function PaymentSuccessful() {
                           Sales Tax (8%)
                         </Typography>
                         <Typography variant="body2" component="span">
-                          +$15.00
+                          +${paymentData?.sales_tax_amount || '0.00'}
                         </Typography>
                       </Box>
                     </Box>
@@ -116,7 +135,7 @@ export default function PaymentSuccessful() {
                         Total Payable Amount
                       </Typography>
                       <Typography variant="body2" component="span">
-                        205.00
+                        {paymentData?.amount || '0.00'}
                       </Typography>
                     </Box>
                   </Box>
@@ -130,7 +149,12 @@ export default function PaymentSuccessful() {
                   />
                 </Box>
                 <Box className={Styles.PaymentCardButton}>
-                  <Button className="btn-primary btn">Go to My Plan</Button>
+                  <Button
+                    className="btn-primary btn"
+                    onClick={() => router.push('/plans')}
+                  >
+                    Go to My Plan
+                  </Button>
                 </Box>
               </Box>
             </Box>
