@@ -41,6 +41,7 @@ export default function ThreadActionMenu(props: threadMenuProps) {
       sx={{
         '& .MuiPaper-root': {
           backgroundColor: '#11101b',
+          borderRadius: '12px',
         },
       }}
     >

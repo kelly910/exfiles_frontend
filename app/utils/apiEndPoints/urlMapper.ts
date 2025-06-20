@@ -13,7 +13,7 @@ const urlMapper = {
   updateUser: `${BASE_URL}users/`,
   changePassword: `${BASE_URL}change-password/`,
   feedback: `${BASE_URL}feedback/`,
-  logIncidents: `${BASE_URL}incident-list/`,
+  logIncidents: `${BASE_URL}log-incidents/`,
   // Documents Module
   getCategories: `${BASE_URL}categories/`,
   getDocumentByCategory: `${BASE_URL}category-document/`,
@@ -26,6 +26,17 @@ const urlMapper = {
   chatMessage: `${BASE_URL}chat-message/`,
   chatAnswerReaction: `${BASE_URL}message-reaction/`,
   combinedSummary: `${BASE_URL}combined-summary/`,
+  tagList: `${BASE_URL}default-tags-list/`,
+  generatedDownloadSummary: `${BASE_URL}generate-summary-pdf/`,
+  // reports download
+  downloadDocReport: `${BASE_URL}multiple-documents-summary-pdf/`,
+  downloadLogReport: `${BASE_URL}incident-report-pdf/`,
+  // subscription plan
+  subscriptionPlan: `${BASE_URL}plans/`,
+  orderSummaryDetails: `${BASE_URL}order-summary-details/`,
+  checkoutPlan: `${BASE_URL}create-checkout-session/`,
+  planHistory: `${BASE_URL}plan-history/`,
+  getPaymentDetails: `${BASE_URL}payment-result/`,
 };
 
 export default urlMapper;

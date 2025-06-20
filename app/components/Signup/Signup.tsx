@@ -100,7 +100,7 @@ const Page = () => {
         localStorage.setItem('loggedInUser', JSON.stringify(response));
         const token: string | null = response?.data?.token || null;
         if (token) {
-          document.cookie = `accessToken=${token}; path=/; max-age=3600`;
+          document.cookie = `accessToken=${token}; path=/; max-age=86400`;
           router.push('/ai-chats');
         }
       } catch (error) {
@@ -119,7 +119,7 @@ const Page = () => {
           <Container maxWidth="lg" disableGutters>
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
-                <Link href="https://exfiles.trooinbounddevs.com/">
+                <Link href={process.env.NEXT_PUBLIC_REDIRECT_URL!}>
                   <Image
                     src="/images/logo.svg"
                     alt="logo"

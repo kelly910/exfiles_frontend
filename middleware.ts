@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const PUBLIC_ROUTES = ['/login'];
+const PUBLIC_ROUTES = ['/login', '/signup'];
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get('accessToken')?.value || null;
@@ -28,5 +28,15 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/ai-chats/:path*', '/login', '/documents/:path*'], // Define which routes should trigger the middleware
+  matcher: [
+    '/ai-chats/:path*',
+    '/login',
+    '/documents/:path*',
+    '/log-incident',
+    '/download-doc-report',
+    '/plans',
+    '/payment-successful',
+    '/payment-pending',
+    '/payment-failed',
+  ], // Define which routes should trigger the middleware
 };

@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import { ChatMessage, ThumbReaction } from '@store/slices/Chat/chatTypes';
 import { formatTo12HourTimeManually } from '@/app/utils/functions';
@@ -8,6 +8,7 @@ import { processText } from '@/app/utils/constants';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import striptags from 'striptags';
 import {
+  fetchPinnedMessagesList,
   saveUserAnswerReaction,
   setUpdateMessageList,
   togglePinMessages,
@@ -42,6 +43,22 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
     }
   };
 
+  const getPinnedMessagesList = async (page = 1) => {
+    const resultData = await dispatch(
+      fetchPinnedMessagesList({
+        page,
+      })
+    );
+
+    if (fetchPinnedMessagesList.fulfilled.match(resultData)) {
+      // seIsFetching(false);
+    }
+
+    if (fetchPinnedMessagesList.rejected.match(resultData)) {
+      // handleError(error as ErrorResponse);
+    }
+  };
+
   const togglePinMessage = async (messageObj: ChatMessage) => {
     const payload = {
       message_uuid: messageObj.uuid,
@@ -56,6 +73,7 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
           is_pinned: !messageObj.is_pinned,
         })
       );
+      getPinnedMessagesList(1);
       showToast(
         'success',
         resultData.payload.messages[0] || 'Answer message successfully updated'
@@ -110,16 +128,14 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
     <>
       <Box component="div" className={chatMessagesStyles.chatAl}>
         <Box component="div" className={chatMessagesStyles.chatAlImg}>
-          <Tooltip title="Open settings">
-            <IconButton sx={{ p: 0 }}>
-              <Image
-                alt="Logo"
-                width={40}
-                height={40}
-                src="/images/close-sidebar-logo.svg"
-              />
-            </IconButton>
-          </Tooltip>
+          <IconButton sx={{ p: 0 }}>
+            <Image
+              alt="Logo"
+              width={40}
+              height={40}
+              src="/images/close-sidebar-logo.svg"
+            />
+          </IconButton>
         </Box>
         <Box component="div" className={chatMessagesStyles.chatAlContent}>
           {(messageObj.message == 'Generating combined summary' ||
@@ -151,9 +167,12 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
                   <Typography
                     variant="body1"
                     className={chatMessagesStyles.chatAlText}
-                  >
-                    {messageObj.message || 'Generating Summary Links'}
-                  </Typography>
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        processText(messageObj.message) ||
+                        'Generating Summary Links',
+                    }}
+                  ></Typography>
                 </Box>
               </Box>
             </>
@@ -161,8 +180,11 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
             <Typography
               variant="body1"
               className={chatMessagesStyles.chatAlContentText}
+              dangerouslySetInnerHTML={{
+                __html: processText(messageObj.message),
+              }}
             >
-              {messageObj.combined_summary_data ? (
+              {/* {messageObj.combined_summary_data ? (
                 <div
                   dangerouslySetInnerHTML={{
                     __html: processText(
@@ -176,7 +198,7 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
                     __html: processText(messageObj.message),
                   }}
                 />
-              )}
+              )} */}
             </Typography>
           )}
           <span className={chatMessagesStyles.chatTime}>

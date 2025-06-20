@@ -28,22 +28,49 @@ interface ChatState {
   messagesList: GetMessagesByThreadIdResponse;
   messagesListLoading: boolean;
   messageChunks: string[];
+  threadsList: GetThreadListResponse;
+  threadsListLoading: boolean;
+  pinnedMessagesList: PinnedAnswerMessagesResponse;
+  pinnedMessagesListLoading: boolean;
+  filters: FetchThreadListParams;
 }
 
 const initialState: ChatState = {
   activeThread: null,
+  // For Opened Thread Messages list
   messagesList: {
     count: 0,
     results: [],
   },
+  // Answer Streaming
   isStreaming: false,
   messagesListLoading: true,
   messageChunks: [],
+  // For Sidebar's 'All Chats' accordian Value
+  threadsList: {
+    count: 0,
+    results: [],
+  },
+  threadsListLoading: false,
+  // For Sidebar's 'Pinned Chats' accordian Value
+  pinnedMessagesList: {
+    count: 0,
+    results: [],
+  },
+  pinnedMessagesListLoading: false,
+  filters: {
+    page: 1,
+    page_size: 10,
+    search: '',
+    thread_type: 'chat',
+    created_after: '',
+    created_before: '',
+  },
 };
 
 export const fetchThreadList = createAsyncThunk<
   GetThreadListResponse,
-  FetchThreadListParams | undefined,
+  FetchThreadListParams,
   { rejectValue: string }
 >('chat/fetchThreadList', async (payload, { rejectWithValue }) => {
   try {
@@ -59,6 +86,18 @@ export const fetchThreadList = createAsyncThunk<
 
     if (payload?.search) {
       params.append('search', payload.search);
+    }
+
+    if (payload?.thread_type) {
+      params.append('thread_type', payload.thread_type);
+    }
+
+    if (payload?.created_after) {
+      params.append('created_after', payload.created_after);
+    }
+
+    if (payload?.created_before) {
+      params.append('created_before', payload.created_before);
     }
 
     const response = await api.get<GetThreadListResponse>(
@@ -176,6 +215,28 @@ export const uploadActualDocs = createAsyncThunk<
   }
 });
 
+export const failedDocRetrain = createAsyncThunk<
+  UploadDocsResponse,
+  { document_uuid: string },
+  { rejectValue: string }
+>('chat/failedDocRetrain', async (payload, { rejectWithValue }) => {
+  try {
+    const response = await api.post<UploadDocsResponse>(
+      `${urlMapper.getDocumentSummary}${payload.document_uuid}/retry-failed-document/`
+    );
+
+    return response.data;
+  } catch (error: unknown) {
+    if (typeof error === 'object' && error !== null && 'response' in error) {
+      const err = error as { response?: { data?: string } };
+      return rejectWithValue(
+        err.response?.data || 'Something went wrong. Please try again.'
+      );
+    }
+    return rejectWithValue('Something went wrong. Please try again.');
+  }
+});
+
 /* ------------ Chat Messages Actions Start ------------------ */
 export const fetchThreadMessagesByThreadId = createAsyncThunk<
   GetMessagesByThreadIdResponse,
@@ -218,36 +279,55 @@ export const fetchThreadMessagesByThreadId = createAsyncThunk<
 /* ------------ Pinned Chat Messages Actions Start ------------------ */
 export const fetchPinnedMessagesList = createAsyncThunk<
   PinnedAnswerMessagesResponse,
-  FetchThreadListParams | undefined,
-  { rejectValue: string }
->('chat/fetchPinnedMessagesList', async (payload, { rejectWithValue }) => {
-  try {
-    const params = new URLSearchParams();
+  FetchThreadListParams,
+  { rejectValue: string; state: RootState }
+>(
+  'chat/fetchPinnedMessagesList',
+  async (payload, { rejectWithValue, getState }) => {
+    try {
+      const params = new URLSearchParams();
+      const existingFilters = getState().chat.filters;
 
-    if (payload?.page !== undefined) {
-      params.append('page', payload.page.toString());
+      if (payload?.page !== undefined) {
+        params.append('page', payload.page.toString());
+      }
+
+      if (payload?.page_size !== undefined) {
+        params.append('page_size', payload.page_size.toString());
+      }
+
+      // Search
+      const search = payload?.search ?? existingFilters.search;
+      if (search !== '' && search) {
+        params.append('search', search);
+      }
+
+      // Created After
+      const createdAfter =
+        payload?.created_after ?? existingFilters.created_after;
+      if (createdAfter !== '' && createdAfter) {
+        params.append('created_after', createdAfter);
+      }
+
+      // Created Before
+      const createdBefore =
+        payload?.created_before ?? existingFilters.created_before;
+      if (createdBefore !== '' && createdBefore) {
+        params.append('created_before', createdBefore);
+      }
+      const response = await api.get<PinnedAnswerMessagesResponse>(
+        `${urlMapper.pinnedMessages}?${params.toString()}`
+      );
+
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        (error as { response?: { data?: { messages?: string[] } } })?.response
+          ?.data?.messages?.[0] || 'Something went wrong. Please try again.';
+      return rejectWithValue(errorMessage);
     }
-
-    if (payload?.page_size !== undefined) {
-      params.append('page_size', payload.page_size.toString());
-    }
-
-    if (payload?.search) {
-      params.append('search', payload.search);
-    }
-
-    const response = await api.get<PinnedAnswerMessagesResponse>(
-      `${urlMapper.pinnedMessages}?${params.toString()}`
-    );
-
-    return response.data;
-  } catch (error) {
-    const errorMessage =
-      (error as { response?: { data?: { messages?: string[] } } })?.response
-        ?.data?.messages?.[0] || 'Something went wrong. Please try again.';
-    return rejectWithValue(errorMessage);
   }
-});
+);
 
 export const togglePinMessages = createAsyncThunk<
   PinnedAnswerToggleResponse,
@@ -331,6 +411,7 @@ const chatSlice = createSlice({
         chat_message_data: newQuestionMsg,
         message: newMsg,
         is_streaming_finished: isStreamingCompleted,
+        thread_title: threadTitle,
       } = data;
       const targetData = [...state.messagesList.results];
       console.log(threadId, state.activeThread?.uuid, msgId);
@@ -361,6 +442,25 @@ const chatSlice = createSlice({
           }
         } else {
           if (typeof newMsg === 'object') {
+            if (threadTitle) {
+              state.activeThread = {
+                ...state.activeThread,
+                name: threadTitle,
+              } as Thread;
+
+              const index = state.threadsList.results.findIndex(
+                (thread) => thread.uuid === threadId
+              );
+
+              if (index !== -1) {
+                state.threadsList.results = state.threadsList.results.map(
+                  (thread) =>
+                    thread.uuid === threadId
+                      ? { ...thread, name: threadTitle }
+                      : thread
+                );
+              }
+            }
             const index = targetData.findIndex(
               (item) => item?.uuid === newMsg.uuid
             );
@@ -382,6 +482,27 @@ const chatSlice = createSlice({
       );
       state.messagesList.results = updatedMsgList;
     },
+    setUpdateThreadListKeyValChange: (state, action) => {
+      const { uuid, ...rest } = action.payload;
+      state.threadsList.results = state.threadsList.results.map((item) =>
+        item.uuid === uuid ? { ...item, ...rest } : item
+      );
+    },
+    deleteThreadByUuid: (state, action) => {
+      const { uuid } = action.payload;
+      state.threadsList.results = state.threadsList.results.filter(
+        (thread) => thread.uuid !== uuid
+      );
+      state.threadsList.count = state.threadsList.count - 1;
+    },
+    unPinMessageFromList: (state, action) => {
+      const { uuid } = action.payload;
+      state.pinnedMessagesList.results =
+        state.pinnedMessagesList.results.filter(
+          (thread) => thread.uuid !== uuid
+        );
+      state.pinnedMessagesList.count = state.pinnedMessagesList.count - 1;
+    },
     clearChunks: (state, action) => {
       state.messageChunks = action.payload;
     },
@@ -399,6 +520,13 @@ const chatSlice = createSlice({
     builder
       .addCase(fetchThreadMessagesByThreadId.pending, (state) => {
         state.messagesListLoading = true;
+      })
+      .addCase(createNewThread.fulfilled, (state, action) => {
+        state.threadsList.results = [
+          action.payload,
+          ...state.threadsList.results,
+        ];
+        state.threadsList.count += 1;
       })
       .addCase(fetchThreadMessagesByThreadId.fulfilled, (state, action) => {
         const { page } = action.meta.arg;
@@ -421,6 +549,58 @@ const chatSlice = createSlice({
       })
       .addCase(fetchThreadMessagesByThreadId.rejected, (state) => {
         state.messagesListLoading = false;
+      })
+      .addCase(fetchThreadList.pending, (state) => {
+        state.threadsListLoading = true;
+      })
+      .addCase(fetchThreadList.fulfilled, (state, action) => {
+        const { page } = action.meta.arg;
+        const { count, results } = action.payload;
+
+        state.threadsList.count = count;
+
+        if (page === 1) {
+          // Initial load or refresh
+          state.threadsList.results = results;
+        } else {
+          // Append older messages (infinite scroll)
+          state.threadsList.results = [
+            ...state.threadsList.results,
+            ...results,
+          ];
+        }
+
+        state.threadsListLoading = false;
+      })
+      .addCase(fetchThreadList.rejected, (state) => {
+        state.threadsListLoading = false;
+      })
+      .addCase(fetchPinnedMessagesList.pending, (state) => {
+        state.pinnedMessagesListLoading = true;
+      })
+      .addCase(fetchPinnedMessagesList.fulfilled, (state, action) => {
+        // const { page, created_after, created_before } = action.meta.arg;
+        state.filters = { ...state.filters, ...action.meta.arg };
+
+        const { count, results } = action.payload;
+
+        state.pinnedMessagesList.count = count;
+
+        if (action.meta.arg && action.meta.arg.page === 1) {
+          // Initial load or refresh
+          state.pinnedMessagesList.results = results;
+        } else {
+          // Append older messages (infinite scroll)
+          state.pinnedMessagesList.results = [
+            ...state.pinnedMessagesList.results,
+            ...results,
+          ];
+        }
+
+        state.pinnedMessagesListLoading = false;
+      })
+      .addCase(fetchPinnedMessagesList.rejected, (state) => {
+        state.pinnedMessagesListLoading = false;
       });
   },
 });
@@ -430,9 +610,19 @@ export const {
   setActiveThread,
   setIsStreaming,
   setUpdateMessageList,
+  setUpdateThreadListKeyValChange,
+  deleteThreadByUuid,
   clearChunks,
   clearMessagesList,
+  unPinMessageFromList,
 } = chatSlice.actions;
+
+export const selectPinnedMessagesList = (state: RootState) =>
+  state.chat.pinnedMessagesList;
+
+export const selectThreadsList = (state: RootState) => state.chat.threadsList;
+export const selectThreadListLoading = (state: RootState) =>
+  state.chat.threadsListLoading;
 
 export const selectMessageList = (state: RootState) => state.chat.messagesList;
 export const selectActiveThread = (state: RootState) => state.chat.activeThread;

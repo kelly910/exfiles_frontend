@@ -140,7 +140,7 @@
   justify-content: center;
   align-items: center;
   gap: 100px;
-  min-height: calc(100vh - 65px);
+  min-height: 100%;
   padding: 100px 0;
   max-width: 1000px;
   margin: 0 auto;
@@ -154,6 +154,7 @@
   border-radius: 10px;
   color: var(--Subtext-Color) !important;
   border: 1px solid var(--Stroke-Color);
+  display: flex;
   align-items: flex-end !important;
 
   &::after {
@@ -184,7 +185,7 @@
 .chatBoard {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   gap: 14px;
   border: 1px solid var(--Stroke-Color);
   border-radius: 12px;
@@ -192,8 +193,12 @@
   margin-top: 24px;
   background-color: var(--Card-Color);
 
+  @media (max-width: 768px) {
+    margin-top: 10px;
+  }
+
   button {
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
     outline: 0.5px solid transparent;
     transition: all 0.4s;
 
@@ -299,7 +304,7 @@
 
   .chatBoard {
     padding: 16px 12px;
-    margin-top: 32px;
+    margin-top: 6px;
   }
 }
 
@@ -349,3 +354,73 @@
   text-overflow: ellipsis;
   width: 100%;
 }
+// Drag and drop styles
+.dropOverlay {
+  position: fixed;
+  width: 100%;
+  height: 100dvh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(14px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+
+  .dropOverlayInner {
+    // background-color: var(--Input-Box-Colors);
+    // border: 1px solid var(--Stroke-Color);
+    border-radius: 10px;
+    padding: 50px 20px;
+    text-align: center;
+  }
+
+  p {
+    font-weight: var(--Lighter);
+    font-size: var(--SubTitle-3);
+    line-height: 1.4;
+    text-align: center;
+    color: var(--Primary-Text-Color);
+    margin: 0 auto;
+    margin-top: 9px;
+    max-width: 240px;
+
+    &:last-child {
+      max-width: unset;
+    }
+
+    span {
+      border-bottom: 1px solid transparent;
+    }
+  }
+
+  img {
+    margin: 0 auto;
+  }
+}
+.fileBoxDrag {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-height: 120px;
+  overflow-y: auto;
+  padding-bottom: 1px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .fileBoxInner {
+    margin-top: 0;
+    width: calc(33.33% - 6.66px);
+  }
+}
+// Drag and drop styles

@@ -13,12 +13,19 @@ import Image from 'next/image';
 import styles from './document.module.scss';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useEffect, useState } from 'react';
-import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
+import {
+  downloadSummaryById,
+  fetchDocumentSummaryById,
+} from '@/app/redux/slices/documentSummary';
 import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
 import { setLoader } from '@/app/redux/slices/loader';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
-import { convertDateFormat, processText } from '@/app/utils/constants';
+import {
+  convertDateFormat,
+  highlightText,
+  processText,
+} from '@/app/utils/constants';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { editSummaryByDocId } from '@/app/redux/slices/editSummary';
 import { showToast } from '@/app/shared/toast/ShowToast';
@@ -29,6 +36,7 @@ interface DocumentSummaryProps {
   docId: string;
   selectedDocIdNull: () => void;
   catId: number | null;
+  searchParams: string;
 }
 
 export interface DocumentEditSummary {
@@ -40,6 +48,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   docId,
   selectedDocIdNull,
   catId,
+  searchParams,
 }) => {
   const mobileView = useMediaQuery('(min-width:800px)');
   const dispatch = useAppDispatch();
@@ -48,6 +57,8 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   );
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [downloadingSummaryLoading, setDownloadingSummaryLoading] =
+    useState(false);
   const router = useRouter();
 
   const editSummary = () => {
@@ -129,6 +140,19 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     }
   };
 
+  const downloadSummary = () => {
+    setDownloadingSummaryLoading(true);
+    setTimeout(async () => {
+      try {
+        await dispatch(downloadSummaryById(docId)).unwrap();
+      } catch (error) {
+        handleError(error as ErrorResponse);
+      } finally {
+        setDownloadingSummaryLoading(false);
+      }
+    }, 1000);
+  };
+
   return (
     <>
       {mobileView ? (
@@ -141,9 +165,18 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
               <div className={styles.docsBoardHeader}>
                 <Box component="div" className={styles.docsBoardHeaderInner}>
                   <div className={styles.docsInner}>
-                    <Typography variant="body1" className={styles.docsTitle}>
-                      {documentSummary?.file_name}
-                    </Typography>
+                    <Typography
+                      variant="body1"
+                      className={styles.docsTitle}
+                      dangerouslySetInnerHTML={{
+                        __html: processText(
+                          highlightText(
+                            documentSummary?.file_name,
+                            searchParams
+                          )
+                        ),
+                      }}
+                    />
                     <Typography variant="body1" className={styles.docsDate}>
                       Uploaded On :{' '}
                       <span>
@@ -166,7 +199,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                 </Box>
                 <div className={styles.docsInnerTag}>
                   {documentSummary?.tags?.map((tag) => (
-                    <span key={tag?.id}>{tag?.name}</span>
+                    <span
+                      key={tag?.id}
+                      dangerouslySetInnerHTML={{
+                        __html: highlightText(tag?.name, searchParams),
+                      }}
+                    ></span>
                   ))}
                 </div>
               </div>
@@ -182,8 +220,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     <div className={styles.docsBodyText}>
                       <div
                         dangerouslySetInnerHTML={{
-                          __html:
-                            processText(documentSummary?.ai_description) ?? '',
+                          __html: processText(
+                            highlightText(
+                              documentSummary?.ai_description,
+                              searchParams
+                            )
+                          ),
                         }}
                       />
                     </div>
@@ -305,7 +347,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       <div className={styles.docsBodyText}>
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: processText(documentSummary?.summary) ?? '',
+                            __html: processText(
+                              highlightText(
+                                documentSummary?.summary,
+                                searchParams
+                              )
+                            ),
                           }}
                         />
                       </div>
@@ -324,6 +371,28 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     />
                     Copy
                   </Button>
+                  {documentSummary?.can_download_summary_pdf && (
+                    <>
+                      <span className={styles.docsDas}></span>
+                      <Button
+                        className={styles.docsButton}
+                        onClick={downloadSummary}
+                        disabled={downloadingSummaryLoading}
+                      >
+                        {downloadingSummaryLoading ? (
+                          <CircularProgress size={18} color="inherit" />
+                        ) : (
+                          <Image
+                            src="/images/download_summary.svg"
+                            alt="Download"
+                            width={24}
+                            height={24}
+                          />
+                        )}
+                        Download Summary
+                      </Button>
+                    </>
+                  )}
                   <span className={styles.docsDas}></span>
                   <Button className={styles.docsButton} onClick={editSummary}>
                     <Image
@@ -332,7 +401,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       width={24}
                       height={24}
                     />
-                    Edit Summary
+                    Edit
                   </Button>
                 </Box>
               )}
@@ -349,17 +418,17 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
             top: '65px',
             right: '0',
             left: 'auto',
-            maxHeight: 'calc(100vh - 65px)',
+            maxHeight: 'calc(100dvh - 65px)',
             '& .MuiPaper-root': {
               top: '0',
               width: '100%',
-              maxHeight: 'calc(100vh - 65px)',
+              maxHeight: 'calc(100dvh - 65px)',
               background: 'var(--Background-Color)',
               borderLeft: '1px solid  #3A3948',
             },
             '& .MuiBackdrop-root': {
               top: '65px',
-              maxHeight: 'calc(100vh - 65px)',
+              maxHeight: 'calc(100dvh - 65px)',
             },
           }}
         >
@@ -384,9 +453,18 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       />
                     </Button>
                     <div className={styles.docsInner}>
-                      <Typography variant="body1" className={styles.docsTitle}>
-                        {documentSummary?.file_name}
-                      </Typography>
+                      <Typography
+                        variant="body1"
+                        className={styles.docsTitle}
+                        dangerouslySetInnerHTML={{
+                          __html: processText(
+                            highlightText(
+                              documentSummary?.file_name,
+                              searchParams
+                            )
+                          ),
+                        }}
+                      />
                       <Typography variant="body1" className={styles.docsDate}>
                         Uploaded On :{' '}
                         <span>
@@ -409,7 +487,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                   </Box>
                   <div className={styles.docsInnerTag}>
                     {documentSummary?.tags?.map((tag) => (
-                      <span key={tag?.id}>{tag?.name}</span>
+                      <span
+                        key={tag?.id}
+                        dangerouslySetInnerHTML={{
+                          __html: highlightText(tag?.name, searchParams),
+                        }}
+                      ></span>
                     ))}
                   </div>
                 </div>
@@ -425,9 +508,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       <div className={styles.docsBodyText}>
                         <div
                           dangerouslySetInnerHTML={{
-                            __html:
-                              processText(documentSummary?.ai_description) ??
-                              '',
+                            __html: processText(
+                              highlightText(
+                                documentSummary?.ai_description,
+                                searchParams
+                              )
+                            ),
                           }}
                         />
                       </div>
@@ -552,8 +638,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         <div className={styles.docsBodyText}>
                           <div
                             dangerouslySetInnerHTML={{
-                              __html:
-                                processText(documentSummary?.summary) ?? '',
+                              __html: processText(
+                                highlightText(
+                                  documentSummary?.summary,
+                                  searchParams
+                                )
+                              ),
                             }}
                           />
                         </div>
@@ -572,6 +662,28 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       />
                       Copy
                     </Button>
+                    {documentSummary?.can_download_summary_pdf && (
+                      <>
+                        <span className={styles.docsDas}></span>
+                        <Button
+                          className={styles.docsButton}
+                          onClick={downloadSummary}
+                          disabled={downloadingSummaryLoading}
+                        >
+                          {downloadingSummaryLoading ? (
+                            <CircularProgress size={18} color="inherit" />
+                          ) : (
+                            <Image
+                              src="/images/download_summary.svg"
+                              alt="Download"
+                              width={24}
+                              height={24}
+                            />
+                          )}
+                          Download Summary
+                        </Button>
+                      </>
+                    )}
                     <span className={styles.docsDas}></span>
                     <Button className={styles.docsButton} onClick={editSummary}>
                       <Image
@@ -580,7 +692,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         width={24}
                         height={24}
                       />
-                      Edit Summary
+                      Edit
                     </Button>
                   </Box>
                 )}

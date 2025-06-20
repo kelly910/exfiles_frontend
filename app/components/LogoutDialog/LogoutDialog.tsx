@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './logout.module.scss';
 import {
   Box,
@@ -58,11 +58,31 @@ export default function LogoutDialog({
 
   const loggedInUserToken = loggedInUser?.data?.token ?? '';
 
+  useEffect(() => {
+    window.addEventListener('message', (event) => {
+      if (event.origin !== process.env.NEXT_PUBLIC_REDIRECT_URL) return;
+      if (event.data.type === 'LOGOUT') {
+        console.log(event.data.type, 'inside if');
+        logoutUser();
+      }
+    });
+
+    return () => {
+      window.removeEventListener('message', () => {});
+    };
+  }, []);
+
   const logoutUser = async () => {
     setLoading(true);
     await dispatch(setLoader(true));
     setTimeout(async () => {
       await dispatch(logout(loggedInUserToken));
+      window.opener?.postMessage(
+        { type: 'LOGOUT_SUCCESS' },
+        process.env.NEXT_PUBLIC_REDIRECT_URL
+      );
+      const bc = new BroadcastChannel('react-auth-channel');
+      bc.postMessage({ type: 'LOGOUT_SUCCESS' });
       setLoading(false);
       dispatch(setLoader(false));
       localStorage.removeItem('loggedInUser');

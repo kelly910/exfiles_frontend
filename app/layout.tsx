@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+// import localFont from 'next/font/local';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import './globals.css';
 import ToastProvider from './shared/toast/ToastProvider';
 import { ReduxProvider } from './provider';
@@ -7,17 +9,25 @@ import ThemeRegistry from './providers/ThemeRegistry';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import FullPageLoader from './components/Full-Page-Loader/FullPageLoader';
 import ClientAuthCheck from './components/ClientAuthCheck';
+import { SearchProvider } from './components/AI-Chat-Module/context/SearchContext';
 
-const fustatFont = localFont({
-  src: './fonts/Fustat-VariableFont_wght.woff',
-  variable: '--font-fustat',
-  weight: '400',
-});
+// const fustatFont = localFont({
+//   src: './fonts/Fustat-VariableFont_wght.woff',
+//   variable: '--font-fustat',
+//   weight: '400',
+// });
 
 export const metadata: Metadata = {
   title: 'Exfiles - AI',
   description: 'Exfiles - Artificial Intelligence',
   icons: '/images/exfile-logo.svg',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: 'no',
 };
 
 export default function RootLayout({
@@ -26,22 +36,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={fustatFont.className}>
-      <body className={fustatFont.variable}>
-        <ClientAuthCheck>
-          <GoogleOAuthProvider
-            clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}
-          >
-            <ReduxProvider>
-              <ThemeRegistry>
-                <ToastProvider>
-                  <FullPageLoader />
-                  {children}
-                </ToastProvider>
-              </ThemeRegistry>
-            </ReduxProvider>
-          </GoogleOAuthProvider>
-        </ClientAuthCheck>
+    <html lang="en">
+      <body>
+        <SearchProvider>
+          <ClientAuthCheck>
+            <GoogleOAuthProvider
+              clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}
+            >
+              <ReduxProvider>
+                <ThemeRegistry>
+                  <ToastProvider>
+                    <FullPageLoader />
+                    {children}
+                  </ToastProvider>
+                </ThemeRegistry>
+              </ReduxProvider>
+            </GoogleOAuthProvider>
+          </ClientAuthCheck>
+        </SearchProvider>
       </body>
     </html>
   );

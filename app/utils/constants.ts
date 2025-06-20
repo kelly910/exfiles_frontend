@@ -98,10 +98,65 @@ export const processText = (text: string) => {
     text = text.replace(/^## (.*)/gm, '<h2>$1</h2>');
     text = text.replace(/^# (.*)/gm, '<h1>$1</h1>');
 
+    text = text.replace(/(?:^[-*] .*(?:\r?\n)?)+/gm, (match) => {
+      const items = match
+        .trim()
+        .split(/\r?\n/)
+        .map((line) => line.replace(/^[-*] (.*)/, '<li>$1</li>'))
+        .join('');
+      return `<ul>${items}</ul>`;
+    });
+
     // Step 3: Newline to <br>
     text = text.replace(/\\n/g, '<br>');
     text = text.replace(/\n/g, '<br>');
   }
 
   return text;
+};
+
+export const processTextSummary = (text: string) => {
+  if (text) {
+    // Step 1: Double asterisk to bold
+    text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
+    // Step 2: Single asterisk to bullet points
+    // text = text.replace(/\*(.*?)\*/g, "- $1");
+    text = text.replace(/\*(.*?)/g, '- $1');
+    // text = text.replace(/^\* (.*)/gm, "- $1"); // Replace with dash bullet points
+    // Alternatively, to replace with dot bullet points, use:
+    // text = text.replace(/^\* (.*)/gm, '. $1');
+
+    // Step 4: Hashes to heading tags
+    text = text.replace(/^###### (.*)/gm, '<h7>$1</h7>');
+    text = text.replace(/^##### (.*)/gm, '<h7>$1</h7>');
+    text = text.replace(/^#### (.*)/gm, '<h7>$1</h7>');
+    text = text.replace(/^### (.*)/gm, '<h7>$1</h7>');
+    text = text.replace(/^## (.*)/gm, '<h7>$1</h7>');
+    text = text.replace(/^# (.*)/gm, '<h7>$1</h7>');
+
+    text = text.replace(/(?:^[-*] .*(?:\r?\n)?)+/gm, (match) => {
+      const items = match
+        .trim()
+        .split(/\r?\n/)
+        .map((line) => line.replace(/^[-*] (.*)/, '<li>$1</li>'))
+        .join('');
+      return `<ul style="padding-left: 1rem;">${items}</ul>`;
+    });
+
+    // Step 3: Newline to <br>
+    text = text.replace(/\\n/g, '<br>');
+    text = text.replace(/\n/g, '<br>');
+  }
+
+  return text;
+};
+
+export const highlightText = (text: string, keyword: string): string => {
+  if (!keyword || keyword.length < 2) return text;
+
+  const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`(${escapedKeyword})`, 'gi');
+
+  return text?.replace(regex, '<span class="highlighted">$1</span>');
 };

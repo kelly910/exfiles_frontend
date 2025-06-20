@@ -22,9 +22,12 @@ export interface GetThreadListResponse {
 }
 
 export type FetchThreadListParams = {
-  page?: number;
+  page: number;
   page_size?: number;
   search?: string;
+  thread_type?: ThreadType;
+  created_after?: string;
+  created_before?: string;
 };
 
 export interface ThreadCreationPayload {
@@ -54,6 +57,7 @@ export interface UploadDocsPayload {
     temp_doc: number;
     description: string;
   }[];
+  user_message?: string;
 }
 
 export interface UploadDocsResponse {
@@ -85,6 +89,7 @@ export interface UploadedDocument {
     name: string;
   };
   doc_type: string;
+  summary?: string;
 }
 
 export interface CombineSummaryData {

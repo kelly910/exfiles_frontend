@@ -26,30 +26,40 @@ import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import TemporaryDrawer from '@components/Drawer/Drawer';
 import { usePathname, useRouter } from 'next/navigation';
-import { selectPageHeaderData } from '@/app/redux/slices/login';
+import {
+  selectPageHeaderData,
+  setPageHeaderData,
+} from '@/app/redux/slices/login';
 import { selectActiveThread } from '@/app/redux/slices/Chat';
+import UpgradeTime from '../Upgrade-Time/UpgradeTime';
+import HelpDeskDialog from '../HelpDeskDialog/HelpDeskDialog';
 
 interface PageHeaderProps {
   toggleSidebar: () => void;
   title?: string;
   isSidebarOpen: boolean;
+  handleOpenSidebarFromLogIncident?: () => void;
 }
 
 export default function PageHeader({
   toggleSidebar,
   isSidebarOpen,
+  handleOpenSidebarFromLogIncident,
 }: PageHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
 
   const selectedActiveChat = useAppSelector(selectActiveThread);
+
   const selectedPageHeaderData = useAppSelector(selectPageHeaderData);
   const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
+  const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
   const settings = [
     { title: 'Settings', img: '/images/setting.svg' },
+    // { title: 'My Plan', img: '/images/myPlan.svg' },
     { title: 'Log out', img: '/images/logout.svg' },
   ];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -62,6 +72,22 @@ export default function PageHeader({
   const isChatPage = pathname?.includes('/ai-chats');
   const isDocumentsPage = pathname?.includes('/documents');
   const isLogIncidentPage = pathname?.includes('/log-incident');
+  const isDocumentDownloadPage = pathname?.includes('/download-doc-report');
+  // const isPlanPage = pathname?.includes('/plans');
+
+  useEffect(() => {
+    if (selectedActiveChat?.name) {
+      dispatch(
+        setPageHeaderData({
+          title: selectedActiveChat.name,
+        })
+      );
+    }
+  }, [selectedActiveChat]);
+
+  // useEffect(() => {
+  // console.log(".")
+  // }, [isPlanPage]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -78,6 +104,8 @@ export default function PageHeader({
     setAnchorElUser(null);
     if (settingTitle === 'Settings') {
       setOpenSettingDialog(true);
+      // } else if (settingTitle === 'My Plan') {
+      //   router.push('/plans');
     } else {
       setOpenLogoutDialog(true);
     }
@@ -97,6 +125,96 @@ export default function PageHeader({
   useEffect(() => {
     dispatch(fetchCategories({ page: 1 }));
   }, [dispatch]);
+
+  const handleOpenCountdownDialog = () => {
+    setOpenCountDownDialog(true);
+  };
+
+  const [timerData, setTimerData] = useState([
+    { value: '00', label: 'Days' },
+    { value: '00', label: 'Hours' },
+    { value: '00', label: 'Minutes' },
+    { value: '00', label: 'Seconds' },
+  ]);
+
+  const expiryPlanDate =
+    loggedInUser?.data?.active_subscription?.deactivate_date;
+
+  const remainingDays = loggedInUser?.data?.remaining_days;
+
+  useEffect(() => {
+    if (!expiryPlanDate) {
+      return;
+    }
+
+    const targetTime = new Date(expiryPlanDate);
+    const istNow = new Date(
+      new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+    );
+
+    const isSameDate = (date1: Date, date2: Date) =>
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate();
+
+    const showPopupDates = [
+      new Date(
+        targetTime.getFullYear(),
+        targetTime.getMonth(),
+        targetTime.getDate() - 1
+      ), // 1 day before
+      new Date(
+        targetTime.getFullYear(),
+        targetTime.getMonth(),
+        targetTime.getDate() - 2
+      ), // 2 days before
+    ];
+
+    const shouldShowPopup = showPopupDates.some((d) => isSameDate(d, istNow));
+    if (!shouldShowPopup) {
+      setOpenCountDownDialog(false);
+      // return;
+    }
+
+    const updateCountdown = () => {
+      const now = new Date(
+        new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+      );
+      const diff = targetTime.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        setTimerData([
+          { value: '00', label: 'Days' },
+          { value: '00', label: 'Hours' },
+          { value: '00', label: 'Minutes' },
+          { value: '00', label: 'Seconds' },
+        ]);
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      setTimerData([
+        { value: String(days).padStart(2, '0'), label: 'Days' },
+        { value: String(hours).padStart(2, '0'), label: 'Hours' },
+        { value: String(minutes).padStart(2, '0'), label: 'Minutes' },
+        { value: String(seconds).padStart(2, '0'), label: 'Seconds' },
+      ]);
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [expiryPlanDate]);
+
+  const [openHelpDeskDialog, setOpenHelpDeskDialog] = useState(false);
+
+  const handleClickHelpDeskDialog = () => {
+    setOpenHelpDeskDialog(true);
+  };
 
   return (
     <>
@@ -139,7 +257,7 @@ export default function PageHeader({
 
             <Box className={styles.mobileLogo}>
               <Image
-                src="/images/mobileLogo.png"
+                src="/images/close-sidebar-logo.svg"
                 alt="logo"
                 width={40}
                 height={38}
@@ -159,7 +277,15 @@ export default function PageHeader({
                 )}
                 {isDocumentsPage && (
                   <Image
-                    src="/images/document-text.svg"
+                    src="/images/note-2.svg"
+                    alt="Documents-icon"
+                    width={18}
+                    height={18}
+                  />
+                )}
+                {isDocumentDownloadPage && (
+                  <Image
+                    src="/images/report-icon.svg"
                     alt="Documents-icon"
                     width={18}
                     height={18}
@@ -173,6 +299,14 @@ export default function PageHeader({
                     height={18}
                   />
                 )}
+                {/* {isPlanPage && (
+                  <Image
+                    src="/images/myPlan.svg"
+                    alt="Log-incidents-icon"
+                    width={18}
+                    height={18}
+                  />
+                )} */}
                 {selectedPageHeaderData && selectedPageHeaderData.title && (
                   <Typography
                     variant="body1"
@@ -262,18 +396,75 @@ export default function PageHeader({
                 ))}
               </Menu>
             </Box>
-            <Button
-              sx={{ p: 0 }}
-              className={styles.messageButton}
-              onClick={handleOpenFeedback}
-            >
-              <Image
-                src="/images/message-question.svg"
-                alt="search"
-                width={20}
-                height={20}
-              />
-            </Button>
+
+            {(remainingDays === 1 || remainingDays === 2) && (
+              <Button
+                onClick={handleOpenCountdownDialog}
+                className={styles.timeLog}
+              >
+                <Box className={styles.timeLogInner}>
+                  <Box className={styles.timeLogImage}>
+                    <Image
+                      src="/images/timer.svg"
+                      alt="search"
+                      width={20}
+                      height={20}
+                    />
+                  </Box>
+                  <Box className={styles.timeLogTime}>
+                    {timerData.map((item, index) => (
+                      <>
+                        <Typography variant="body2" component="p">
+                          {item.value}
+                        </Typography>
+
+                        {index !== timerData.length - 1 && (
+                          <>
+                            <Typography variant="body2" component="span">
+                              :
+                            </Typography>
+                          </>
+                        )}
+                      </>
+                    ))}
+                  </Box>
+                </Box>
+              </Button>
+            )}
+            {isDocumentDownloadPage && (
+              <Tooltip
+                title={'Need Help? Watch a Quick Tour'}
+                placement="bottom"
+                arrow
+              >
+                <Button
+                  sx={{ p: 0 }}
+                  className={styles.messageButton}
+                  onClick={handleClickHelpDeskDialog}
+                >
+                  <Image
+                    src="/images/report-info.svg"
+                    alt="report-info"
+                    width={20}
+                    height={20}
+                  />
+                </Button>
+              </Tooltip>
+            )}
+            <Tooltip title={'Feedback'} placement="bottom" arrow>
+              <Button
+                sx={{ p: 0 }}
+                className={styles.messageButton}
+                onClick={handleOpenFeedback}
+              >
+                <Image
+                  src="/images/message-question.svg"
+                  alt="search"
+                  width={20}
+                  height={20}
+                />
+              </Button>
+            </Tooltip>
             <Box className="desktop-active" sx={{ flexGrow: 0 }}>
               <Tooltip title="">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -321,6 +512,7 @@ export default function PageHeader({
                   '& .MuiPaper-root': {
                     backgroundColor: '#11101b',
                     top: '69px !important',
+                    borderRadius: '12px',
                   },
                 }}
               >
@@ -349,8 +541,6 @@ export default function PageHeader({
             </Box>
             <TemporaryDrawer />
           </Toolbar>
-
-          {/* <TemporaryDrawer /> */}
         </Container>
       </AppBar>
       <SettingDialog
@@ -365,6 +555,53 @@ export default function PageHeader({
         openFeedbackDialogProps={openFeedbackDialog}
         onClose={() => setOpenFeedbackDialog(false)}
       />
+      <UpgradeTime
+        open={openCountDownDialog}
+        onClose={() => setOpenCountDownDialog(false)}
+      />
+      <HelpDeskDialog
+        open={openHelpDeskDialog}
+        onClose={() => setOpenHelpDeskDialog(false)}
+      />
+      {isLogIncidentPage && (
+        <Box
+          sx={{ width: '100%' }}
+          className={`${styles.docsHeader} ${styles.docsHeaderMobile}`}
+        >
+          <Button
+            onClick={handleOpenSidebarFromLogIncident}
+            className={styles.backButton}
+            sx={{ marginBottom: '0 !important' }}
+          >
+            <Image
+              src="/images/arrow-left.svg"
+              alt="user"
+              width={16}
+              height={16}
+            />
+          </Button>
+          <Box className={styles.backTitle}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {selectedPageHeaderData && selectedPageHeaderData.title && (
+                <Typography
+                  variant="body1"
+                  sx={{ display: 'flex' }}
+                  className={styles.documentTitle}
+                >
+                  {selectedPageHeaderData.title}
+                </Typography>
+              )}
+            </Box>
+            <Box>
+              {selectedPageHeaderData && selectedPageHeaderData.subTitle && (
+                <Typography variant="body1" className={styles.documentNo}>
+                  {selectedPageHeaderData.subTitle}
+                </Typography>
+              )}
+            </Box>
+          </Box>
+        </Box>
+      )}
     </>
   );
 }

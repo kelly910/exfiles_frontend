@@ -1,0 +1,412 @@
+.my-plan-container {
+  width: 100%;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+  padding: 24px 20px;
+}
+
+.backButton {
+  background-color: var(--Input-Box-Colors) !important;
+  padding: 8px !important;
+  border: 1px solid #3a3948 !important;
+  min-width: fit-content !important;
+  margin-right: 12px !important;
+}
+
+.OrderSummaryContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+
+  .OrderSummaryHead {
+    .ButtonGroup {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      .OrderSummaryTitle {
+        color: var(--Primary-Text-Color);
+        font-size: var(--Heading-1);
+        font-weight: var(--Bold);
+
+        @media (max-width: 768px) {
+          font-size: var(--Heading-2);
+        }
+      }
+    }
+
+    .OrderSummarySemiTitle {
+      color: var(--Subtext-Color);
+      font-size: var(--SubTitle-2);
+      font-weight: var(--Lighter);
+      margin-top: 6px;
+      padding-left: 46px;
+
+      @media (max-width: 768px) {
+        font-size: var(--SubTitle-3);
+      }
+    }
+  }
+
+  .OrderSummaryBody {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 24px;
+    margin-top: 40px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+
+    .OrderSummaryBodyInner {
+      border: 1px solid var(--Stroke-Color);
+      background: var(--Card-Color);
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+
+      @media (max-width: 1024px) {
+        padding: 24px;
+      }
+
+      @media (max-width: 768px) {
+        padding: 24px 16px;
+      }
+
+      .PlanDetails {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+
+        .PlanTitle {
+          h2 {
+            color: var(--Primary-Text-Color);
+            font-size: var(--Heading-2);
+            font-weight: var(--Bold);
+          }
+          span {
+            color: var(--Primary-Text-Color);
+            font-size: var(--SubTitle-5);
+            font-weight: var(--Lighter);
+          }
+        }
+
+        .PlanPrice {
+          p {
+            color: var(--Primary-Text-Color);
+            font-size: var(--Heading-3);
+            font-weight: var(--Medium);
+          }
+          span {
+            color: var(--Subtext-Color);
+            font-size: var(--SubTitle-3);
+            font-weight: var(--Lighter);
+          }
+        }
+      }
+
+      .PlanPriceList {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid var(--Stroke-Color);
+
+        .PlanPriceListHead {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 16px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          p {
+            color: var(--Subtext-Color);
+            font-size: var(--SubTitle-3);
+            font-weight: var(--Lighter);
+
+            @media (max-width: 500px) {
+              font-size: var(--SubTitle-4);
+            }
+          }
+
+          span {
+            color: var(--Primary-Text-Color);
+            font-size: var(--Heading-5);
+            font-weight: var(--Lighter);
+
+            @media (max-width: 500px) {
+              font-size: var(--Heading-6);
+            }
+          }
+        }
+      }
+    }
+
+    .OrderSummaryPayment {
+      border: 1px solid var(--Stroke-Color);
+      background: var(--Card-Color);
+      border-radius: 16px;
+      width: 100%;
+      flex: 0 0 330px;
+
+      position: sticky;
+      top: 0;
+
+      @media (max-width: 768px) {
+        flex: 0 0 auto;
+      }
+
+      .PaymentHead {
+        padding: 24px 24px 20px 24px;
+        color: var(--Primary-Text-Color);
+        font-size: var(--Heading-4);
+        font-weight: var(--Medium);
+
+        @media (max-width: 768px) {
+          padding: 24px 16px 24px 16px;
+        }
+      }
+
+      .PaymentPriceList {
+        border-top: 1px solid var(--Stroke-Color);
+        padding: 20px 24px 24px 24px;
+
+        @media (max-width: 768px) {
+          padding: 16px 16px 24px 16px;
+        }
+
+        .PaymentPriceListHead {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          p {
+            color: var(--Subtext-Color);
+            font-size: var(--SubTitle-3);
+            font-weight: var(--Lighter);
+          }
+
+          span {
+            color: var(--Primary-Text-Color);
+            font-size: var(--Heading-5);
+            font-weight: var(--Lighter);
+          }
+        }
+
+        .PaymentTotalPrice {
+          border-top: 1px solid var(--Stroke-Color);
+          padding-top: 20px;
+          margin-top: 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          p {
+            color: var(--Primary-Text-Color);
+            font-size: var(--SubTitle-3);
+            font-weight: var(--Lighter);
+          }
+
+          span {
+            color: var(--Primary-Text-Color);
+            font-size: var(--Heading-3);
+            font-weight: var(--Medium);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Payment Successful
+
+.PaymentCardContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: fit-content;
+
+  .PaymentCard {
+    text-align: center;
+
+    .PaymentCardImage {
+      width: 100px;
+      height: 100px;
+      display: block;
+      margin: 0 auto;
+
+      @media (max-width: 500px) {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    .PaymentCardTitle {
+      color: var(--Primary-Text-Color);
+      font-size: var(--Heading-1);
+      font-weight: var(--Bold);
+      margin-top: 32px;
+
+      @media (max-width: 500px) {
+        margin-top: 20px;
+        font-size: var(--Heading-2);
+      }
+    }
+    .PaymentCardSemiTitle {
+      color: var(--Subtext-Color);
+      font-size: var(--SubTitle-2);
+      font-weight: var(--Lighter);
+      margin-top: 8px;
+    }
+    .PaymentCardTime {
+      color: var(--Primary-Text-Color);
+      font-size: var(--SubTitle-3);
+      font-weight: var(--Lighter);
+      margin-top: 32px;
+
+      @media (max-width: 500px) {
+        margin-top: 20px;
+      }
+    }
+  }
+
+  .PaymentCardBox {
+    background-color: var(--Card-Color);
+    border: 1px solid var(--Stroke-Color);
+    border-bottom: 0;
+    border-radius: 24px 24px 0 0;
+    max-width: 550px;
+    margin: 0 auto;
+    margin-top: 16px;
+
+    @media (max-width: 500px) {
+      max-width: 95%;
+    }
+
+    .PaymentCardDetails {
+      padding: 24px;
+      padding-bottom: 48px;
+
+      @media (max-width: 500px) {
+        padding: 16px;
+        padding-bottom: 20px;
+      }
+
+      p {
+        color: var(--Subtext-Color);
+        font-size: var(--SubTitle-3);
+        font-weight: var(--Lighter);
+      }
+
+      span {
+        color: var(--Primary-Text-Color);
+        font-size: var(--Heading-5);
+        font-weight: var(--Lighter);
+      }
+
+      .PaymentCardDetailsListPlan {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid var(--Stroke-Color);
+
+        .PaymentCardDetailsListPlanInner {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 12px;
+
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+      }
+
+      .PaymentCardTotalPrice {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid var(--Stroke-Color);
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        p {
+          color: var(--Primary-Text-Color);
+        }
+
+        span {
+          color: var(--Primary-Text-Color);
+          font-size: var(--Heading-3);
+          font-weight: var(--Medium);
+        }
+      }
+
+      .PaymentCardDetailsList {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 16px;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+
+  .PaymentCardButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    margin-top: 48px;
+
+    @media (max-width: 500px) {
+      margin-top: 20px;
+    }
+
+    .BackPlan {
+      background: var(--Card-Color);
+      border: 1px solid var(--Stroke-Color);
+      color: var(--Subtext-Color);
+
+      &:hover {
+        color: var(--Primary-Text-Color);
+        outline: none;
+      }
+    }
+  }
+
+  .PaymentCardBoxBorder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    transform: translateY(-73%);
+    max-width: 550px;
+    margin: 0 auto;
+    position: relative;
+    z-index: -1;
+
+    @media (max-width: 500px) {
+      max-width: 95%;
+    }
+
+    img {
+      height: auto;
+      width: 100%;
+    }
+  }
+}

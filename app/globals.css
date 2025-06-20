@@ -1,9 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 :root {
-  --font-fustat: 'Fustat', sans-serif;
+  /* --font-fustat: 'Fustat', sans-serif; */
+  --font-fustat: "Open Sans", sans-serif;
 
-  --Primary-Text-Color: #DADAE1;
+  --Primary-Text-Color: #F5F5F5;
   --Subtext-Color: #898B94;
   --Txt-On-Gradient: #FFFFFF;
 
@@ -112,6 +114,7 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  line-height: 1.3;
 }
 
 a {
@@ -239,7 +242,7 @@ input {
   font-weight: var(--Regular);
   width: max-content;
   min-width: 150px;
-  padding: 5px 8px;
+  padding: 5px 10px;
   border-radius: 8px;
   display: flex;
   justify-content: center;
@@ -260,8 +263,8 @@ input {
 .btn-arrow span.arrow,
 .btn.btn-primary-arrow span.arrow {
   background-image: url('/images/buttonArrow.svg');
-  width: 14.92px;
-  height: 14.92px;
+  width: 18px;
+  height: 18px;
   aspect-ratio: 1 / 1;
   display: block;
   position: relative;
@@ -353,12 +356,42 @@ input {
   background: var(--Main-Gradient);
   border-radius: 12px;
   display: flex;
+  flex: 0 0 auto;
   justify-content: center;
   align-items: center;
   min-width: 140px;
   white-space: nowrap;
   outline: 0.5px solid transparent;
   transition: all 0.4s;
+}
+
+.download-document-btn {
+  padding: 8px 24px !important;
+}
+
+.download-document-btn img {
+  margin-left: 4px;
+}
+
+.generate-document-btn {
+  background: transparent !important;
+  outline: 1px solid var(--Card-Border) !important;
+}
+
+.generate-document-btn img {
+  margin-left: 4px;
+}
+
+.filter-date {
+  background: transparent !important;
+  border-radius: 10px !important;
+  min-width: 36px !important;
+  border: 1px solid var(--Stroke-Color) !important;
+  padding: 6px 9px !important;
+}
+
+.filter-date img {
+  margin-right: 0 !important;
 }
 
 .btn.btn-pluse:hover {
@@ -449,8 +482,7 @@ header {
 
   /* Buttons: Reduce padding, font size, and border-radius */
   .btn {
-    font-size: 11.2px;
-    /* 30% reduction */
+    font-size: var(--SubTitle-3) !important;
     padding: 9.1px 16.8px;
     /* 30% reduction */
     border-radius: 8.4px;
@@ -805,4 +837,37 @@ input::-webkit-inner-spin-button {
   font-size: 16px;
   color: #0d47a1;
   border-radius: 6px;
+}
+
+.highlighted {
+  background-color: #B948FF !important;
+  font-weight: var(--Medium) !important;
+  color: var(--Background-Color) !important;
+  font-size: inherit !important;
+  font-family: inherit !important;
+  display: inline !important;
+  word-break: break-word !important;
+}
+
+.plan-slider .slick-track .slick-slide {
+  padding-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .plan-slider .slick-track .slick-slide {
+    padding-right: 0;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .plan-slider .slick-track .slick-slide {
+    padding-right: 0;
+    padding: 0 10px;
+  }
+}
+
+.subscription-slider .slick-slider .slick-list {
+  margin: -20px 0;
+  padding: 20px 1px;
 }

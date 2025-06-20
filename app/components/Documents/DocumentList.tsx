@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import styles from './document.module.scss';
-import { convertDateFormat } from '@/app/utils/constants';
+import { convertDateFormat, highlightText } from '@/app/utils/constants';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { fetchDocumentsByCategory } from '@/app/redux/slices/documentByCategory';
@@ -26,6 +26,9 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import DeleteDialog from '../LogoutDialog/DeleteDialog';
 import DocumentsEmpty from '../DocumentsEmpty/DocumentsEmpty';
 import { getDocumentImage } from '@/app/utils/functions';
+import RenameDocDialog from './Dialog/RenameDocDialog';
+import { useSearchParams } from 'next/navigation';
+import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
 
 type Tag = {
   id: number;
@@ -40,7 +43,8 @@ type Document = {
   description?: string;
   tags: Tag[];
   upload_on: string;
-  uuid?: string;
+  uuid?: string | string;
+  can_download_summary_pdf?: string;
 };
 
 type DocumentListProps = {
@@ -48,6 +52,8 @@ type DocumentListProps = {
   handleOpenDocumentSummary: (docId: string) => void;
   selectedDoc: string | '';
   handleOpenCategoryDrawer: (value: boolean) => void;
+  searchParams: string;
+  setSearchParams: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const DocumentList: React.FC<DocumentListProps> = ({
@@ -55,14 +61,15 @@ const DocumentList: React.FC<DocumentListProps> = ({
   handleOpenDocumentSummary,
   selectedDoc,
   handleOpenCategoryDrawer,
+  searchParams,
+  setSearchParams,
 }) => {
   const mobileView = useMediaQuery('(min-width:800px)');
   const dispatch = useAppDispatch();
-  const [searchParams, setSearchParams] = useState('');
   const { documents, count } = useSelector(
     (state: RootState) => state.documentListing
   );
-  const { categories, no_of_docs } = useSelector(
+  const { categories } = useSelector(
     (state: RootState) => state.categoryListing
   );
 
@@ -74,6 +81,13 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleletDocId, setDeleletDocId] = useState<string>('');
   const [menuDocUUID, setMenuDocUUID] = useState<string | null>(null);
+  const [renameDocDialog, setRenameDocDialog] = useState(false);
+  const [renameDoc, setRenameDoc] = useState<{
+    file_name: string;
+    uuid: string | number;
+  } | null>(null);
+  const docid = useSearchParams();
+  const paramsDocId = docid.get('docId');
 
   useEffect(() => {
     if (catId) {
@@ -157,7 +171,6 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const handleDeleteOption = () => {
     if (menuDocUUID) {
       setDeleletDocId(menuDocUUID);
-      console.log('Deleting:', menuDocUUID);
       setOpenDeleteDialog(true);
     }
     handleCloseUserMenu();
@@ -187,7 +200,29 @@ const DocumentList: React.FC<DocumentListProps> = ({
     }
     handleCloseUserMenu();
   };
-  
+
+  const handleRenameDocument = () => {
+    setRenameDocDialog(true);
+    const doc = documents.find((doc) => doc.uuid === menuDocUUID);
+    if (doc?.uuid) {
+      setRenameDoc(doc as { file_name: string; uuid: string | number });
+    }
+    handleCloseUserMenu();
+  };
+
+  const handleCallCategoryDocs = async () => {
+    if (catId) {
+      await dispatch(
+        fetchDocumentsByCategory({
+          categoryId: catId,
+          search: searchParams,
+        })
+      ).unwrap();
+      if (paramsDocId) {
+        await dispatch(fetchDocumentSummaryById(String(paramsDocId)));
+      }
+    }
+  };
 
   return (
     <>
@@ -212,7 +247,8 @@ const DocumentList: React.FC<DocumentListProps> = ({
               </Typography>
             </Box>
             <Typography variant="body1" className={styles.categoriesSemiTitle}>
-              No. of Docs : <span>{no_of_docs || 0}</span>
+              No. of Docs :{' '}
+              <span>{findSelectedCategoryDocs?.no_of_docs || 0}</span>
             </Typography>
           </Box>
         )}
@@ -225,6 +261,11 @@ const DocumentList: React.FC<DocumentListProps> = ({
                   className={styles.searchInput}
                   placeholder="Search your documents"
                   onChange={(e) => handleSearchInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearch();
+                    }
+                  }}
                   endAdornment={
                     <InputAdornment
                       position="end"
@@ -269,9 +310,10 @@ const DocumentList: React.FC<DocumentListProps> = ({
                           onClick={() =>
                             handleOpenDocumentSummary(String(doc?.uuid))
                           }
-                        >
-                          {doc?.file_name}
-                        </Typography>
+                          dangerouslySetInnerHTML={{
+                            __html: highlightText(doc?.file_name, searchParams),
+                          }}
+                        ></Typography>
                         <IconButton
                           onClick={(e) =>
                             handleOpenUserMenu(e, String(doc?.uuid))
@@ -311,6 +353,30 @@ const DocumentList: React.FC<DocumentListProps> = ({
                           }}
                         >
                           <MenuItem
+                            onClick={handleViewDocument}
+                            className={`${styles.menuDropdown}`}
+                          >
+                            <Image
+                              src="/images/view_document.svg"
+                              alt="tras"
+                              width={18}
+                              height={18}
+                            />
+                            <Typography>View Document</Typography>
+                          </MenuItem>
+                          <MenuItem
+                            onClick={handleRenameDocument}
+                            className={`${styles.menuDropdown}`}
+                          >
+                            <Image
+                              src="/images/rename-document.svg"
+                              alt="tras"
+                              width={18}
+                              height={18}
+                            />
+                            <Typography>Rename Document</Typography>
+                          </MenuItem>
+                          <MenuItem
                             onClick={handleDeleteOption}
                             className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
                           >
@@ -321,18 +387,6 @@ const DocumentList: React.FC<DocumentListProps> = ({
                               height={18}
                             />
                             <Typography>Delete Document</Typography>
-                          </MenuItem>
-                          <MenuItem
-                            onClick={handleViewDocument}
-                            className={`${styles.menuDropdown} `}
-                          >
-                            <Image
-                              src="/images/document-text.svg"
-                              alt="tras"
-                              width={18}
-                              height={18}
-                            />
-                            <Typography>View Document</Typography>
                           </MenuItem>
                         </Menu>
                       </div>
@@ -393,6 +447,12 @@ const DocumentList: React.FC<DocumentListProps> = ({
         type="Document"
         deletedId={deleletDocId}
         onConfirmDelete={handleDeleteConfirmed}
+      />
+      <RenameDocDialog
+        open={renameDocDialog}
+        onClose={() => setRenameDocDialog(false)}
+        document={renameDoc}
+        getCategoryDocument={handleCallCategoryDocs}
       />
     </>
   );

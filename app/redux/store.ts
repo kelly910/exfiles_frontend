@@ -15,6 +15,13 @@ import documentListSlice from './slices/documentByCategory';
 import documentSummarySlice from './slices/documentSummary';
 import editSummarySlice from './slices/editSummary';
 import logIncidentSlice from './slices/logIncident';
+import tagListingSlice from './slices/tagListing';
+import fileUploadSlice from './slices/fileUpload';
+import plansSlice from './slices/subscriptionPlan';
+import orderDetailSummarySlice from './slices/orderSummery';
+import checkoutSlice from './slices/checkout';
+import planHistorySlice from './slices/planHistory';
+import paymentDetailsDataSlice from './slices/paymentStatus';
 
 const createNoopStorage = () => {
   return {
@@ -49,6 +56,13 @@ const persistConfig = {
     'editSummary',
     'logIncidents',
     'chat',
+    'tagList',
+    'fileUpload',
+    'plans',
+    'orderDetailSummary',
+    'checkout',
+    'planHistory',
+    'paymentDetailsData',
   ],
   // whitelist: ["auth"], // specify reducers to persist
 };
@@ -66,6 +80,13 @@ const rootReducer = combineReducers({
   documentSummary: documentSummarySlice,
   editSummary: editSummarySlice,
   logIncidents: logIncidentSlice,
+  tagList: tagListingSlice,
+  fileUpload: fileUploadSlice,
+  plans: plansSlice,
+  orderDetailSummary: orderDetailSummarySlice,
+  checkout: checkoutSlice,
+  planHistory: planHistorySlice,
+  paymentDetailsData: paymentDetailsDataSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

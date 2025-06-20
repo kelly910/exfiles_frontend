@@ -31,16 +31,15 @@ import { useSelector } from 'react-redux';
 import { SocketPayload } from '../../types/aiChat.types';
 import { sendSocketMessage } from '@/app/services/WebSocketService';
 import StreamingResponse from './StreamingResponse';
-import { setPageHeaderData } from '@/app/redux/slices/login';
+import {
+  clearPageHeaderData,
+  setPageHeaderData,
+} from '@/app/redux/slices/login';
 import Image from 'next/image';
 
 // Dynamic Custom Component imports
 const DynamicMessageLoading = dynamic(
   () => import('@/app/components/AI-Chat/components/Messages/MessageLoading')
-);
-const DynamicDocUploadModal = dynamic(
-  () =>
-    import('@/app/components/AI-Chat/components/Modals/DocumentUploadDialog')
 );
 
 export default function ChatMessagesComponent({
@@ -54,7 +53,6 @@ export default function ChatMessagesComponent({
   const isStreamingMessages = useSelector(selectIsStreaming);
   const messagesChunks = useSelector(selectMessagesChunks);
   const chatElementRef = useRef<HTMLInputElement>(null);
-  const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
 
   const [page, setPage] = useState(1);
 
@@ -137,7 +135,7 @@ export default function ChatMessagesComponent({
       );
       dispatch(
         setPageHeaderData({
-          title: resultData.payload.name,
+          title: resultData.payload.name || 'New Thread',
           subTitle: `Created On : ${threadCreatedDate}`,
         })
       );
@@ -168,14 +166,6 @@ export default function ChatMessagesComponent({
     }
   };
 
-  const handleClickOpen = () => {
-    setIsOpenDocUpload(true);
-  };
-
-  const handleClose = () => {
-    setIsOpenDocUpload(false);
-  };
-
   const handleFileUploadSubmit = () => {
     // need to call the messages list API to get the uplaoded document data
     getThreadMessagesDetails(threadId, 1);
@@ -187,6 +177,7 @@ export default function ChatMessagesComponent({
       dispatch(setIsStreaming(false));
       dispatch(clearChunks([]));
       dispatch(clearMessagesList());
+      dispatch(clearPageHeaderData());
     };
   }, []);
 
@@ -394,20 +385,13 @@ export default function ChatMessagesComponent({
       >
         <Container maxWidth="lg" disableGutters>
           <UserChatInput
-            handleOpenDocUploadModal={handleClickOpen}
+            handleFileUploadSubmit={() => handleFileUploadSubmit()}
+            threadId={threadId}
             sendMessage={(payloadData) => handleSendMessage(payloadData)}
             isLoadingProp={isStreamingMessages}
           />
         </Container>
       </div>
-      {isOpenDocUpload && (
-        <DynamicDocUploadModal
-          open={isOpenDocUpload}
-          handleClose={handleClose}
-          threadId={threadId}
-          handleFileUploadSubmit={() => handleFileUploadSubmit()}
-        />
-      )}
     </>
   );
 }

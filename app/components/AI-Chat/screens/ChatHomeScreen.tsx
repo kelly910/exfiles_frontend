@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { useEffect, useState } from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 
 import AIChatStyles from '@components/AI-Chat/styles/AIChatStyle.module.scss';
@@ -17,31 +17,35 @@ import {
 import { useRouter } from 'next/navigation';
 import { clearPageHeaderData } from '@/app/redux/slices/login';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
-
-// Dynamic Custom Component imports
-const DynamicDocUploadModal = dynamic(
-  () =>
-    import('@/app/components/AI-Chat/components/Modals/DocumentUploadDialog')
-);
+import LogModel from '../../LogModel/LogModel';
+// import Image from 'next/image';
 
 export default function ChatHomeScreen() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   const CHAT_PROMPS = [
-    'What did say as a kid when asked: What do you want to be when you grow up?',
-    'When is the last time you can remember feeling totally at peace?',
+    'Upload a document - AI will summarize and organize it for you.',
+    'How do I respond to this message?',
   ];
 
-  const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
+  const CHAT_TITLES = [
+    'Ask me anything',
+    'What do you need help with today?',
+    'Got something to upload, log, or respond to?',
+    'What are we documenting today?',
+    'Start by uploading a file or asking a question.',
+  ];
+
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
+  const [randomTitle, setRandomTitle] = useState<string | null>(null);
 
-  const handleClickOpen = () => {
-    setIsOpenDocUpload(true);
-  };
-  const handleClose = () => {
-    setIsOpenDocUpload(false);
+  const [openModel, setOpenModel] = useState(false);
+  const [droppedFiles, setDroppedFiles] = useState([]);
+
+  const openLogIncidentModel = () => {
+    setOpenModel(true);
   };
 
   const handleNewSendMessage = async (payloadData: SocketPayload) => {
@@ -49,7 +53,7 @@ export default function ChatHomeScreen() {
     // Before sending a message we will create a new thread
     const resultData = await dispatch(
       createNewThread({
-        name: payloadData.message.trim(),
+        // name: payloadData.message.trim().slice(0, 200),
       })
     );
 
@@ -81,104 +85,181 @@ export default function ChatHomeScreen() {
     dispatch(clearChunks([]));
   }, []);
 
+  const getRandomTitle = () => {
+    const index = Math.floor(Math.random() * CHAT_TITLES.length);
+    return CHAT_TITLES[index];
+  };
+
+  useEffect(() => {
+    const randomTitleString = getRandomTitle();
+    setRandomTitle(randomTitleString);
+  }, []);
+
+  // Drag and Drop file upload
+  // const [isDragging, setIsDragging] = useState(false);
+
+  // const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   setIsDragging(true);
+  // };
+
+  // const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   // Only hide if actually leaving the main container
+  //   if (e.target === e.currentTarget) {
+  //     setIsDragging(false);
+  //   }
+  // };
+
+  // const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault(); // Needed to allow dropping
+  //   e.stopPropagation();
+  // };
+
+  // const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   setIsDragging(false);
+
+  //   const files = Array.from(e.dataTransfer.files);
+  //   setDroppedFiles(files);
+  //   console.log('Dropped files:', files);
+  //   // Handle files here
+  // };
+
+  // Drag and Drop file upload
+
   return (
-    <div className={AIChatStyles.chatBoarbMain}>
-      <Box component="section" className={AIChatStyles.chatHeading}>
-        <div className={AIChatStyles.chatHeader}>
-          <Typography variant="h2" className={AIChatStyles.chatTitle}>
-            Wondering What is ExFiles?
-          </Typography>
-          <Typography variant="body1" className={AIChatStyles.chatSubtitle}>
-            Try clicking on below examples to get things going
-          </Typography>
-        </div>
+    <>
+      <div
+        className={AIChatStyles.chatBoarbMain}
+        // onDragEnter={handleDragEnter}
+        // onDragLeave={handleDragLeave}
+        // onDragOver={handleDragOver}
+        // onDrop={handleDrop}
+      >
+        {/* Drag and Drop file upload */}
+        {/* {isDragging && (
+          <div className={AIChatStyles.dropOverlay}>
+            <Box className={AIChatStyles.dropOverlayInner}>
+              <Image
+                src="/images/Upload-img.png"
+                alt="Upload-img"
+                width={88}
+                height={94}
+              />
+              <Typography gutterBottom>
+                Drag your documents here to upload
+              </Typography>
+              <Typography gutterBottom>
+                You can upload upto 10 documents together.
+              </Typography>
+            </Box>
+          </div>
+        )} */}
+        {/* Drag and Drop file upload */}
 
-        <Box className={AIChatStyles.gridBox} component="div">
-          <Grid
-            container
-            spacing={{ xs: 2, md: 4 }}
-            justifyContent="center"
-            alignItems="stretch"
-          >
+        <Box component="section" className={AIChatStyles.chatHeading}>
+          <div className={AIChatStyles.chatHeader}>
+            <Typography variant="h2" className={AIChatStyles.chatTitle}>
+              What Can ExFiles Help You Do Today?
+            </Typography>
+            <Typography variant="body1" className={AIChatStyles.chatSubtitle}>
+              Start with a common task below or ask your own question.
+            </Typography>
+          </div>
+
+          <Box className={AIChatStyles.gridBox} component="div">
             <Grid
-              item
-              xs={12}
-              sm={12}
-              md={4}
-              className={AIChatStyles.gridBoxInner}
+              container
+              spacing={{ xs: 2, md: 4 }}
+              justifyContent="center"
+              alignItems="stretch"
             >
-              <div className={AIChatStyles.chatGridBox}>
-                <div className={AIChatStyles.chatBox}>
-                  <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
-                  <Button
-                    type="button"
-                    variant="contained"
-                    className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
-                    color="primary"
-                    fullWidth
-                    onClick={() => handlePromptClick(CHAT_PROMPS[0])}
-                  >
-                    Start with this question
-                    <span className="arrow"></span>
-                  </Button>
-                </div>
-              </div>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={4}
-              className={AIChatStyles.gridBoxInner}
-            >
-              <div
-                className={`${AIChatStyles.chatGridBox} ${AIChatStyles.chatLogIncident}`} //${AIChatStyles.chatLogIncident} use only Log Incident
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={4}
+                className={AIChatStyles.gridBoxInner}
               >
-                <div className={AIChatStyles.chatBox}>
-                  <Typography variant="body1">
-                    Something Unexpected Happened?
-                  </Typography>
-                  <Button
-                    type="button"
-                    variant="contained"
-                    className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
-                    color="primary"
-                    fullWidth
-                  >
-                    Log Incident
-                    <span className="incident"></span>
-                  </Button>
+                <div
+                  className={`${AIChatStyles.chatGridBox} ${AIChatStyles.chatLogIncident}`}
+                  onClick={openLogIncidentModel}
+                >
+                  <div className={AIChatStyles.chatBox}>
+                    <Typography variant="body1">
+                      Log an incident - document what happened today.
+                    </Typography>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
+                      color="primary"
+                      fullWidth
+                    >
+                      Log Incident
+                      <span className="incident"></span>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={12}
-              md={4}
-              className={AIChatStyles.gridBoxInner}
-            >
-              <div className={AIChatStyles.chatGridBox}>
-                <div className={AIChatStyles.chatBox}>
-                  <Typography variant="body1">{CHAT_PROMPS[1]}</Typography>
-                  <Button
-                    type="button"
-                    variant="contained"
-                    className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
-                    color="primary"
-                    fullWidth
-                    onClick={() => handlePromptClick(CHAT_PROMPS[1])}
-                  >
-                    Start with this question
-                    <span className="arrow"></span>
-                  </Button>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={4}
+                className={AIChatStyles.gridBoxInner}
+              >
+                <div
+                  className={`${AIChatStyles.chatGridBox} ${AIChatStyles.chatLogIcon}`}
+                >
+                  <div className={AIChatStyles.chatBox}>
+                    <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
+                      color="primary"
+                      fullWidth
+                      onClick={() => handlePromptClick(CHAT_PROMPS[0])}
+                    >
+                      Upload for AI Summary
+                      <span className="arrow"></span>
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={4}
+                className={AIChatStyles.gridBoxInner}
+              >
+                <div className={AIChatStyles.chatGridBox}>
+                  <div className={AIChatStyles.chatBox}>
+                    <Typography variant="body1">{CHAT_PROMPS[1]}</Typography>
+                    <Button
+                      type="button"
+                      variant="contained"
+                      className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
+                      color="primary"
+                      fullWidth
+                      onClick={() => handlePromptClick(CHAT_PROMPS[1])}
+                    >
+                      Ask AI to Write a Response
+                      <span className="arrow"></span>
+                    </Button>
+                  </div>
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
+          </Box>
 
-        {/* <div className={AIChatStyles.chatHeader}>
+          {/* <div className={AIChatStyles.chatHeader}>
           <Image
             src="/images/new-incident.svg"
             alt="new-incident"
@@ -194,36 +275,35 @@ export default function ChatHomeScreen() {
             typing your incident below.
           </Typography>
         </div> */}
-      </Box>
-      <Box component="section" className={AIChatStyles.chatHeading}>
-        <div className={AIChatStyles.chatHeader}>
-          <Typography variant="h2" className={AIChatStyles.chatTitle}>
-            How can I help you with?
-          </Typography>
-          <Typography
-            variant="body1"
-            className={AIChatStyles.chatSubtitle}
-            sx={{ maxWidth: '500px' }}
-          >
-            Ask me anything. Enter the queries you get in textbox below, and see
-            the magic of ExFiles.
-          </Typography>
-        </div>
+        </Box>
+        <Box component="section" className={AIChatStyles.chatHeading}>
+          <div className={AIChatStyles.chatHeader}>
+            <Typography variant="h2" className={AIChatStyles.chatTitle}>
+              {randomTitle}
+            </Typography>
+            <Typography
+              variant="body1"
+              className={AIChatStyles.chatSubtitle}
+              sx={{ maxWidth: '500px' }}
+            >
+              Type your question or upload a message below—ExFiles will do the
+              heavy lifting.
+            </Typography>
+          </div>
 
-        <UserChatInput
-          handleOpenDocUploadModal={handleClickOpen}
-          sendMessage={(payloadData) => handleNewSendMessage(payloadData)}
-          isLoadingProp={isLoading}
-          selectedPrompt={selectedPrompt}
-        />
-      </Box>
-
-      {isOpenDocUpload && (
-        <DynamicDocUploadModal
-          open={isOpenDocUpload}
-          handleClose={handleClose}
-        />
-      )}
-    </div>
+          <UserChatInput
+            droppedFiles={droppedFiles}
+            sendMessage={(payloadData) => handleNewSendMessage(payloadData)}
+            isLoadingProp={isLoading}
+            selectedPrompt={selectedPrompt}
+          />
+        </Box>
+      </div>
+      <LogModel
+        open={openModel}
+        handleClose={() => setOpenModel(false)}
+        editedData={null}
+      />
+    </>
   );
 }

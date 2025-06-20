@@ -193,3 +193,85 @@ header {
     display: none;
   }
 }
+
+.docsHeaderMobile {
+  display: none;
+  background-color: var(--Card-Color);
+  width: 100%;
+  max-width: 100%;
+  border-bottom: 1px solid var(--Stroke-Color);
+  padding: 8px 16px;
+
+  @media (max-width: 800px) {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 12px;
+  }
+
+  .backTitle {
+    max-width: calc(100% - 50px);
+  }
+
+  p {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 34px;
+    color: var(--Primary-Text-Color);
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+  }
+
+  p.documentNo {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--Subtext-Color);
+  }
+}
+
+.timeLog {
+  background: var(--Main-Gradient);
+  padding: 1px !important;
+  border-radius: 500px !important;
+  flex: 0 0 auto;
+
+  .timeLogInner {
+    background-color: var(--Background-Color);
+    border-radius: 500px;
+    padding: 8px 12px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    .timeLogImage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .timeLogTime {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+
+      p {
+        color: var(--Primary-Text-Color);
+        font-size: var(--SubTitle-3);
+        font-weight: var(--Lighter);
+      }
+
+      span {
+        color: var(--Subtext-Color);
+        font-size: var(--SubTitle-3);
+        font-weight: var(--Lighter);
+      }
+    }
+  }
+}

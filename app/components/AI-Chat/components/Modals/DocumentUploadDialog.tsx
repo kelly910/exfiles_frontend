@@ -25,6 +25,7 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useRouter } from 'next/navigation';
 
 interface DocumentUploadModalProps {
+  userInputText?: string;
   open: boolean;
   handleClose: () => void;
   threadId?: string | null;
@@ -50,6 +51,7 @@ type successChunkResponseType = {
 } | null;
 
 export default function DocumentUploadDialog({
+  userInputText,
   open,
   handleClose,
   threadId,
@@ -158,10 +160,11 @@ export default function DocumentUploadDialog({
 
     const newUploads: Array<UploadFiles> = newFiles.map((file) => {
       const fileParts = file.name.split('.');
-      const isSingleExtension = fileParts.length === 2; // Ensures only one dot
+      // const isSingleExtension = fileParts.length === 2; // Ensures only one dot
       const fileExtension = '.' + fileParts.pop()?.toLowerCase();
-      const isValidExtension =
-        isSingleExtension && ALLOWED_FILE_TYPES.includes(fileExtension);
+      // const isValidExtension =
+      //   isSingleExtension && ALLOWED_FILE_TYPES.includes(fileExtension);
+      const isValidExtension = ALLOWED_FILE_TYPES.includes(fileExtension);
 
       return {
         file,
@@ -268,6 +271,7 @@ export default function DocumentUploadDialog({
       uploadActualDocs({
         thread_uuid: threadUUID,
         data: payloadData,
+        ...(userInputText && { user_message: userInputText }),
       })
     );
     setIsLoading(false);
@@ -388,7 +392,7 @@ export default function DocumentUploadDialog({
           >
             <Box>
               <Image
-                src="/images/Upload-img.png"
+                src="/images/upload-img-new.png"
                 alt="Upload-img"
                 width={88}
                 height={94}
@@ -477,6 +481,8 @@ const BootstrapDialog = styled(Dialog)(() => ({
     margin: '0px',
     minWidth: '650px',
     maxHeight: '550px',
+    border: '1px solid var(--Stroke-Color)',
+    borderRadius: '12px',
     // Responsive styles
     '@media (max-width: 768px)': {
       width: '90vw', // Use width instead of minWidth for better responsiveness

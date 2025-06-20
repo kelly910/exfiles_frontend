@@ -1,8 +1,7 @@
 import dynamic from 'next/dynamic';
 
-// Dynamic Custom Component imports
-const DynamicAIChatComponent = dynamic(
-  () => import('@components/AI-Chat/AIChatComponent')
+const AIChatComponent = dynamic(
+  () => import('@components/AI-Chat-Module/AIChatComponent')
 );
 
 export default async function Page({
@@ -12,5 +11,5 @@ export default async function Page({
 }) {
   const { threadId } = await params;
 
-  return <DynamicAIChatComponent threadId={threadId} />;
+  return <AIChatComponent threadId={threadId} />;
 }

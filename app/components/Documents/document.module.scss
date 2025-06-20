@@ -1,5 +1,5 @@
 // .docsPageMain {
-//   height: calc(100vh - 65px);
+//   height: calc(100dvh - 65px);
 //   overflow-y: auto;
 // }
 
@@ -8,12 +8,12 @@
   justify-content: space-between;
   align-items: stretch;
   width: 100%;
-  height: calc(100vh - 65px);
+  height: calc(100dvh - 65px);
 }
 
 .docsListing {
   position: relative;
-  // height: calc(100vh - 65px);
+  // height: calc(100dvh - 65px);
   height: unset;
   width: 100%;
   overflow-y: auto;
@@ -49,6 +49,10 @@
         color: var(--Subtext-Color);
 
         &::after {
+          content: none !important;
+        }
+
+        &::before {
           content: none !important;
         }
 
@@ -108,7 +112,7 @@
       align-items: center;
       color: var(--Subtext-Color);
       font-size: var(--SubTitle-2);
-      min-height: calc(100vh - 65px - 74px - 91px - 36px);
+      min-height: calc(100dvh - 65px - 74px - 91px - 36px);
     }
 
     .docGridBox {
@@ -117,7 +121,6 @@
       border-radius: 10px;
       border: 1px solid transparent;
       height: 100%;
-      cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -150,6 +153,7 @@
           padding: 7px;
           flex: 0 0 auto;
           border: 1px solid var(--Stroke-Color);
+          cursor: pointer;
         }
 
         .docTitle {
@@ -165,6 +169,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
+          cursor: pointer;
 
           span {
             display: block;
@@ -239,7 +244,7 @@
   flex: 0 0 auto;
   border-right: 1px solid var(--Stroke-Color);
   padding-bottom: 24px;
-  height: calc(100vh - 65px);
+  height: calc(100dvh - 65px);
   overflow-y: auto;
   // animation: slideCDown 0.6s ease-out forwards;
 
@@ -366,7 +371,7 @@
   width: 500px;
   border-left: 1px solid var(--Stroke-Color);
   position: relative;
-  height: calc(100vh - 65px);
+  height: calc(100dvh - 65px);
   overflow-y: auto;
   transition: all 0.4s;
   animation: slideDown 0.4s ease-out forwards;
@@ -457,7 +462,7 @@
       gap: 2px;
       margin-right: 10px;
       width: 100%;
-      max-width: calc(100% - 50px);
+      max-width: calc(100% - 70px);
 
       .docsTitle {
         font-weight: var(--Regular);
@@ -519,47 +524,57 @@
 
     * {
       font-weight: var(--Lighter);
-      font-size: var(--SubTitle-3);
+      font-size: var(--SubTitle-2);
       line-height: 1.4;
-    }
 
+      @media (max-width: 1200px) {
+        font-size: var(--SubTitle-3);
+      }
+    }
     p {
       font-size: var(--SubTitle-2);
       font-weight: var(--Lighter);
       color: var(--Primary-Text-Color);
-    }
 
+      @media (max-width: 1200px) {
+        font-size: var(--SubTitle-3);
+      }
+    }
     b {
-      font-weight: var(--Lighter);
+      font-weight: var(--Bold);
       font-size: var(--SubTitle-2);
       color: var(--Primary-Text-Color);
-    }
-    h1 > *,
-    h1 {
-      font-size: var(--Heading-1);
-      font-weight: var(--Bold);
-    }
-    h2 > *,
-    h2 {
-      font-size: var(--Heading-2);
-    }
-    h3 > *,
-    h3 {
-      font-size: var(--Heading-3);
-    }
-    h4 > *,
-    h4 {
-      font-size: var(--Heading-4);
-    }
-    h5 > *,
-    h5 {
-      font-size: var(--Heading-5);
-    }
-    h6 > *,
-    h6 {
-      font-size: var(--Heading-6);
-    }
 
+      @media (max-width: 1200px) {
+        font-size: var(--SubTitle-3);
+      }
+    }
+    // h1 > *,
+    // h1 {
+    //   font-size: var(--Heading-1);
+    //   font-weight: var(--Bold);
+    // }
+    // h2 > *,
+    // h2 {
+    //   font-size: var(--Heading-2);
+    // }
+    // h3 > *,
+    // h3 {
+    //   font-size: var(--Heading-3);
+    // }
+    // h4 > *,
+    // h4 {
+    //   font-size: var(--Heading-4);
+    // }
+    // h5 > *,
+    // h5 {
+    //   font-size: var(--Heading-5);
+    // }
+    // h6 > *,
+    // h6 {
+    //   font-size: var(--Heading-6);
+    // }
+    h1,
     h2,
     h3,
     h4,
@@ -567,6 +582,29 @@
     h6 {
       font-weight: var(--Bold);
       color: var(--Primary-Text-Color);
+      font-size: var(--SubTitle-1);
+
+      @media (max-width: 1200px) {
+        font-size: var(--SubTitle-2);
+      }
+      b {
+        font-weight: var(--Bold);
+        color: var(--Primary-Text-Color);
+        font-size: var(--SubTitle-1);
+
+        @media (max-width: 1200px) {
+          font-size: var(--SubTitle-2);
+        }
+      }
+    }
+
+    ul {
+      padding-left: 20px;
+
+      li {
+        margin-bottom: 10px;
+        line-height: 1.4;
+      }
     }
 
     .dialogFormButtonBox {
@@ -673,6 +711,62 @@
         line-height: 1.4;
         color: var(--Primary-Text-Color);
       }
+
+      * {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-3);
+        line-height: 1.4;
+      }
+      p {
+        font-size: var(--SubTitle-3);
+        font-weight: var(--Lighter);
+        color: var(--Primary-Text-Color);
+      }
+      b {
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-3);
+        color: var(--Primary-Text-Color);
+      }
+      // h1 > *,
+      // h1 {
+      //   font-size: var(--Heading-1);
+      //   font-weight: var(--Bold);
+      // }
+      // h2 > *,
+      // h2 {
+      //   font-size: var(--Heading-2);
+      // }
+      // h3 > *,
+      // h3 {
+      //   font-size: var(--Heading-3);
+      // }
+      // h4 > *,
+      // h4 {
+      //   font-size: var(--Heading-4);
+      // }
+      // h5 > *,
+      // h5 {
+      //   font-size: var(--Heading-5);
+      // }
+      // h6 > *,
+      // h6 {
+      //   font-size: var(--Heading-6);
+      // }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-weight: var(--Medium);
+        color: var(--Primary-Text-Color);
+        font-size: var(--SubTitle-3);
+        b {
+          font-weight: var(--Medium);
+          color: var(--Primary-Text-Color);
+          font-size: var(--SubTitle-3);
+        }
+      }
     }
   }
 
@@ -680,7 +774,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 0;
     background-color: var(--Card-Color);
     border-radius: 12px;
     width: fit-content;
@@ -690,6 +784,10 @@
 
     @media (max-width: 1200px) {
       margin-bottom: 30px;
+    }
+
+    @media (max-width: 425px) {
+      flex-wrap: wrap;
     }
 
     span.docsDas {
@@ -708,6 +806,15 @@
       gap: 8px;
       text-transform: capitalize;
       padding: 12px 8px;
+
+      @media (max-width: 768px) {
+        padding: 12px;
+      }
+
+      @media (max-width: 450px) {
+        padding: 12px 5px;
+        width: fit-content;
+      }
     }
   }
 }
@@ -793,11 +900,15 @@
   }
 
   .categoryBox .categoriesTitle {
-    font-weight: var(--Regular);
-    font-size: var(--SubTitle-1);
-    line-height: 1.4;
-    letter-spacing: 0%;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 34px;
     color: var(--Primary-Text-Color);
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
   }
 }
 
@@ -825,7 +936,7 @@
     }
 
     p {
-      font-weight: var(--Medium);
+      font-weight: var(--Regular);
       font-size: var(--SubTitle-4);
       line-height: 1.4;
       color: var(--Primary-Text-Color);
