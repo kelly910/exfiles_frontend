@@ -20,25 +20,6 @@ export default function ActivePlan() {
     (state: RootState) => state.login.loggedInUser
   );
   const dispatch = useAppDispatch();
-
-  const startDate = loggedInUser?.data?.active_subscription?.activate_date
-    ? dayjs(
-        loggedInUser?.data?.active_subscription?.activate_date?.replace(
-          /([+-]\d{2}:\d{2}):\d{2}$/,
-          '$1'
-        )
-      ).format('MM/DD/YYYY')
-    : '-';
-
-  const endDate = loggedInUser?.data?.active_subscription?.deactivate_date
-    ? dayjs(
-        loggedInUser?.data?.active_subscription?.deactivate_date?.replace(
-          /([+-]\d{2}:\d{2}):\d{2}$/,
-          '$1'
-        )
-      ).format('MM/DD/YYYY')
-    : '-';
-
   const fetchedUser = useSelector(selectFetchedUser);
 
   useEffect(() => {
@@ -46,6 +27,24 @@ export default function ActivePlan() {
       dispatch(getUserById(loggedInUser?.data?.id));
     }
   }, [dispatch]);
+
+  const startDate = fetchedUser?.active_subscription?.activate_date
+    ? dayjs(
+        fetchedUser?.active_subscription?.activate_date?.replace(
+          /([+-]\d{2}:\d{2}):\d{2}$/,
+          '$1'
+        )
+      ).format('MM/DD/YYYY')
+    : '-';
+
+  const endDate = fetchedUser?.active_subscription?.deactivate_date
+    ? dayjs(
+        fetchedUser?.active_subscription?.deactivate_date?.replace(
+          /([+-]\d{2}:\d{2}):\d{2}$/,
+          '$1'
+        )
+      ).format('MM/DD/YYYY')
+    : '-';
 
   const used = 1.6;
   const total = 4;
