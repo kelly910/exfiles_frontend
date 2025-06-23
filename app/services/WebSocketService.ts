@@ -5,6 +5,7 @@ import { IMessageEvent, w3cwebsocket as W3CWebSocket } from 'websocket';
 import { getCookie } from 'cookies-next';
 import { AppDispatch } from '@store/store';
 import { setWebSocketMessage } from '../redux/slices/Chat';
+import { gtagEvent } from '../utils/functions';
 
 export let socket: W3CWebSocket | null = null;
 let dispatch: AppDispatch;
@@ -40,6 +41,11 @@ export const WebSocketService = (): void => {
       try {
         const data = JSON.parse(event.data as string);
         dispatch(setWebSocketMessage(data));
+        gtagEvent({
+          action: 'chat_used',
+          category: 'User Engagement',
+          label: 'Chat area interaction',
+        });
       } catch (err) {
         console.log(err);
         console.error('❌ Invalid message format:', event.data);

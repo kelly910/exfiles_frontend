@@ -30,7 +30,7 @@ import {
   downloadSelectedDocsReport,
   fetchAllDocuments,
 } from '@/app/redux/slices/documentByCategory';
-import { getDocumentImage } from '@/app/utils/functions';
+import { getDocumentImage, gtagEvent } from '@/app/utils/functions';
 import {
   convertDateFormat,
   convertDateFormatForIncident,
@@ -237,6 +237,11 @@ const DownloadDocReport = () => {
           document_uuid: selectedDocsDownload.join(','),
         };
         await dispatch(downloadSelectedDocsReport(payload));
+        gtagEvent({
+          action: 'export_summary',
+          category: 'Export',
+          label: 'Summary report exported',
+        });
         setLoading(false);
       } else {
         const payload = {
@@ -248,6 +253,11 @@ const DownloadDocReport = () => {
           type: 'all',
         };
         await dispatch(downloadSelectedDocsReport(payload));
+        gtagEvent({
+          action: 'export_summary',
+          category: 'Export',
+          label: 'Summary report exported',
+        });
         setLoading(false);
       }
       setLoading(false);

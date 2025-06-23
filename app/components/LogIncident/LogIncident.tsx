@@ -43,6 +43,7 @@ import {
   highlightText,
 } from '@/app/utils/constants';
 import Slider from 'react-slick';
+import { gtagEvent } from '@/app/utils/functions';
 
 export interface FileDataImage {
   file_url: string;
@@ -280,6 +281,11 @@ export default function LogIncident() {
           incidents_id: selectedLogsDownload.join(','),
         };
         await dispatch(downloadSelectedLogsReport(payload));
+        gtagEvent({
+          action: 'export_log_incident',
+          category: 'Export',
+          label: 'Log incident report exported',
+        });
         setLoading(false);
       } else {
         const payload = {
@@ -290,6 +296,11 @@ export default function LogIncident() {
           type: 'all',
         };
         await dispatch(downloadSelectedLogsReport(payload));
+        gtagEvent({
+          action: 'export_log_incident',
+          category: 'Export',
+          label: 'Log incident report exported',
+        });
         setLoading(false);
       }
       setLoading(false);

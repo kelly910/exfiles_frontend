@@ -10,6 +10,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import FullPageLoader from './components/Full-Page-Loader/FullPageLoader';
 import ClientAuthCheck from './components/ClientAuthCheck';
 import { SearchProvider } from './components/AI-Chat-Module/context/SearchContext';
+import GoogleAnalytics from './components/GoogleAnalytics';
 
 // const fustatFont = localFont({
 //   src: './fonts/Fustat-VariableFont_wght.woff',
@@ -35,9 +36,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isProduction =
+    process.env.NEXT_PUBLIC_ENVIRONMENT_SERVER === 'production';
+
   return (
     <html lang="en">
       <body>
+        {isProduction && <GoogleAnalytics />}
         <SearchProvider>
           <ClientAuthCheck>
             <GoogleOAuthProvider
