@@ -46,7 +46,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
     backgroundColor: 'var(--Card-Color)',
     margin: '0px',
-    border: '1px solid #3a3948',
+    border: '1px solid var(--Stroke-Color)',
     borderRadius: '16px',
     minWidth: '650px',
     maxHeight: '100%',
@@ -149,7 +149,7 @@ const newTheme = (theme: Theme) =>
         styleOverrides: {
           root: {
             color: 'var(--Primary-Text-Color)',
-            fontWeight: 'bold',
+            fontWeight: 'var(--Bold)',
             '&:hover': {
               border: '1px solid var(--Card-Border)',
               color: 'var(--Primary-Text-Color)',
@@ -308,7 +308,7 @@ const newThemeSelect = createTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          fontSize: '14px',
+          fontSize: 'var(--SubTitle-3)',
           padding: '8px 16px',
           color: 'var(--Primary-Text-Color)',
           borderRadius: '12px',
@@ -655,8 +655,8 @@ export default function LogModel({
                       sx={{
                         color:
                           errors.description && touched.description
-                            ? '#ff4d4d'
-                            : '#676972',
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
                       }}
                     >
                       Description (Required)
@@ -678,7 +678,7 @@ export default function LogModel({
                           borderRadius: '12px',
                           borderWidth: '0px',
                           color: 'var(--Primary-Text-Color)',
-                          backgroundColor: '#252431',
+                          backgroundColor: 'var(--Input-Box-Colors)',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
@@ -689,27 +689,27 @@ export default function LogModel({
                             fontWeight: 'var(--Regular)',
                             borderRadius: '0',
                             '&::placeholder': {
-                              color: '#888',
-                              fontWeight: 400,
+                              color: 'var(--Placeholder-Text)',
+                              fontWeight: 'var(--Lighter)',
                             },
                           },
                           '& fieldset': {
-                            borderColor: '#3A3948',
+                            borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#fff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: '#fff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                             borderWidth: '1px',
-                            color: '#fff',
+                            color: 'var(--Txt-On-Gradient)',
                           },
                         },
                         '& .MuiFormHelperText-root': {
                           color:
                             errors.description && touched.description
-                              ? '#ff4d4d'
-                              : '#b0b0b0',
+                              ? 'var(--Red-Color)'
+                              : 'var(--Placeholder-Text)',
                         },
                       }}
                     />
@@ -807,8 +807,8 @@ export default function LogModel({
                       sx={{
                         color:
                           errors.incident_time && touched.incident_time
-                            ? '#ff4d4d'
-                            : '#676972',
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
                       }}
                     >
                       Date & Time (Required)
@@ -819,7 +819,7 @@ export default function LogModel({
                           sx={{
                             display: 'flex',
                             alignItems: 'stretch',
-                            border: '1px solid #444',
+                            border: '1px solid var(--Stroke-Color)',
                             borderRadius: '12px',
                             overflow: 'hidden',
                             backgroundColor: 'var(--Input-Box-Colors)',
@@ -1026,7 +1026,7 @@ export default function LogModel({
                               borderRadius: '12px',
                               borderWidth: '0px',
                               color: 'var(--Primary-Text-Color)',
-                              backgroundColor: '#252431',
+                              backgroundColor: 'var(--Input-Box-Colors)',
                               '& .MuiOutlinedInput-notchedOutline': {
                                 top: '-10px !important',
                               },
@@ -1037,27 +1037,27 @@ export default function LogModel({
                                 fontWeight: 'var(--Regular)',
                                 borderRadius: '12px',
                                 '&::placeholder': {
-                                  color: '#888',
-                                  fontWeight: 400,
+                                  color: 'var(--Placeholder-Text)',
+                                  fontWeight: 'var(--Lighter)',
                                 },
                               },
                               '& fieldset': {
-                                borderColor: '#3A3948',
+                                borderColor: 'var(--Stroke-Color)',
                               },
                               '&:hover fieldset': {
-                                borderColor: '#fff',
+                                borderColor: 'var(--Txt-On-Gradient)',
                               },
                               '&.Mui-focused fieldset': {
-                                borderColor: '#fff',
+                                borderColor: 'var(--Txt-On-Gradient)',
                                 borderWidth: '1px',
-                                color: '#fff',
+                                color: 'var(--Txt-On-Gradient)',
                               },
                             },
                             '& .MuiFormHelperText-root': {
                               color:
                                 errors.other_tag && touched.other_tag
-                                  ? '#ff4d4d'
-                                  : '#b0b0b0',
+                                  ? 'var(--Red-Color)'
+                                  : 'var(--Placeholder-Text)',
                             },
                           }}
                         />
@@ -1069,287 +1069,287 @@ export default function LogModel({
                       )}
                     </Box>
                   </div>
-                    <div className={LogStyle.dialogFormGroup}>
-                      <Typography
-                        variant="body2"
-                        component="label"
-                        htmlFor="location"
-                        className={LogStyle.dialogFormLabel}
-                        sx={{
+                  <div className={LogStyle.dialogFormGroup}>
+                    <Typography
+                      variant="body2"
+                      component="label"
+                      htmlFor="location"
+                      className={LogStyle.dialogFormLabel}
+                      sx={{
+                        color:
+                          errors.location && touched.location
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
+                      }}
+                    >
+                      Location
+                    </Typography>
+                    <Field
+                      as={TextField}
+                      fullWidth
+                      type="text"
+                      id="location"
+                      name="location"
+                      placeholder="Enter Location"
+                      error={Boolean(errors.location && touched.location)}
+                      sx={{
+                        marginTop: '4px',
+                        padding: '0',
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '12px',
+                          borderWidth: '0px',
+                          color: 'var(--Primary-Text-Color)',
+                          backgroundColor: 'var(--Input-Box-Colors)',
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            top: '-10px !important',
+                          },
+                          '& .MuiOutlinedInput-input': {
+                            fontSize: 'var(--SubTitle-3)',
+                            color: 'var(--Primary-Text-Color)',
+                            padding: '14px 16px',
+                            fontWeight: 'var(--Regular)',
+                            borderRadius: '12px',
+                            '&::placeholder': {
+                              color: 'var(--Placeholder-Text)',
+                              fontWeight: 'var(--Lighter)',
+                            },
+                          },
+                          '& fieldset': {
+                            borderColor: 'var(--Stroke-Color)',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'var(--Txt-On-Gradient)',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderWidth: '1px',
+                            color: 'var(--Txt-On-Gradient)',
+                          },
+                        },
+                        '& .MuiFormHelperText-root': {
                           color:
                             errors.location && touched.location
-                              ? '#ff4d4d'
-                              : '#676972',
-                        }}
-                      >
-                        Location
-                      </Typography>
-                      <Field
-                        as={TextField}
-                        fullWidth
-                        type="text"
-                        id="location"
-                        name="location"
-                        placeholder="Enter Location"
-                        error={Boolean(errors.location && touched.location)}
-                        sx={{
-                          marginTop: '4px',
-                          padding: '0',
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: '12px',
-                            borderWidth: '0px',
+                              ? 'var(--Red-Color)'
+                              : 'var(--Placeholder-Text)',
+                        },
+                      }}
+                    />
+                    <ErrorMessage
+                      name="location"
+                      component="div"
+                      className="error-input-field"
+                    />
+                  </div>
+                  <div className={LogStyle.dialogFormGroup}>
+                    <Typography
+                      variant="body2"
+                      component="label"
+                      htmlFor="involved_person_name"
+                      className={LogStyle.dialogFormLabel}
+                      sx={{
+                        color:
+                          errors.involved_person_name &&
+                          touched.involved_person_name
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
+                      }}
+                    >
+                      Person Involved
+                    </Typography>
+                    <Field
+                      as={TextField}
+                      fullWidth
+                      type="text"
+                      id="involved_person_name"
+                      name="involved_person_name"
+                      placeholder="Enter Names of persons involved in this incident "
+                      error={Boolean(
+                        errors.involved_person_name &&
+                          touched.involved_person_name
+                      )}
+                      sx={{
+                        marginTop: '4px',
+                        padding: '0',
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '12px',
+                          borderWidth: '0px',
+                          color: 'var(--Primary-Text-Color)',
+                          backgroundColor: 'var(--Input-Box-Colors)',
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            top: '-10px !important',
+                          },
+                          '& .MuiOutlinedInput-input': {
+                            fontSize: 'var(--SubTitle-3)',
                             color: 'var(--Primary-Text-Color)',
-                            backgroundColor: '#252431',
-                            '& .MuiOutlinedInput-notchedOutline': {
-                              top: '-10px !important',
-                            },
-                            '& .MuiOutlinedInput-input': {
-                              fontSize: 'var(--SubTitle-3)',
-                              color: 'var(--Primary-Text-Color)',
-                              padding: '14px 16px',
-                              fontWeight: 'var(--Regular)',
-                              borderRadius: '12px',
-                              '&::placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
-                              },
-                            },
-                            '& fieldset': {
-                              borderColor: '#3A3948',
-                            },
-                            '&:hover fieldset': {
-                              borderColor: '#fff',
-                            },
-                            '&.Mui-focused fieldset': {
-                              borderColor: '#fff',
-                              borderWidth: '1px',
-                              color: '#fff',
+                            padding: '14px 16px',
+                            fontWeight: 'var(--Regular)',
+                            borderRadius: '12px',
+                            '&::placeholder': {
+                              color: 'var(--Placeholder-Text)',
+                              fontWeight: 'var(--Lighter)',
                             },
                           },
-                          '& .MuiFormHelperText-root': {
-                            color:
-                              errors.location && touched.location
-                                ? '#ff4d4d'
-                                : '#b0b0b0',
+                          '& fieldset': {
+                            borderColor: 'var(--Stroke-Color)',
                           },
-                        }}
-                      />
-                      <ErrorMessage
-                        name="location"
-                        component="div"
-                        className="error-input-field"
-                      />
-                    </div>
-                    <div className={LogStyle.dialogFormGroup}>
-                      <Typography
-                        variant="body2"
-                        component="label"
-                        htmlFor="involved_person_name"
-                        className={LogStyle.dialogFormLabel}
-                        sx={{
+                          '&:hover fieldset': {
+                            borderColor: 'var(--Txt-On-Gradient)',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderWidth: '1px',
+                            color: 'var(--Txt-On-Gradient)',
+                          },
+                        },
+                        '& .MuiFormHelperText-root': {
                           color:
                             errors.involved_person_name &&
                             touched.involved_person_name
-                              ? '#ff4d4d'
-                              : '#676972',
-                        }}
+                              ? 'var(--Red-Color)'
+                              : 'var(--Placeholder-Text)',
+                        },
+                      }}
+                    />
+                    <ErrorMessage
+                      name="involved_person_name"
+                      component="div"
+                      className="error-input-field"
+                    />
+                  </div>
+                  <div className={LogStyle.dialogFormGroupMain}>
+                    <div className={LogStyle.dialogFormGroup}>
+                      <Typography
+                        variant="body2"
+                        component="label"
+                        htmlFor="category"
+                        className={LogStyle.dialogFormLabel}
                       >
-                        Person Involved
+                        Document Category
                       </Typography>
-                      <Field
-                        as={TextField}
-                        fullWidth
-                        type="text"
-                        id="involved_person_name"
-                        name="involved_person_name"
-                        placeholder="Enter Names of persons involved in this incident "
-                        error={Boolean(
-                          errors.involved_person_name &&
-                            touched.involved_person_name
-                        )}
-                        sx={{
-                          marginTop: '4px',
-                          padding: '0',
-                          '& .MuiOutlinedInput-root': {
+                      <ThemeProvider theme={newThemeSelect}>
+                        <Field
+                          as={Select}
+                          id="category"
+                          name="category"
+                          onChange={(
+                            e: React.ChangeEvent<HTMLSelectElement>
+                          ) => {
+                            setFieldValue('category', e.target.value);
+                            handleFetchCategoryDocuments(
+                              Number(e.target.value),
+                              setFieldValue
+                            );
+                          }}
+                          value={values.category}
+                          displayEmpty
+                          inputProps={{ 'aria-label': 'Person Involved' }}
+                          sx={{
+                            backgroundColor: 'var(--Input-Box-Colors)',
                             borderRadius: '12px',
-                            borderWidth: '0px',
+                            fontSize: 'var(--SubTitle-3)',
+                            fontWeight: 'var(--Regular)',
                             color: 'var(--Primary-Text-Color)',
-                            backgroundColor: '#252431',
+                            width: '100%',
                             '& .MuiOutlinedInput-notchedOutline': {
-                              top: '-10px !important',
+                              top: '-8px !important',
+                              borderColor: 'var(--Stroke-Color)',
                             },
-                            '& .MuiOutlinedInput-input': {
-                              fontSize: 'var(--SubTitle-3)',
-                              color: 'var(--Primary-Text-Color)',
-                              padding: '14px 16px',
-                              fontWeight: 'var(--Regular)',
-                              borderRadius: '12px',
-                              '&::placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
-                              },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                              borderColor: 'var(--Txt-On-Gradient)',
                             },
-                            '& fieldset': {
-                              borderColor: '#3A3948',
-                            },
-                            '&:hover fieldset': {
-                              borderColor: '#fff',
-                            },
-                            '&.Mui-focused fieldset': {
-                              borderColor: '#fff',
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              borderColor: 'var(--Txt-On-Gradient)',
                               borderWidth: '1px',
-                              color: '#fff',
                             },
-                          },
-                          '& .MuiFormHelperText-root': {
-                            color:
-                              errors.involved_person_name &&
-                              touched.involved_person_name
-                                ? '#ff4d4d'
-                                : '#b0b0b0',
-                          },
-                        }}
-                      />
-                      <ErrorMessage
-                        name="involved_person_name"
-                        component="div"
-                        className="error-input-field"
-                      />
-                    </div>
-                    <div className={LogStyle.dialogFormGroupMain}>
-                      <div className={LogStyle.dialogFormGroup}>
-                        <Typography
-                          variant="body2"
-                          component="label"
-                          htmlFor="category"
-                          className={LogStyle.dialogFormLabel}
+                            '& .MuiSelect-select': {
+                              padding: '14px 16px',
+                              display: 'block',
+                            },
+                            '& .MuiSelect-placeholder': {
+                              color: 'var(--Placeholder-Text)',
+                              fontWeight: 'var(--Lighter)',
+                            },
+                          }}
                         >
-                          Document Category
-                        </Typography>
-                        <ThemeProvider theme={newThemeSelect}>
-                          <Field
-                            as={Select}
-                            id="category"
-                            name="category"
-                            onChange={(
-                              e: React.ChangeEvent<HTMLSelectElement>
-                            ) => {
-                              setFieldValue('category', e.target.value);
-                              handleFetchCategoryDocuments(
-                                Number(e.target.value),
-                                setFieldValue
-                              );
-                            }}
-                            value={values.category}
-                            displayEmpty
-                            inputProps={{ 'aria-label': 'Person Involved' }}
-                            sx={{
-                              backgroundColor: '#252431',
-                              borderRadius: '12px',
-                              fontSize: 'var(--SubTitle-3)',
-                              fontWeight: 'var(--Regular)',
-                              color: 'var(--Primary-Text-Color)',
-                              width: '100%',
-                              '& .MuiOutlinedInput-notchedOutline': {
-                                top: '-8px !important',
-                                borderColor: '#3A3948',
-                              },
-                              '&:hover .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#fff',
-                              },
-                              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#fff',
-                                borderWidth: '1px',
-                              },
-                              '& .MuiSelect-select': {
-                                padding: '14px 16px',
-                                display: 'block',
-                              },
-                              '& .MuiSelect-placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
-                              },
-                            }}
+                          <MenuItem
+                            value=""
+                            disabled
+                            style={{ opacity: '0.38' }}
                           >
-                            <MenuItem
-                              value=""
-                              disabled
-                              style={{ opacity: '0.38' }}
-                            >
-                              Choose Category
-                            </MenuItem>
-                            {categories
-                              ?.filter((cat) => cat?.no_of_docs > 0)
-                              ?.map((cat, index) => (
-                                <MenuItem key={index} value={cat.id}>
-                                  {cat.name}
-                                </MenuItem>
-                              ))}
-                          </Field>
-                        </ThemeProvider>
-                      </div>
-                      <div className={LogStyle.dialogFormGroup}>
-                        <Typography
-                          variant="body2"
-                          component="label"
-                          htmlFor="document"
-                          className={LogStyle.dialogFormLabel}
-                        >
-                          Document
-                        </Typography>
-                        <ThemeProvider theme={newThemeSelect}>
-                          <Field
-                            as={Select}
-                            id="document"
-                            name="document"
-                            onChange={(
-                              e: React.ChangeEvent<HTMLSelectElement>
-                            ) => {
-                              setFieldValue('document', e.target.value);
-                            }}
-                            value={values.document}
-                            displayEmpty
-                            inputProps={{ 'aria-label': 'Person Involved' }}
-                            sx={{
-                              backgroundColor: '#252431',
-                              borderRadius: '12px',
-                              fontSize: 'var(--SubTitle-3)',
-                              fontWeight: 'var(--Regular)',
-                              color: 'var(--Primary-Text-Color)',
-                              width: '100%',
-                              '& .MuiOutlinedInput-notchedOutline': {
-                                top: '-8px !important',
-                                borderColor: '#3A3948',
-                              },
-                              '&:hover .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#fff',
-                              },
-                              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#fff',
-                                borderWidth: '1px',
-                              },
-                              '& .MuiSelect-select': {
-                                padding: '14px 16px',
-                                display: 'block',
-                              },
-                              '& .MuiSelect-placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
-                              },
-                            }}
-                          >
-                            <MenuItem value="" disabled>
-                              Choose Document
-                            </MenuItem>
-                            {documents?.map((doc, index) => (
-                              <MenuItem key={index} value={doc.id}>
-                                {doc.file_name}
+                            Choose Category
+                          </MenuItem>
+                          {categories
+                            ?.filter((cat) => cat?.no_of_docs > 0)
+                            ?.map((cat, index) => (
+                              <MenuItem key={index} value={cat.id}>
+                                {cat.name}
                               </MenuItem>
                             ))}
-                          </Field>
-                        </ThemeProvider>
-                      </div>
+                        </Field>
+                      </ThemeProvider>
                     </div>
+                    <div className={LogStyle.dialogFormGroup}>
+                      <Typography
+                        variant="body2"
+                        component="label"
+                        htmlFor="document"
+                        className={LogStyle.dialogFormLabel}
+                      >
+                        Document
+                      </Typography>
+                      <ThemeProvider theme={newThemeSelect}>
+                        <Field
+                          as={Select}
+                          id="document"
+                          name="document"
+                          onChange={(
+                            e: React.ChangeEvent<HTMLSelectElement>
+                          ) => {
+                            setFieldValue('document', e.target.value);
+                          }}
+                          value={values.document}
+                          displayEmpty
+                          inputProps={{ 'aria-label': 'Person Involved' }}
+                          sx={{
+                            backgroundColor: 'var(--Input-Box-Colors)',
+                            borderRadius: '12px',
+                            fontSize: 'var(--SubTitle-3)',
+                            fontWeight: 'var(--Regular)',
+                            color: 'var(--Primary-Text-Color)',
+                            width: '100%',
+                            '& .MuiOutlinedInput-notchedOutline': {
+                              top: '-8px !important',
+                              borderColor: 'var(--Stroke-Color)',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                              borderColor: 'var(--Txt-On-Gradient)',
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              borderColor: 'var(--Txt-On-Gradient)',
+                              borderWidth: '1px',
+                            },
+                            '& .MuiSelect-select': {
+                              padding: '14px 16px',
+                              display: 'block',
+                            },
+                            '& .MuiSelect-placeholder': {
+                              color: 'var(--Placeholder-Text)',
+                              fontWeight: 'var(--Lighter)',
+                            },
+                          }}
+                        >
+                          <MenuItem value="" disabled>
+                            Choose Document
+                          </MenuItem>
+                          {documents?.map((doc, index) => (
+                            <MenuItem key={index} value={doc.id}>
+                              {doc.file_name}
+                            </MenuItem>
+                          ))}
+                        </Field>
+                      </ThemeProvider>
+                    </div>
+                  </div>
                 </Box>
               </DialogContent>
 

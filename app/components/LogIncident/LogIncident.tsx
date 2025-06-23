@@ -430,31 +430,31 @@ export default function LogIncident() {
                   position: 'relative',
                   overflow: 'hidden',
                   width: '100%',
-                  backgroundColor: '#11101B',
+                  backgroundColor: 'var(--Background-Color)',
                   borderRadius: '8px',
                   boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
                   display: 'flex',
                   flexDirection: 'column',
                   '& .MuiDataGrid-root': {
-                    backgroundColor: '#11101B',
-                    color: '#DADAE1',
+                    backgroundColor: 'var(--Background-Color)',
+                    color: 'var(--Primary-Text-Color)',
                     borderRadius: '8px',
                     border: 'none',
                   },
                   '& .MuiDataGrid-row:nth-of-type(even)': {
-                    backgroundColor: '#11101B',
-                    color: '#DADAE1',
+                    backgroundColor: 'var(--Background-Color)',
+                    color: 'var(--Primary-Text-Color)',
                   },
                   '& .MuiDataGrid-row:nth-of-type(odd)': {
-                    backgroundColor: '#1B1A25',
-                    color: '#DADAE1',
+                    backgroundColor: 'var(--Card-Color)',
+                    color: 'var(--Primary-Text-Color)',
                     borderRadius: '10px',
                   },
                   '& .MuiDataGrid-columnHeaders': {
-                    backgroundColor: '#11101B',
-                    color: '#DADAE1',
-                    fontSize: '16px',
-                    fontWeight: 'bold',
+                    backgroundColor: 'var(--Background-Color)',
+                    color: 'var(--Primary-Text-Color)',
+                    fontSize: 'var(--SubTitle-2)',
+                    fontWeight: 'var(--Bold)',
                     borderBottom: 'none !important',
                   },
                   '& .MuiDataGrid-columnHeader': {
@@ -469,38 +469,38 @@ export default function LogIncident() {
                   '& .MuiDataGrid-cell': {
                     border: 'none',
                     borderTop: 'none !important',
-                    fontSize: '14px',
+                    fontSize: 'var(--SubTitle-3)',
                   },
                   '& .MuiDataGrid-footerContainer': {
-                    backgroundColor: '#1B1A25',
+                    backgroundColor: 'var(--Card-Color)',
                     borderTop: 'none',
-                    color: '#DADAE1',
+                    color: 'var(--Primary-Text-Color)',
                     borderRadius: '10px',
                   },
                   '& .MuiTablePagination-root': {
-                    color: '#DADAE1',
+                    color: 'var(--Primary-Text-Color)',
                   },
                   '& .MuiSelect-select': {
-                    color: '#DADAE1',
-                    backgroundColor: '#11101B',
+                    color: 'var(--Primary-Text-Color)',
+                    backgroundColor: 'var(--Background-Color)',
                     borderRadius: '8px',
                   },
                   '& .MuiTablePagination-actions button': {
-                    color: '#DADAE1',
+                    color: 'var(--Primary-Text-Color)',
                   },
                   '& .Mui-disabled': {
-                    color: '#666',
+                    color: 'var(--Subtext-Color)',
                   },
                   '& .MuiDataGrid-container': {
-                    backgroundColor: '#11101B',
+                    backgroundColor: 'var(--Background-Color)',
                   },
                   '& .MuiDataGrid-row': {
-                    backgroundColor: '#11101B',
+                    backgroundColor: 'var(--Background-Color)',
                   },
                   '& .MuiDataGrid-container--top [role=row]': {
-                    backgroundColor: '#11101B !important',
-                    color: '#FFF',
-                    fontWeight: 'bold',
+                    backgroundColor: 'var(--Background-Color) !important',
+                    color: 'var(--Txt-On-Gradient)',
+                    fontWeight: 'var(--Bold)',
                   },
                 }}
               >
@@ -735,7 +735,8 @@ export default function LogIncident() {
                                             sx={{
                                               width: 20,
                                               height: 20,
-                                              border: '1px solid #ffffff99',
+                                              border:
+                                                '1px solid var(--Subtext-Color)',
                                               borderRadius: '6px',
                                               backgroundColor: 'transparent',
                                             }}

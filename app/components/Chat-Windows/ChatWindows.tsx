@@ -135,10 +135,10 @@ function ChatAlSummary() {
               alt="A S"
               src="/static/images/avatar/2.jpg"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '140%',
               }}
@@ -206,10 +206,10 @@ function ChatAlHold() {
               alt="A S"
               src="/static/images/avatar/2.jpg"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '140%',
               }}
@@ -261,10 +261,10 @@ function ChatAlFiles() {
               alt="A S"
               src="/static/images/avatar/2.jpg"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '140%',
               }}
@@ -539,10 +539,10 @@ function ChatAlCombined() {
               alt="A S"
               src="/static/images/avatar/2.jpg"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '140%',
               }}
@@ -612,10 +612,10 @@ function ChatAlError() {
               alt="A S"
               src="/static/images/avatar/2.jpg"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '140%',
               }}
@@ -684,10 +684,10 @@ function ChatUser() {
       <Box component="div" className={styles.chatAlImg}>
         <Avatar
           sx={{
-            backgroundColor: '#DADAE1',
-            color: '#1B1A25',
-            fontSize: '16px',
-            fontWeight: 600,
+            backgroundColor: 'var(--Primary-Text-Color)',
+            color: 'var(--Card-Color)',
+            fontSize: 'var(--SubTitle-2)',
+            fontWeight: 'var(--Medium)',
             padding: '9px 10px',
             lineHeight: '140%',
           }}
@@ -848,10 +848,10 @@ function UserDocsUpload() {
       <Box component="div" className={styles.chatAlImg}>
         <Avatar
           sx={{
-            backgroundColor: '#DADAE1',
-            color: '#1B1A25',
-            fontSize: '16px',
-            fontWeight: 600,
+            backgroundColor: 'var(--Primary-Text-Color)',
+            color: 'var(--Card-Color)',
+            fontSize: 'var(--SubTitle-2)',
+            fontWeight: 'var(--Medium)',
             padding: '9px 10px',
             lineHeight: '140%',
           }}
@@ -891,10 +891,10 @@ function GeneratingCombined() {
       <Box component="div" className={styles.chatAlImg}>
         <Avatar
           sx={{
-            backgroundColor: '#DADAE1',
-            color: '#1B1A25',
-            fontSize: '16px',
-            fontWeight: 600,
+            backgroundColor: 'var(--Primary-Text-Color)',
+            color: 'var(--Card-Color)',
+            fontSize: 'var(--SubTitle-2)',
+            fontWeight: 'var(--Medium)',
             padding: '9px 10px',
             lineHeight: '140%',
           }}

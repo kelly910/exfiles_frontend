@@ -27,9 +27,9 @@ import { showToast } from '@/app/shared/toast/ShowToast';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
-    backgroundColor: '#11101b',
+    backgroundColor: 'var(--Background-Color)',
     margin: '0px',
-    border: '1px solid #3a3948',
+    border: '1px solid var(--Stroke-Color)',
     borderRadius: '16px',
     minWidth: '600px',
     maxWidth: '90vw',
@@ -71,7 +71,8 @@ const RenameDialog = ({ open, onClose, category }: RenameProps) => {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().trim()
+    name: Yup.string()
+      .trim()
       .max(50, 'Category must be at most 50 characters')
       .required('Category is required'),
   });
@@ -209,7 +210,9 @@ const RenameDialog = ({ open, onClose, category }: RenameProps) => {
                     },
                     '& .MuiFormHelperText-root': {
                       color:
-                        errors.name && touched.name ? '#ff4d4d' : '#b0b0b0',
+                        errors.name && touched.name
+                          ? 'var(--Red-Color)'
+                          : 'var(--Placeholder-Text)',
                     },
                   }}
                 />

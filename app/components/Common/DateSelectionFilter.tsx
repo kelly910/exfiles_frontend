@@ -75,8 +75,8 @@ export default function DateSelectionFilter({
               },
               '& .MuiDayCalendar-header span': {
                 color: 'var(--Primary-Text-Color)', // your desired style
-                fontWeight: 600,
-                fontSize: '14px',
+                fontWeight: 'var(--Medium)',
+                fontSize: 'var(--SubTitle-3)',
               },
               button: {
                 backgroundColor: 'var(--Card-Color)',
@@ -112,7 +112,7 @@ export default function DateSelectionFilter({
           styleOverrides: {
             root: {
               color: 'var(--Primary-Text-Color)',
-              fontWeight: 'bold',
+              fontWeight: 'var(--Bold)',
               '&:hover': {
                 border: '1px solid var(--Card-Border)',
                 color: 'var(--Primary-Text-Color)',
@@ -236,7 +236,7 @@ export default function DateSelectionFilter({
                   sx={{
                     display: 'flex',
                     alignItems: 'stretch',
-                    border: '1px solid #444',
+                    border: '1px solid var(--Stroke-Color)',
                     borderRadius: '12px',
                     overflow: 'hidden',
                     backgroundColor: 'var(--Input-Box-Colors)',
@@ -247,7 +247,7 @@ export default function DateSelectionFilter({
                     sx={{
                       padding: '8px 12px',
                       color: 'var(--Primary-Text-Color)',
-                      borderRight: '1px solid #444',
+                      borderRight: '1px solid var(--Stroke-Color)',
                       display: 'flex',
                       alignItems: 'center',
                       fontSize: 'var(--SubTitle-3)',
@@ -272,7 +272,7 @@ export default function DateSelectionFilter({
                         sx: {
                           '&.Mui-disabled': {
                             '& span': {
-                              color: '#9e9e9e',
+                              color: 'var(--Subtext-Color)',
                             },
                           },
                           '& .MuiPickersInputBase-root': {
@@ -338,7 +338,7 @@ export default function DateSelectionFilter({
                   sx={{
                     display: 'flex',
                     alignItems: 'stretch',
-                    border: '1px solid #444',
+                    border: '1px solid var(--Stroke-Color)',
                     borderRadius: '12px',
                     overflow: 'hidden',
                     backgroundColor: 'var(--Input-Box-Colors)',
@@ -349,7 +349,7 @@ export default function DateSelectionFilter({
                     sx={{
                       padding: '8px 12px',
                       color: 'var(--Primary-Text-Color)',
-                      borderRight: '1px solid #444',
+                      borderRight: '1px solid var(--Stroke-Color)',
                       display: 'flex',
                       alignItems: 'center',
                       fontSize: 'var(--SubTitle-3)',
@@ -376,7 +376,7 @@ export default function DateSelectionFilter({
                         sx: {
                           '&.Mui-disabled': {
                             '& span': {
-                              color: '#9e9e9e',
+                              color: 'var(--Subtext-Color)',
                             },
                           },
                           '& .MuiPickersInputBase-root': {

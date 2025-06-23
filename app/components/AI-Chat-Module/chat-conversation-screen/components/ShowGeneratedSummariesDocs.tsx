@@ -254,7 +254,7 @@ export default function ShowGeneratedSummariesDocs({
                               {isLoading ? (
                                 <CircularProgress
                                   size={18}
-                                  sx={{ color: '#fff' }}
+                                  sx={{ color: 'var(--Txt-On-Gradient)' }}
                                 />
                               ) : (
                                 <>

@@ -263,7 +263,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
               maxWidth: 'calc(100% - 64px)',
               maxHeight: 'calc(100dvh - 65px)',
               background: 'var(--Card-Color)',
-              borderLeft: '1px solid  #3A3948',
+              borderLeft: '1px solid  var(--Stroke-Color)',
             },
             '& .MuiBackdrop-root': {
               top: '65px',

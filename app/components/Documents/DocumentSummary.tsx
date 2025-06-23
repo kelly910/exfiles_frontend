@@ -273,42 +273,42 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                                   '& .MuiOutlinedInput-root': {
                                     borderRadius: '12px',
                                     borderWidth: '0px',
-                                    color: '#DADAE1',
-                                    backgroundColor: '#252431',
+                                    color: 'var(--Primary-Text-Color)',
+                                    backgroundColor: 'var(--Input-Box-Colors)',
                                     padding: '14px 16px',
                                     '& .MuiOutlinedInput-notchedOutline': {
                                       top: '-10px !important',
                                     },
                                     '& .MuiOutlinedInput-input': {
-                                      fontSize: '14px',
-                                      color: '#DADAE1',
-                                      fontWeight: 500,
+                                      fontSize: 'var(--SubTitle-3)',
+                                      color: 'var(--Primary-Text-Color)',
+                                      fontWeight: 'var(--Regular)',
                                       borderRadius: '12px',
                                       padding: '2px',
                                       maxHeight: '350px',
                                       overflowY: 'auto !important',
                                       '&::placeholder': {
-                                        color: '#888',
-                                        fontWeight: 400,
+                                        color: 'var(--Placeholder-Text)',
+                                        fontWeight: 'var(--Lighter)',
                                       },
                                     },
                                     '& fieldset': {
-                                      borderColor: '#3A3948',
+                                      borderColor: 'var(--Stroke-Color)',
                                     },
                                     '&:hover fieldset': {
-                                      borderColor: '#fff',
+                                      borderColor: 'var(--Txt-On-Gradient)',
                                     },
                                     '&.Mui-focused fieldset': {
-                                      borderColor: '#fff',
+                                      borderColor: 'var(--Txt-On-Gradient)',
                                       borderWidth: '1px',
-                                      color: '#fff',
+                                      color: 'var(--Txt-On-Gradient)',
                                     },
                                   },
                                   '& .MuiFormHelperText-root': {
                                     color:
                                       errors.summary && touched.summary
-                                        ? '#ff4d4d'
-                                        : '#b0b0b0',
+                                        ? 'var(--Red-Color)'
+                                        : 'var(--Placeholder-Text)',
                                   },
                                 }}
                               />
@@ -424,7 +424,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
               width: '100%',
               maxHeight: 'calc(100dvh - 65px)',
               background: 'var(--Background-Color)',
-              borderLeft: '1px solid  #3A3948',
+              borderLeft: '1px solid  var(--Stroke-Color)',
             },
             '& .MuiBackdrop-root': {
               top: '65px',
@@ -561,42 +561,43 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                                     '& .MuiOutlinedInput-root': {
                                       borderRadius: '12px',
                                       borderWidth: '0px',
-                                      color: '#DADAE1',
-                                      backgroundColor: '#252431',
+                                      color: 'var(--Primary-Text-Color)',
+                                      backgroundColor:
+                                        'var(--Input-Box-Colors)',
                                       padding: '14px 16px',
                                       '& .MuiOutlinedInput-notchedOutline': {
                                         top: '-10px !important',
                                       },
                                       '& .MuiOutlinedInput-input': {
-                                        fontSize: '14px',
-                                        color: '#DADAE1',
-                                        fontWeight: 500,
+                                        fontSize: 'var(--SubTitle-3)',
+                                        color: 'var(--Primary-Text-Color)',
+                                        fontWeight: 'var(--Regular)',
                                         borderRadius: '12px',
                                         padding: '2px',
                                         maxHeight: '350px',
                                         overflowY: 'auto !important',
                                         '&::placeholder': {
-                                          color: '#888',
-                                          fontWeight: 400,
+                                          color: 'var(--Placeholder-Text)',
+                                          fontWeight: 'var(--Lighter)',
                                         },
                                       },
                                       '& fieldset': {
-                                        borderColor: '#3A3948',
+                                        borderColor: 'var(--Stroke-Color)',
                                       },
                                       '&:hover fieldset': {
-                                        borderColor: '#fff',
+                                        borderColor: 'var(--Txt-On-Gradient)',
                                       },
                                       '&.Mui-focused fieldset': {
-                                        borderColor: '#fff',
+                                        borderColor: 'var(--Txt-On-Gradient)',
                                         borderWidth: '1px',
-                                        color: '#fff',
+                                        color: 'var(--Txt-On-Gradient)',
                                       },
                                     },
                                     '& .MuiFormHelperText-root': {
                                       color:
                                         errors.summary && touched.summary
-                                          ? '#ff4d4d'
-                                          : '#b0b0b0',
+                                          ? 'var(--Red-Color)'
+                                          : 'var(--Placeholder-Text)',
                                     },
                                   }}
                                 />

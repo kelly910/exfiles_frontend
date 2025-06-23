@@ -88,7 +88,6 @@
 .googleLogin p {
   font-weight: var(--Medium);
   font-size: var(--SubTitle-2);
-  letter-spacing: 0%;
   color: var(--Primary-Text-Color);
   margin-bottom: 0;
 }
@@ -106,7 +105,7 @@
   align-items: center;
 
   p {
-    color: var(--Txt-On-Gradient) 45;
+    color: var(--Txt-On-Gradient);
     font-family: var(--font-fustat);
     font-weight: var(--Regular);
     font-size: var(--SubTitle-3);
@@ -128,7 +127,6 @@
   font-weight: var(--Regular);
   font-size: var(--SubTitle-3);
   line-height: 1.4;
-  letter-spacing: 0%;
   color: var(--Txt-On-Gradient);
   margin-bottom: 0;
 }

@@ -303,7 +303,10 @@ export default function FileUploadDialog({
             onClick={() => handleContinue()}
           >
             {isLoading ? (
-              <CircularProgress size={20} style={{ color: 'white' }} />
+              <CircularProgress
+                size={20}
+                style={{ color: 'var(--Txt-On-Gradient)' }}
+              />
             ) : (
               'Continue'
             )}

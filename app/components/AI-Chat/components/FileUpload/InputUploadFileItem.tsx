@@ -147,12 +147,12 @@ export default function InputUploadFileItem({
                 fontSize: 'var(--SubTitle-5)',
                 color: 'var(--Primary-Text-Color)',
                 padding: '4px 4px',
-                fontWeight: 500,
+                fontWeight: 'var(--Regular)',
                 borderRadius: '6px',
                 background: 'var(--Card-Color)',
                 '&::placeholder': {
                   color: 'var(--Primary-Text-Color)',
-                  fontWeight: 400,
+                  fontWeight: 'var(--Lighter)',
                 },
               },
               '& fieldset': {

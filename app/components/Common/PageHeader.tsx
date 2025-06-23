@@ -216,13 +216,88 @@ export default function PageHeader({
     setOpenHelpDeskDialog(true);
   };
 
+  // // dark Theme
+
+  // const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  // // Set theme on initial load from localStorage
+  // useEffect(() => {
+  //   const storedTheme = localStorage.getItem('theme') as
+  //     | 'light'
+  //     | 'dark'
+  //     | null;
+  //   const initialTheme = storedTheme || 'light';
+  //   setTheme(initialTheme);
+  //   document.documentElement.setAttribute('data-theme', initialTheme);
+  // }, []);
+
+  // // Toggle and store the theme
+  // const toggleTheme = () => {
+  //   const newTheme = theme === 'dark' ? 'light' : 'dark';
+  //   setTheme(newTheme);
+  //   document.documentElement.setAttribute('data-theme', newTheme);
+  //   localStorage.setItem('theme', newTheme);
+  // };
+
+  // const SunIcon = () => (
+  //   <svg
+  //     xmlns="http://www.w3.org/2000/svg"
+  //     width="20"
+  //     height="20"
+  //     viewBox="0 0 24 24"
+  //     fill="none"
+  //     stroke="var(--Primary-Text-Color)"
+  //     strokeWidth="2"
+  //     strokeLinecap="round"
+  //     strokeLinejoin="round"
+  //     className="lucide lucide-sun-icon"
+  //   >
+  //     <circle cx="12" cy="12" r="4" />
+  //     <path d="M12 2v2" />
+  //     <path d="M12 20v2" />
+  //     <path d="m4.93 4.93 1.41 1.41" />
+  //     <path d="m17.66 17.66 1.41 1.41" />
+  //     <path d="M2 12h2" />
+  //     <path d="M20 12h2" />
+  //     <path d="m6.34 17.66-1.41 1.41" />
+  //     <path d="m19.07 4.93-1.41 1.41" />
+  //   </svg>
+  // );
+
+  // const SunMoonIcon = () => (
+  //   <svg
+  //     xmlns="http://www.w3.org/2000/svg"
+  //     width="20"
+  //     height="20"
+  //     viewBox="0 0 24 24"
+  //     fill="none"
+  //     stroke="var(--Primary-Text-Color)"
+  //     strokeWidth="2"
+  //     strokeLinecap="round"
+  //     strokeLinejoin="round"
+  //     className="lucide lucide-sun-moon-icon"
+  //   >
+  //     <path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4" />
+  //     <path d="M12 2v2" />
+  //     <path d="M12 20v2" />
+  //     <path d="m4.9 4.9 1.4 1.4" />
+  //     <path d="m17.7 17.7 1.4 1.4" />
+  //     <path d="M2 12h2" />
+  //     <path d="M20 12h2" />
+  //     <path d="m6.3 17.7-1.4 1.4" />
+  //     <path d="m19.1 4.9-1.4 1.4" />
+  //   </svg>
+  // );
+
+  // // dark Theme
+
   return (
     <>
       <AppBar
         position="static"
         className="nav-open header"
         sx={{
-          backgroundColor: '#11101BE5',
+          backgroundColor: 'var(--Background-Color)',
           position: 'sticky',
           top: '0',
           maxHeight: '65px',
@@ -264,7 +339,6 @@ export default function PageHeader({
                 onClick={() => router.push('/ai-chats')}
               />
             </Box>
-
             <Box sx={{ width: '100%' }} className={styles.docsHeader}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {isChatPage && selectedActiveChat && (
@@ -451,6 +525,9 @@ export default function PageHeader({
                 </Button>
               </Tooltip>
             )}
+            {/* <Button onClick={toggleTheme} className={styles.messageButton}>
+              {theme === 'dark' ? <SunIcon /> : <SunMoonIcon />}
+            </Button> */}
             <Tooltip title={'Feedback'} placement="bottom" arrow>
               <Button
                 sx={{ p: 0 }}
@@ -471,10 +548,10 @@ export default function PageHeader({
                   <Avatar
                     alt="abbreviaton"
                     sx={{
-                      backgroundColor: '#DADAE1',
-                      color: '#1B1A25',
-                      fontSize: '16px',
-                      fontWeight: 600,
+                      backgroundColor: 'var(--Primary-Text-Color)',
+                      color: 'var(--Card-Color)',
+                      fontSize: 'var(--SubTitle-2)',
+                      fontWeight: 'var(--Medium)',
                       padding: '9px 10px',
                       lineHeight: '16px',
                       textTransform: 'capitalize',
@@ -484,7 +561,7 @@ export default function PageHeader({
                       '@media (max-width: 768px)': {
                         width: '32px',
                         height: '32px',
-                        fontSize: '12px',
+                        fontSize: 'var(--SubTitle-5)',
                       },
                     }}
                   >
@@ -510,7 +587,7 @@ export default function PageHeader({
                 className={styles.mainDropdown}
                 sx={{
                   '& .MuiPaper-root': {
-                    backgroundColor: '#11101b',
+                    backgroundColor: 'var(--Background-Color)',
                     top: '69px !important',
                     borderRadius: '12px',
                   },

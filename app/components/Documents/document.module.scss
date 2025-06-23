@@ -215,6 +215,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
           }
+
           .docTagCount {
             font-weight: var(--Regular);
             font-size: var(--SubTitle-5);
@@ -285,7 +286,6 @@
       font-weight: var(--Regular);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
-      letter-spacing: 0%;
       color: var(--Primary-Text-Color);
     }
   }
@@ -335,7 +335,6 @@
           font-weight: var(--Regular);
           font-size: var(--SubTitle-3);
           line-height: 1.4;
-          letter-spacing: 0%;
           color: var(--Primary-Text-Color);
         }
 
@@ -343,7 +342,6 @@
           font-weight: var(--Regular);
           font-size: var(--SubTitle-5);
           line-height: 1.4;
-          letter-spacing: 0%;
           color: var(--Subtext-Color);
           margin-top: 2px;
         }
@@ -382,6 +380,7 @@
       opacity: 0;
       visibility: hidden;
     }
+
     100% {
       transform: translate3d(0, 0, 0);
       opacity: 1;
@@ -531,6 +530,7 @@
         font-size: var(--SubTitle-3);
       }
     }
+
     p {
       font-size: var(--SubTitle-2);
       font-weight: var(--Lighter);
@@ -540,6 +540,7 @@
         font-size: var(--SubTitle-3);
       }
     }
+
     b {
       font-weight: var(--Bold);
       font-size: var(--SubTitle-2);
@@ -549,6 +550,7 @@
         font-size: var(--SubTitle-3);
       }
     }
+
     // h1 > *,
     // h1 {
     //   font-size: var(--Heading-1);
@@ -587,6 +589,7 @@
       @media (max-width: 1200px) {
         font-size: var(--SubTitle-2);
       }
+
       b {
         font-weight: var(--Bold);
         color: var(--Primary-Text-Color);
@@ -635,7 +638,6 @@
         font-weight: var(--Medium);
         font-size: var(--SubTitle-3);
         line-height: 10px;
-        letter-spacing: 0px;
         min-width: 140px;
         background: var(--Main-Gradient);
 
@@ -650,7 +652,7 @@
         }
 
         &.formDeletBtn {
-          background: #e72240;
+          background: var(--Red-Color);
 
           &:hover {
             opacity: 0.8;
@@ -717,16 +719,19 @@
         font-size: var(--SubTitle-3);
         line-height: 1.4;
       }
+
       p {
         font-size: var(--SubTitle-3);
         font-weight: var(--Lighter);
         color: var(--Primary-Text-Color);
       }
+
       b {
         font-weight: var(--Lighter);
         font-size: var(--SubTitle-3);
         color: var(--Primary-Text-Color);
       }
+
       // h1 > *,
       // h1 {
       //   font-size: var(--Heading-1);
@@ -761,6 +766,7 @@
         font-weight: var(--Medium);
         color: var(--Primary-Text-Color);
         font-size: var(--SubTitle-3);
+
         b {
           font-weight: var(--Medium);
           color: var(--Primary-Text-Color);
@@ -833,9 +839,11 @@
     width: 100%;
     max-width: 100%;
   }
+
   .docsFolder {
     background-color: transparent;
   }
+
   .categoryBox {
     background-color: var(--Card-Color);
     display: flex;
@@ -853,13 +861,16 @@
   .docsFolder {
     .folderBox {
       gap: 0;
+
       .folderImg {
         margin-right: 10px;
       }
+
       .folderTitleBox {
         .folderTitle {
           font-size: var(--SubTitle-1);
         }
+
         .folderNo {
           font-size: var(--SubTitle-5);
         }
@@ -871,7 +882,7 @@
 .backButton {
   background-color: var(--Input-Box-Colors) !important;
   padding: 8px !important;
-  border: 1px solid #3a3948 !important;
+  border: 1px solid var(--Stroke-Color) !important;
   min-width: fit-content !important;
   margin: 0 !important;
   margin-right: 12px !important;
@@ -885,11 +896,13 @@
     position: sticky;
     top: 0;
     z-index: 2;
+
     .categoryBoxInner {
       display: flex;
       justify-content: flex-start;
       align-items: center;
     }
+
     .categoriesSemiTitle {
       font-weight: var(--Regular);
       font-size: var(--SubTitle-5);
@@ -900,8 +913,8 @@
   }
 
   .categoryBox .categoriesTitle {
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: var(--Bold);
+    font-size: var(--SubTitle-1);
     line-height: 34px;
     color: var(--Primary-Text-Color);
     width: 100%;
@@ -943,9 +956,10 @@
       width: 100%;
     }
   }
+
   .menuDropdownDelete {
     p {
-      color: #e72240;
+      color: var(--Red-Color);
     }
   }
 }

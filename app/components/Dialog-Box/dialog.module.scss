@@ -15,7 +15,7 @@
       font-weight: var(--Medium);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
-      color: var(--Txt-On-Gradient);
+      color: var(--Primary-Text-Color);
     }
   }
 
@@ -38,13 +38,13 @@
         font-size: var(--SubTitle-3);
         line-height: 1.4;
         text-align: center;
-        color: #676972;
+        color: var(--Placeholder-Text);
         margin: 0 auto;
         margin-top: 9px;
         max-width: 400px;
 
         span {
-          border-bottom: 1px solid #676972;
+          border-bottom: 1px solid var(--Stroke-Color);
         }
       }
 

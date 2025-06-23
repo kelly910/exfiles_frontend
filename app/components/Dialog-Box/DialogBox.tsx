@@ -14,7 +14,7 @@ import {
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
-    backgroundColor: '#11101b',
+    backgroundColor: 'var(--Background-Color)',
     margin: '0px',
     minWidth: '650px',
     minHeight: '550px',

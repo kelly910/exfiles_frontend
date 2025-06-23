@@ -100,7 +100,7 @@ const newTheme = (theme: Theme) =>
         styleOverrides: {
           root: {
             color: 'var(--Primary-Text-Color)',
-            fontWeight: 'bold',
+            fontWeight: 'var(--Bold)',
             '&:hover': {
               border: '1px solid var(--Card-Border)',
               color: 'var(--Primary-Text-Color)',

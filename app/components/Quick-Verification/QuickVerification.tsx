@@ -287,7 +287,9 @@ const Page = () => {
                                 pointerEvents: isResendDisabled
                                   ? 'none'
                                   : 'auto',
-                                color: isResendDisabled ? '#888' : '#007bff',
+                                color: isResendDisabled
+                                  ? 'var(--Placeholder-Text)'
+                                  : 'var(--Subtext-Color)',
                               }}
                             >
                               {isResendDisabled

@@ -73,7 +73,11 @@ export default function Header() {
       <AppBar
         position="static"
         className="nav-open header"
-        sx={{ backgroundColor: '#11101BE5', position: 'sticky', top: '0' }}
+        sx={{
+          backgroundColor: 'var(--Background-Color)',
+          position: 'sticky',
+          top: '0',
+        }}
       >
         <Container maxWidth={false}>
           <Toolbar
@@ -191,10 +195,10 @@ export default function Header() {
                   <Avatar
                     alt="abbreviaton"
                     sx={{
-                      backgroundColor: '#DADAE1',
-                      color: '#1B1A25',
-                      fontSize: '16px',
-                      fontWeight: 600,
+                      backgroundColor: 'var(--Primary-Text-Color)',
+                      color: 'var(--Card-Color)',
+                      fontSize: 'var(--SubTitle-2)',
+                      fontWeight: 'var(--Medium)',
                       padding: '9px 10px',
                       lineHeight: '1.4',
                       display: 'flex',
@@ -223,7 +227,7 @@ export default function Header() {
                 className={styles.mainDropdown}
                 sx={{
                   '& .MuiPaper-root': {
-                    backgroundColor: '#11101b',
+                    backgroundColor: 'var(--Background-Color)',
                     top: '69px !important',
                   },
                 }}

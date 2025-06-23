@@ -100,9 +100,11 @@
         background: var(--Stroke-Color);
         color: var(--Subtext-Color);
         cursor: no-drop;
+
         &:hover {
           outline: none;
         }
+
         img {
           filter: brightness(0.5);
         }
@@ -370,7 +372,6 @@
       font-weight: var(--Regular);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
-      letter-spacing: 0%;
       color: var(--Primary-Text-Color);
     }
   }
@@ -420,7 +421,6 @@
           font-weight: var(--Regular);
           font-size: var(--SubTitle-3);
           line-height: 1.4;
-          letter-spacing: 0%;
           color: var(--Primary-Text-Color);
         }
 
@@ -428,7 +428,6 @@
           font-weight: var(--Regular);
           font-size: var(--SubTitle-5);
           line-height: 1.4;
-          letter-spacing: 0%;
           color: var(--Subtext-Color);
           margin-top: 2px;
         }
@@ -725,7 +724,6 @@
         font-weight: var(--Medium);
         font-size: var(--SubTitle-3);
         line-height: 10px;
-        letter-spacing: 0px;
         min-width: 140px;
         background: var(--Main-Gradient);
 
@@ -740,7 +738,7 @@
         }
 
         &.formDeletBtn {
-          background: #e72240;
+          background: var(--Red-Color);
 
           &:hover {
             opacity: 0.8;
@@ -970,7 +968,7 @@
 .backButton {
   background-color: var(--Input-Box-Colors) !important;
   padding: 8px !important;
-  border: 1px solid #3a3948 !important;
+  border: 1px solid var(--Stroke-Color) !important;
   min-width: fit-content !important;
   margin: 0 !important;
   margin-right: 12px !important;
@@ -1004,7 +1002,6 @@
     font-weight: var(--Regular);
     font-size: var(--SubTitle-1);
     line-height: 1.4;
-    letter-spacing: 0%;
     color: var(--Primary-Text-Color);
   }
 }
@@ -1043,7 +1040,7 @@
 
   .menuDropdownDelete {
     p {
-      color: #e72240;
+      color: var(--Red-Color);
     }
   }
 }
@@ -1137,10 +1134,10 @@
       align-items: center;
 
       span {
-        font-size: 12px;
-        font-weight: 400;
+        font-size: var(--SubTitle-5);
+        font-weight: var(--Lighter);
         line-height: 17px;
-        color: #898b94;
+        color: var(--Subtext-Color);
         margin-right: 8px;
 
         &:last-child {
@@ -1170,7 +1167,7 @@
 }
 
 .slide {
-  background-color: #ddd;
+  background-color: var(--Primary-Text-Color);
   padding: 20px;
   text-align: center;
   border-radius: 10px;

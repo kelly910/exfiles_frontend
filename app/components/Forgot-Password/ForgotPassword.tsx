@@ -107,8 +107,8 @@ const Page = () => {
                             fontSize: 'var(--SubTitle-2)',
                             color:
                               errors.email && touched.email
-                                ? '#ff4d4d'
-                                : 'var(--Subtext-Color)',
+                                ? 'var(--Red-Color)'
+                                : 'var(--Placeholder-Text)',
                             fontWeight: 'var(--Medium)',
                           }}
                         >
@@ -159,8 +159,8 @@ const Page = () => {
                               '& .MuiFormHelperText-root': {
                                 color:
                                   errors.email && touched.email
-                                    ? '#ff4d4d'
-                                    : '#b0b0b0',
+                                    ? 'var(--Red-Color)'
+                                    : 'var(--Placeholder-Text)',
                               },
                             }}
                           />

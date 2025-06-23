@@ -213,32 +213,32 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '12px',
                         borderWidth: '0px',
-                        color: '#DADAE1',
-                        backgroundColor: '#252431',
+                        color: 'var(--Txt-On-Gradient)',
+                        backgroundColor: 'var(--Input-Box-Colors)',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
                         '& .MuiOutlinedInput-input': {
-                          fontSize: '14px',
-                          color: '#DADAE1',
+                          fontSize: 'var(--SubTitle-3)',
+                          color: 'var(--Txt-On-Gradient)',
                           padding: '14px 16px',
-                          fontWeight: 500,
+                          fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
                           '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
+                            color: 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Lighter)',
                           },
                         },
                         '& fieldset': {
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                         },
                         '&:hover fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Txt-On-Gradient)',
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Txt-On-Gradient)',
                           borderWidth: '1px',
-                          color: '#fff',
+                          color: 'var(--Txt-On-Gradient)',
                         },
                       },
                     }}
@@ -356,7 +356,9 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                       onClick={resendOtp}
                       style={{
                         cursor: 'pointer',
-                        color: isResendDisabled ? '#888' : '#007bff',
+                        color: isResendDisabled
+                          ? 'var(--Placeholder-Text)'
+                          : 'var(--Subtext-Color)',
                         pointerEvents: isResendDisabled ? 'none' : 'auto',
                         textDecoration: 'underline',
                         marginTop: '32px',

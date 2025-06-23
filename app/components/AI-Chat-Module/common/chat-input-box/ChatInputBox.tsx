@@ -298,7 +298,10 @@ export default function ChatInputBox({
         disabled={isSendDisabled}
       >
         {isLoadingProp ? (
-          <CircularProgress size={18} sx={{ color: '#fff' }} />
+          <CircularProgress
+            size={18}
+            sx={{ color: 'var(--Txt-On-Gradient)' }}
+          />
         ) : (
           <span className="arrow"></span>
         )}

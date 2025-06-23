@@ -182,7 +182,7 @@ const Sidebar = ({
   // const getColor = (value: number) => {
   //   if (value <= 80) return 'var(--Main-Gradient)'; // Gradient
   //   if (value <= 90) return '#FF7E22'; // Orange
-  //   return '#E72240'; // Red
+  //   return 'var(--Red-Color)'; // Red
   // };
 
   // const ColoredLinearProgress = styled(LinearProgress)<{ $barColor: string }>(

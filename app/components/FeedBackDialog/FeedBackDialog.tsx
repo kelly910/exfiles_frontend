@@ -25,9 +25,9 @@ import { feedback } from '@/app/redux/slices/feedback';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
-    backgroundColor: '#11101b',
+    backgroundColor: 'var(--Background-Color)',
     margin: '0px',
-    border: '1px solid #3a3948',
+    border: '1px solid var(--Stroke-Color)',
     borderRadius: '16px',
     minWidth: '650px',
     maxWidth: '90vw',
@@ -164,40 +164,42 @@ export default function FeedbackDialog({
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '12px',
                         borderWidth: '0px',
-                        color: '#DADAE1',
-                        backgroundColor: '#252431',
+                        color: 'var(--Primary-Text-Color)',
+                        backgroundColor: 'var(--Input-Box-Colors)',
                         padding: '14px 16px',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
                         '& .MuiOutlinedInput-input': {
-                          fontSize: '14px',
-                          color: '#DADAE1',
-                          fontWeight: 500,
+                          fontSize: 'var(--SubTitle-3)',
+                          color: 'var(--Primary-Text-Color)',
+                          fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
                           padding: '2px',
                           maxHeight: '200px',
                           overflowY: 'auto !important',
                           '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
+                            color: 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Lighter)',
                           },
                         },
                         '& fieldset': {
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                         },
                         '&:hover fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Txt-On-Gradient)',
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Txt-On-Gradient)',
                           borderWidth: '1px',
-                          color: '#fff',
+                          color: 'var(--Txt-On-Gradient)',
                         },
                       },
                       '& .MuiFormHelperText-root': {
                         color:
-                          errors.body && touched.body ? '#ff4d4d' : '#b0b0b0',
+                          errors.body && touched.body
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
                       },
                     }}
                   />

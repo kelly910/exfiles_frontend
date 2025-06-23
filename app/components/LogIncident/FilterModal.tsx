@@ -91,8 +91,8 @@ export default function FilterModal({
               },
               '& .MuiDayCalendar-header span': {
                 color: 'var(--Primary-Text-Color)', // your desired style
-                fontWeight: 600,
-                fontSize: '14px',
+                fontWeight: 'var(--Medium)',
+                fontSize: 'var(--SubTitle-3)',
               },
               button: {
                 backgroundColor: 'var(--Card-Color)',
@@ -128,7 +128,7 @@ export default function FilterModal({
           styleOverrides: {
             root: {
               color: 'var(--Primary-Text-Color)',
-              fontWeight: 'bold',
+              fontWeight: 'var(--Bold)',
               '&:hover': {
                 border: '1px solid var(--Card-Border)',
                 color: 'var(--Primary-Text-Color)',
@@ -229,7 +229,7 @@ export default function FilterModal({
       MuiMenuItem: {
         styleOverrides: {
           root: {
-            fontSize: '14px',
+            fontSize: 'var(--SubTitle-3)',
             padding: '8px 16px',
             color: 'var(--Primary-Text-Color)',
             borderRadius: '12px',
@@ -292,14 +292,18 @@ export default function FilterModal({
 
           <Typography
             variant="body2"
-            sx={{ color: '#A0A0B0', marginBottom: '4px', textAlign: 'left' }}
+            sx={{
+              color: 'var(--Subtext-Color)',
+              marginBottom: '4px',
+              textAlign: 'left',
+            }}
           >
             Tag
           </Typography>
           <Box
             style={{
               marginBottom: '16px',
-              borderBottom: '1px solid #3A3948',
+              borderBottom: '1px solid var(--Stroke-Color)',
               paddingBottom: '16px',
             }}
           >
@@ -350,17 +354,17 @@ export default function FilterModal({
                             <Box
                               key={id}
                               sx={{
-                                backgroundColor: '#2C2A38',
+                                backgroundColor: 'var(--Card-Image)',
                                 fontSize: 'var(--SubTitle-3)',
                                 fontWeight: 'var(--Lighter)',
-                                color: '#fff',
+                                color: 'var(--Txt-On-Gradient)',
                                 borderRadius: '100px',
                                 px: 1.5,
                                 py: 0.5,
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: 1,
-                                border: '1px solid #3A3948',
+                                border: '1px solid var(--Stroke-Color)',
                               }}
                             >
                               {tagDisp.name}
@@ -370,17 +374,17 @@ export default function FilterModal({
                         {(selected as number[]).length > 2 && (
                           <Box
                             sx={{
-                              backgroundColor: '#2C2A38',
+                              backgroundColor: 'var(--Card-Image)',
                               fontSize: 'var(--SubTitle-3)',
                               fontWeight: 'var(--Lighter)',
-                              color: '#fff',
+                              color: 'var(--Txt-On-Gradient)',
                               borderRadius: '100px',
                               px: 1.5,
                               py: 0.5,
                               display: 'flex',
                               alignItems: 'center',
                               gap: 1,
-                              border: '1px solid #3A3948',
+                              border: '1px solid var(--Stroke-Color)',
                             }}
                           >
                             +{(selected as number[]).length - 2}
@@ -392,7 +396,7 @@ export default function FilterModal({
                 }}
                 placeholder="Select Tags"
                 sx={{
-                  backgroundColor: '#252431',
+                  backgroundColor: 'var(--Input-Box-Colors)',
                   borderRadius: '12px',
                   fontSize: 'var(--SubTitle-3)',
                   fontWeight: 'var(--Regular)',
@@ -410,14 +414,14 @@ export default function FilterModal({
                     },
                   '& .MuiOutlinedInput-notchedOutline': {
                     top: '-8px !important',
-                    borderColor: '#3A3948',
+                    borderColor: 'var(--Stroke-Color)',
                     borderRadius: '12px',
                   },
                   '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#fff',
+                    borderColor: 'var(--Txt-On-Gradient)',
                   },
                   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#fff',
+                    borderColor: 'var(--Txt-On-Gradient)',
                     borderWidth: '1px',
                   },
                   '& .MuiSelect-select': {
@@ -425,8 +429,8 @@ export default function FilterModal({
                     display: 'block',
                   },
                   '& .MuiSelect-placeholder': {
-                    color: '#888',
-                    fontWeight: 400,
+                    color: 'var(--Placeholder-Text)',
+                    fontWeight: 'var(--Lighter)',
                   },
                   '& svg': {
                     color: 'var(--Primary-Text-Color)',
@@ -437,7 +441,9 @@ export default function FilterModal({
                   <MenuItem key={tag.id} value={tag.id}>
                     <ListItemText
                       primary={tag.name}
-                      primaryTypographyProps={{ sx: { color: '#fff' } }}
+                      primaryTypographyProps={{
+                        sx: { color: 'var(--Txt-On-Gradient)' },
+                      }}
                     />
                     <Checkbox
                       checked={selectedTags.includes(Number(tag.id))}
@@ -446,7 +452,7 @@ export default function FilterModal({
                           sx={{
                             width: 24,
                             height: 24,
-                            border: '2px solid #2d2d2d',
+                            border: '2px solid var(--Subtext-Color)',
                             borderRadius: '8px',
                             backgroundColor: 'transparent',
                           }}
@@ -496,7 +502,7 @@ export default function FilterModal({
                   sx={{
                     display: 'flex',
                     alignItems: 'stretch',
-                    border: '1px solid #444',
+                    border: '1px solid var(--Stroke-Color)',
                     borderRadius: '12px',
                     overflow: 'hidden',
                     backgroundColor: 'var(--Input-Box-Colors)',
@@ -507,7 +513,7 @@ export default function FilterModal({
                     sx={{
                       padding: '8px 12px',
                       color: 'var(--Primary-Text-Color)',
-                      borderRight: '1px solid #444',
+                      borderRight: '1px solid var(--Stroke-Color)',
                       display: 'flex',
                       alignItems: 'center',
                       fontSize: 'var(--SubTitle-3)',
@@ -532,7 +538,7 @@ export default function FilterModal({
                         sx: {
                           '&.Mui-disabled': {
                             '& span': {
-                              color: '#9e9e9e',
+                              color: 'var(--Subtext-Color)',
                             },
                           },
                           '& .MuiPickersInputBase-root': {
@@ -599,7 +605,7 @@ export default function FilterModal({
                   sx={{
                     display: 'flex',
                     alignItems: 'stretch',
-                    border: '1px solid #444',
+                    border: '1px solid var(--Stroke-Color)',
                     borderRadius: '12px',
                     overflow: 'hidden',
                     backgroundColor: 'var(--Input-Box-Colors)',
@@ -610,7 +616,7 @@ export default function FilterModal({
                     sx={{
                       padding: '8px 12px',
                       color: 'var(--Primary-Text-Color)',
-                      borderRight: '1px solid #444',
+                      borderRight: '1px solid var(--Stroke-Color)',
                       display: 'flex',
                       alignItems: 'center',
                       fontSize: 'var(--SubTitle-3)',
@@ -637,7 +643,7 @@ export default function FilterModal({
                         sx: {
                           '&.Mui-disabled': {
                             '& span': {
-                              color: '#9e9e9e',
+                              color: 'var(--Subtext-Color)',
                             },
                           },
                           '& .MuiPickersInputBase-root': {

@@ -9,6 +9,7 @@
       order: unset;
 
       @media (max-width: 900px) {
+
         &:last-child,
         &:first-child {
           order: 1;
@@ -61,7 +62,7 @@
     color: var(--Primary-Text-Color);
     text-align: center;
     margin-bottom: 12px;
-    font-weight: 700;
+    font-weight: var(--Bold);
     font-size: var(--Heading-1);
     line-height: 140%;
   }
@@ -311,11 +312,12 @@
 .backButton {
   background-color: var(--Input-Box-Colors) !important;
   padding: 8px !important;
-  border: 1px solid #3a3948 !important;
+  border: 1px solid var(--Stroke-Color) !important;
   min-width: fit-content !important;
   margin: 0 !important;
   margin-right: 12px !important;
 }
+
 .chatResBox {
   padding: 8px 16px;
   background-color: var(--Card-Color);
@@ -329,11 +331,13 @@
   @media (max-width: 800px) {
     display: block;
   }
+
   .chatResBoxInner {
     display: flex;
     justify-content: flex-start;
     align-items: center;
   }
+
   .chatResSemiTitle {
     font-weight: var(--Regular);
     font-size: var(--SubTitle-5);
@@ -347,13 +351,13 @@
   font-weight: var(--Regular);
   font-size: var(--SubTitle-1);
   line-height: 1.4;
-  letter-spacing: 0%;
   color: var(--Primary-Text-Color);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
 }
+
 // Drag and drop styles
 .dropOverlay {
   position: fixed;
@@ -401,6 +405,7 @@
     margin: 0 auto;
   }
 }
+
 .fileBoxDrag {
   display: grid;
   width: 100%;
@@ -423,4 +428,5 @@
     width: calc(33.33% - 6.66px);
   }
 }
+
 // Drag and drop styles

@@ -117,12 +117,12 @@ const Page = () => {
                           htmlFor="new_password"
                           sx={{
                             display: 'block',
-                            fontSize: '16px',
+                            fontSize: 'var(--SubTitle-2)',
                             color:
                               errors.new_password && touched.new_password
-                                ? '#ff4d4d'
-                                : 'var(--Subtext-Color)',
-                            fontWeight: 500,
+                                ? 'var(--Red-Color)'
+                                : 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
                           }}
                         >
                           New Password
@@ -174,8 +174,8 @@ const Page = () => {
                               '& .MuiFormHelperText-root': {
                                 color:
                                   errors.new_password && touched.new_password
-                                    ? '#ff4d4d'
-                                    : '#b0b0b0',
+                                    ? 'var(--Red-Color)'
+                                    : 'var(--Placeholder-Text)',
                               },
                             }}
                             InputProps={{
@@ -188,10 +188,16 @@ const Page = () => {
                                     edge="end"
                                   >
                                     {showPassword ? (
-                                      <Visibility sx={{ color: '#b0b0b0' }} />
+                                      <Visibility
+                                        sx={{
+                                          color: 'var(--Primary-Text-Color)',
+                                        }}
+                                      />
                                     ) : (
                                       <VisibilityOff
-                                        sx={{ color: '#b0b0b0' }}
+                                        sx={{
+                                          color: 'var(--Primary-Text-Color)',
+                                        }}
                                       />
                                     )}
                                   </IconButton>
@@ -212,13 +218,13 @@ const Page = () => {
                           htmlFor="confirm_password"
                           sx={{
                             display: 'block',
-                            fontSize: '16px',
+                            fontSize: 'var(--SubTitle-2)',
                             color:
                               errors.confirm_password &&
                               touched.confirm_password
-                                ? '#ff4d4d'
-                                : 'var(--Subtext-Color)',
-                            fontWeight: 500,
+                                ? 'var(--Red-Color)'
+                                : 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
                           }}
                         >
                           Confirm Password
@@ -272,8 +278,8 @@ const Page = () => {
                                 color:
                                   errors.confirm_password &&
                                   touched.confirm_password
-                                    ? '#ff4d4d'
-                                    : '#b0b0b0',
+                                    ? 'var(--Red-Color)'
+                                    : 'var(--Placeholder-Text)',
                               },
                             }}
                             InputProps={{
@@ -286,10 +292,16 @@ const Page = () => {
                                     edge="end"
                                   >
                                     {showConfirmPassword ? (
-                                      <Visibility sx={{ color: '#b0b0b0' }} />
+                                      <Visibility
+                                        sx={{
+                                          color: 'var(--Primary-Text-Color)',
+                                        }}
+                                      />
                                     ) : (
                                       <VisibilityOff
-                                        sx={{ color: '#b0b0b0' }}
+                                        sx={{
+                                          color: 'var(--Primary-Text-Color)',
+                                        }}
                                       />
                                     )}
                                   </IconButton>

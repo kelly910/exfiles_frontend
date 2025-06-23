@@ -186,7 +186,6 @@
       font-weight: var(--Bold);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
-      letter-spacing: 0%;
       color: var(--Primary-Text-Color);
     }
   }
@@ -233,7 +232,6 @@
           font-weight: var(--Bold);
           font-size: var(--SubTitle-3);
           line-height: 1.4;
-          letter-spacing: 0%;
           color: var(--Primary-Text-Color);
         }
 
@@ -241,7 +239,6 @@
           font-weight: var(--Regular);
           font-size: var(--SubTitle-2);
           line-height: 1.4;
-          letter-spacing: 0%;
           color: var(--Subtext-Color);
           margin-top: 2px;
         }
@@ -336,6 +333,7 @@
       }
     }
   }
+
   .docsButtonBox {
     display: flex;
     justify-content: center;
@@ -374,6 +372,7 @@
     width: 400px;
     flex: 0 0 auto;
   }
+
   .categories {
     min-width: unset;
     width: 200px;

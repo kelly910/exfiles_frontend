@@ -18,6 +18,7 @@
   --Card-Color: #1B1A25;
   --Card-Border: #B948FF;
   --Card-Image: #2c2a38;
+  --Red-Color: #E72240;
 
   --Background-Color: #11101B;
 
@@ -43,6 +44,26 @@
 
 }
 
+
+/* html[data-theme='dark'] {
+  --Primary-Text-Color: #11101B;
+  --Subtext-Color: #898B94;
+  --Txt-On-Gradient: #FFFFFF;
+
+  --Main-Gradient: linear-gradient(90deg, #2A1AD8 0%, #4E26E2 25%, #7231EC 50%, #953DF5 75%, #B948FF 100%);
+  --Main-Gradient-hover: linear-gradient(-90deg, #2A1AD8 0%, #4E26E2 25%, #7231EC 50%, #953DF5 75%, #B948FF 100%);
+  --Input-Box-Colors: #EFEFFA;
+
+  --Stroke-Color: #ECECF4;
+  --Placeholder-Text: #61616E;
+  --Card-Color: #F5F5F8;
+  --Card-Border: #B948FF;
+  --Card-Image: #E8E8F3;
+  --Red-Color: #E72240;
+
+  --Background-Color: #FEFEFE;
+} */
+
 /* WebKit Browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   width: 6px;
@@ -51,12 +72,12 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #11101b;
+  background: var(--Background-Color);
   border-radius: 10000px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3A3948;
+  background: var(--Stroke-Color);
   border-radius: 10000px;
 }
 
@@ -69,7 +90,7 @@
 * {
   scrollbar-width: thin;
   /* "auto" or "thin" */
-  scrollbar-color: #3A3948 #11101b;
+  scrollbar-color: var(--Stroke-Color) var(--Background-Color);
   /* thumb color & track color */
 }
 
@@ -105,7 +126,7 @@ body {
 }
 
 body {
-  background-color: #11101B;
+  background-color: var(--Background-Color);
   color: #b2b1b9;
   padding-right: 0;
 }
@@ -125,32 +146,32 @@ a {
 /* new custom componants css */
 
 body h1 {
-  font-size: 36px;
+  font-size: var(--Heading-1);
 }
 
 body h2,
 .h2 {
-  font-size: 32px;
+  font-size: var(--Heading-2);
 }
 
 body h3 {
-  font-size: 24px;
+  font-size: var(--Heading-3);
 }
 
 body h4 {
-  font-size: 20px;
+  font-size: var(--Heading-4);
 }
 
 body h5 {
-  font-size: 16px;
+  font-size: var(--Heading-5);
 }
 
 body h6 {
-  font-size: 14px;
+  font-size: var(--Heading-6);
 }
 
 body p {
-  font-size: 16px;
+  font-size: var(--SubTitle-2);
   /* 30% reduction */
 }
 
@@ -161,7 +182,7 @@ h4,
 h5,
 h6 {
   line-height: 1.4;
-  color: #FFFFFF;
+  color: var(--Txt-On-Gradient);
   letter-spacing: 0%;
   font-weight: var(--Bold);
 }
@@ -178,7 +199,7 @@ select {
 
 a {
   text-decoration: none;
-  font-size: 16px;
+  font-size: var(--SubTitle-2);
 }
 
 input {
@@ -188,15 +209,15 @@ input {
 /* colors */
 
 .bg-primary {
-  background-color: #11101B;
+  background-color: var(--Background-Color);
 }
 
 .bg-secondary {
-  background-color: #1B1A25;
+  background-color: var(--Card-Color);
 }
 
 .text-primary {
-  color: #FFFFFF;
+  color: var(--Txt-On-Gradient);
 }
 
 .text-secondary {
@@ -342,7 +363,7 @@ input {
   background: white;
   transition: all 0.2s linear;
   border: 1px solid #fff;
-  color: #1B1A25;
+  color: var(--Card-Color);
 }
 
 /* Pluse btn*/
@@ -406,7 +427,6 @@ input {
 .link-primary {
   font-weight: var(--Medium) !important;
   font-size: var(--SubTitle-2) !important;
-  letter-spacing: 0%;
   color: var(--Subtext-Color) !important;
   text-decoration: underline;
   text-decoration-color: var(--Subtext-Color) !important;
@@ -420,8 +440,8 @@ input {
 /* ==== Header ===== */
 
 header {
-  background-color: var(--Background-Color) !important;
-  border-bottom: 1px solid #3A3948;
+  background-color: var(--Card-Color) !important;
+  border-bottom: 1px solid var(--Stroke-Color);
   position: sticky;
   top: 0;
   right: 0;
@@ -540,7 +560,7 @@ header {
     background: white;
     transition: all 0.2s linear;
     border: 1px solid #fff;
-    color: #1B1A25;
+    color: var(--Card-Color);
   }
 
   /* Link adjustments */
@@ -570,7 +590,7 @@ form .form-group {
 form .form-label {
   margin-bottom: 8px;
   font-weight: 500;
-  font-size: 16px;
+  font-size: var(--SubTitle-2);
   letter-spacing: 0%;
   color: #B2B1B9;
 }
@@ -578,12 +598,12 @@ form .form-label {
 form .form-control {
   padding: 13px 16px;
   font-weight: var(--Medium);
-  font-size: 16px;
+  font-size: var(--SubTitle-2);
   letter-spacing: 0%;
   border-radius: 12px;
-  border: 1px solid #3A3948;
-  color: #FFFFFF;
-  background-color: #252431;
+  border: 1px solid var(--Stroke-Color);
+  color: var(--Txt-On-Gradient);
+  background-color: var(--Input-Box-Colors);
 }
 
 form .form-group .input-group {
@@ -607,11 +627,11 @@ form .form-select {
   max-width: 60px;
   padding: 10px;
   font-weight: var(--Medium);
-  font-size: 16px;
+  font-size: var(--SubTitle-2);
   letter-spacing: 0%;
-  border: 1px solid #3A3948;
-  color: #FFFFFF;
-  background-color: #252431;
+  border: 1px solid var(--Stroke-Color);
+  color: var(--Txt-On-Gradient);
+  background-color: var(--Input-Box-Colors);
   border-radius: 12px 0 0 12px;
   appearance: none;
   -webkit-appearance: none;
@@ -643,7 +663,7 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  border-color: #3A3948;
+  border-color: var(--Stroke-Color);
   /* border: 1px solid green; */
   -webkit-text-fill-color: var(--Txt-On-Gradient);
   -webkit-box-shadow: 0 0 0px 1000px transparent inset;
@@ -669,7 +689,7 @@ input::-webkit-inner-spin-button {
 .error-input-field {
   margin-top: 5px;
   color: #ff4d4d;
-  font-size: 15px;
+  font-size: var(--SubTitle-3);
 }
 
 .fullscreen-loader {
@@ -834,13 +854,13 @@ input::-webkit-inner-spin-button {
 
 .custom-datepicker input {
   padding: 12px;
-  font-size: 16px;
+  font-size: var(--SubTitle-2);
   color: #0d47a1;
   border-radius: 6px;
 }
 
 .highlighted {
-  background-color: #B948FF !important;
+  background-color: var(--Card-Border) !important;
   font-weight: var(--Medium) !important;
   color: var(--Background-Color) !important;
   font-size: inherit !important;
@@ -867,7 +887,12 @@ input::-webkit-inner-spin-button {
   }
 }
 
+
+/*  */
+
 .subscription-slider .slick-slider .slick-list {
   margin: -20px 0;
   padding: 20px 1px;
 }
+
+/*  */

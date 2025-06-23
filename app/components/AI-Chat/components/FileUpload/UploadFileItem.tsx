@@ -126,13 +126,13 @@ export default function UploadFileItem({
                   fontSize: 'var(--SubTitle-5)',
                   color: 'var(--Primary-Text-Color)',
                   padding: '12px 8px',
-                  fontWeight: 500,
+                  fontWeight: 'var(--Regular)',
                   borderRadius: '6px',
                   background: 'var(--Card-Color)',
-                  // backgroundColor: '#252431',
+                  // backgroundColor: 'var(--Input-Box-Colors)',
                   '&::placeholder': {
                     color: 'var(--Txt-On-Gradient)',
-                    fontWeight: 400,
+                    fontWeight: 'var(--Lighter)',
                   },
                 },
                 '& fieldset': {
@@ -148,7 +148,7 @@ export default function UploadFileItem({
                 },
               },
               '& .MuiFormHelperText-root': {
-                // color: error ? '#ff4d4d' : '#b0b0b0',
+                // color: error ? 'var(--Red-Color)' : 'var(--Placeholder-Text)',
               },
             }}
           />

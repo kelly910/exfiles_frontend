@@ -13,6 +13,7 @@
     display: block;
   }
 }
+
 .closeLayer {
   left: -100%;
 
@@ -20,6 +21,7 @@
     display: block;
   }
 }
+
 .sidebar {
   // position: fixed;
   background-color: var(--Card-Color);
@@ -33,6 +35,7 @@
   overflow: hidden;
   transition: all 0.4s;
   filter: drop-shadow(0px 0px 0px black);
+
   // overflow-y: auto;
   @media (max-width: 1100px) {
     width: 100%;
@@ -61,14 +64,17 @@
     .close-sidebar-logo {
       display: none;
       height: 44px;
+
       img {
         height: 100%;
         width: 100%;
         max-height: 44px;
       }
     }
+
     .opensidebar-logo {
       height: 44px;
+
       img {
         height: 100%;
         max-height: 44px;
@@ -217,6 +223,7 @@
     li {
       padding: 0;
     }
+
     .sidebar-btn {
       background: var(--Main-Gradient);
       outline: 0.5px solid transparent;
@@ -233,9 +240,11 @@
       width: 100%;
       line-height: normal;
       transition: 0.2s ease-in-out;
+
       &:hover {
         outline: 0.5px solid var(--Card-Border);
       }
+
       span {
         vertical-align: middle;
         margin-left: 5px;
@@ -250,12 +259,14 @@
 
 .sidebar-accordian {
   overflow-y: auto;
+
   .accordian {
     margin-bottom: 12px;
     background-color: unset;
     box-shadow: unset;
     margin: 0 !important;
     margin-bottom: 12px !important;
+
     &:before {
       content: unset;
     }
@@ -286,7 +297,6 @@
           font-weight: var(--Regular);
           font-size: var(--SubTitle-2);
           line-height: 1.4;
-          letter-spacing: 0%;
           display: flex;
           align-items: center;
 
@@ -305,6 +315,7 @@
 .bottom-content {
   padding: 0 !important;
   margin-top: 12px;
+
   &:empty {
     margin: 0 !important;
   }
@@ -345,7 +356,6 @@
       font-weight: var(--Medium);
       font-size: var(--SubTitle-3);
       line-height: 1.4;
-      letter-spacing: 0%;
       margin: 0;
     }
   }
@@ -375,6 +385,7 @@
   margin-top: auto;
   margin-bottom: 10px;
   padding: 12px;
+
   .sidebar-btm-card {
     background-image: url('/images/sidebar-btm-img.png');
     background-size: contain;
@@ -383,26 +394,30 @@
     background-repeat: no-repeat;
     border-radius: 12px;
     padding: 20px 12px 10px 12px;
+
     p {
       color: var(--Primary-Text-Color);
       font-weight: var(--Regular);
       font-size: var(--SubTitle-3);
       line-height: 1.4;
-      letter-spacing: 0%;
+
       &:first-child {
         margin-bottom: 60px;
         max-width: 150px;
       }
+
       a {
         color: var(--Primary-Text-Color);
         text-decoration: underline;
         transition: all 0.4s;
+
         &:hover {
           color: var(--Card-Border);
         }
       }
     }
   }
+
   .close-sidebar-btm {
     display: none;
   }
@@ -410,6 +425,7 @@
 
 .closesidebar {
   width: 65px !important;
+
   @media (max-width: 1100px) {
     width: 100%;
     max-width: 300px;
@@ -419,42 +435,52 @@
     position: fixed;
     left: -100%;
   }
+
   .main-logo {
     .close-sidebar-logo {
       display: block !important;
     }
+
     .opensidebar-logo {
       display: none !important;
     }
   }
 }
+
 .paddingremove {
   padding-left: 75px !important;
 }
+
 .closesidebar {
   .sidebar-details {
     height: calc(100dvh - 65px - 77px);
   }
+
   .main-logo {
     justify-content: flex-start;
   }
+
   .sidebar-top {
     justify-content: flex-start;
     margin: 0 4px;
+
     .right {
       display: none;
     }
   }
+
   .sidebar-list {
     .sidebar-list-details {
       padding: 0;
       margin-bottom: 16px;
+
       .sidebar-btn {
         //    transition: 0.5s ease-in-out;
         width: 40px;
         font-size: 0;
         padding: 0;
         height: 40px;
+
         // .btn-text {
         //   display: none;
         // }
@@ -468,51 +494,63 @@
       }
     }
   }
+
   .sidebar-accordian {
     .accordian {
       .customAccordionHeading {
         background-color: unset;
+
         &:hover {
           background-color: var(--Card-Image);
         }
+
         .customAccordionContent {
           .heading {
             font-size: 0;
             margin: 0 auto;
+
             img {
               margin-right: 0;
             }
           }
         }
+
         .img-none {
           display: none;
         }
       }
     }
   }
+
   .accordion-content {
     display: none;
   }
+
   .sidebar-btm {
     margin-bottom: 0;
     padding: 16px 12px 16px 13px;
+
     .sidebar-btm-card {
       display: none;
     }
+
     .close-sidebar-btm {
       display: block;
     }
   }
+
   .bottom-content {
     display: none;
   }
 }
+
 .sidebar-dropdown {
   box-shadow: unset !important;
   --Paper-shadow: unset !important;
 }
+
 .main-content {
-  color: #fff;
+  color: var(--Txt-On-Gradient);
 }
 
 .mainDropdown {
@@ -546,9 +584,10 @@
       width: 100%;
     }
   }
+
   .menuDropdownDelete {
     p {
-      color: #e72240;
+      color: var(--Red-Color);
     }
   }
 }
@@ -559,7 +598,8 @@
       .customAccordionHeading {
         .customAccordionContent {
           .heading {
-            font-size: 15px;
+            font-size: var(--SubTitle-2);
+
             img {
               margin-top: 0;
             }
@@ -604,7 +644,6 @@
     font-weight: var(--Regular);
     font-size: var(--SubTitle-2);
     line-height: 1.4;
-    letter-spacing: 0%;
     display: flex;
     align-items: center;
     flex-grow: 1;
@@ -617,6 +656,7 @@
       width: 18px;
     }
   }
+
   .heading-side-img {
     display: flex;
     justify-content: center;
@@ -627,21 +667,26 @@
 .closesidebar {
   .customAccordionHeading {
     background-color: unset;
+
     &:hover {
       background-color: var(--Card-Image);
     }
+
     .heading {
       font-size: 0;
       margin: 0 auto;
+
       img {
         margin-right: 0;
       }
     }
+
     .img-none {
       display: none;
     }
   }
 }
+
 .date-picker-box {
   background-color: var(--Card-Color);
   border-radius: 12px;
@@ -742,10 +787,10 @@
       align-items: center;
 
       span {
-        font-size: 12px;
-        font-weight: 400;
+        font-size: var(--SubTitle-5);
+        font-weight: var(--Lighter);
         line-height: 17px;
-        color: #898b94;
+        color: var(--Subtext-Color);
         margin-right: 8px;
 
         &:last-child {

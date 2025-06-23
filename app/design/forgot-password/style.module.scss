@@ -36,9 +36,8 @@
 .formHeader .formSubtitle {
   font-weight: var(--Regular);
   font-size: var(--SubTitle-2);
-  letter-spacing: 0%;
   text-align: center;
-  color: #b2b1b9;
+  color: var(--Primary-Text-Color);
 }
 
 /* Google Login */
@@ -56,7 +55,6 @@
 .googleLogin p {
   font-weight: var(--Medium);
   font-size: var(--SubTitle-2);
-  letter-spacing: 0%;
   color: var(--Primary-Text-Color);
   margin-bottom: 0;
 }
@@ -74,10 +72,10 @@
   align-items: center;
 
   p {
-    color: var(--Txt-On-Gradient) 45;
+    color: var(--Txt-On-Gradient);
     font-family: var(--font-fustat);
     font-weight: var(--Regular);
-    font-size: 14px !important;
+    font-size: var(--SubTitle-3) !important;
   }
 }
 
@@ -96,7 +94,6 @@
   font-weight: var(--Regular);
   font-size: var(--SubTitle-3);
   line-height: 1.4;
-  letter-spacing: 0%;
   color: var(--Txt-On-Gradient) !important;
   margin-bottom: 0;
 }
@@ -234,6 +231,7 @@
   .alreadyLogin {
     flex-direction: column;
     text-align: center;
+
     button {
       width: 100%;
       margin-top: 10px;
@@ -245,6 +243,7 @@
     padding-right: 10px;
   }
 }
+
 @media (min-width: 1921px) {
   .alreadyLogin {
     position: fixed;
@@ -261,6 +260,7 @@
     left: -50.26px;
     top: 0;
     opacity: 0.3;
+
     img {
       width: 225.4px;
       height: 72.52px;
