@@ -117,10 +117,10 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                 <Avatar
                   alt="abbreviation"
                   sx={{
-                    backgroundColor: '#DADAE1',
-                    color: '#1B1A25',
-                    fontSize: '24px',
-                    fontWeight: 600,
+                    backgroundColor: 'var(--Primary-Text-Color)',
+                    color: 'var(--Card-Color)',
+                    fontSize: 'var(--Heading-2)',
+                    fontWeight: 'var(--Medium)',
                     padding: '13px 15px',
                     lineHeight: '140%',
                     marginBottom: '28px',
@@ -144,8 +144,8 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                       fontSize: 'var(--SubTitle-3)',
                       color:
                         errors.first_name && touched.first_name
-                          ? '#ff4d4d'
-                          : '#676972',
+                          ? 'var(--Red-Color)'
+                          : 'var(--Placeholder-Text)',
                       fontWeight: 'var(--Regular)',
                     }}
                   >
@@ -165,7 +165,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                         borderRadius: '12px',
                         borderWidth: '0px',
                         color: 'var(--Primary-Text-Color)',
-                        backgroundColor: '#252431',
+                        backgroundColor: 'var(--Input-Box-Colors)',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
@@ -176,27 +176,27 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                           fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
                           '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
+                            color: 'var(--Placeholder-Texts)',
+                            fontWeight: 'var(--Lighter)',
                           },
                         },
                         '& fieldset': {
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                         },
                         '&:hover fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Txt-On-Gradient)',
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Txt-On-Gradient)',
                           borderWidth: '1px',
-                          color: '#fff',
+                          color: 'var(--Txt-On-Gradient)',
                         },
                       },
                       '& .MuiFormHelperText-root': {
                         color:
                           errors.first_name && touched.first_name
-                            ? '#ff4d4d'
-                            : '#b0b0b0',
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
                       },
                     }}
                   />
@@ -216,8 +216,8 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                       fontSize: 'var(--SubTitle-3)',
                       color:
                         errors.last_name && touched.last_name
-                          ? '#ff4d4d'
-                          : '#676972',
+                          ? 'var(--Red-Color)'
+                          : 'var(--Placeholder-Text)',
                       fontWeight: 'var(--Regular)',
                     }}
                   >
@@ -237,7 +237,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                         borderRadius: '12px',
                         borderWidth: '0px',
                         color: 'var(--Primary-Text-Color)',
-                        backgroundColor: '#252431',
+                        backgroundColor: 'var(--Input-Box-Colors)',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
@@ -248,27 +248,27 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                           fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
                           '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
+                            color: 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Lighter)',
                           },
                         },
                         '& fieldset': {
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                         },
                         '&:hover fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Txt-On-Gradient)',
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Txt-On-Gradient)',
                           borderWidth: '1px',
-                          color: '#fff',
+                          color: 'var(--Txt-On-Gradient)',
                         },
                       },
                       '& .MuiFormHelperText-root': {
                         color:
                           errors.last_name && touched.last_name
-                            ? '#ff4d4d'
-                            : '#b0b0b0',
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
                       },
                     }}
                   />
@@ -301,7 +301,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                         borderRadius: '12px',
                         borderWidth: '0px',
                         color: 'var(--Primary-Text-Color)',
-                        backgroundColor: '#252431',
+                        backgroundColor: 'var(--Input-Box-Colors)',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
@@ -312,25 +312,25 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                           fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
                           '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
+                            color: 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Lighter)',
                           },
                         },
                         '& fieldset': {
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                         },
                         '&:hover fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Txt-On-Gradient)',
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Txt-On-Gradient)',
                           borderWidth: '1px',
-                          color: '#fff',
+                          color: 'var(--Txt-On-Gradient)',
                         },
                       },
                       '& .Mui-disabled': {
                         color: 'var(--Primary-Text-Color)',
-                        WebkitTextFillColor: '#DADAE1',
+                        WebkitTextFillColor: 'var(--Primary-Text-Color)',
                       },
                     }}
                   />
@@ -347,8 +347,8 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                       fontSize: 'var(--SubTitle-3)',
                       color:
                         errors.contact_number && touched.contact_number
-                          ? '#ff4d4d'
-                          : '#676972',
+                          ? 'var(--Red-Color)'
+                          : 'var(--Placeholder-Text)',
                       fontWeight: 'var(--Regular)',
                     }}
                   >
@@ -413,8 +413,8 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                       '& .MuiFormHelperText-root': {
                         color:
                           errors.contact_number && touched.contact_number
-                            ? '#ff4d4d'
-                            : '#b0b0b0',
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
                       },
                     }}
                     InputProps={{
@@ -429,13 +429,13 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                             }}
                             sx={{
                               padding: '0px',
-                              color: '#b0b0b0',
-                              fontWeight: 'bold',
+                              color: 'var(--Txt-On-Gradient)',
+                              fontWeight: 'var(--Bold)',
                               width: '60px',
                               background: 'transparent',
                               paddingRight: '15px !important',
                               '& .MuiSelect-icon': {
-                                color: '#fff',
+                                color: 'var(--Txt-On-Gradient)',
                                 position: 'absolute',
                                 right: '0px',
                               },

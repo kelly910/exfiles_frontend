@@ -227,6 +227,7 @@
               align-items: center;
               width: 100%;
             }
+
             span {
               color: var(--Subtext-Color);
               font-size: var(--SubTitle-3);
@@ -257,7 +258,7 @@
           .cancel-plan-btn {
             font-size: var(--SubTitle-3);
             font-weight: var(--Medium);
-            color: #e72240;
+            color: var(--Red-Color);
             padding: 0;
           }
         }
@@ -334,7 +335,7 @@
           .plan-status {
             p {
               background-color: #e722401a;
-              color: #e72240;
+              color: var(--Red-Color);
             }
           }
         }
@@ -379,7 +380,7 @@
             color: var(--Subtext-Color);
             font-size: var(--SubTitle-3);
             font-weight: var(--Lighter);
-            border: 1px solid #3a3948;
+            border: 1px solid var(--Stroke-Color);
             border-width: 0px 0px 1px 0px;
             padding: 10px 24px;
 
@@ -427,21 +428,17 @@
   }
 
   .subscription-plan-sidebar {
-    background: linear-gradient(
-      90deg,
-      var(--Card-Color) 0%,
-      rgba(185, 72, 255, 0) 100%
-    );
+    background: linear-gradient(90deg,
+        var(--Card-Color) 0%,
+        rgba(185, 72, 255, 0) 100%);
     border-radius: 16px 0 0 16px;
     height: 100%;
   }
 
   .subscription-plan-container {
-    background: linear-gradient(
-      90deg,
-      rgba(185, 72, 255, 0.08) 0%,
-      rgba(185, 72, 255, 0) 100%
-    );
+    background: linear-gradient(90deg,
+        rgba(185, 72, 255, 0.08) 0%,
+        rgba(185, 72, 255, 0) 100%);
 
     border-radius: 16px 0 0 16px;
     height: 100%;
@@ -520,6 +517,7 @@
         &:last-child p {
           border-bottom: none;
         }
+
         p {
           padding: 6px 20px;
           font-size: var(--SubTitle-3);
@@ -575,6 +573,7 @@
 
         .subscription-package-header-title-text {
           margin-top: 18px;
+
           h2 {
             font-size: var(--Heading-2);
             font-weight: var(--Bold);
@@ -662,10 +661,12 @@
 
       div {
         text-align: center;
+
         &:last-child figure,
         &:last-child p {
           border-bottom: none;
         }
+
         p {
           padding: 6px 20px;
           font-size: var(--SubTitle-3);
@@ -697,6 +698,7 @@
             }
           }
         }
+
         figure {
           padding: 6px 20px;
           border-bottom: 1px solid rgb(137, 139, 148, 0.2);
@@ -790,6 +792,7 @@
     }
   }
 }
+
 .subscription-package-main {
   display: flex;
   justify-content: start;
@@ -833,6 +836,7 @@
     @media (max-width: 768px) {
       content: '';
     }
+
     @media (max-width: 500px) {
       width: 30px;
       left: -20px;
@@ -860,12 +864,12 @@
     max-width: calc(100% + 40px);
   }
 
-  & > div {
+  &>div {
     max-width: 100%;
   }
 
-  & > :last-child,
-  & > .slick-slide :last-child .subscription-package-body {
+  &> :last-child,
+  &>.slick-slide :last-child .subscription-package-body {
     border-right: 0;
 
     @media (max-width: 1100px) {
@@ -873,16 +877,16 @@
     }
   }
 
-  & > :last-child .subscription-package-container {
+  &> :last-child .subscription-package-container {
     border-radius: 0 16px 16px 0;
   }
 
-  & > :first-child .subscription-package-container {
+  &> :first-child .subscription-package-container {
     border-radius: 16px 0 0 16px;
   }
 
-  & > div,
-  & > div .subscription-package-body {
+  &>div,
+  &>div .subscription-package-body {
     border-right: 1px solid var(--Stroke-Color);
 
     @media (max-width: 1100px) {
@@ -914,10 +918,7 @@
   border-radius: 16px;
 }
 
-.subscription-package-body:hover
-  .subscription-package-container
-  .subscription-package-header
-  .subscription-package-button {
+.subscription-package-body:hover .subscription-package-container .subscription-package-header .subscription-package-button {
   background: var(--Main-Gradient);
   color: var(--Primary-Text-Color);
   border: 1px solid var(--Card-Color);
@@ -976,7 +977,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: #3a3948;
+    background: var(--Stroke-Color);
     border-radius: 500px;
     z-index: 0;
     width: 100%;

@@ -97,12 +97,12 @@ const ChangeUserPassword = ({
                       htmlFor="old_password"
                       sx={{
                         display: 'block',
-                        fontSize: '14px',
+                        fontSize: 'var(--SubTitle-3)',
                         color:
                           errors.old_password && touched.old_password
-                            ? '#ff4d4d'
-                            : '#676972',
-                        fontWeight: 500,
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
+                        fontWeight: 'var(--Regular)',
                       }}
                     >
                       Current Password
@@ -129,39 +129,39 @@ const ChangeUserPassword = ({
                         '& .MuiOutlinedInput-root': {
                           borderRadius: '12px',
                           borderWidth: '0px',
-                          color: '#DADAE1',
-                          backgroundColor: '#252431',
+                          color: 'var(--Primary-Text-Color)',
+                          backgroundColor: 'var(--Input-Box-Colors)',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
                           '& .MuiOutlinedInput-input': {
-                            fontSize: '14px',
-                            color: '#DADAE1',
+                            fontSize: 'var(--SubTitle-3)',
+                            color: 'var(--Primary-Text-Color)',
                             padding: '12px',
-                            fontWeight: 500,
+                            fontWeight: 'var(--Regular)',
                             borderRadius: '12px',
                             '&::placeholder': {
-                              color: '#888',
-                              fontWeight: 400,
+                              color: 'var(--Placeholder-Text)',
+                              fontWeight: 'var(--Lighter)',
                             },
                           },
                           '& fieldset': {
-                            borderColor: '#3A3948',
+                            borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#fff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: '#fff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                             borderWidth: '1px',
-                            color: '#fff',
+                            color: 'var(--Txt-On-Gradient)',
                           },
                         },
                         '& .MuiFormHelperText-root': {
                           color:
                             errors.old_password && touched.old_password
-                              ? '#ff4d4d'
-                              : '#b0b0b0',
+                              ? 'var(--Red-Color)'
+                              : 'var(--Placeholder-Text)',
                         },
                       }}
                       InputProps={{
@@ -181,7 +181,7 @@ const ChangeUserPassword = ({
                               {currentPassword ? (
                                 <Visibility
                                   sx={{
-                                    color: '#b0b0b0',
+                                    color: 'var(--Primary-Text-Color)',
                                     width: '20px',
                                     height: '20px',
                                   }}
@@ -189,7 +189,7 @@ const ChangeUserPassword = ({
                               ) : (
                                 <VisibilityOff
                                   sx={{
-                                    color: '#b0b0b0',
+                                    color: 'var(--Primary-Text-Color)',
                                     width: '20px',
                                     height: '20px',
                                   }}
@@ -214,12 +214,12 @@ const ChangeUserPassword = ({
                       htmlFor="new_password1"
                       sx={{
                         display: 'block',
-                        fontSize: '14px',
+                        fontSize: 'var(--SubTitle-3)',
                         color:
                           errors.new_password1 && touched.new_password1
-                            ? '#ff4d4d'
-                            : '#676972',
-                        fontWeight: 500,
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
+                        fontWeight: 'var(--Regular)',
                       }}
                     >
                       New Password*
@@ -246,39 +246,39 @@ const ChangeUserPassword = ({
                         '& .MuiOutlinedInput-root': {
                           borderRadius: '12px',
                           borderWidth: '0px',
-                          color: '#DADAE1',
-                          backgroundColor: '#252431',
+                          color: 'var(--Primary-Text-Color)',
+                          backgroundColor: 'var(--Input-Box-Colors)',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
                           '& .MuiOutlinedInput-input': {
-                            fontSize: '14px',
-                            color: '#DADAE1',
+                            fontSize: 'var(--SubTitle-3)',
+                            color: 'var(--Primary-Text-Color)',
                             padding: '12px',
-                            fontWeight: 500,
+                            fontWeight: 'var(--Regular)',
                             borderRadius: '12px',
                             '&::placeholder': {
-                              color: '#888',
-                              fontWeight: 400,
+                              color: 'var(--Placeholder-Text)',
+                              fontWeight: 'var(--Lighter)',
                             },
                           },
                           '& fieldset': {
-                            borderColor: '#3A3948',
+                            borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#fff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: '#fff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                             borderWidth: '1px',
-                            color: '#fff',
+                            color: 'var(--Txt-On-Gradient)',
                           },
                         },
                         '& .MuiFormHelperText-root': {
                           color:
                             errors.new_password1 && touched.new_password1
-                              ? '#ff4d4d'
-                              : '#b0b0b0',
+                              ? 'var(--Red-Color)'
+                              : 'var(--Placeholder-Text)',
                         },
                       }}
                       InputProps={{
@@ -296,7 +296,7 @@ const ChangeUserPassword = ({
                               {newPassword ? (
                                 <Visibility
                                   sx={{
-                                    color: '#b0b0b0',
+                                    color: 'var(--Primary-Text-Color)',
                                     width: '20px',
                                     height: '20px',
                                   }}
@@ -304,7 +304,7 @@ const ChangeUserPassword = ({
                               ) : (
                                 <VisibilityOff
                                   sx={{
-                                    color: '#b0b0b0',
+                                    color: 'var(--Primary-Text-Color)',
                                     width: '20px',
                                     height: '20px',
                                   }}
@@ -328,12 +328,12 @@ const ChangeUserPassword = ({
                       htmlFor="new_password2"
                       sx={{
                         display: 'block',
-                        fontSize: '14px',
+                        fontSize: 'var(--SubTitle-3)',
                         color:
                           errors.new_password2 && touched.new_password2
-                            ? '#ff4d4d'
-                            : '#676972',
-                        fontWeight: 500,
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
+                        fontWeight: 'var(--Regular)',
                       }}
                     >
                       Repeat New Password*
@@ -360,39 +360,39 @@ const ChangeUserPassword = ({
                         '& .MuiOutlinedInput-root': {
                           borderRadius: '12px',
                           borderWidth: '0px',
-                          color: '#DADAE1',
-                          backgroundColor: '#252431',
+                          color: 'var(--Primary-Text-Color)',
+                          backgroundColor: 'var(--Input-Box-Colors)',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
                           '& .MuiOutlinedInput-input': {
-                            fontSize: '14px',
-                            color: '#DADAE1',
+                            fontSize: 'var(--SubTitle-3)',
+                            color: 'var(--Primary-Text-Color)',
                             padding: '12px',
-                            fontWeight: 500,
+                            fontWeight: 'var(--Regular)',
                             borderRadius: '12px',
                             '&::placeholder': {
-                              color: '#888',
-                              fontWeight: 400,
+                              color: 'var(--Placeholder-Text)',
+                              fontWeight: 'var(--Lighter)',
                             },
                           },
                           '& fieldset': {
-                            borderColor: '#3A3948',
+                            borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#fff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: '#fff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                             borderWidth: '1px',
-                            color: '#fff',
+                            color: 'var(--Txt-On-Gradient)',
                           },
                         },
                         '& .MuiFormHelperText-root': {
                           color:
                             errors.new_password2 && touched.new_password2
-                              ? '#ff4d4d'
-                              : '#b0b0b0',
+                              ? 'var(--Red-Color)'
+                              : 'var(--Placeholder-Text)',
                         },
                       }}
                       InputProps={{
@@ -412,7 +412,7 @@ const ChangeUserPassword = ({
                               {repeatNewPassword ? (
                                 <Visibility
                                   sx={{
-                                    color: '#b0b0b0',
+                                    color: 'var(--Primary-Text-Color)',
                                     width: '20px',
                                     height: '20px',
                                   }}
@@ -420,7 +420,7 @@ const ChangeUserPassword = ({
                               ) : (
                                 <VisibilityOff
                                   sx={{
-                                    color: '#b0b0b0',
+                                    color: 'var(--Primary-Text-Color)',
                                     width: '20px',
                                     height: '20px',
                                   }}

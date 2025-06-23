@@ -116,7 +116,11 @@ const Page = () => {
     <main>
       <div className={styles.authSection}>
         <div className={styles.authContainer}>
-          <Container maxWidth="lg" disableGutters>
+          <Container
+            maxWidth="lg"
+            disableGutters
+            className={styles.authContainerInner}
+          >
             <Box component="section" className={styles.boxLoginHeading}>
               <div className={styles.formLogo}>
                 <Link href={process.env.NEXT_PUBLIC_REDIRECT_URL!}>
@@ -130,7 +134,7 @@ const Page = () => {
               </div>
             </Box>
 
-            <Box component="section">
+            <Box component="section" className={styles.authMain}>
               <div className={styles.formCard}>
                 <div className={styles.formHeader}>
                   <Typography variant="h2" className={styles.formTitle}>
@@ -156,12 +160,12 @@ const Page = () => {
                           htmlFor="first_name"
                           sx={{
                             display: 'block',
-                            fontSize: '16px',
+                            fontSize: 'var(--SubTitle-2)',
                             color:
                               errors.first_name && touched.first_name
-                                ? '#ff4d4d'
-                                : 'var(--Subtext-Color)',
-                            fontWeight: 500,
+                                ? 'var(--Red-Color)'
+                                : 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
                           }}
                         >
                           First Name
@@ -213,8 +217,8 @@ const Page = () => {
                               '& .MuiFormHelperText-root': {
                                 color:
                                   errors.first_name && touched.first_name
-                                    ? '#ff4d4d'
-                                    : '#b0b0b0',
+                                    ? 'var(--Red-Color)'
+                                    : 'var(--Placeholder-Text)',
                               },
                             }}
                           />
@@ -231,12 +235,12 @@ const Page = () => {
                           htmlFor="last_name"
                           sx={{
                             display: 'block',
-                            fontSize: '16px',
+                            fontSize: 'var(--SubTitle-2)',
                             color:
                               errors.last_name && touched.last_name
-                                ? '#ff4d4d'
-                                : 'var(--Subtext-Color)',
-                            fontWeight: 500,
+                                ? 'var(--Red-Color)'
+                                : 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
                           }}
                         >
                           Last Name
@@ -288,8 +292,8 @@ const Page = () => {
                               '& .MuiFormHelperText-root': {
                                 color:
                                   errors.last_name && touched.last_name
-                                    ? '#ff4d4d'
-                                    : '#b0b0b0',
+                                    ? 'var(--Red-Color)'
+                                    : 'var(--Placeholder-Text)',
                               },
                             }}
                           />
@@ -306,12 +310,12 @@ const Page = () => {
                           htmlFor="email"
                           sx={{
                             display: 'block',
-                            fontSize: '16px',
+                            fontSize: 'var(--SubTitle-2)',
                             color:
                               errors.email && touched.email
-                                ? '#ff4d4d'
-                                : 'var(--Subtext-Color)',
-                            fontWeight: 500,
+                                ? 'var(--Red-Color)'
+                                : 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
                           }}
                         >
                           Email Address
@@ -361,8 +365,8 @@ const Page = () => {
                               '& .MuiFormHelperText-root': {
                                 color:
                                   errors.email && touched.email
-                                    ? '#ff4d4d'
-                                    : '#b0b0b0',
+                                    ? 'var(--Red-Color)'
+                                    : 'var(--Placeholder-Text)',
                               },
                             }}
                           />
@@ -379,12 +383,12 @@ const Page = () => {
                           htmlFor="contact_number"
                           sx={{
                             display: 'block',
-                            fontSize: '16px',
+                            fontSize: 'var(--SubTitle-2)',
                             color:
                               errors.contact_number && touched.contact_number
-                                ? '#ff4d4d'
-                                : 'var(--Subtext-Color)',
-                            fontWeight: 500,
+                                ? 'var(--Red-Color)'
+                                : 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
                           }}
                         >
                           Mobile Number
@@ -454,8 +458,8 @@ const Page = () => {
                                 color:
                                   errors.contact_number &&
                                   touched.contact_number
-                                    ? '#ff4d4d'
-                                    : '#b0b0b0',
+                                    ? 'var(--Red-Color)'
+                                    : 'var(--Placeholder-Text)',
                               },
                             }}
                             InputProps={{
@@ -472,13 +476,13 @@ const Page = () => {
                                     }}
                                     sx={{
                                       padding: '0px',
-                                      color: '#b0b0b0',
-                                      fontWeight: 'bold',
+                                      color: 'var(--Placeholder-Text)',
+                                      fontWeight: 'var(--Bold)',
                                       width: '60px',
                                       background: 'transparent',
                                       paddingRight: '15px !important',
                                       '& .MuiSelect-icon': {
-                                        color: '#fff',
+                                        color: 'var(--Txt-On-Gradient)',
                                         position: 'absolute',
                                         right: '0px',
                                       },
@@ -504,12 +508,12 @@ const Page = () => {
                           htmlFor="password"
                           sx={{
                             display: 'block',
-                            fontSize: '16px',
+                            fontSize: 'var(--SubTitle-2)',
                             color:
                               errors.password && touched.password
-                                ? '#ff4d4d'
-                                : 'var(--Subtext-Color)',
-                            fontWeight: 500,
+                                ? 'var(--Red-Color)'
+                                : 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
                           }}
                         >
                           Password
@@ -559,8 +563,8 @@ const Page = () => {
                               '& .MuiFormHelperText-root': {
                                 color:
                                   errors.password && touched.password
-                                    ? '#ff4d4d'
-                                    : '#b0b0b0',
+                                    ? 'var(--Red-Color)'
+                                    : 'var(--Placeholder-Text)',
                               },
                             }}
                             InputProps={{
@@ -573,10 +577,16 @@ const Page = () => {
                                     edge="end"
                                   >
                                     {showPassword ? (
-                                      <Visibility sx={{ color: '#b0b0b0' }} />
+                                      <Visibility
+                                        sx={{
+                                          color: 'var(--Primary-Text-Color)',
+                                        }}
+                                      />
                                     ) : (
                                       <VisibilityOff
-                                        sx={{ color: '#b0b0b0' }}
+                                        sx={{
+                                          color: 'var(--Primary-Text-Color)',
+                                        }}
                                       />
                                     )}
                                   </IconButton>
@@ -597,13 +607,13 @@ const Page = () => {
                           htmlFor="confirm_password"
                           sx={{
                             display: 'block',
-                            fontSize: '16px',
+                            fontSize: 'var(--SubTitle-2)',
                             color:
                               errors.confirm_password &&
                               touched.confirm_password
-                                ? '#ff4d4d'
-                                : 'var(--Subtext-Color)',
-                            fontWeight: 500,
+                                ? 'var(--Red-Color)'
+                                : 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
                           }}
                         >
                           Confirm Password
@@ -664,8 +674,8 @@ const Page = () => {
                                 color:
                                   errors.confirm_password &&
                                   touched.confirm_password
-                                    ? '#ff4d4d'
-                                    : '#b0b0b0',
+                                    ? 'var(--Red-Color)'
+                                    : 'var(--Placeholder-Text)',
                               },
                             }}
                             InputProps={{
@@ -678,10 +688,16 @@ const Page = () => {
                                     edge="end"
                                   >
                                     {showConfirmPassword ? (
-                                      <Visibility sx={{ color: '#b0b0b0' }} />
+                                      <Visibility
+                                        sx={{
+                                          color: 'var(--Primary-Text-Color)',
+                                        }}
+                                      />
                                     ) : (
                                       <VisibilityOff
-                                        sx={{ color: '#b0b0b0' }}
+                                        sx={{
+                                          color: 'var(--Primary-Text-Color)',
+                                        }}
                                       />
                                     )}
                                   </IconButton>

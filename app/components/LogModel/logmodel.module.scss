@@ -3,6 +3,7 @@
   -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
 }
+
 .dialogHeader {
   border-bottom: 1px solid var(--Stroke-Color);
   padding: 16px 24px;
@@ -11,6 +12,7 @@
     padding: 16px;
   }
 }
+
 .dialogHeaderInner {
   display: flex;
   justify-content: flex-start;
@@ -29,20 +31,20 @@
   align-items: center;
   justify-content: center;
 }
+
 .headerDialogBox {
   .dialogTitle {
     font-weight: var(--Bold);
     font-size: var(--SubTitle-1);
     line-height: 1.4;
-    letter-spacing: 0%;
     color: var(--Txt-On-Gradient);
   }
 }
+
 .dialogHeaderInner .dialogSemiTitle {
   font-weight: var(--Regular);
   font-size: var(--SubTitle-3);
   line-height: 1.4;
-  letter-spacing: 0%;
   color: var(--Subtext-Color);
 }
 
@@ -117,16 +119,17 @@
   margin-right: 8px;
 }
 
-.checkbox-card input[type='checkbox']:checked + label {
+.checkbox-card input[type='checkbox']:checked+label {
   border-color: var(--Stroke-Color);
   background: var(--Main-Gradient);
   color: var(--Txt-On-Gradient);
 }
-.checkbox-card input[type='checkbox']:checked + label img {
+
+.checkbox-card input[type='checkbox']:checked+label img {
   filter: brightness(0) invert(1000);
 }
 
-.checkbox-card input[type='checkbox']:checked + label .icon {
+.checkbox-card input[type='checkbox']:checked+label .icon {
   color: var(--info);
 }
 
@@ -212,6 +215,7 @@
       }
     }
   }
+
   .dialogFormGroup {
     margin-top: 24px;
 
@@ -219,6 +223,7 @@
       margin-top: 0;
     }
   }
+
   .dialogFormLabel {
     font-size: var(--SubTitle-2);
     font-weight: var(--Regular);
@@ -306,6 +311,7 @@
       font-size: var(--SubTitle-3);
     }
   }
+
   .dialogIncidentBtnBox {
     margin-top: 32px;
   }
@@ -321,8 +327,8 @@
   padding: 24px !important;
 
   .logTitle {
-    font-weight: 600;
-    font-size: 18px;
+    font-weight: var(--Medium);
+    font-size: var(--SubTitle-1);
     color: var(--Primary-Text-Color);
   }
 
@@ -346,8 +352,8 @@
       max-width: 100%;
 
       .logListBodyTagTitle {
-        font-weight: 400;
-        font-size: 13px;
+        font-weight: var(--Lighter);
+        font-size: var(--SubTitle-4);
         color: var(--Subtext-Color);
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -365,15 +371,15 @@
     margin-top: 16px;
 
     .logListFooterTitle {
-      font-weight: 400;
-      font-size: 12px;
-      color: #898b94;
+      font-weight: var(--Lighter);
+      font-size: var(--SubTitle-5);
+      color: var(--Subtext-Color);
     }
 
     .logListFooterDetails {
-      font-weight: 400;
-      font-size: 12px;
-      color: #898b94;
+      font-weight: var(--Lighter);
+      font-size: var(--SubTitle-5);
+      color: var(--Subtext-Color);
     }
   }
 }
@@ -399,15 +405,17 @@
       margin-bottom: 0;
     }
   }
+
   .logDetailsListTitle {
-    font-weight: 500;
-    font-size: 16px;
+    font-weight: var(--Regular);
+    font-size: var(--SubTitle-2);
     color: var(--Subtext-Color);
   }
+
   .logDetailsListDetails {
     .logDetailsListDetailsInner {
-      font-weight: 500;
-      font-size: 16px;
+      font-weight: var(--Regular);
+      font-size: var(--SubTitle-2);
       text-align: right;
       color: var(--Primary-Text-Color);
       margin-top: 12px;

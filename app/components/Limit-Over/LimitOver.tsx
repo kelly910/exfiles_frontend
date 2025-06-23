@@ -6,7 +6,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
     backgroundColor: 'var(--Card-Color)',
     margin: '0px',
-    border: '1px solid #3a3948',
+    border: '1px solid var(--Stroke-Color)',
     borderRadius: '24px',
     minWidth: '450px',
     width: '515px',

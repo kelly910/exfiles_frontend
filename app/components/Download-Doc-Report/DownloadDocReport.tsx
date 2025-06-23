@@ -605,7 +605,8 @@ const DownloadDocReport = () => {
                                       sx={{
                                         width: 20,
                                         height: 20,
-                                        border: '1px solid #ffffff99',
+                                        border:
+                                          '1px solid var(--Subtext-Color)',
                                         borderRadius: '6px',
                                         backgroundColor: 'transparent',
                                       }}

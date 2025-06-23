@@ -57,7 +57,7 @@ const newTheme = (theme) =>
         styleOverrides: {
           root: {
             color: 'var(--Primary-Text-Color)',
-            fontWeight: 'bold',
+            fontWeight: 'var(--Bold)',
             '&:hover': {
               border: '1px solid var(--Card-Border)',
               color: 'var(--Primary-Text-Color)',
@@ -209,7 +209,7 @@ const Sidebar = () => {
                         borderRight: '1px solid #444',
                         display: 'flex',
                         alignItems: 'center',
-                        fontSize: '16px',
+                        fontSize: 'var(--SubTitle-2)',
                         whiteSpace: 'nowrap',
                         width: '63px',
                         flex: '0 0 auto',
@@ -279,7 +279,7 @@ const Sidebar = () => {
                         borderRight: '1px solid #444',
                         display: 'flex',
                         alignItems: 'center',
-                        fontSize: '16px',
+                        fontSize: 'var(--SubTitle-2)',
                         whiteSpace: 'nowrap',
                         width: '63px',
                         flex: '0 0 auto',

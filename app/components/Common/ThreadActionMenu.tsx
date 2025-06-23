@@ -40,7 +40,7 @@ export default function ThreadActionMenu(props: threadMenuProps) {
       className={Style.mainDropdown}
       sx={{
         '& .MuiPaper-root': {
-          backgroundColor: '#11101b',
+          backgroundColor: 'var(--Background-Color)',
           borderRadius: '12px',
         },
       }}

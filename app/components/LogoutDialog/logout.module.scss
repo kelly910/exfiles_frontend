@@ -25,14 +25,13 @@
         font-weight: var(--Bold);
         font-size: var(--SubTitle-1);
         line-height: 1.4;
-        letter-spacing: 0%;
-        color: var(--Txt-On-Gradient);
+        color: var(--Primary-Text-Color);
       }
+
       .dialogSemiTitle {
         font-weight: var(--Regular);
         font-size: var(--SubTitle-3);
         line-height: 1.4;
-        letter-spacing: 0%;
         margin-top: 2px;
         color: var(--Subtext-Color);
       }
@@ -73,9 +72,8 @@
         font-weight: var(--Medium);
         font-size: var(--SubTitle-3);
         line-height: 10px;
-        letter-spacing: 0px;
         min-width: 140px;
-        background: #e72240;
+        background: var(--Red-Color);
         color: var(--Txt-On-Gradient);
         border-radius: 12px;
         padding: 15px 24px;

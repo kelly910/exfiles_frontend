@@ -80,10 +80,10 @@ export default function TemporaryDrawer() {
             <Avatar
               alt="abbreviaton"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '16px',
                 textTransform: 'capitalize',
@@ -93,7 +93,7 @@ export default function TemporaryDrawer() {
                 '@media (max-width: 768px)': {
                   width: '32px',
                   height: '32px',
-                  fontSize: '12px',
+                  fontSize: 'var(--SubTitle-5)',
                 },
               }}
             >
@@ -117,7 +117,7 @@ export default function TemporaryDrawer() {
               maxWidth: 'calc(100vw - 16px)',
               maxHeight: 'calc(100dvh - 65px)',
               background: 'var(--Card-Color)',
-              borderLeft: '1px solid  #3A3948',
+              borderLeft: '1px solid  var(--Stroke-Color)',
             },
             '& .MuiBackdrop-root': {
               top: '65px',
@@ -277,7 +277,7 @@ export default function TemporaryDrawer() {
               width: '100%',
               maxHeight: 'calc(100dvh - 65px)',
               background: 'var(--Background-Color)',
-              borderLeft: '1px solid  #3A3948',
+              borderLeft: '1px solid  var(--Stroke-Color)',
             },
             '& .MuiBackdrop-root': {
               top: '65px',
@@ -302,7 +302,7 @@ export default function TemporaryDrawer() {
                 padding: '12px 16px',
                 height: 'auto',
                 background: 'var(--Card-Color)',
-                border: '0 solid #3A3948',
+                border: '0 solid var(--Stroke-Color)',
                 borderTopWidth: '0',
                 borderBottomWidth: '1px',
               }}

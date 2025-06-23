@@ -21,9 +21,9 @@ import Link from 'next/link';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root': {
-    backgroundColor: '#11101b',
+    backgroundColor: 'var(--Background-Color)',
     margin: '0px',
-    border: '1px solid #3a3948',
+    border: '1px solid var(--Stroke-Color)',
     borderRadius: '16px',
     minWidth: '850px',
     minHeight: '550px',
@@ -192,10 +192,10 @@ export default function HeaderDialog() {
                       alt="Pravin Lagariya"
                       src="/static/images/avatar/2.jpg"
                       sx={{
-                        backgroundColor: '#DADAE1',
-                        color: '#1B1A25',
-                        fontSize: '24px',
-                        fontWeight: 600,
+                        backgroundColor: 'var(--Primary-Text-Color)',
+                        color: 'var(--Card-Color)',
+                        fontSize: 'var(--Heading-2)',
+                        fontWeight: 'var(--Medium)',
                         padding: '13px 15px',
                         lineHeight: '140%',
                         marginBottom: '28px',
@@ -216,7 +216,7 @@ export default function HeaderDialog() {
                             // color:
                             //   errors.email && touched.email
                             //     ? '#ff4d4d'
-                            //     : '#898B94',
+                            //     : 'var(--Subtext-Color)',
                           }
                         }
                       >
@@ -236,24 +236,24 @@ export default function HeaderDialog() {
                           '& .MuiOutlinedInput-root': {
                             borderRadius: '12px',
                             borderWidth: '0px',
-                            color: '#DADAE1',
-                            backgroundColor: '#252431',
+                            color: 'var(--Primary-Text-Color)',
+                            backgroundColor: 'var(--Input-Box-Colors)',
                             '& .MuiOutlinedInput-notchedOutline': {
                               top: '-10px !important',
                             },
                             '& .MuiOutlinedInput-input': {
-                              fontSize: '14px',
-                              color: '#DADAE1',
+                              fontSize: 'var(--SubTitle-3)',
+                              color: 'var(--Primary-Text-Color)',
                               padding: '14px 16px',
-                              fontWeight: 500,
+                              fontWeight: 'var(--Regular)',
                               borderRadius: '12px',
                               '&::placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
+                                color: 'var(--Placeholder-Text)',
+                                fontWeight: 'var(--Lighter)',
                               },
                             },
                             '& fieldset': {
-                              borderColor: '#3A3948',
+                              borderColor: 'var(--Stroke-Color)',
                             },
                             '&:hover fieldset': {
                               borderColor: '#fff',
@@ -284,7 +284,7 @@ export default function HeaderDialog() {
                             // color:
                             //   errors.email && touched.email
                             //     ? '#ff4d4d'
-                            //     : '#898B94',
+                            //     : 'var(--Subtext-Color)',
                           }
                         }
                       >
@@ -304,24 +304,24 @@ export default function HeaderDialog() {
                           '& .MuiOutlinedInput-root': {
                             borderRadius: '12px',
                             borderWidth: '0px',
-                            color: '#DADAE1',
-                            backgroundColor: '#252431',
+                            color: 'var(--Primary-Text-Color)',
+                            backgroundColor: 'var(--Input-Box-Colors)',
                             '& .MuiOutlinedInput-notchedOutline': {
                               top: '-10px !important',
                             },
                             '& .MuiOutlinedInput-input': {
-                              fontSize: '14px',
-                              color: '#DADAE1',
+                              fontSize: 'var(--SubTitle-3)',
+                              color: 'var(--Primary-Text-Color)',
                               padding: '14px 16px',
-                              fontWeight: 500,
+                              fontWeight: 'var(--Regular)',
                               borderRadius: '12px',
                               '&::placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
+                                color: 'var(--Placeholder-Text)',
+                                fontWeight: 'var(--Lighter)',
                               },
                             },
                             '& fieldset': {
-                              borderColor: '#3A3948',
+                              borderColor: 'var(--Stroke-Color)',
                             },
                             '&:hover fieldset': {
                               borderColor: '#fff',
@@ -352,7 +352,7 @@ export default function HeaderDialog() {
                             // color:
                             //   errors.email && touched.email
                             //     ? '#ff4d4d'
-                            //     : '#898B94',
+                            //     : 'var(--Subtext-Color)',
                           }
                         }
                       >
@@ -372,24 +372,24 @@ export default function HeaderDialog() {
                           '& .MuiOutlinedInput-root': {
                             borderRadius: '12px',
                             borderWidth: '0px',
-                            color: '#DADAE1',
-                            backgroundColor: '#252431',
+                            color: 'var(--Primary-Text-Color)',
+                            backgroundColor: 'var(--Input-Box-Colors)',
                             '& .MuiOutlinedInput-notchedOutline': {
                               top: '-10px !important',
                             },
                             '& .MuiOutlinedInput-input': {
-                              fontSize: '14px',
-                              color: '#DADAE1',
+                              fontSize: 'var(--SubTitle-3)',
+                              color: 'var(--Primary-Text-Color)',
                               padding: '14px 16px',
-                              fontWeight: 500,
+                              fontWeight: 'var(--Regular)',
                               borderRadius: '12px',
                               '&::placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
+                                color: 'var(--Placeholder-Text)',
+                                fontWeight: 'var(--Lighter)',
                               },
                             },
                             '& fieldset': {
-                              borderColor: '#3A3948',
+                              borderColor: 'var(--Stroke-Color)',
                             },
                             '&:hover fieldset': {
                               borderColor: '#fff',
@@ -420,7 +420,7 @@ export default function HeaderDialog() {
                             // color:
                             //   errors.email && touched.email
                             //     ? '#ff4d4d'
-                            //     : '#898B94',
+                            //     : 'var(--Subtext-Color)',
                           }
                         }
                       >
@@ -438,23 +438,23 @@ export default function HeaderDialog() {
                             borderRadius: '12px',
                             borderWidth: '0px',
                             color: '#fff',
-                            backgroundColor: '#252431',
+                            backgroundColor: 'var(--Input-Box-Colors)',
                             '& .MuiOutlinedInput-notchedOutline': {
                               top: '-10px !important',
                             },
                             '& .MuiOutlinedInput-input': {
-                              fontSize: '16px',
+                              fontSize: 'var(--SubTitle-2)',
                               color: '#fff',
                               padding: '14px 16px',
-                              fontWeight: 500,
+                              fontWeight: 'var(--Regular)',
                               borderRadius: '12px',
                               '&::placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
+                                color: 'var(--Placeholder-Text)',
+                                fontWeight: 'var(--Lighter)',
                               },
                             },
                             '& fieldset': {
-                              borderColor: '#3A3948',
+                              borderColor: 'var(--Stroke-Color)',
                             },
                             '&:hover fieldset': {
                               borderColor: '#fff',
@@ -476,7 +476,7 @@ export default function HeaderDialog() {
                                 sx={{
                                   padding: '0px',
                                   color: '#b0b0b0',
-                                  fontWeight: 'bold',
+                                  fontWeight: 'var(--Bold)',
                                   width: '60px',
                                   background: 'transparent',
                                   paddingRight: '15px !important',
@@ -521,7 +521,7 @@ export default function HeaderDialog() {
                             // color:
                             //   errors.email && touched.email
                             //     ? '#ff4d4d'
-                            //     : '#898B94',
+                            //     : 'var(--Subtext-Color)',
                           }
                         }
                       >
@@ -540,24 +540,24 @@ export default function HeaderDialog() {
                           '& .MuiOutlinedInput-root': {
                             borderRadius: '12px',
                             borderWidth: '0px',
-                            color: '#DADAE1',
-                            backgroundColor: '#252431',
+                            color: 'var(--Primary-Text-Color)',
+                            backgroundColor: 'var(--Input-Box-Colors)',
                             '& .MuiOutlinedInput-notchedOutline': {
                               top: '-10px !important',
                             },
                             '& .MuiOutlinedInput-input': {
-                              fontSize: '14px',
-                              color: '#DADAE1',
+                              fontSize: 'var(--SubTitle-3)',
+                              color: 'var(--Primary-Text-Color)',
                               padding: '12px',
-                              fontWeight: 500,
+                              fontWeight: 'var(--Regular)',
                               borderRadius: '12px',
                               '&::placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
+                                color: 'var(--Placeholder-Text)',
+                                fontWeight: 'var(--Lighter)',
                               },
                             },
                             '& fieldset': {
-                              borderColor: '#3A3948',
+                              borderColor: 'var(--Stroke-Color)',
                             },
                             '&:hover fieldset': {
                               borderColor: '#fff',
@@ -590,7 +590,7 @@ export default function HeaderDialog() {
                                 {showPassword ? (
                                   <Visibility
                                     sx={{
-                                      color: '#b0b0b0',
+                                      color: 'var(--Primary-Text-Color)',
                                       width: '20px',
                                       height: '20px',
                                     }}
@@ -598,7 +598,7 @@ export default function HeaderDialog() {
                                 ) : (
                                   <VisibilityOff
                                     sx={{
-                                      color: '#b0b0b0',
+                                      color: 'var(--Primary-Text-Color)',
                                       width: '20px',
                                       height: '20px',
                                     }}
@@ -622,7 +622,7 @@ export default function HeaderDialog() {
                             // color:
                             //   errors.email && touched.email
                             //     ? '#ff4d4d'
-                            //     : '#898B94',
+                            //     : 'var(--Subtext-Color)',
                           }
                         }
                       >
@@ -641,24 +641,24 @@ export default function HeaderDialog() {
                           '& .MuiOutlinedInput-root': {
                             borderRadius: '12px',
                             borderWidth: '0px',
-                            color: '#DADAE1',
-                            backgroundColor: '#252431',
+                            color: 'var(--Primary-Text-Color)',
+                            backgroundColor: 'var(--Input-Box-Colors)',
                             '& .MuiOutlinedInput-notchedOutline': {
                               top: '-10px !important',
                             },
                             '& .MuiOutlinedInput-input': {
-                              fontSize: '14px',
-                              color: '#DADAE1',
+                              fontSize: 'var(--SubTitle-3)',
+                              color: 'var(--Primary-Text-Color)',
                               padding: '12px',
-                              fontWeight: 500,
+                              fontWeight: 'var(--Regular)',
                               borderRadius: '12px',
                               '&::placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
+                                color: 'var(--Placeholder-Text)',
+                                fontWeight: 'var(--Lighter)',
                               },
                             },
                             '& fieldset': {
-                              borderColor: '#3A3948',
+                              borderColor: 'var(--Stroke-Color)',
                             },
                             '&:hover fieldset': {
                               borderColor: '#fff',
@@ -691,7 +691,7 @@ export default function HeaderDialog() {
                                 {showPassword ? (
                                   <Visibility
                                     sx={{
-                                      color: '#b0b0b0',
+                                      color: 'var(--Primary-Text-Color)',
                                       width: '20px',
                                       height: '20px',
                                     }}
@@ -699,7 +699,7 @@ export default function HeaderDialog() {
                                 ) : (
                                   <VisibilityOff
                                     sx={{
-                                      color: '#b0b0b0',
+                                      color: 'var(--Primary-Text-Color)',
                                       width: '20px',
                                       height: '20px',
                                     }}
@@ -722,7 +722,7 @@ export default function HeaderDialog() {
                             // color:
                             //   errors.email && touched.email
                             //     ? '#ff4d4d'
-                            //     : '#898B94',
+                            //     : 'var(--Subtext-Color)',
                           }
                         }
                       >
@@ -741,24 +741,24 @@ export default function HeaderDialog() {
                           '& .MuiOutlinedInput-root': {
                             borderRadius: '12px',
                             borderWidth: '0px',
-                            color: '#DADAE1',
-                            backgroundColor: '#252431',
+                            color: 'var(--Primary-Text-Color)',
+                            backgroundColor: 'var(--Input-Box-Colors)',
                             '& .MuiOutlinedInput-notchedOutline': {
                               top: '-10px !important',
                             },
                             '& .MuiOutlinedInput-input': {
-                              fontSize: '14px',
-                              color: '#DADAE1',
+                              fontSize: 'var(--SubTitle-3)',
+                              color: 'var(--Primary-Text-Color)',
                               padding: '12px',
-                              fontWeight: 500,
+                              fontWeight: 'var(--Regular)',
                               borderRadius: '12px',
                               '&::placeholder': {
-                                color: '#888',
-                                fontWeight: 400,
+                                color: 'var(--Placeholder-Text)',
+                                fontWeight: 'var(--Lighter)',
                               },
                             },
                             '& fieldset': {
-                              borderColor: '#3A3948',
+                              borderColor: 'var(--Stroke-Color)',
                             },
                             '&:hover fieldset': {
                               borderColor: '#fff',
@@ -791,7 +791,7 @@ export default function HeaderDialog() {
                                 {showPassword ? (
                                   <Visibility
                                     sx={{
-                                      color: '#b0b0b0',
+                                      color: 'var(--Primary-Text-Color)',
                                       width: '20px',
                                       height: '20px',
                                     }}
@@ -799,7 +799,7 @@ export default function HeaderDialog() {
                                 ) : (
                                   <VisibilityOff
                                     sx={{
-                                      color: '#b0b0b0',
+                                      color: 'var(--Primary-Text-Color)',
                                       width: '20px',
                                       height: '20px',
                                     }}
@@ -860,24 +860,24 @@ export default function HeaderDialog() {
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: '12px',
                                 borderWidth: '0px',
-                                color: '#DADAE1',
-                                backgroundColor: '#252431',
+                                color: 'var(--Primary-Text-Color)',
+                                backgroundColor: 'var(--Input-Box-Colors)',
                                 '& .MuiOutlinedInput-notchedOutline': {
                                   top: '-10px !important',
                                 },
                                 '& .MuiOutlinedInput-input': {
-                                  fontSize: '14px',
-                                  color: '#DADAE1',
+                                  fontSize: 'var(--SubTitle-3)',
+                                  color: 'var(--Primary-Text-Color)',
                                   padding: '14px 16px',
-                                  fontWeight: 500,
+                                  fontWeight: 'var(--Regular)',
                                   borderRadius: '12px',
                                   '&::placeholder': {
-                                    color: '#888',
-                                    fontWeight: 400,
+                                    color: 'var(--Placeholder-Text)',
+                                    fontWeight: 'var(--Lighter)',
                                   },
                                 },
                                 '& fieldset': {
-                                  borderColor: '#3A3948',
+                                  borderColor: 'var(--Stroke-Color)',
                                 },
                                 '&:hover fieldset': {
                                   borderColor: '#fff',
@@ -945,15 +945,17 @@ export default function HeaderDialog() {
                             height: '48px',
                             width: '48px',
                             textAlign: 'center',
-                            fontSize: '20px',
+                            fontSize: 'var(--Heading-3)',
                             '& .MuiOutlinedInput-root': {
                               backgroundColor: 'transparent',
-                              color: '#ffffff',
+                              color: 'var(--Txt-On-Gradient)',
                               borderRadius: '8px',
                               textAlign: 'center',
-                              '& fieldset': { borderColor: '#3A3948' },
+                              '& fieldset': {
+                                borderColor: 'var(--Stroke-Color)',
+                              },
                               '&:hover fieldset': {
-                                borderColor: '#ffffff',
+                                borderColor: 'var(--Txt-On-Gradient)',
                               },
                               '&.Mui-focused fieldset': {
                                 borderColor: '#fff',
@@ -974,15 +976,17 @@ export default function HeaderDialog() {
                             height: '48px',
                             width: '48px',
                             textAlign: 'center',
-                            fontSize: '20px',
+                            fontSize: 'var(--Heading-3)',
                             '& .MuiOutlinedInput-root': {
                               backgroundColor: 'transparent',
-                              color: '#ffffff',
+                              color: 'var(--Txt-On-Gradient)',
                               borderRadius: '8px',
                               textAlign: 'center',
-                              '& fieldset': { borderColor: '#3A3948' },
+                              '& fieldset': {
+                                borderColor: 'var(--Stroke-Color)',
+                              },
                               '&:hover fieldset': {
-                                borderColor: '#ffffff',
+                                borderColor: 'var(--Txt-On-Gradient)',
                               },
                               '&.Mui-focused fieldset': {
                                 borderColor: '#fff',
@@ -1003,15 +1007,17 @@ export default function HeaderDialog() {
                             height: '48px',
                             width: '48px',
                             textAlign: 'center',
-                            fontSize: '20px',
+                            fontSize: 'var(--Heading-3)',
                             '& .MuiOutlinedInput-root': {
                               backgroundColor: 'transparent',
-                              color: '#ffffff',
+                              color: 'var(--Txt-On-Gradient)',
                               borderRadius: '8px',
                               textAlign: 'center',
-                              '& fieldset': { borderColor: '#3A3948' },
+                              '& fieldset': {
+                                borderColor: 'var(--Stroke-Color)',
+                              },
                               '&:hover fieldset': {
-                                borderColor: '#ffffff',
+                                borderColor: 'var(--Txt-On-Gradient)',
                               },
                               '&.Mui-focused fieldset': {
                                 borderColor: '#fff',
@@ -1032,15 +1038,17 @@ export default function HeaderDialog() {
                             height: '48px',
                             width: '48px',
                             textAlign: 'center',
-                            fontSize: '20px',
+                            fontSize: 'var(--Heading-3)',
                             '& .MuiOutlinedInput-root': {
                               backgroundColor: 'transparent',
-                              color: '#ffffff',
+                              color: 'var(--Txt-On-Gradient)',
                               borderRadius: '8px',
                               textAlign: 'center',
-                              '& fieldset': { borderColor: '#3A3948' },
+                              '& fieldset': {
+                                borderColor: 'var(--Stroke-Color)',
+                              },
                               '&:hover fieldset': {
-                                borderColor: '#ffffff',
+                                borderColor: 'var(--Txt-On-Gradient)',
                               },
                               '&.Mui-focused fieldset': {
                                 borderColor: '#fff',
@@ -1060,7 +1068,7 @@ export default function HeaderDialog() {
                         // onClick={resendOtp}
                         style={{
                           cursor: 'pointer',
-                          color: '#888',
+                          color: 'var(--Placeholder-Text)',
                           textDecoration: 'underline',
                           marginTop: '32px',
                           display: 'inline-block',

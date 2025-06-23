@@ -14,9 +14,9 @@ import Image from 'next/image';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
-    backgroundColor: '#11101b',
+    backgroundColor: 'var(--Background-Color)',
     margin: '0px',
-    border: '1px solid #3a3948',
+    border: '1px solid var(--Stroke-Color)',
     borderRadius: '16px',
     minWidth: '450px',
     maxWidth: '90vw',

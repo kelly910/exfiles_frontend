@@ -122,7 +122,11 @@ const Page = () => {
       <main>
         <div className={styles.authSection}>
           <div className={styles.authContainer}>
-            <Container maxWidth="lg" disableGutters>
+            <Container
+              maxWidth="lg"
+              disableGutters
+              className={styles.authContainerInner}
+            >
               <Box component="section" className={styles.boxLoginHeading}>
                 <div className={styles.formLogo}>
                   <Link href={process.env.NEXT_PUBLIC_REDIRECT_URL!}>
@@ -136,7 +140,7 @@ const Page = () => {
                 </div>
               </Box>
 
-              <Box component="section">
+              <Box component="section" className={styles.authMain}>
                 <div className={styles.formCard}>
                   <div className={styles.formHeader}>
                     <Typography variant="h2" className={styles.formTitle}>
@@ -165,8 +169,8 @@ const Page = () => {
                               fontSize: 'var(--SubTitle-2)',
                               color:
                                 errors.email && touched.email
-                                  ? '#ff4d4d'
-                                  : 'var(--Subtext-Color)',
+                                  ? 'var(--Red-Color)'
+                                  : 'var(--Placeholder-Text)',
                               fontWeight: 'var(--Regular)',
                             }}
                           >
@@ -218,8 +222,8 @@ const Page = () => {
                                 '& .MuiFormHelperText-root': {
                                   color:
                                     errors.email && touched.email
-                                      ? '#ff4d4d'
-                                      : '#b0b0b0',
+                                      ? 'var(--Red-Color)'
+                                      : 'var(--Placeholder-Text)',
                                 },
                               }}
                             />
@@ -239,8 +243,8 @@ const Page = () => {
                               fontSize: 'var(--SubTitle-2)',
                               color:
                                 errors.password && touched.password
-                                  ? '#ff4d4d'
-                                  : 'var(--Subtext-Color)',
+                                  ? 'var(--Red-Color)'
+                                  : 'var(--Placeholder-Text)',
                               fontWeight: 'var(--Medium)',
                             }}
                           >
@@ -300,8 +304,8 @@ const Page = () => {
                                 '& .MuiFormHelperText-root': {
                                   color:
                                     errors.password && touched.password
-                                      ? '#ff4d4d'
-                                      : '#b0b0b0',
+                                      ? 'var(--Red-Color)'
+                                      : 'var(--Placeholder-Text)',
                                 },
                               }}
                               InputProps={{
@@ -314,10 +318,16 @@ const Page = () => {
                                       edge="end"
                                     >
                                       {showPassword ? (
-                                        <Visibility sx={{ color: '#b0b0b0' }} />
+                                        <Visibility
+                                          sx={{
+                                            color: 'var(--Primary-Text-Color)',
+                                          }}
+                                        />
                                       ) : (
                                         <VisibilityOff
-                                          sx={{ color: '#b0b0b0' }}
+                                          sx={{
+                                            color: 'var(--Primary-Text-Color)',
+                                          }}
                                         />
                                       )}
                                     </IconButton>

@@ -27,7 +27,7 @@
 //               src="/static/images/avatar/2.jpg"
 //               sx={{
 //                 backgroundColor: '#DADAE1',
-//                 color: '#1B1A25',
+//                 color: 'var(--Card-Color)',
 //                 fontSize: '16px',
 //                 fontWeight: 600,
 //                 padding: '9px 10px',

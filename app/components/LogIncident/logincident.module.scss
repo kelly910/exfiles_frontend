@@ -125,7 +125,7 @@
     border-radius: 12px;
     padding: 0;
     background-color: var(--Input-Box-Colors);
-    color: #dadae1;
+    color: var(--Primary-Text-Color);
     padding: 4px;
     // box-shadow: -5px 8px 21px 0px #00000026;
   }
@@ -140,7 +140,7 @@
     min-width: 100px;
 
     &:hover {
-      background-color: #2c2a38;
+      background-color: var(--Card-Image);
     }
 
     img {
@@ -157,7 +157,7 @@
 
     &.menuDropdownDelete {
       p {
-        color: #e72240;
+        color: var(--Red-Color);
       }
     }
   }
@@ -250,8 +250,8 @@
 
     .logTitle {
       cursor: pointer;
-      font-weight: 600;
-      font-size: 16px;
+      font-weight: var(--Medium);
+      font-size: var(--SubTitle-2);
       color: var(--Primary-Text-Color);
       line-clamp: 3;
       -webkit-line-clamp: 3;
@@ -265,6 +265,7 @@
 
   .logListBodyMain {
     flex-grow: 1;
+
     .logListBody {
       margin-top: 12px;
       display: flex;
@@ -285,8 +286,8 @@
         border-radius: 500px;
 
         .logListBodyTagTitle {
-          font-weight: 400;
-          font-size: 13px;
+          font-weight: var(--Lighter);
+          font-size: var(--SubTitle-4);
           color: var(--Subtext-Color);
           white-space: nowrap;
           text-overflow: ellipsis;
@@ -304,15 +305,15 @@
     margin-top: 8px;
 
     .logListFooterTitle {
-      font-weight: 400;
-      font-size: 12px;
-      color: #898b94;
+      font-weight: var(--Lighter);
+      font-size: var(--SubTitle-5);
+      color: var(--Subtext-Color);
     }
 
     .logListFooterDetails {
-      font-weight: 400;
-      font-size: 12px;
-      color: #898b94;
+      font-weight: var(--Lighter);
+      font-size: var(--SubTitle-5);
+      color: var(--Subtext-Color);
     }
   }
 }
@@ -363,6 +364,7 @@
       width: 100%;
     }
   }
+
   .limitation {
     color: var(--Subtext-Color);
     outline-color: var(--Stroke-Color) !important;
@@ -399,6 +401,7 @@
   @media (max-width: 768px) {
     max-width: 100%;
   }
+
   @media (max-width: 500px) {
     order: 2;
     flex-wrap: wrap;
@@ -428,10 +431,10 @@
       white-space: nowrap;
 
       span {
-        font-size: 12px;
-        font-weight: 400;
+        font-size: var(--SubTitle-5);
+        font-weight: var(--Lighter);
         line-height: 17px;
-        color: #898b94;
+        color: var(--Subtext-Color);
         margin-right: 8px;
 
         &:last-child {
@@ -461,7 +464,7 @@
 }
 
 .slide {
-  background-color: #ddd;
+  background-color: var(--Primary-Text-Color);
   padding: 20px;
   text-align: center;
   border-radius: 10px;

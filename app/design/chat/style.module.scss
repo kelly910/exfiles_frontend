@@ -14,11 +14,10 @@
         align-items: flex-start;
 
         p {
-          color: var(--Primary-Text-Color) cc;
+          color: var(--Primary-Text-Color);
           font-weight: var(--Regular);
           font-size: var(--SubTitle-2);
           line-height: 1.4;
-          letter-spacing: 0%;
         }
       }
 
@@ -37,14 +36,12 @@
     font-weight: var(--Bold);
     font-size: var(--Heading-1);
     line-height: 1.4;
-    letter-spacing: 0%;
   }
 
   .chatSubtitle {
     font-weight: var(--Regular);
     font-size: var(--SubTitle-3);
     line-height: 1.4;
-    letter-spacing: 0%;
     text-align: center;
     color: var(--Subtext-Color);
     margin: 0 auto;
