@@ -54,3 +54,22 @@ export const extractFileNames = (text: string): string[] => {
     return [];
   }
 };
+
+export function gtagEvent({
+  action,
+  category,
+  label,
+}: {
+  action: string;
+  category: string;
+  label: string;
+}) {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    window.gtag('event', action, {
+      event_category: category,
+      event_label: label,
+    });
+  } else {
+    console.warn('GTAG event not fired: gtag not available');
+  }
+}

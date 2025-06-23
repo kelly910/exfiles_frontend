@@ -26,6 +26,7 @@ import {
   updateFileDescription,
 } from '@/app/redux/slices/fileUpload';
 import { useChunkedFileUpload } from '../hooks/useChunkedFileUpload';
+import { gtagEvent } from '@/app/utils/functions';
 
 interface DocumentUploadModalProps {
   userInputText?: string;
@@ -104,6 +105,11 @@ export default function FileUploadDialog({
         ...(userInputText && { user_message: userInputText }),
       })
     );
+    gtagEvent({
+      action: 'upload_document',
+      category: 'File Upload',
+      label: 'Document uploaded',
+    });
     setIsLoading(false);
 
     if (uploadActualDocs.fulfilled.match(resultData)) {

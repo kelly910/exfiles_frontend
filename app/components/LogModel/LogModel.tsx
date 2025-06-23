@@ -40,6 +40,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { ALLOWED_FILE_TYPES } from '@/app/utils/constants';
 import UploadFileItem from '../AI-Chat/components/FileUpload/UploadFileItem';
+import { gtagEvent } from '@/app/utils/functions';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -528,6 +529,11 @@ export default function LogModel({
         ).unwrap();
       } else {
         await dispatch(addIncident(formData)).unwrap();
+        gtagEvent({
+          action: 'log_incident',
+          category: 'Documentation',
+          label: 'Incident logged',
+        });
       }
       handleClearFilter?.();
       dispatch(fetchLogIncidents({ page: 1 }));
