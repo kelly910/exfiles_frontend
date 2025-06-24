@@ -81,6 +81,10 @@ export interface LoginResponse {
     google_login: boolean;
     active_subscription?: ActiveSubscription;
     remaining_days?: number;
+    chat_used?: string;
+    reports_generated?: string;
+    summary_used?: string;
+    storage?: string;
   };
 }
 
@@ -118,8 +122,11 @@ interface UpdateProfileResponse {
   user_type: string;
   is_email_verified: boolean;
   active_subscription?: ActiveSubscription;
+  chat_used?: string;
+  reports_generated?: string;
+  summary_used?: string;
+  storage?: string;
 }
-
 export const loginUser = createAsyncThunk<
   LoginResponse,
   LoginPayload,

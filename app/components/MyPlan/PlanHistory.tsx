@@ -25,8 +25,8 @@ export default function PlanHistory() {
     (state: RootState) => state.planHistory
   );
 
-  useEffect(() => {
-    dispatch(fetchPlanHistory());
+useEffect(() => {
+    dispatch(fetchPlanHistory({ page_size: 'all' }));
   }, [dispatch]);
 
   return (

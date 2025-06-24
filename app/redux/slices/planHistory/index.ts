@@ -14,10 +14,6 @@ export interface PlanHistoryList {
   status: number;
 }
 
-export interface PlanHistoryResponse {
-  results: PlanHistoryList[];
-}
-
 interface PlanHistoryState {
   planHistoryData: PlanHistoryList[];
 }
@@ -27,13 +23,16 @@ const initialState: PlanHistoryState = {
 };
 
 export const fetchPlanHistory = createAsyncThunk<
-  PlanHistoryResponse,
-  void,
+  PlanHistoryList[],
+  { page_size?: string },
   { rejectValue: string }
->('planHistory/fetch', async (_, { rejectWithValue }) => {
+>('planHistory/fetch', async ({ page_size = 'all' }, { rejectWithValue }) => {
   try {
-    const response = await api.get<PlanHistoryResponse>(
-      `${urlMapper.planHistory}`
+    const response = await api.get<PlanHistoryList[]>(
+      `${urlMapper.planHistory}`,
+      {
+        params: { page_size },
+      }
     );
     return response.data;
   } catch (error) {
@@ -50,7 +49,7 @@ const planHistorySlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchPlanHistory.fulfilled, (state, action) => {
-      state.planHistoryData = action.payload.results;
+      state.planHistoryData = action.payload;
     });
   },
 });
