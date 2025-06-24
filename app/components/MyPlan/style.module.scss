@@ -373,8 +373,17 @@
       background: var(--Background-Color);
       border-radius: 12px;
       white-space: nowrap;
+      max-height: 400px;
+      overflow-y: auto;
 
       table {
+        thead {
+          position: sticky;
+          top: 0;
+          z-index: 1;
+          background: var(--Background-Color);
+        }
+
         tr {
           th {
             color: var(--Subtext-Color);

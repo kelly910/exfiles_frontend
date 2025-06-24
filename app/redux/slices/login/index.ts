@@ -95,6 +95,7 @@ export interface ActiveSubscription {
   deactivate_date?: string | null;
   used_limit_counts?: number | null;
   plan?: Plan;
+  subscription_status?: string | null;
 }
 
 export interface Plan {

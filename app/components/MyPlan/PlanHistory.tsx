@@ -1,3 +1,5 @@
+'use client';
+
 import { fetchPlanHistory } from '@/app/redux/slices/planHistory';
 import styles from './style.module.scss';
 import {
@@ -25,7 +27,7 @@ export default function PlanHistory() {
     (state: RootState) => state.planHistory
   );
 
-useEffect(() => {
+  useEffect(() => {
     dispatch(fetchPlanHistory({ page_size: 'all' }));
   }, [dispatch]);
 
