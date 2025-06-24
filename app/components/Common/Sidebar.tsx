@@ -15,13 +15,13 @@ import { Dayjs } from 'dayjs';
 import ListItem from '@mui/material/ListItem';
 import {
   Box,
-  // LinearProgress,
-  // linearProgressClasses,
+  LinearProgress,
+  linearProgressClasses,
   List,
-  // Modal,
-  // styled,
+  Modal,
+  styled,
   TextField,
-  // Typography,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -41,9 +41,13 @@ import {
   setActiveThread,
 } from '@/app/redux/slices/Chat';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
-import { clearPageHeaderData } from '@/app/redux/slices/login';
+import {
+  clearPageHeaderData,
+  selectFetchedUser,
+} from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useSearch } from '../AI-Chat-Module/context/SearchContext';
+import { useSelector } from 'react-redux';
 
 const Sidebar = ({
   isOpen,
@@ -91,6 +95,7 @@ const Sidebar = ({
   const [expandedNested, setExpandedNested] = useState<string | false>(
     'nested2'
   );
+  const fetchedUser = useSelector(selectFetchedUser);
 
   useEffect(() => {
     // console.log("");
@@ -179,37 +184,54 @@ const Sidebar = ({
     setResetTrigger((prev) => prev + 1);
   };
 
-  // const getColor = (value: number) => {
-  //   if (value <= 80) return 'var(--Main-Gradient)'; // Gradient
-  //   if (value <= 90) return '#FF7E22'; // Orange
-  //   return 'var(--Red-Color)'; // Red
-  // };
+  const getColor = (value: number) => {
+    if (fetchedUser?.active_subscription?.status === 1) {
+      if (value <= 80) return 'var(--Main-Gradient)'; // Gradient
+      if (value <= 90) return '#FF7E22'; // Orange
+      if (value == 100) return '#E72240'; // Red
+      return 'var(--Main-Gradient)'; // Gradient
+    } else {
+      return 'var(--Subtext-Color)'; // Gradient
+    }
+  };
 
-  // const ColoredLinearProgress = styled(LinearProgress)<{ $barColor: string }>(
-  //   ({ $barColor }) => ({
-  //     height: 4,
-  //     borderRadius: 50,
-  //     marginBottom: 0,
-  //     marginTop: '8px',
-  //     [`&.${linearProgressClasses.colorPrimary}`]: {
-  //       backgroundColor: 'var(--Stroke-Color)',
-  //     },
-  //     [`& .${linearProgressClasses.bar}`]: {
-  //       borderRadius: 5,
-  //       background: $barColor,
-  //     },
-  //   })
-  // );
+  const ColoredLinearProgress = styled(LinearProgress)<{ $barColor: string }>(
+    ({ $barColor }) => ({
+      height: 4,
+      borderRadius: 50,
+      marginBottom: 0,
+      marginTop: '8px',
+      [`&.${linearProgressClasses.colorPrimary}`]: {
+        backgroundColor: 'var(--Stroke-Color)',
+      },
+      [`& .${linearProgressClasses.bar}`]: {
+        borderRadius: 5,
+        background: $barColor,
+      },
+    })
+  );
 
-  // const usageData = [
-  //   { label: 'Summaries used', used: 47, total: 100 },
-  //   { label: 'Chats used', used: 45, total: 50 },
-  //   { label: 'Reports generated', used: 3, total: 3 },
-  // ];
+  const usageData = [
+    {
+      label: 'Summaries used',
+      used: fetchedUser?.summary_used?.split('/')[0] || 0,
+      total: fetchedUser?.summary_used?.split('/')[1] || 0,
+    },
+    {
+      label: 'Chats used',
+      used: fetchedUser?.chat_used?.split('/')[0] || 0,
+      total: fetchedUser?.chat_used?.split('/')[1] || 0,
+    },
+    {
+      label: 'Reports generated',
+      used: fetchedUser?.reports_generated?.split('/')[0] || 0,
+      total: fetchedUser?.reports_generated?.split('/')[1] || 0,
+    },
+  ];
 
-  // const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <>
@@ -491,18 +513,22 @@ const Sidebar = ({
           </div>
         </div>
 
-        {/* <div className={Style['storage-main-body']}>
+        <div className={Style['storage-main-body']}>
           <div className={Style['storage-main']}>
             {usageData.map((item, idx) => {
-              const value = (item.used / item.total) * 100;
+              const value = (Number(item.used) / Number(item.total)) * 100;
 
               return (
                 <Box key={idx} className={Style['storage-body']}>
                   <Typography variant="body1" className={Style['storage-head']}>
                     {item.label}{' '}
-                    <Typography component="span">
-                      {item.used}/{item.total}
-                    </Typography>
+                    {fetchedUser?.active_subscription?.status === 1 ? (
+                      <Typography component="span">
+                        {item.used}/{item.total}
+                      </Typography>
+                    ) : (
+                      <Typography component="span">{item.used}</Typography>
+                    )}
                   </Typography>
 
                   <ColoredLinearProgress
@@ -536,7 +562,7 @@ const Sidebar = ({
           >
             <Box className={Style['storage-main']}>
               {usageData.map((item, idx) => {
-                const value = (item.used / item.total) * 100;
+                const value = (Number(item.used) / Number(item.total)) * 100;
 
                 return (
                   <Box key={idx} className={Style['storage-body']}>
@@ -545,9 +571,13 @@ const Sidebar = ({
                       className={Style['storage-head']}
                     >
                       {item.label}{' '}
-                      <Typography component="span">
-                        {item.used}/{item.total}
-                      </Typography>
+                      {fetchedUser?.active_subscription?.status === 1 ? (
+                        <Typography component="span">
+                          {item.used}/{item.total}
+                        </Typography>
+                      ) : (
+                        <Typography component="span">{item.used}</Typography>
+                      )}
                     </Typography>
 
                     <ColoredLinearProgress
@@ -560,7 +590,7 @@ const Sidebar = ({
               })}
             </Box>
           </Modal>
-        </div> */}
+        </div>
       </div>
     </>
   );

@@ -46,9 +46,9 @@ export default function ActivePlan() {
       ).format('MM/DD/YYYY')
     : '-';
 
-  const used = 1.6;
-  const total = 4;
-  const value = (used / total) * 100;
+  const used = fetchedUser?.storage?.split('/')[0] || 0;
+  const total = fetchedUser?.storage?.split('/')[1] || 1;
+  const value = (Number(used) / Number(total)) * 100;
   return (
     <>
       <Box
@@ -175,6 +175,9 @@ const GradientCircularProgress = styled(CircularProgress)(() => ({
 function CircularProgressWithLabel(
   props: CircularProgressProps & { value: number }
 ) {
+  const fetchedUser = useSelector(selectFetchedUser);
+  const used = fetchedUser?.storage?.split('/')[0];
+  const total = fetchedUser?.storage?.split('/')[1];
   return (
     <Box
       sx={{
@@ -228,8 +231,10 @@ function CircularProgressWithLabel(
 
       <Box className={styles['storage-info']}>
         <Typography variant="subtitle2">Storage</Typography>
-        <Typography variant="h5">1.6 GB</Typography>
-        <Typography variant="body2">Total 4 GB</Typography>
+        <Typography variant="h5">
+          {used ? parseFloat(used).toFixed(2) : '0 GB'}
+        </Typography>
+        <Typography variant="body2">Total {total ? total : '0 GB'}</Typography>
       </Box>
     </Box>
   );
