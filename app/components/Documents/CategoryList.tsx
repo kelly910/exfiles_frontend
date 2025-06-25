@@ -22,6 +22,7 @@ import {
 import { useAppDispatch } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
 import RenameDialog from '../ReName/ReName';
+import { selectFetchedUser } from '@/app/redux/slices/login';
 
 export type Category = {
   name: string;
@@ -59,6 +60,8 @@ const CategoryList: React.FC<CategoryListProps> = ({
   const [showLoading, setShowLoading] = useState(false);
   const loadedPages = useRef(new Set<number>());
   const categoryRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   useEffect(() => {
     dispatch(resetCategories());
@@ -183,55 +186,59 @@ const CategoryList: React.FC<CategoryListProps> = ({
                       No. of Docs : <span>{category?.no_of_docs || 0}</span>
                     </Typography>
                   </div>
-                  <IconButton
-                    onClick={(e) => handleOpenUserMenu(e, category)}
-                    sx={{ p: 0 }}
-                  >
-                    <Image
-                      src="/images/more.svg"
-                      alt="more"
-                      width={16}
-                      height={16}
-                      className={styles.arrowRightImg}
-                    />
-                  </IconButton>
-                  <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorElUser}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}
-                    className={styles.mainDropdown}
-                    sx={{
-                      '& .MuiPaper-root': {
-                        backgroundColor: 'var(--Input-Box-Colors)',
-                        marginTop: '20px',
-                        boxShadow: 'none',
-                        borderRadius: '12px',
-                      },
-                    }}
-                  >
-                    <MenuItem
-                      onClick={handleOpenRenameDialog}
-                      className={styles.menuDropdown}
-                    >
-                      <Image
-                        src="/images/edit-2.svg"
-                        alt="tras"
-                        width={18}
-                        height={18}
-                      />
-                      <Typography>Rename Category</Typography>
-                    </MenuItem>
-                  </Menu>
+                  {expiredStatus !== 0 && (
+                    <>
+                      <IconButton
+                        onClick={(e) => handleOpenUserMenu(e, category)}
+                        sx={{ p: 0 }}
+                      >
+                        <Image
+                          src="/images/more.svg"
+                          alt="more"
+                          width={16}
+                          height={16}
+                          className={styles.arrowRightImg}
+                        />
+                      </IconButton>
+                      <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                        className={styles.mainDropdown}
+                        sx={{
+                          '& .MuiPaper-root': {
+                            backgroundColor: 'var(--Input-Box-Colors)',
+                            marginTop: '20px',
+                            boxShadow: 'none',
+                            borderRadius: '12px',
+                          },
+                        }}
+                      >
+                        <MenuItem
+                          onClick={handleOpenRenameDialog}
+                          className={styles.menuDropdown}
+                        >
+                          <Image
+                            src="/images/edit-2.svg"
+                            alt="tras"
+                            width={18}
+                            height={18}
+                          />
+                          <Typography>Rename Category</Typography>
+                        </MenuItem>
+                      </Menu>
+                    </>
+                  )}
                 </div>
               </Box>
             ))}

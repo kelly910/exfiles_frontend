@@ -29,6 +29,7 @@ import { getDocumentImage } from '@/app/utils/functions';
 import RenameDocDialog from './Dialog/RenameDocDialog';
 import { useSearchParams } from 'next/navigation';
 import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
+import { selectFetchedUser } from '@/app/redux/slices/login';
 
 type Tag = {
   id: number;
@@ -88,6 +89,8 @@ const DocumentList: React.FC<DocumentListProps> = ({
   } | null>(null);
   const docid = useSearchParams();
   const paramsDocId = docid.get('docId');
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   useEffect(() => {
     if (catId) {
@@ -364,30 +367,34 @@ const DocumentList: React.FC<DocumentListProps> = ({
                             />
                             <Typography>View Document</Typography>
                           </MenuItem>
-                          <MenuItem
-                            onClick={handleRenameDocument}
-                            className={`${styles.menuDropdown}`}
-                          >
-                            <Image
-                              src="/images/rename-document.svg"
-                              alt="tras"
-                              width={18}
-                              height={18}
-                            />
-                            <Typography>Rename Document</Typography>
-                          </MenuItem>
-                          <MenuItem
-                            onClick={handleDeleteOption}
-                            className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
-                          >
-                            <Image
-                              src="/images/trash.svg"
-                              alt="tras"
-                              width={18}
-                              height={18}
-                            />
-                            <Typography>Delete Document</Typography>
-                          </MenuItem>
+                          {expiredStatus !== 0 && (
+                            <>
+                              <MenuItem
+                                onClick={handleRenameDocument}
+                                className={`${styles.menuDropdown}`}
+                              >
+                                <Image
+                                  src="/images/rename-document.svg"
+                                  alt="tras"
+                                  width={18}
+                                  height={18}
+                                />
+                                <Typography>Rename Document</Typography>
+                              </MenuItem>
+                              <MenuItem
+                                onClick={handleDeleteOption}
+                                className={`${styles.menuDropdown} ${styles.menuDropdownDelete}`}
+                              >
+                                <Image
+                                  src="/images/trash.svg"
+                                  alt="tras"
+                                  width={18}
+                                  height={18}
+                                />
+                                <Typography>Delete Document</Typography>
+                              </MenuItem>
+                            </>
+                          )}
                         </Menu>
                       </div>
                       <div className={styles.docDateBox}>

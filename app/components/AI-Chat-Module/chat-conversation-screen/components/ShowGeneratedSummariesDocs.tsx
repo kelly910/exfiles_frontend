@@ -29,6 +29,8 @@ import {
 import { SocketPayload } from '@components/AI-Chat-Module/types/aiChat.types';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useSearch } from '../../context/SearchContext';
+import { selectFetchedUser } from '@/app/redux/slices/login';
+import { useSelector } from 'react-redux';
 
 const FileSummarySkeleton = () => {
   return (
@@ -92,6 +94,8 @@ export default function ShowGeneratedSummariesDocs({
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const { searchingChat } = useSearch();
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
   const handleRetryDoc = async (docObj: UploadedDocument) => {
     setIsLoading(true);
 
@@ -249,7 +253,7 @@ export default function ShowGeneratedSummariesDocs({
                             <Button
                               className={chatMessagesStyles.charAlRetryButton}
                               onClick={() => handleRetryDoc(documentItem)}
-                              disabled={isLoading}
+                              disabled={isLoading || expiredStatus === 0}
                             >
                               {isLoading ? (
                                 <CircularProgress
@@ -348,6 +352,7 @@ export default function ShowGeneratedSummariesDocs({
           summaryGeneratedDocList?.length > 1 && (
             <Box className={chatMessagesStyles.chatAlSummaryButtonMain}>
               <Button
+                disabled={expiredStatus === 0}
                 className={chatMessagesStyles.chatAlSummaryButton}
                 onClick={() =>
                   handleGenerateCombinedSummary({

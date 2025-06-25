@@ -1,7 +1,9 @@
 import LogModel from '@/app/components/LogModel/LogModel';
+import { selectFetchedUser } from '@/app/redux/slices/login';
 import AIChatStyles from '@components/AI-Chat-Module/styles/AIChatStyle.module.scss';
 import { Button, Grid, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 interface PrompsSuggestionsProp {
   handlePromptClick: (prompt: string) => void;
@@ -21,6 +23,9 @@ export default function PromptsSuggestions({
     setOpenModel(true);
   };
 
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
+
   return (
     <Grid
       container
@@ -38,9 +43,10 @@ export default function PromptsSuggestions({
               Log an incident - document what happened today.
             </Typography>
             <Button
+              disabled={expiredStatus === 0}
               type="button"
               variant="contained"
-              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
+              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
               color="primary"
               fullWidth
             >
@@ -57,9 +63,10 @@ export default function PromptsSuggestions({
           <div className={AIChatStyles.chatBox}>
             <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
             <Button
+              disabled={expiredStatus === 0}
               type="button"
               variant="contained"
-              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
+              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
               color="primary"
               fullWidth
               onClick={() => handlePromptClick(CHAT_PROMPS[0])}
@@ -75,9 +82,10 @@ export default function PromptsSuggestions({
           <div className={AIChatStyles.chatBox}>
             <Typography variant="body1">{CHAT_PROMPS[1]}</Typography>
             <Button
+              disabled={expiredStatus === 0}
               type="button"
               variant="contained"
-              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton}`}
+              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
               color="primary"
               fullWidth
               onClick={() => handlePromptClick(CHAT_PROMPS[1])}

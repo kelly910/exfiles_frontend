@@ -31,6 +31,7 @@ import { editSummaryByDocId } from '@/app/redux/slices/editSummary';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { editSummaryValidation } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useRouter } from 'next/navigation';
+import { selectFetchedUser } from '@/app/redux/slices/login';
 
 interface DocumentSummaryProps {
   docId: string;
@@ -68,6 +69,9 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   const cancelEditMode = () => {
     setEditMode(false);
   };
+
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   useEffect(() => {
     if (!docId) return;
@@ -394,7 +398,11 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     </>
                   )}
                   <span className={styles.docsDas}></span>
-                  <Button className={styles.docsButton} onClick={editSummary}>
+                  <Button
+                    className={styles.docsButton}
+                    onClick={editSummary}
+                    disabled={expiredStatus === 0}
+                  >
                     <Image
                       src="/images/edit.svg"
                       alt="Download"

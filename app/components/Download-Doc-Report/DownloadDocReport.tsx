@@ -25,7 +25,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useRouter } from 'next/navigation';
-import { setPageHeaderData } from '@/app/redux/slices/login';
+import { selectFetchedUser, setPageHeaderData } from '@/app/redux/slices/login';
 import {
   downloadSelectedDocsReport,
   fetchAllDocuments,
@@ -41,6 +41,7 @@ import { Dayjs } from 'dayjs';
 import Slider from 'react-slick';
 import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
 import DocumentSummaryPopup from './DocumentSummaryPopup';
+// import LimitOver from '../Limit-Over/LimitOver';
 
 type Tag = {
   id: number;
@@ -93,6 +94,9 @@ const DownloadDocReport = () => {
     (state: RootState) => state.categoryListing
   );
   const [loading, setLoading] = useState(false);
+  // const [limitDialog, setLimitDialog] = useState(false);
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -237,6 +241,14 @@ const DownloadDocReport = () => {
           document_uuid: selectedDocsDownload.join(','),
         };
         await dispatch(downloadSelectedDocsReport(payload));
+        // .unwrap()
+        // .then((res) => {
+        //   console.log(res, 'res');
+        // })
+        // .catch((error) => {
+        //   console.log(error, 'error');
+        //   setLimitDialog(true);
+        // });
         gtagEvent({
           action: 'export_summary',
           category: 'Export',
@@ -253,6 +265,14 @@ const DownloadDocReport = () => {
           type: 'all',
         };
         await dispatch(downloadSelectedDocsReport(payload));
+        // .unwrap()
+        // .then((res) => {
+        //   console.log(res, 'res');
+        // })
+        // .catch((error) => {
+        //   console.log(error, 'error');
+        //   setLimitDialog(true);
+        // });
         gtagEvent({
           action: 'export_summary',
           category: 'Export',
@@ -419,9 +439,13 @@ const DownloadDocReport = () => {
                     setSelectedCategories={setSelectedCategories}
                   />
                   <Button
-                    className="btn btn-pluse download-document-btn"
+                    className={
+                      expiredStatus === 0
+                        ? 'btn btn-pluse download-document-btn limitation'
+                        : 'btn btn-pluse download-document-btn'
+                    }
                     onClick={downloadSelectedDocReport}
-                    disabled={loading}
+                    disabled={loading || expiredStatus === 0}
                   >
                     {loading ? (
                       <CircularProgress size={24} color="inherit" />
@@ -590,63 +614,65 @@ const DownloadDocReport = () => {
                               ),
                             }}
                           />
-                          <Box className={styles.allSelect}>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={selectedDocsDownload.includes(
-                                    doc?.uuid || ''
-                                  )}
-                                  onChange={() =>
-                                    handleSelectDoc(doc?.uuid || '')
-                                  }
-                                  icon={
-                                    <Box
-                                      sx={{
-                                        width: 20,
-                                        height: 20,
-                                        border:
-                                          '1px solid var(--Subtext-Color)',
-                                        borderRadius: '6px',
-                                        backgroundColor: 'transparent',
-                                      }}
-                                    />
-                                  }
-                                  checkedIcon={
-                                    <Box
-                                      sx={{
-                                        width: 20,
-                                        height: 20,
-                                        background: 'var(--Main-Gradient)',
-                                        borderRadius: '6px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                      }}
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="12"
-                                        height="8"
-                                        viewBox="0 0 12 8"
-                                        fill="none"
+                          {expiredStatus !== 0 && (
+                            <Box className={styles.allSelect}>
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={selectedDocsDownload.includes(
+                                      doc?.uuid || ''
+                                    )}
+                                    onChange={() =>
+                                      handleSelectDoc(doc?.uuid || '')
+                                    }
+                                    icon={
+                                      <Box
+                                        sx={{
+                                          width: 20,
+                                          height: 20,
+                                          border:
+                                            '1px solid var(--Subtext-Color)',
+                                          borderRadius: '6px',
+                                          backgroundColor: 'transparent',
+                                        }}
+                                      />
+                                    }
+                                    checkedIcon={
+                                      <Box
+                                        sx={{
+                                          width: 20,
+                                          height: 20,
+                                          background: 'var(--Main-Gradient)',
+                                          borderRadius: '6px',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                        }}
                                       >
-                                        <path
-                                          d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
-                                          stroke="white"
-                                          strokeWidth="1.8"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        />
-                                      </svg>
-                                    </Box>
-                                  }
-                                  sx={{ padding: 0 }}
-                                />
-                              }
-                              label=""
-                            />
-                          </Box>
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width="12"
+                                          height="8"
+                                          viewBox="0 0 12 8"
+                                          fill="none"
+                                        >
+                                          <path
+                                            d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
+                                            stroke="white"
+                                            strokeWidth="1.8"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                          />
+                                        </svg>
+                                      </Box>
+                                    }
+                                    sx={{ padding: 0 }}
+                                  />
+                                }
+                                label=""
+                              />
+                            </Box>
+                          )}
                         </div>
                         <div className={styles.docDateBox}>
                           <div className={styles.docTagBox}>
@@ -705,6 +731,14 @@ const DownloadDocReport = () => {
         docType={docType}
         searchParams={searchParams}
       />
+      {/* <LimitOver
+        open={limitDialog}
+        onClose={() => setLimitDialog(false)}
+        title={'Your Report Generation Limit is Over'}
+        subtitle={'Reports'}
+        totalNumber={'3'}
+        usedNumber={'3'}
+      /> */}
     </>
   );
 };
