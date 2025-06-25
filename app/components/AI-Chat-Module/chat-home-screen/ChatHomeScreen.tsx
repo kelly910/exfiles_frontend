@@ -16,12 +16,17 @@ import {
   setIsStreaming,
 } from '@/app/redux/slices/Chat';
 import { useRouter } from 'next/navigation';
-import { clearPageHeaderData } from '@/app/redux/slices/login';
+import {
+  clearPageHeaderData,
+  selectFetchedUser,
+} from '@/app/redux/slices/login';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import PromptsSuggestions from './components/PromptsSuggestions';
 import DraggingUI from './components/DraggingUI';
 import DynamicLowerHeader from './components/DynamicLowerHeader';
 import { resetUploadedFiles } from '@/app/redux/slices/fileUpload';
+import PlanExpiredMG from '../../Plan-Expired-MG/PlanExpiredMG';
+import { useSelector } from 'react-redux';
 
 export default function ChatHomeScreen() {
   const dispatch = useAppDispatch();
@@ -33,6 +38,9 @@ export default function ChatHomeScreen() {
     version: number;
   } | null>(null);
   const [droppedFiles, setDroppedFiles] = useState<File[]>([]);
+
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   const handleNewSendMessage = async (payloadData: SocketPayload) => {
     setIsLoading(true);
@@ -133,6 +141,7 @@ export default function ChatHomeScreen() {
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
+        {expiredStatus === 0 && <PlanExpiredMG />}
         {/* Drag and Drop file upload */}
         {isDragging && <DraggingUI />}
         {/* Drag and Drop file upload */}

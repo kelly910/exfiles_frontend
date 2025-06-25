@@ -15,6 +15,8 @@ import { showToast } from '@/app/shared/toast/ShowToast';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { Dayjs } from 'dayjs';
 import { highlightText } from '@/app/utils/constants';
+import { selectFetchedUser } from '@/app/redux/slices/login';
+import { useSelector } from 'react-redux';
 const NoRecordFound = dynamic(() => import('@components/Common/NoRecordFound'));
 
 interface DynamicPinnedMessagesListProps {
@@ -48,6 +50,9 @@ export default function DynamicPinnedMessagesList({
   const [hasMore, setHasMore] = useState(
     pinnedChats.results.length < pinnedChats.count
   );
+
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   useEffect(() => {
     if (!isFetching || !isInitialLoading) {
@@ -221,16 +226,18 @@ export default function DynamicPinnedMessagesList({
               ></p>
             </div>
             <div className={Style['right']}>
-              <div className={Style['pin-img']}>
-                {isLoading && ''}
-                <Image
-                  src="/images/sidebar-Pin.svg"
-                  alt="pin"
-                  width={18}
-                  height={18}
-                  onClick={() => handleTogglePin(chat)}
-                />
-              </div>
+              {expiredStatus !== 0 && (
+                <div className={Style['pin-img']}>
+                  {isLoading && ''}
+                  <Image
+                    src="/images/sidebar-Pin.svg"
+                    alt="pin"
+                    width={18}
+                    height={18}
+                    onClick={() => handleTogglePin(chat)}
+                  />
+                </div>
+              )}
             </div>
           </div>
         ))}

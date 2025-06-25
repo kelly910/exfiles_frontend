@@ -895,4 +895,19 @@ input::-webkit-inner-spin-button {
   padding: 20px 1px;
 }
 
+body .btn.limitation {
+  color: var(--Subtext-Color) !important;
+  outline-color: var(--Stroke-Color) !important;
+  background: var(--Stroke-Color) !important;
+  border: none !important;
+}
+
+body .btn.limitation:hover {
+  outline: none;
+}
+
+body .btn.limitation img {
+  filter: brightness(0.5);
+}
+
 /*  */

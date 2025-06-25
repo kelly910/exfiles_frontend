@@ -34,6 +34,8 @@ import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { useSelector } from 'react-redux';
+import { selectFetchedUser } from '@/app/redux/slices/login';
 
 const DynamicDocUploadModal = dynamic(
   () => import('@components/AI-Chat-Module/modals/FileUploadDialog')
@@ -64,7 +66,8 @@ export default function ChatInputBox({
   const { handleFiles } = useChunkedFileUpload();
   const [text, setText] = useState('');
   const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
-
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
   const isSendDisabled =
     isLoadingProp ||
     (!text?.trim() && (!uploadedFiles || uploadedFiles.length === 0));
@@ -266,7 +269,11 @@ export default function ChatInputBox({
         <Input
           id="input-with-icon-adornment"
           className={AIChatStyles.fileInputInner}
-          placeholder="Write your question here"
+          placeholder={
+            expiredStatus === 0
+              ? 'Your copilot Chats Limit is Over'
+              : 'Write your question here'
+          }
           value={text}
           onChange={handleText}
           onKeyDown={handleKeyUp}
@@ -274,13 +281,14 @@ export default function ChatInputBox({
           multiline
           minRows={1}
           maxRows={3}
-          disabled={false}
+          disabled={expiredStatus === 0}
           style={{ width: '100%' }}
           endAdornment={
             <InputAdornment
               position="end"
               className={AIChatStyles.fileIcon}
               onClick={handleOpenDocUploadModal}
+              disablePointerEvents={expiredStatus === 0}
             >
               <span className={AIChatStyles.clip}></span>
             </InputAdornment>
@@ -291,11 +299,11 @@ export default function ChatInputBox({
       <Button
         type="button"
         variant="contained"
-        className={`btn-arrow`}
+        className={`btn-arrow ${expiredStatus === 0 ? 'limitation' : ''}`}
         color="primary"
         fullWidth
         onClick={handleMessageSending}
-        disabled={isSendDisabled}
+        disabled={isSendDisabled || expiredStatus === 0}
       >
         {isLoadingProp ? (
           <CircularProgress

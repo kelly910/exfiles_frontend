@@ -197,7 +197,7 @@ const Sidebar = ({
       if (value <= 80) return 'var(--Main-Gradient)'; // Gradient
       if (value <= 90) return '#FF7E22'; // Orange
       if (value == 100) return '#E72240'; // Red
-      return 'var(--Main-Gradient)'; // Gradient
+      return 'var(--Subtext-Color)'; // Gradient
     } else {
       return 'var(--Subtext-Color)'; // Gradient
     }

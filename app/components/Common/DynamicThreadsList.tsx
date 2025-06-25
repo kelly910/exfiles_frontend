@@ -22,6 +22,8 @@ import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
 import { Dayjs } from 'dayjs';
 import { highlightText } from '@/app/utils/constants';
+import { selectFetchedUser } from '@/app/redux/slices/login';
+import { useSelector } from 'react-redux';
 const NoRecordFound = dynamic(() => import('@components/Common/NoRecordFound'));
 interface DynamicThreadsListProps {
   handleThreadClick: (threadUUID: string) => void;
@@ -61,6 +63,9 @@ export default function DynamicThreadsList({
   const [currentSelectedItem, setCurrentSelectedItem] = useState<Thread | null>(
     null
   );
+
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   // Rename Thread
   const [isOpenRenameModal, setIsOpenRenameModal] = useState(false);
@@ -290,22 +295,24 @@ export default function DynamicThreadsList({
               ></p>
             </div>
             <div className={Style['right']}>
-              <div>
-                <Button
-                  id="fade-button"
-                  aria-controls={'fade-menu'}
-                  aria-haspopup="true"
-                  aria-expanded={'true'}
-                  onClick={(e) => handleActionMenuClick(e, chat)}
-                >
-                  <Image
-                    src="/images/more.svg"
-                    alt="user-icon"
-                    height={10}
-                    width={10}
-                  />
-                </Button>
-              </div>
+              {expiredStatus !== 0 && (
+                <div>
+                  <Button
+                    id="fade-button"
+                    aria-controls={'fade-menu'}
+                    aria-haspopup="true"
+                    aria-expanded={'true'}
+                    onClick={(e) => handleActionMenuClick(e, chat)}
+                  >
+                    <Image
+                      src="/images/more.svg"
+                      alt="user-icon"
+                      height={10}
+                      width={10}
+                    />
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         ))}

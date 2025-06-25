@@ -2,8 +2,10 @@ import React from 'react';
 import Style from '@components/Plan-Expired-MG/PlanExpiredMG.module.scss';
 import { Box, Button, Typography } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function PlanExpiredMG() {
+  const router = useRouter();
   return (
     <>
       <Box component="div" className={Style.PlanExpiredMG}>
@@ -27,7 +29,12 @@ export default function PlanExpiredMG() {
             </Box>
           </Box>
           <Box component="div">
-            <Button className="btn-primary btn">Upgrade Now</Button>
+            <Button
+              className="btn-primary btn"
+              onClick={() => router.push('/plans')}
+            >
+              Upgrade Now
+            </Button>
           </Box>
         </Box>
       </Box>
