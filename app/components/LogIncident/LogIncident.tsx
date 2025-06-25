@@ -33,7 +33,11 @@ import { RootState } from '@/app/redux/store';
 import LogincidentEmpty from './LogincidentEmpty';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useRouter } from 'next/navigation';
-import { selectFetchedUser, setPageHeaderData } from '@/app/redux/slices/login';
+import {
+  getUserById,
+  selectFetchedUser,
+  setPageHeaderData,
+} from '@/app/redux/slices/login';
 import LogDetailsModel from '../LogModel/LogDetailsModel';
 import LogModel from '../LogModel/LogModel';
 import dayjs, { Dayjs } from 'dayjs';
@@ -44,6 +48,7 @@ import {
 } from '@/app/utils/constants';
 import Slider from 'react-slick';
 import { gtagEvent } from '@/app/utils/functions';
+import LimitOver from '../Limit-Over/LimitOver';
 
 export interface FileDataImage {
   file_url: string;
@@ -129,9 +134,13 @@ export default function LogIncident() {
 
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
-
+  const [limitDialog, setLimitDialog] = useState(false);
   const [editLogIncidentData, setEditLogIncidentData] =
     useState<LogIncidentDetails | null>(null);
+
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
 
   const handleOpenAddIncident = () => {
     setEditLogIncidentData(null);
@@ -283,7 +292,18 @@ export default function LogIncident() {
         const payload = {
           incidents_id: selectedLogsDownload.join(','),
         };
-        await dispatch(downloadSelectedLogsReport(payload));
+        await dispatch(downloadSelectedLogsReport(payload))
+          .unwrap()
+          .then((res) => {
+            console.log(res, 'res');
+          })
+          .catch((error) => {
+            console.log(error, 'error');
+            setLimitDialog(true);
+          });
+        if (loggedInUser?.data?.id) {
+          dispatch(getUserById(loggedInUser?.data?.id));
+        }
         gtagEvent({
           action: 'export_log_incident',
           category: 'Export',
@@ -298,7 +318,18 @@ export default function LogIncident() {
           search: searchParams.length > 3 ? searchParams : '',
           type: 'all',
         };
-        await dispatch(downloadSelectedLogsReport(payload));
+        await dispatch(downloadSelectedLogsReport(payload))
+          .unwrap()
+          .then((res) => {
+            console.log(res, 'res');
+          })
+          .catch((error) => {
+            console.log(error, 'error');
+            setLimitDialog(true);
+          });
+        if (loggedInUser?.data?.id) {
+          dispatch(getUserById(loggedInUser?.data?.id));
+        }
         gtagEvent({
           action: 'export_log_incident',
           category: 'Export',
@@ -979,6 +1010,14 @@ export default function LogIncident() {
         handleClose={() => setOpenAddIncident(false)}
         editedData={editLogIncidentData}
         handleClearFilter={clearFilter}
+      />
+      <LimitOver
+        open={limitDialog}
+        onClose={() => setLimitDialog(false)}
+        title={'Your Report Generation Limit is Over'}
+        subtitle={'Reports'}
+        totalNumber={'3'}
+        usedNumber={'3'}
       />
     </>
   );
