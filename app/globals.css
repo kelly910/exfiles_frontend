@@ -895,6 +895,7 @@ input::-webkit-inner-spin-button {
   padding: 20px 1px;
 }
 
+body .limitation,
 body .btn.limitation {
   color: var(--Subtext-Color) !important;
   outline-color: var(--Stroke-Color) !important;
@@ -902,12 +903,18 @@ body .btn.limitation {
   border: none !important;
 }
 
+body .limitation:hover,
 body .btn.limitation:hover {
   outline: none;
 }
 
+body .limitation img,
 body .btn.limitation img {
   filter: brightness(0.5);
+}
+
+.limitation-icon {
+  filter: brightness(0) invert(0.5);
 }
 
 /*  */
