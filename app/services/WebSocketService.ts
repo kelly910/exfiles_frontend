@@ -6,6 +6,7 @@ import { getCookie } from 'cookies-next';
 import { AppDispatch } from '@store/store';
 import { setWebSocketMessage } from '../redux/slices/Chat';
 import { gtagEvent } from '../utils/functions';
+import { getUserById } from '../redux/slices/login';
 
 export let socket: W3CWebSocket | null = null;
 let dispatch: AppDispatch;
@@ -46,6 +47,12 @@ export const WebSocketService = (): void => {
           category: 'User Engagement',
           label: 'Chat area interaction',
         });
+        if (data?.data?.is_streaming_finished) {
+          const storedUser = localStorage.getItem('loggedInUser');
+          const loggedInUserData = storedUser ? JSON.parse(storedUser) : null;
+          const loggedInUserId = loggedInUserData?.data?.id;
+          dispatch(getUserById(loggedInUserId));
+        }
       } catch (err) {
         console.log(err);
         console.error('❌ Invalid message format:', event.data);

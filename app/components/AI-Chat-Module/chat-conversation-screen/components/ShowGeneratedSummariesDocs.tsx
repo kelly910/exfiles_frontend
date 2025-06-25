@@ -251,7 +251,7 @@ export default function ShowGeneratedSummariesDocs({
                               Error in training while processing this document
                             </Typography>
                             <Button
-                              className={chatMessagesStyles.charAlRetryButton}
+                              className={`${chatMessagesStyles.charAlRetryButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
                               onClick={() => handleRetryDoc(documentItem)}
                               disabled={isLoading || expiredStatus === 0}
                             >
@@ -353,7 +353,7 @@ export default function ShowGeneratedSummariesDocs({
             <Box className={chatMessagesStyles.chatAlSummaryButtonMain}>
               <Button
                 disabled={expiredStatus === 0}
-                className={chatMessagesStyles.chatAlSummaryButton}
+                className={`${chatMessagesStyles.chatAlSummaryButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
                 onClick={() =>
                   handleGenerateCombinedSummary({
                     thread_uuid: '',

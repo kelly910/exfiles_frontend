@@ -252,7 +252,10 @@ export default function AnswerComponent({
             {formatTo12HourTimeManually(messageObj.created)}
           </span>
           <Box component="div" className={chatMessagesStyles.chatAlIcon}>
-            <Button disabled={expiredStatus === 0}>
+            <Button
+              disabled={expiredStatus === 0}
+              className={expiredStatus === 0 ? 'limitation-icon' : ''}
+            >
               {/* Like */}
               <svg
                 className={
@@ -270,7 +273,10 @@ export default function AnswerComponent({
                 <path d="M3.03925 3.72168H2.43841C1.53425 3.72168 1.16675 4.07168 1.16675 4.93501V10.8033C1.16675 11.6667 1.53425 12.0167 2.43841 12.0167H3.03925C3.94341 12.0167 4.31091 11.6667 4.31091 10.8033V4.93501C4.31091 4.07168 3.94341 3.72168 3.03925 3.72168Z" />
               </svg>
             </Button>
-            <Button disabled={expiredStatus === 0}>
+            <Button
+              disabled={expiredStatus === 0}
+              className={expiredStatus === 0 ? 'limitation-icon' : ''}
+            >
               {/* dislike */}
               <svg
                 className={
@@ -315,6 +321,7 @@ export default function AnswerComponent({
                     }
                   }}
                   disabled={expiredStatus === 0}
+                  className={expiredStatus === 0 ? 'limitation-icon' : ''}
                 >
                   <Image
                     src="/images/chat-edit.svg"
@@ -333,6 +340,7 @@ export default function AnswerComponent({
                 }
               }}
               disabled={expiredStatus === 0}
+              className={expiredStatus === 0 ? 'limitation-icon' : ''}
             >
               {/* pin */}
               <svg

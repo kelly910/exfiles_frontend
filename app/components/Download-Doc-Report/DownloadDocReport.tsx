@@ -25,7 +25,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useRouter } from 'next/navigation';
-import { selectFetchedUser, setPageHeaderData } from '@/app/redux/slices/login';
+import {
+  getUserById,
+  selectFetchedUser,
+  setPageHeaderData,
+} from '@/app/redux/slices/login';
 import {
   downloadSelectedDocsReport,
   fetchAllDocuments,
@@ -41,7 +45,7 @@ import { Dayjs } from 'dayjs';
 import Slider from 'react-slick';
 import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
 import DocumentSummaryPopup from './DocumentSummaryPopup';
-// import LimitOver from '../Limit-Over/LimitOver';
+import LimitOver from '../Limit-Over/LimitOver';
 
 type Tag = {
   id: number;
@@ -94,13 +98,17 @@ const DownloadDocReport = () => {
     (state: RootState) => state.categoryListing
   );
   const [loading, setLoading] = useState(false);
-  // const [limitDialog, setLimitDialog] = useState(false);
+  const [limitDialog, setLimitDialog] = useState(false);
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
+
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
 
   useEffect(() => {
     if (isMobile) {
@@ -240,15 +248,18 @@ const DownloadDocReport = () => {
         const payload = {
           document_uuid: selectedDocsDownload.join(','),
         };
-        await dispatch(downloadSelectedDocsReport(payload));
-        // .unwrap()
-        // .then((res) => {
-        //   console.log(res, 'res');
-        // })
-        // .catch((error) => {
-        //   console.log(error, 'error');
-        //   setLimitDialog(true);
-        // });
+        await dispatch(downloadSelectedDocsReport(payload))
+          .unwrap()
+          .then((res) => {
+            console.log(res, 'res');
+          })
+          .catch((error) => {
+            console.log(error, 'error');
+            setLimitDialog(true);
+          });
+        if (loggedInUser?.data?.id) {
+          dispatch(getUserById(loggedInUser?.data?.id));
+        }
         gtagEvent({
           action: 'export_summary',
           category: 'Export',
@@ -264,15 +275,18 @@ const DownloadDocReport = () => {
           search: searchParams.length > 3 ? searchParams : '',
           type: 'all',
         };
-        await dispatch(downloadSelectedDocsReport(payload));
-        // .unwrap()
-        // .then((res) => {
-        //   console.log(res, 'res');
-        // })
-        // .catch((error) => {
-        //   console.log(error, 'error');
-        //   setLimitDialog(true);
-        // });
+        await dispatch(downloadSelectedDocsReport(payload))
+          .unwrap()
+          .then((res) => {
+            console.log(res, 'res');
+          })
+          .catch((error) => {
+            console.log(error, 'error');
+            setLimitDialog(true);
+          });
+        if (loggedInUser?.data?.id) {
+          dispatch(getUserById(loggedInUser?.data?.id));
+        }
         gtagEvent({
           action: 'export_summary',
           category: 'Export',
@@ -731,14 +745,14 @@ const DownloadDocReport = () => {
         docType={docType}
         searchParams={searchParams}
       />
-      {/* <LimitOver
+      <LimitOver
         open={limitDialog}
         onClose={() => setLimitDialog(false)}
         title={'Your Report Generation Limit is Over'}
         subtitle={'Reports'}
         totalNumber={'3'}
         usedNumber={'3'}
-      /> */}
+      />
     </>
   );
 };
