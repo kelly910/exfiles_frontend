@@ -135,7 +135,6 @@ export const loginUser = createAsyncThunk<
 >('login/loginUser', async (payload, { rejectWithValue }) => {
   try {
     if (payload?.logout_device) {
-      delete payload.logout_device;
       const response = await api.post<LoginResponse>(
         `${urlMapper.login}?logout_device=true`,
         payload
