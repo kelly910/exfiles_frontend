@@ -46,12 +46,13 @@ export default function DevicesLimit({
 
   const handleLoginContinue = async () => {
     if (!loginDetails) return;
+    const loginPayload = { ...loginDetails, logout_device: true };
     try {
       setLoading(true);
       dispatch(setLoader(true));
       setTimeout(async () => {
         try {
-          const response = await dispatch(loginUser(loginDetails)).unwrap();
+          const response = await dispatch(loginUser(loginPayload)).unwrap();
           if (response && response.data && response.data.token) {
             onClose();
             localStorage.setItem('loggedInUser', JSON.stringify(response));

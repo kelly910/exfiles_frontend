@@ -43,11 +43,13 @@ import {
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import {
   clearPageHeaderData,
+  getUserById,
   selectFetchedUser,
 } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useSearch } from '../AI-Chat-Module/context/SearchContext';
 import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
 
 const Sidebar = ({
   isOpen,
@@ -95,10 +97,16 @@ const Sidebar = ({
   const [expandedNested, setExpandedNested] = useState<string | false>(
     'nested2'
   );
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
   const fetchedUser = useSelector(selectFetchedUser);
 
   useEffect(() => {
     // console.log("");
+    if (loggedInUser?.data?.id) {
+      dispatch(getUserById(loggedInUser?.data?.id));
+    }
   }, [isChatPage, expanded]);
 
   const handleOpenSidebar = () => {

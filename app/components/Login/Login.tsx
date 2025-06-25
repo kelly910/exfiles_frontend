@@ -24,7 +24,7 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { setLoader } from '@/app/redux/slices/loader';
 import Link from 'next/link';
 import DevicesLimit from '../Devices-Limit/DevicesLimit';
-import PlanExpired from '../Plan-Expired/PlanExpired';
+// import PlanExpired from '../Plan-Expired/PlanExpired';
 
 export interface LoginFormValues {
   email: string;
@@ -42,10 +42,10 @@ const Page = () => {
   };
   const dispatch = useAppDispatch();
   const [exceedLimitDialog, setExceedLimitDialog] = useState(false);
-  const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
-  // const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
-  //   null
-  // );
+  // const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
+  const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
+    null
+  );
 
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {
@@ -54,29 +54,30 @@ const Page = () => {
       setTimeout(async () => {
         try {
           const response = await dispatch(loginUser(values)).unwrap();
-          // if (response.messages[0] === 'LimitExceeded') {
-          //   setLoginDetails(values);
-          //   setExceedLimitDialog(true);
-          // } else {
-          if (response && response.data && response.data.token) {
-            localStorage.setItem('loggedInUser', JSON.stringify(response));
-            const token: string | null = response?.data?.token || null;
-            if (token) {
-              const bc = new BroadcastChannel('react-auth-channel');
-              bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
-              document.cookie = `accessToken=${token}; path=/; max-age=86400`;
-              window.opener?.postMessage(
-                { type: 'LOGIN_SUCCESS', user: response.data },
-                'https://exfiles.trooinbounddevs.com'
-              );
-              router.push('/ai-chats');
+          if (response.messages[0] === 'LimitExceeded') {
+            setLoginDetails(values);
+            setExceedLimitDialog(true);
+          } else {
+            if (response && response.data && response.data.token) {
+              localStorage.setItem('loggedInUser', JSON.stringify(response));
+              const token: string | null = response?.data?.token || null;
+              if (token) {
+                const bc = new BroadcastChannel('react-auth-channel');
+                bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
+                document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+                router.push('/ai-chats');
+                window.opener?.postMessage(
+                  { type: 'LOGIN_SUCCESS', user: response.data },
+                  process.env.NEXT_PUBLIC_REDIRECT_URL
+                );
+              }
+              setLoadingLogin(false);
+              // if (response.data.active_subscription?.status === 0) {
+              //   setOpenExpiredDialog(true);
+              // } else {
+              //   router.push('/ai-chats');
+              // }
             }
-            // if (response.data.active_subscription?.status === 0) {
-            //   setOpenExpiredDialog(true);
-            // } else {
-            //
-            // }
-            // }
           }
         } catch (error) {
           handleError(error as ErrorResponse);
@@ -99,12 +100,21 @@ const Page = () => {
         const response = await dispatch(
           socialGoogleLogin({ access_token: tokenResponse.access_token })
         ).unwrap();
-        localStorage.setItem('loggedInUser', JSON.stringify(response));
-        const token: string | null = response?.data?.token || null;
-        if (token) {
-          document.cookie = `accessToken=${token}; path=/; max-age=86400`;
-          router.push('/ai-chats');
-          await dispatch(setLoader(false));
+        if (response.messages[0] === 'LimitExceeded') {
+          setExceedLimitDialog(true);
+        } else {
+          localStorage.setItem('loggedInUser', JSON.stringify(response));
+          const token: string | null = response?.data?.token || null;
+          if (token) {
+            document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+            router.push('/ai-chats');
+            await dispatch(setLoader(false));
+          }
+          // if (response.data.active_subscription?.status === 0) {
+          //   setOpenExpiredDialog(true);
+          // } else {
+          //   router.push('/ai-chats');
+          // }
         }
       } catch (error) {
         handleError(error as ErrorResponse);
@@ -456,12 +466,12 @@ const Page = () => {
       <DevicesLimit
         open={exceedLimitDialog}
         onClose={() => setExceedLimitDialog(false)}
-        // loginDetails={loginDetails}
+        loginDetails={loginDetails}
       />
-      <PlanExpired
+      {/* <PlanExpired
         open={openExpiredDialog}
         onClose={() => setOpenExpiredDialog(false)}
-      />
+      /> */}
     </>
   );
 };
