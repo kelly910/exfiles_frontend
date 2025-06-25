@@ -915,6 +915,7 @@ input::-webkit-inner-spin-button {
 }
 
 body .limitation,
+body .limitation,
 body .btn.limitation {
   color: var(--Subtext-Color) !important;
   outline-color: var(--Stroke-Color) !important;
@@ -927,6 +928,7 @@ body .btn.limitation:hover {
   outline: none;
 }
 
+body .limitation img,
 body .limitation img,
 body .btn.limitation img {
   filter: brightness(0.5);

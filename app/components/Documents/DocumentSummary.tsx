@@ -405,7 +405,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                   )}
                   <span className={styles.docsDas}></span>
                   <Button
-                    className={styles.docsButton}
+                    className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
                     onClick={editSummary}
                     disabled={expiredStatus === 0}
                   >
@@ -715,7 +715,10 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       </>
                     )}
                     <span className={styles.docsDas}></span>
-                    <Button className={styles.docsButton} onClick={editSummary}>
+                    <Button
+                      className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
+                      onClick={editSummary}
+                    >
                       <Image
                         src="/images/edit.svg"
                         alt="Download"
