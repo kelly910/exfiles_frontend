@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './style.module.scss';
 import Image from 'next/image';
 import {
@@ -14,6 +16,7 @@ import { RootState } from '@/app/redux/store';
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
+import { cancelPlanSubscription } from '@/app/redux/slices/planHistory';
 
 export default function ActivePlan() {
   const loggedInUser = useSelector(
@@ -27,6 +30,10 @@ export default function ActivePlan() {
       dispatch(getUserById(loggedInUser?.data?.id));
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    // console.log(fetchedUser)
+  }, [fetchedUser]);
 
   const startDate = fetchedUser?.active_subscription?.activate_date
     ? dayjs(
@@ -49,6 +56,23 @@ export default function ActivePlan() {
   const used = fetchedUser?.storage?.split('/')[0] || 0;
   const total = fetchedUser?.storage?.split('/')[1] || 1;
   const value = (Number(used) / Number(total)) * 100;
+
+  const cancelPlan = async () => {
+    const subscriptionId = fetchedUser?.active_subscription?.id;
+    if (subscriptionId) {
+      const result = await dispatch(
+        cancelPlanSubscription({ subscription_id: String(subscriptionId) })
+      );
+      setTimeout(() => {
+        if (cancelPlanSubscription.fulfilled.match(result)) {
+          if (loggedInUser?.data?.id) {
+            dispatch(getUserById(loggedInUser?.data?.id));
+          }
+        }
+      }, 2000);
+    }
+  };
+
   return (
     <>
       <Box
@@ -94,9 +118,12 @@ export default function ActivePlan() {
                 </Box>
                 <Box className={styles['plan-status']}>
                   <Typography variant="body2">
-                    {fetchedUser?.active_subscription?.status === 1
-                      ? 'Active Plan'
-                      : 'Expired Plan'}
+                    {fetchedUser?.active_subscription?.subscription_status ===
+                    'cancelled'
+                      ? 'Cancelled Plan'
+                      : fetchedUser?.active_subscription?.status === 1
+                        ? 'Active Plan'
+                        : 'Expired Plan'}
                   </Typography>
                 </Box>
               </Box>
@@ -135,11 +162,17 @@ export default function ActivePlan() {
                 </Typography>
               </Box>
               <Box className={styles['plan-footer-actions']}>
-                <Button className={styles['cancel-plan-btn']}>
-                  {fetchedUser?.active_subscription?.plan?.name === 'Free Tier'
-                    ? ''
-                    : 'Cancel Plan'}
-                </Button>
+                {fetchedUser?.active_subscription?.plan?.name !== 'Free Tier' &&
+                  fetchedUser?.active_subscription?.status === 1 &&
+                  fetchedUser?.active_subscription?.subscription_status !==
+                    'cancelled' && (
+                    <Button
+                      className={styles['cancel-plan-btn']}
+                      onClick={cancelPlan}
+                    >
+                      Cancel Plan
+                    </Button>
+                  )}
               </Box>
             </Box>
           </Box>
@@ -231,9 +264,7 @@ function CircularProgressWithLabel(
 
       <Box className={styles['storage-info']}>
         <Typography variant="subtitle2">Storage</Typography>
-        <Typography variant="h5">
-          {used ? parseFloat(used).toFixed(2) : '0 GB'}
-        </Typography>
+        <Typography variant="h5">{used ? parseFloat(used) : '0'} GB</Typography>
         <Typography variant="body2">Total {total ? total : '0 GB'}</Typography>
       </Box>
     </Box>

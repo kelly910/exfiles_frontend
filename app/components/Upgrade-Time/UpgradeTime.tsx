@@ -29,9 +29,14 @@ const BootstrapDialog = styled(Dialog)(() => ({
 interface UpgradeTimeDialogProps {
   open: boolean;
   onClose: () => void;
+  type?: string;
 }
 
-export default function UpgradeTime({ open, onClose }: UpgradeTimeDialogProps) {
+export default function UpgradeTime({
+  open,
+  onClose,
+  type,
+}: UpgradeTimeDialogProps) {
   const router = useRouter();
   const loggedInUser = useSelector(
     (state: RootState) => state.login.loggedInUser
@@ -118,6 +123,13 @@ export default function UpgradeTime({ open, onClose }: UpgradeTimeDialogProps) {
     router.push('/plans');
   };
 
+  const notNow = () => {
+    onClose();
+    if (type === 'login') {
+      router.push('/ai-chats');
+    }
+  };
+
   return (
     <>
       <React.Fragment>
@@ -164,7 +176,7 @@ export default function UpgradeTime({ open, onClose }: UpgradeTimeDialogProps) {
               facilisi fringilla purus lacus
             </Typography>
             <Box component="div" className={Style.dialogFormButtonBox}>
-              <Button className={Style.formCancelBtn} onClick={onClose}>
+              <Button className={Style.formCancelBtn} onClick={notNow}>
                 Not Now
               </Button>
               <Button className={Style.formContinueBtn} onClick={upgradeNow}>

@@ -25,6 +25,7 @@ import { setLoader } from '@/app/redux/slices/loader';
 import Link from 'next/link';
 import DevicesLimit from '../Devices-Limit/DevicesLimit';
 import PlanExpired from '../Plan-Expired/PlanExpired';
+import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 
 export interface LoginFormValues {
   email: string;
@@ -43,6 +44,7 @@ const Page = () => {
   const dispatch = useAppDispatch();
   const [exceedLimitDialog, setExceedLimitDialog] = useState(false);
   const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
+  const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
   const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
     null
   );
@@ -73,6 +75,11 @@ const Page = () => {
               setLoadingLogin(false);
               if (response.data.active_subscription?.status === 0) {
                 setOpenExpiredDialog(true);
+              } else if (
+                response.data.remaining_days === 1 ||
+                response.data.remaining_days === 2
+              ) {
+                setOpenCountDownDialog(true);
               } else {
                 router.push('/ai-chats');
               }
@@ -469,6 +476,11 @@ const Page = () => {
       <PlanExpired
         open={openExpiredDialog}
         onClose={() => setOpenExpiredDialog(false)}
+      />
+      <UpgradeTime
+        open={openCountDownDialog}
+        onClose={() => setOpenCountDownDialog(false)}
+        type={'login'}
       />
     </>
   );
