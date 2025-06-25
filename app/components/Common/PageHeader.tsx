@@ -33,6 +33,7 @@ import {
 import { selectActiveThread } from '@/app/redux/slices/Chat';
 import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 import HelpDeskDialog from '../HelpDeskDialog/HelpDeskDialog';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 interface PageHeaderProps {
   toggleSidebar: () => void;
@@ -57,10 +58,63 @@ export default function PageHeader({
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
   const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
+  const SettingsIcon = () => (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.2051 4.06508L10.3276 1.82258C9.58506 1.39508 8.42256 1.39508 7.68006 1.82258L3.76506 4.08008C2.21256 5.13008 2.12256 5.28758 2.12256 6.96008V11.0326C2.12256 12.7051 2.21256 12.8701 3.79506 13.9351L7.67256 16.1776C8.04756 16.3951 8.52756 16.5001 9.00006 16.5001C9.47256 16.5001 9.95256 16.3951 10.3201 16.1776L14.2351 13.9201C15.7876 12.8701 15.8776 12.7126 15.8776 11.0401V6.96008C15.8776 5.28758 15.7876 5.13008 14.2051 4.06508ZM9.00006 11.4376C7.65756 11.4376 6.56256 10.3426 6.56256 9.00008C6.56256 7.65758 7.65756 6.56258 9.00006 6.56258C10.3426 6.56258 11.4376 7.65758 11.4376 9.00008C11.4376 10.3426 10.3426 11.4376 9.00006 11.4376Z"
+        fill="var(--Icon-Color)"
+      />
+    </svg>
+  );
+  const MyPlanIcon = () => (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M16.5 4.28311V11.4681C16.5 13.5381 14.82 15.2181 12.75 15.2181H5.24999C4.90499 15.2181 4.57499 15.1731 4.25249 15.0831C3.78749 14.9556 3.63749 14.3631 3.98249 14.0181L11.955 6.04561C12.12 5.88061 12.3675 5.84311 12.6 5.88811C12.84 5.93311 13.1025 5.86561 13.29 5.68561L15.2175 3.75061C15.9225 3.04561 16.5 3.27811 16.5 4.28311Z"
+        fill="var(--Icon-Color)"
+      />
+      <path
+        d="M10.98 5.51965L3.1275 13.3721C2.7675 13.7321 2.1675 13.6421 1.9275 13.1921C1.65 12.6821 1.5 12.0896 1.5 11.4671V4.28215C1.5 3.27715 2.0775 3.04465 2.7825 3.74965L4.7175 5.69215C5.01 5.97715 5.49 5.97715 5.7825 5.69215L8.4675 2.99965C8.76 2.70715 9.24 2.70715 9.5325 2.99965L10.9875 4.45465C11.2725 4.74715 11.2725 5.22715 10.98 5.51965Z"
+        fill="var(--Icon-Color)"
+      />
+    </svg>
+  );
+  const LogoutIcon = () => (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5.4 1.5H7.35C9.75 1.5 11.25 3 11.25 5.4V8.4375H6.5625C6.255 8.4375 6 8.6925 6 9C6 9.3075 6.255 9.5625 6.5625 9.5625H11.25V12.6C11.25 15 9.75 16.5 7.35 16.5H5.4075C3.0075 16.5 1.5075 15 1.5075 12.6V5.4C1.5 3 3 1.5 5.4 1.5Z"
+        fill="var(--Icon-Color)"
+      />
+      <path
+        d="M14.5799 8.43738L13.0274 6.88488C12.9149 6.77238 12.8624 6.62988 12.8624 6.48738C12.8624 6.34488 12.9149 6.19488 13.0274 6.08988C13.2449 5.87238 13.6049 5.87238 13.8224 6.08988L16.3349 8.60238C16.5524 8.81988 16.5524 9.17988 16.3349 9.39738L13.8224 11.9099C13.6049 12.1274 13.2449 12.1274 13.0274 11.9099C12.8099 11.6924 12.8099 11.3324 13.0274 11.1149L14.5799 9.56238H11.2499V8.43738H14.5799Z"
+        fill="var(--Icon-Color)"
+      />
+    </svg>
+  );
   const settings = [
-    { title: 'Settings', img: '/images/setting.svg' },
-    // { title: 'My Plan', img: '/images/myPlan.svg' },
-    { title: 'Log out', img: '/images/logout.svg' },
+    {
+      title: 'Settings',
+      img: <SettingsIcon />,
+    },
+    // { title: 'My Plan', img: <MyPlanIcon /> },
+    { title: 'Log out', img: <LogoutIcon /> },
   ];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -216,80 +270,58 @@ export default function PageHeader({
     setOpenHelpDeskDialog(true);
   };
 
-  // // dark Theme
+  const { theme, toggleTheme } = useThemeMode();
+  const SunIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--Icon-Color)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-sun-icon"
+    >
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="m4.93 4.93 1.41 1.41" />
+      <path d="m17.66 17.66 1.41 1.41" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="m6.34 17.66-1.41 1.41" />
+      <path d="m19.07 4.93-1.41 1.41" />
+    </svg>
+  );
 
-  // const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const SunMoonIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--Icon-Color)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-sun-moon-icon"
+    >
+      <path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="m4.9 4.9 1.4 1.4" />
+      <path d="m17.7 17.7 1.4 1.4" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="m6.3 17.7-1.4 1.4" />
+      <path d="m19.1 4.9-1.4 1.4" />
+    </svg>
+  );
 
-  // // Set theme on initial load from localStorage
-  // useEffect(() => {
-  //   const storedTheme = localStorage.getItem('theme') as
-  //     | 'light'
-  //     | 'dark'
-  //     | null;
-  //   const initialTheme = storedTheme || 'light';
-  //   setTheme(initialTheme);
-  //   document.documentElement.setAttribute('data-theme', initialTheme);
-  // }, []);
-
-  // // Toggle and store the theme
-  // const toggleTheme = () => {
-  //   const newTheme = theme === 'dark' ? 'light' : 'dark';
-  //   setTheme(newTheme);
-  //   document.documentElement.setAttribute('data-theme', newTheme);
-  //   localStorage.setItem('theme', newTheme);
-  // };
-
-  // const SunIcon = () => (
-  //   <svg
-  //     xmlns="http://www.w3.org/2000/svg"
-  //     width="20"
-  //     height="20"
-  //     viewBox="0 0 24 24"
-  //     fill="none"
-  //     stroke="var(--Primary-Text-Color)"
-  //     strokeWidth="2"
-  //     strokeLinecap="round"
-  //     strokeLinejoin="round"
-  //     className="lucide lucide-sun-icon"
-  //   >
-  //     <circle cx="12" cy="12" r="4" />
-  //     <path d="M12 2v2" />
-  //     <path d="M12 20v2" />
-  //     <path d="m4.93 4.93 1.41 1.41" />
-  //     <path d="m17.66 17.66 1.41 1.41" />
-  //     <path d="M2 12h2" />
-  //     <path d="M20 12h2" />
-  //     <path d="m6.34 17.66-1.41 1.41" />
-  //     <path d="m19.07 4.93-1.41 1.41" />
-  //   </svg>
-  // );
-
-  // const SunMoonIcon = () => (
-  //   <svg
-  //     xmlns="http://www.w3.org/2000/svg"
-  //     width="20"
-  //     height="20"
-  //     viewBox="0 0 24 24"
-  //     fill="none"
-  //     stroke="var(--Primary-Text-Color)"
-  //     strokeWidth="2"
-  //     strokeLinecap="round"
-  //     strokeLinejoin="round"
-  //     className="lucide lucide-sun-moon-icon"
-  //   >
-  //     <path d="M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4" />
-  //     <path d="M12 2v2" />
-  //     <path d="M12 20v2" />
-  //     <path d="m4.9 4.9 1.4 1.4" />
-  //     <path d="m17.7 17.7 1.4 1.4" />
-  //     <path d="M2 12h2" />
-  //     <path d="M20 12h2" />
-  //     <path d="m6.3 17.7-1.4 1.4" />
-  //     <path d="m19.1 4.9-1.4 1.4" />
-  //   </svg>
-  // );
-
-  // // dark Theme
+  // dark Theme
 
   return (
     <>
@@ -317,17 +349,42 @@ export default function PageHeader({
             sx={{ justifyContent: 'space-between', gap: '16px' }}
           >
             <Button onClick={toggleSidebar} className={styles.toggleBtnHedaer}>
-              <Image
-                key={isSidebarOpen ? 'open' : 'closed'}
-                src={
-                  isSidebarOpen
-                    ? '/images/close.svg' // Active state image
-                    : '/images/sidebar-hide-icon.svg' // Inactive state image
-                }
-                alt="menu"
-                width={20}
-                height={20}
-              />
+              {isSidebarOpen ? (
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                    fill="var(--Primary-Text-Color)"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  width="20"
+                  height="22"
+                  viewBox="0 0 20 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18.0513 7.38137V14.6192C18.0513 17.763 16.2708 19.6372 13.2841 19.6372H8V2.36328H13.2841C16.2708 2.36328 18.0513 4.23751 18.0513 7.38137Z"
+                    fill="var(--Icon-Color)"
+                  />
+                  <path
+                    d="M6.76932 2.36328V19.6372H6.40829C3.42163 19.6372 1.64111 17.763 1.64111 14.6192V7.38137C1.64111 4.23751 3.42163 2.36328 6.40829 2.36328H6.76932Z"
+                    fill={
+                      theme === 'dark'
+                        ? 'var(--Icon-Color)'
+                        : 'var(--Subtext-Color)'
+                    }
+                    opacity={theme === 'dark' ? 0.2 : 1}
+                  />
+                </svg>
+              )}
             </Button>
 
             <Box className={styles.mobileLogo}>
@@ -525,21 +582,31 @@ export default function PageHeader({
                 </Button>
               </Tooltip>
             )}
-            {/* <Button onClick={toggleTheme} className={styles.messageButton}>
+            <Button onClick={toggleTheme} className={styles.messageButton}>
               {theme === 'dark' ? <SunIcon /> : <SunMoonIcon />}
-            </Button> */}
+            </Button>
             <Tooltip title={'Feedback'} placement="bottom" arrow>
               <Button
                 sx={{ p: 0 }}
                 className={styles.messageButton}
                 onClick={handleOpenFeedback}
               >
-                <Image
-                  src="/images/message-question.svg"
-                  alt="search"
-                  width={20}
-                  height={20}
-                />
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M17 2.42993H7C4 2.42993 2 4.42993 2 7.42993V13.4299C2 16.4299 4 18.4299 7 18.4299V20.5599C7 21.3599 7.89 21.8399 8.55 21.3899L13 18.4299H17C20 18.4299 22 16.4299 22 13.4299V7.42993C22 4.42993 20 2.42993 17 2.42993ZM12 14.5999C11.58 14.5999 11.25 14.2599 11.25 13.8499C11.25 13.4399 11.58 13.0999 12 13.0999C12.42 13.0999 12.75 13.4399 12.75 13.8499C12.75 14.2599 12.42 14.5999 12 14.5999ZM13.26 10.4499C12.87 10.7099 12.75 10.8799 12.75 11.1599V11.3699C12.75 11.7799 12.41 12.1199 12 12.1199C11.59 12.1199 11.25 11.7799 11.25 11.3699V11.1599C11.25 9.99993 12.1 9.42993 12.42 9.20993C12.79 8.95993 12.91 8.78993 12.91 8.52993C12.91 8.02993 12.5 7.61993 12 7.61993C11.5 7.61993 11.09 8.02993 11.09 8.52993C11.09 8.93993 10.75 9.27993 10.34 9.27993C9.93 9.27993 9.59 8.93993 9.59 8.52993C9.59 7.19993 10.67 6.11993 12 6.11993C13.33 6.11993 14.41 7.19993 14.41 8.52993C14.41 9.66993 13.57 10.2399 13.26 10.4499Z"
+                    fill="var(--Icon-Color)"
+                  />
+                  <path
+                    d="M17 2.42993H7C4 2.42993 2 4.42993 2 7.42993V13.4299C2 16.4299 4 18.4299 7 18.4299V20.5599C7 21.3599 7.89 21.8399 8.55 21.3899L13 18.4299H17C20 18.4299 22 16.4299 22 13.4299V7.42993C22 4.42993 20 2.42993 17 2.42993ZM12 14.5999C11.58 14.5999 11.25 14.2599 11.25 13.8499C11.25 13.4399 11.58 13.0999 12 13.0999C12.42 13.0999 12.75 13.4399 12.75 13.8499C12.75 14.2599 12.42 14.5999 12 14.5999ZM13.26 10.4499C12.87 10.7099 12.75 10.8799 12.75 11.1599V11.3699C12.75 11.7799 12.41 12.1199 12 12.1199C11.59 12.1199 11.25 11.7799 11.25 11.3699V11.1599C11.25 9.99993 12.1 9.42993 12.42 9.20993C12.79 8.95993 12.91 8.78993 12.91 8.52993C12.91 8.02993 12.5 7.61993 12 7.61993C11.5 7.61993 11.09 8.02993 11.09 8.52993C11.09 8.93993 10.75 9.27993 10.34 9.27993C9.93 9.27993 9.59 8.93993 9.59 8.52993C9.59 7.19993 10.67 6.11993 12 6.11993C13.33 6.11993 14.41 7.19993 14.41 8.52993C14.41 9.66993 13.57 10.2399 13.26 10.4499Z"
+                    fill="transparent"
+                  />
+                </svg>
               </Button>
             </Tooltip>
             <Box className="desktop-active" sx={{ flexGrow: 0 }}>
@@ -548,8 +615,11 @@ export default function PageHeader({
                   <Avatar
                     alt="abbreviaton"
                     sx={{
-                      backgroundColor: 'var(--Primary-Text-Color)',
-                      color: 'var(--Card-Color)',
+                      background:
+                        theme === 'dark'
+                          ? 'var(--Main-Gradient)'
+                          : 'var(--Primary-Text-Color)',
+                      color: 'var(--Background-Color)',
                       fontSize: 'var(--SubTitle-2)',
                       fontWeight: 'var(--Medium)',
                       padding: '9px 10px',
@@ -599,18 +669,19 @@ export default function PageHeader({
                     onClick={() => handleCloseUserMenu(setting.title)}
                     className={styles.menuDropdown}
                   >
-                    <Image
-                      src={setting.img}
-                      alt={setting.title}
-                      width={18}
-                      height={18}
-                    />
+                    {setting.img}
                     <Typography>{setting.title}</Typography>
                     <Image
                       src="/images/arrow-down-right.svg"
                       alt="user"
                       width={16}
                       height={16}
+                      style={{
+                        filter:
+                          theme === 'dark'
+                            ? 'brightness(0) invert(0.5)'
+                            : 'unset',
+                      }}
                     />
                   </MenuItem>
                 ))}
@@ -650,12 +721,21 @@ export default function PageHeader({
             className={styles.backButton}
             sx={{ marginBottom: '0 !important' }}
           >
-            <Image
-              src="/images/arrow-left.svg"
-              alt="user"
-              width={16}
-              height={16}
-            />
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
+                stroke="var(--Primary-Text-Color)"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
           </Button>
           <Box className={styles.backTitle}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

@@ -149,10 +149,10 @@ const ChangeUserPassword = ({
                             borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                             borderWidth: '1px',
                             color: 'var(--Txt-On-Gradient)',
                           },
@@ -266,10 +266,10 @@ const ChangeUserPassword = ({
                             borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                             borderWidth: '1px',
                             color: 'var(--Txt-On-Gradient)',
                           },
@@ -380,10 +380,10 @@ const ChangeUserPassword = ({
                             borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                             borderWidth: '1px',
                             color: 'var(--Txt-On-Gradient)',
                           },

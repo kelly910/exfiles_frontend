@@ -30,6 +30,7 @@ import RenameDocDialog from './Dialog/RenameDocDialog';
 import { useSearchParams } from 'next/navigation';
 import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
 import { selectFetchedUser } from '@/app/redux/slices/login';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 type Tag = {
   id: number;
@@ -227,6 +228,8 @@ const DocumentList: React.FC<DocumentListProps> = ({
     }
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <div className={styles.docsListing}>
@@ -238,12 +241,21 @@ const DocumentList: React.FC<DocumentListProps> = ({
                 className={styles.backButton}
                 sx={{ marginBottom: '24px' }}
               >
-                <Image
-                  src="/images/arrow-left.svg"
-                  alt="user"
-                  width={16}
-                  height={16}
-                />
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
+                    stroke="var(--Primary-Text-Color)"
+                    stroke-miterlimit="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </Button>
               <Typography variant="body1" className={styles.categoriesTitle}>
                 {findSelectedCategoryDocs?.name}
@@ -274,10 +286,30 @@ const DocumentList: React.FC<DocumentListProps> = ({
                       position="end"
                       className={styles.searchIcon}
                     >
-                      <span
-                        className={styles.search}
-                        onClick={handleSearch}
-                      ></span>
+                      <span className={styles.search} onClick={handleSearch}>
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M6.53492 11.3413C9.30241 11.3413 11.5459 9.09782 11.5459 6.33033C11.5459 3.56283 9.30241 1.31934 6.53492 1.31934C3.76742 1.31934 1.52393 3.56283 1.52393 6.33033C1.52393 9.09782 3.76742 11.3413 6.53492 11.3413Z"
+                            stroke="var(--Icon-Color)"
+                            stroke-width="1.67033"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M14.8866 14.6815L11.5459 11.3408"
+                            stroke="var(--Icon-Color)"
+                            stroke-width="1.67033"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
                     </InputAdornment>
                   }
                 />
@@ -306,6 +338,12 @@ const DocumentList: React.FC<DocumentListProps> = ({
                           onClick={() =>
                             handleOpenDocumentSummary(String(doc?.uuid))
                           }
+                          style={{
+                            background:
+                              theme == 'dark'
+                                ? 'var(--Txt-On-Gradient)'
+                                : 'var(--Card-Color)',
+                          }}
                         />
                         <Typography
                           variant="body1"
@@ -400,7 +438,16 @@ const DocumentList: React.FC<DocumentListProps> = ({
                       <div className={styles.docDateBox}>
                         <div className={styles.docTagBox}>
                           {doc?.tags?.slice(0, 1)?.map((tag) => (
-                            <span key={tag?.id} className={styles.docTag}>
+                            <span
+                              key={tag?.id}
+                              className={styles.docTag}
+                              style={{
+                                background:
+                                  theme == 'dark'
+                                    ? 'var(--Txt-On-Gradient)'
+                                    : 'var(--Card-Image)',
+                              }}
+                            >
                               {tag?.name}
                             </span>
                           ))}

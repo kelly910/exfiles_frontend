@@ -484,3 +484,21 @@
 }
 
 // Drag and drop styles
+
+// dark mode
+
+:root[data-theme='dark'] {
+  .chatBoard {
+    background-color: var(--Input-Box-Colors);
+
+    .fileInput {
+      background-color: var(--Txt-On-Gradient);
+    }
+  }
+
+  .fileIcon {
+    .clip {
+      filter: brightness(0.5);
+    }
+  }
+}

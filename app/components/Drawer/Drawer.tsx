@@ -140,12 +140,21 @@ export default function TemporaryDrawer() {
               className={styles.backButton}
               sx={{ marginBottom: '24px' }}
             >
-              <Image
-                src="/images/arrow-left.svg"
-                alt="user"
-                width={16}
-                height={16}
-              />
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
+                  stroke="var(--Primary-Text-Color)"
+                  stroke-miterlimit="10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </Button>
             <Box component="div" className={styles.dialogSidebar}>
               <Box component="div" className={styles.dialogSidebarHeader}>
@@ -312,12 +321,21 @@ export default function TemporaryDrawer() {
                 onClick={handleCloseSecondDrawer}
                 className={styles.backButton}
               >
-                <Image
-                  src="/images/arrow-left.svg"
-                  alt="user"
-                  width={16}
-                  height={16}
-                />
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
+                    stroke="var(--Primary-Text-Color)"
+                    stroke-miterlimit="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </Button>
               <Typography variant="body1" color="initial">
                 {activeSecondDrawer === 'profile1'

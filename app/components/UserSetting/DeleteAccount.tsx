@@ -213,14 +213,14 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '12px',
                         borderWidth: '0px',
-                        color: 'var(--Txt-On-Gradient)',
+                        color: 'var(--Primary-Text-Color)',
                         backgroundColor: 'var(--Input-Box-Colors)',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
                         '& .MuiOutlinedInput-input': {
                           fontSize: 'var(--SubTitle-3)',
-                          color: 'var(--Txt-On-Gradient)',
+                          color: 'var(--Primary-Text-Color)',
                           padding: '14px 16px',
                           fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
@@ -233,12 +233,12 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                           borderColor: 'var(--Stroke-Color)',
                         },
                         '&:hover fieldset': {
-                          borderColor: 'var(--Txt-On-Gradient)',
+                          borderColor: 'var(--Primary-Text-Color)',
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: 'var(--Txt-On-Gradient)',
+                          borderColor: 'var(--Primary-Text-Color)',
                           borderWidth: '1px',
-                          color: 'var(--Txt-On-Gradient)',
+                          color: 'var(--Primary-Text-Color)',
                         },
                       },
                     }}
@@ -378,12 +378,21 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                       className={styles.formBackBtn}
                       onClick={handleBackClick}
                     >
-                      <Image
-                        src="/images/arrow-left.svg"
-                        alt="left arrow"
-                        width={16}
-                        height={16}
-                      />{' '}
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
+                          stroke="var(--Primary-Text-Color)"
+                          stroke-miterlimit="10"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>{' '}
                       Back
                     </Button>
                     <Button

@@ -114,11 +114,7 @@
   flex-grow: 1;
   overflow: hidden;
 
-  @media (max-width: 1100px) {
-    padding: 16px 24px 16px 24px;
-  }
-
-  @media (max-width: 600px) {
+  @media (max-width: 1200px) {
     padding: 16px;
   }
 
@@ -194,7 +190,10 @@
         aspect-ratio: 1 / 1;
 
         &.active {
-          background: var(--Main-Gradient);
+
+          svg {
+            filter: brightness(0) invert(1);
+          }
         }
       }
     }
@@ -253,7 +252,6 @@
 
       span {
         vertical-align: middle;
-        margin-left: 5px;
 
         img {
           vertical-align: middle;
@@ -277,16 +275,19 @@
       content: unset;
     }
 
+    // .activeAccordion {
+    //   background-color: var(--Input-Box-Colors) !important;
+    // }
+
     .customAccordionHeading {
       border: 1px solid transparent;
-      border-radius: 10px;
       min-height: unset;
       height: 34px;
       padding: 8px;
 
       &:hover {
         border: 1px solid var(--Stroke-Color);
-        background-color: none;
+        background-color: var(--Card-Color);
       }
 
       &.active,
@@ -330,7 +331,6 @@
 
 .bottom-content {
   padding: 0 !important;
-  margin-top: 12px;
 
   .sidebar-pinned-chats span {
     margin-left: 5px;
@@ -364,7 +364,7 @@
   }
 
   &.active {
-    background-color: var(--Card-Image);
+    background-color: var(--Input-Box-Colors);
     border-radius: 10px;
   }
 
@@ -561,14 +561,13 @@
   .sidebar-accordian {
     .accordian {
       .customAccordionHeading {
-        background-color: unset;
         width: fit-content;
         display: block;
         margin-left: 0;
 
         &:hover {
           border: 1px solid var(--Stroke-Color);
-          background-color: none;
+          background-color: var(--Card-Color);
         }
 
         &.active,
@@ -686,7 +685,6 @@
 
 .customAccordionHeading {
   border: 1px solid transparent !important;
-  border-radius: 10px !important;
   min-height: unset;
   height: 34px;
   padding: 8px !important;
@@ -700,7 +698,7 @@
 
   &:hover {
     border: 1px solid var(--Stroke-Color) !important;
-    background: none;
+    background-color: var(--Card-Color);
   }
 
   &.active,
@@ -746,14 +744,13 @@
 
 .closesidebar {
   .customAccordionHeading {
-    background-color: unset;
     width: fit-content;
     display: block;
     margin-left: 0;
 
     &:hover {
       border: 1px solid var(--Stroke-Color);
-      background-color: none;
+      background-color: var(--Card-Color);
     }
 
     &.active,
@@ -942,7 +939,7 @@
       font-weight: var(--Lighter);
 
       span {
-        color: var(--Txt-On-Gradient);
+        color: var(--Primary-Text-Color);
         font-size: var(--SubTitle-3);
         font-weight: var(--Lighter);
       }
@@ -1026,7 +1023,7 @@
       font-weight: var(--Lighter);
 
       span {
-        color: var(--Txt-On-Gradient);
+        color: var(--Primary-Text-Color);
         font-size: var(--SubTitle-3);
         font-weight: var(--Lighter);
       }
@@ -1049,5 +1046,18 @@
 
   @media (max-width: 700px) {
     margin-right: auto;
+  }
+}
+
+
+:root[data-theme='dark'] {
+
+  .close-sidebar-logo,
+  .opensidebar-logo {
+    filter: brightness(1) invert(10);
+  }
+
+  .heading {
+    filter: brightness(1) invert(0.4);
   }
 }

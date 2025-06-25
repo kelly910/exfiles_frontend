@@ -37,7 +37,7 @@
     font-weight: var(--Bold);
     font-size: var(--SubTitle-1);
     line-height: 1.4;
-    color: var(--Txt-On-Gradient);
+    color: var(--Primary-Text-Color);
   }
 }
 
@@ -211,7 +211,7 @@
       }
 
       svg {
-        fill: white;
+        fill: var(--Primary-Text-Color);
       }
     }
   }

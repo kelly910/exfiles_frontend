@@ -954,3 +954,16 @@ span.chatTime {
     }
   }
 }
+
+:root[data-theme='dark'] {
+  .chatAlFileSummary {
+
+    img {
+      filter: brightness(1) invert(0.4);
+
+      &:first-child {
+        filter: brightness(1) invert(0.4);
+      }
+    }
+  }
+}

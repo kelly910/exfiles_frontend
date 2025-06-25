@@ -329,12 +329,22 @@ const Sidebar = ({
           <div className={Style['sidebar-top']}>
             <Button className={Style['left']} onClick={toggleSidebar}>
               <Link href="#">
-                <Image
-                  src="/images/sidebar-hide-icon.svg"
-                  alt="sidebar-hide-icon"
-                  width={16}
-                  height={16}
-                />
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 20 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18.0513 7.38137V14.6192C18.0513 17.763 16.2708 19.6372 13.2841 19.6372H8V2.36328H13.2841C16.2708 2.36328 18.0513 4.23751 18.0513 7.38137Z"
+                    fill="var(--Subtext-Color)"
+                  />
+                  <path
+                    d="M6.76932 2.36328V19.6372H6.40829C3.42163 19.6372 1.64111 17.763 1.64111 14.6192V7.38137C1.64111 4.23751 3.42163 2.36328 6.40829 2.36328H6.76932Z"
+                    fill="var(--Primary-Text-Color)"
+                  />
+                </svg>
               </Link>
             </Button>
           </div>
@@ -396,16 +406,43 @@ const Sidebar = ({
                         inputRef.current?.focus();
                       }}
                     >
-                      <Image
-                        src={
-                          search.trim()
-                            ? '/images/close.svg'
-                            : '/images/search-sidebar.svg'
-                        }
-                        alt="sidebar-hide-icon"
-                        width={12}
-                        height={12}
-                      />
+                      {!search.trim() ? (
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M6.53492 11.3413C9.30241 11.3413 11.5459 9.09782 11.5459 6.33033C11.5459 3.56283 9.30241 1.31934 6.53492 1.31934C3.76742 1.31934 1.52393 3.56283 1.52393 6.33033C1.52393 9.09782 3.76742 11.3413 6.53492 11.3413Z"
+                            stroke="var(--Primary-Text-Color)"
+                            stroke-width="1.67033"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M14.8866 14.6815L11.5459 11.3408"
+                            stroke="var(--Primary-Text-Color)"
+                            stroke-width="1.67033"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                            fill="var(--Primary-Text-Color)"
+                          />
+                        </svg>
+                      )}
                     </Button>
                     <Box className={Style['filter-btn-box']}>
                       <Button
@@ -640,12 +677,18 @@ const Sidebar = ({
                       className={Style['chip-btn']}
                       onClick={handleToggleSearch}
                     >
-                      <Image
-                        src="/images/close.svg"
-                        alt="sidebar-hide-icon"
-                        width={10}
-                        height={10}
-                      />
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                          fill="var(--Primary-Text-Color)"
+                        />
+                      </svg>
                     </Button>
                   </div>
                 </div>

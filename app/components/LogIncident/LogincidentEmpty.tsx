@@ -5,6 +5,7 @@ import { Box, Button, Typography } from '@mui/material';
 import LogModel from '../LogModel/LogModel';
 import { selectFetchedUser } from '@/app/redux/slices/login';
 import { useSelector } from 'react-redux';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export default function LogincidentEmpty() {
   const [openModel, setOpenModel] = useState(false);
@@ -13,6 +14,8 @@ export default function LogincidentEmpty() {
     setOpenModel(true);
   };
 
+  const { theme } = useThemeMode();
+
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
 
@@ -20,7 +23,11 @@ export default function LogincidentEmpty() {
     <>
       <Box component="div" className={styles.emptyContainer}>
         <Image
-          src="/images/log-incident-empty.png"
+          src={
+            theme === 'dark'
+              ? '/images/log-incident-empty-light.png'
+              : '/images/log-incident-empty.png'
+          }
           alt="DocumentsEmpty.png"
           width={140}
           height={150}

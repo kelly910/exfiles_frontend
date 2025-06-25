@@ -4,6 +4,7 @@ import Style from '@components/Common/Sidebar.module.scss';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 interface InnerAccordionItem {
   panelKey: string;
@@ -59,19 +60,24 @@ const SidebarAccordion = ({
     (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedNested?.(isExpanded ? panel : false);
     };
+  const { theme } = useThemeMode();
 
   return (
     <Tooltip title={!isOpen ? title : ''} placement="right" arrow>
       <Accordion
-        className={Style['accordian']}
+        className={`${Style['accordian']}`}
         expanded={expanded === panelKey}
         onChange={handleAccordionChange(panelKey)}
         sx={{
-          '.Mui-expanded': {
-            backgroundColor: 'var(--Input-Box-Colors) !important',
-          },
+          borderRadius: '10px !important',
+          overflow: 'hidden',
           'span.Mui-expanded': {
             transform: 'rotate(0deg)',
+          },
+          'span.MuiAccordionSummary-expandIconWrapper': {
+            '& img': {
+              filter: theme === 'dark' ? 'brightness(1) invert(1)' : 'unset',
+            },
           },
         }}
       >
@@ -102,6 +108,13 @@ const SidebarAccordion = ({
             content: Style['customAccordionContent'],
           }}
           onClick={handleClickOpenSidebar}
+          sx={{
+            borderRadius: '10px !important',
+            backgroundColor:
+              expanded === panelKey
+                ? 'var(--Input-Box-Colors)'
+                : 'var(--Card-Color)',
+          }}
         >
           <Typography
             component="span"
@@ -113,7 +126,10 @@ const SidebarAccordion = ({
           </Typography>
         </AccordionSummary>
 
-        <AccordionDetails className={Style['bottom-content']}>
+        <AccordionDetails
+          className={Style['bottom-content']}
+          sx={{ marginTop: '10px' }}
+        >
           {children}
 
           {innerAccordions.map((inner) => (
@@ -123,11 +139,17 @@ const SidebarAccordion = ({
               expanded={innerExpanded === inner.panelKey}
               onChange={handleInnerAccordionChange(inner.panelKey)}
               sx={{
-                '.Mui-expanded': {
-                  backgroundColor: 'var(--Input-Box-Colors) !important',
-                },
+                backgroundColor:
+                  theme === 'dark'
+                    ? 'var(--Txt-On-Gradient) !important'
+                    : 'transparent !important',
+                borderRadius: '10px !important',
+                overflow: 'hidden',
                 'span.Mui-expanded': {
                   transform: 'rotate(0deg)',
+                },
+                '.Mui-expanded': {
+                  borderRadius: '10px 10px 0 0 !important',
                 },
               }}
             >
@@ -150,6 +172,13 @@ const SidebarAccordion = ({
                 classes={{
                   root: Style['customAccordionHeading'],
                   content: Style['customAccordionContent'],
+                }}
+                sx={{
+                  borderRadius: '10px !important',
+                  backgroundColor:
+                    innerExpanded === inner.panelKey
+                      ? 'var(--Input-Box-Colors)'
+                      : 'var(--Card-Color)',
                 }}
               >
                 <Typography

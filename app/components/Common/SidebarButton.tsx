@@ -21,6 +21,7 @@ export default function SidebarButton({
         className={`${Style.customAccordionHeading}`}
         sx={{
           display: 'flex',
+          borderRadius: '10px',
           marginBottom:
             btnTitle === 'View Documents' || btnTitle === 'Export Summaries'
               ? '5px'
