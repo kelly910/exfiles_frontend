@@ -8,6 +8,7 @@ import { loginUser } from '@/app/redux/slices/login';
 import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useAppDispatch } from '@/app/redux/hooks';
+import PlanExpired from '../Plan-Expired/PlanExpired';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -43,6 +44,7 @@ export default function DevicesLimit({
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
 
   const handleLoginContinue = async () => {
     if (!loginDetails) return;
@@ -63,6 +65,10 @@ export default function DevicesLimit({
                 { type: 'LOGIN_SUCCESS', user: response.data },
                 process.env.NEXT_PUBLIC_REDIRECT_URL
               );
+            }
+            if (response.data.active_subscription?.status === 0) {
+              setOpenExpiredDialog(true);
+            } else {
               router.push('/ai-chats');
             }
           }
@@ -126,6 +132,10 @@ export default function DevicesLimit({
           </Box>
         </BootstrapDialog>
       </React.Fragment>
+      <PlanExpired
+        open={openExpiredDialog}
+        onClose={() => setOpenExpiredDialog(false)}
+      />
     </>
   );
 }

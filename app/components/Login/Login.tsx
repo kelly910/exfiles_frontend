@@ -24,7 +24,7 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { setLoader } from '@/app/redux/slices/loader';
 import Link from 'next/link';
 import DevicesLimit from '../Devices-Limit/DevicesLimit';
-// import PlanExpired from '../Plan-Expired/PlanExpired';
+import PlanExpired from '../Plan-Expired/PlanExpired';
 
 export interface LoginFormValues {
   email: string;
@@ -42,7 +42,7 @@ const Page = () => {
   };
   const dispatch = useAppDispatch();
   const [exceedLimitDialog, setExceedLimitDialog] = useState(false);
-  // const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
+  const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
   const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
     null
   );
@@ -65,18 +65,17 @@ const Page = () => {
                 const bc = new BroadcastChannel('react-auth-channel');
                 bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
                 document.cookie = `accessToken=${token}; path=/; max-age=86400`;
-                router.push('/ai-chats');
                 window.opener?.postMessage(
                   { type: 'LOGIN_SUCCESS', user: response.data },
                   process.env.NEXT_PUBLIC_REDIRECT_URL
                 );
               }
               setLoadingLogin(false);
-              // if (response.data.active_subscription?.status === 0) {
-              //   setOpenExpiredDialog(true);
-              // } else {
-              //   router.push('/ai-chats');
-              // }
+              if (response.data.active_subscription?.status === 0) {
+                setOpenExpiredDialog(true);
+              } else {
+                router.push('/ai-chats');
+              }
             }
           }
         } catch (error) {
@@ -107,14 +106,13 @@ const Page = () => {
           const token: string | null = response?.data?.token || null;
           if (token) {
             document.cookie = `accessToken=${token}; path=/; max-age=86400`;
-            router.push('/ai-chats');
             await dispatch(setLoader(false));
           }
-          // if (response.data.active_subscription?.status === 0) {
-          //   setOpenExpiredDialog(true);
-          // } else {
-          //   router.push('/ai-chats');
-          // }
+          if (response.data.active_subscription?.status === 0) {
+            setOpenExpiredDialog(true);
+          } else {
+            router.push('/ai-chats');
+          }
         }
       } catch (error) {
         handleError(error as ErrorResponse);
@@ -468,10 +466,10 @@ const Page = () => {
         onClose={() => setExceedLimitDialog(false)}
         loginDetails={loginDetails}
       />
-      {/* <PlanExpired
+      <PlanExpired
         open={openExpiredDialog}
         onClose={() => setOpenExpiredDialog(false)}
-      /> */}
+      />
     </>
   );
 };
