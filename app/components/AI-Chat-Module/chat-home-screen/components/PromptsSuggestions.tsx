@@ -26,6 +26,10 @@ export default function PromptsSuggestions({
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
 
+  const chatUsedCheck =
+    fetchedUser?.chat_used?.split('/')[0] ===
+    fetchedUser?.chat_used?.split('/')[1];
+
   return (
     <Grid
       container
@@ -61,10 +65,10 @@ export default function PromptsSuggestions({
           <div className={AIChatStyles.chatBox}>
             <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
             <Button
-              disabled={expiredStatus === 0}
+              disabled={expiredStatus === 0 || chatUsedCheck}
               type="button"
               variant="contained"
-              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
+              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${expiredStatus === 0 || chatUsedCheck ? 'limitation' : ''}`}
               color="primary"
               fullWidth
               onClick={() => handlePromptClick(CHAT_PROMPS[0])}
@@ -80,10 +84,10 @@ export default function PromptsSuggestions({
           <div className={AIChatStyles.chatBox}>
             <Typography variant="body1">{CHAT_PROMPS[1]}</Typography>
             <Button
-              disabled={expiredStatus === 0}
+              disabled={expiredStatus === 0 || chatUsedCheck}
               type="button"
               variant="contained"
-              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
+              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${expiredStatus === 0 || chatUsedCheck ? 'limitation' : ''}`}
               color="primary"
               fullWidth
               onClick={() => handlePromptClick(CHAT_PROMPS[1])}
