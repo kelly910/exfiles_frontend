@@ -59,7 +59,7 @@ export default function PageHeader({
   const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
   const settings = [
     { title: 'Settings', img: '/images/setting.svg' },
-    // { title: 'My Plan', img: '/images/myPlan.svg' },
+    { title: 'My Plan', img: '/images/myPlan.svg' },
     { title: 'Log out', img: '/images/logout.svg' },
   ];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -73,7 +73,7 @@ export default function PageHeader({
   const isDocumentsPage = pathname?.includes('/documents');
   const isLogIncidentPage = pathname?.includes('/log-incident');
   const isDocumentDownloadPage = pathname?.includes('/download-doc-report');
-  // const isPlanPage = pathname?.includes('/plans');
+  const isPlanPage = pathname?.includes('/plans');
 
   useEffect(() => {
     if (selectedActiveChat?.name) {
@@ -85,9 +85,9 @@ export default function PageHeader({
     }
   }, [selectedActiveChat]);
 
-  // useEffect(() => {
-  // console.log(".")
-  // }, [isPlanPage]);
+  useEffect(() => {
+    // console.log(".")
+  }, [isPlanPage]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -104,8 +104,8 @@ export default function PageHeader({
     setAnchorElUser(null);
     if (settingTitle === 'Settings') {
       setOpenSettingDialog(true);
-      // } else if (settingTitle === 'My Plan') {
-      //   router.push('/plans');
+    } else if (settingTitle === 'My Plan') {
+      router.push('/plans');
     } else {
       setOpenLogoutDialog(true);
     }
@@ -373,14 +373,14 @@ export default function PageHeader({
                     height={18}
                   />
                 )}
-                {/* {isPlanPage && (
+                {isPlanPage && (
                   <Image
                     src="/images/myPlan.svg"
                     alt="Log-incidents-icon"
                     width={18}
                     height={18}
                   />
-                )} */}
+                )}
                 {selectedPageHeaderData && selectedPageHeaderData.title && (
                   <Typography
                     variant="body1"
