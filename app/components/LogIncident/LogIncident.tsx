@@ -1016,8 +1016,7 @@ export default function LogIncident() {
         onClose={() => setLimitDialog(false)}
         title={'Your Report Generation Limit is Over'}
         subtitle={'Reports'}
-        totalNumber={'3'}
-        usedNumber={'3'}
+        stats={fetchedUser?.reports_generated || ''}
       />
     </>
   );

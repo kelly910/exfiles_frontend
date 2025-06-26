@@ -68,6 +68,11 @@ export default function ChatInputBox({
   const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
+
+  const chatUsedCheck =
+    fetchedUser?.chat_used?.split('/')[0] ===
+    fetchedUser?.chat_used?.split('/')[1];
+
   const isSendDisabled =
     isLoadingProp ||
     (!text?.trim() && (!uploadedFiles || uploadedFiles.length === 0));
@@ -271,8 +276,10 @@ export default function ChatInputBox({
           className={AIChatStyles.fileInputInner}
           placeholder={
             expiredStatus === 0
-              ? 'Your copilot Chats Limit is Over'
-              : 'Write your question here'
+              ? 'Your Plan has Expired'
+              : chatUsedCheck
+                ? 'Your copilot Chats Limit is Over'
+                : 'Write your question here'
           }
           value={text}
           onChange={handleText}
@@ -281,7 +288,7 @@ export default function ChatInputBox({
           multiline
           minRows={1}
           maxRows={3}
-          disabled={expiredStatus === 0}
+          disabled={expiredStatus === 0 || chatUsedCheck}
           style={{ width: '100%' }}
           sx={{
             '.Mui-disabled': {
@@ -292,15 +299,15 @@ export default function ChatInputBox({
           endAdornment={
             <InputAdornment
               position="end"
-              className={`${AIChatStyles.fileIcon} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
+              className={`${AIChatStyles.fileIcon} ${expiredStatus === 0 || chatUsedCheck ? 'limitation-icon' : ''}`}
               onClick={handleOpenDocUploadModal}
-              disablePointerEvents={expiredStatus === 0}
+              disablePointerEvents={expiredStatus === 0 || chatUsedCheck}
             >
               <span className={AIChatStyles.clip}></span>
             </InputAdornment>
           }
           startAdornment={
-            expiredStatus === 0 && (
+            (expiredStatus === 0 || chatUsedCheck) && (
               <InputAdornment position="start">
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <svg
@@ -325,11 +332,11 @@ export default function ChatInputBox({
       <Button
         type="button"
         variant="contained"
-        className={`btn-arrow ${expiredStatus === 0 ? 'limitation' : ''}`}
+        className={`btn-arrow ${expiredStatus === 0 || chatUsedCheck ? 'limitation' : ''}`}
         color="primary"
         fullWidth
         onClick={handleMessageSending}
-        disabled={isSendDisabled || expiredStatus === 0}
+        disabled={isSendDisabled || expiredStatus === 0 || chatUsedCheck}
       >
         {isLoadingProp ? (
           <CircularProgress

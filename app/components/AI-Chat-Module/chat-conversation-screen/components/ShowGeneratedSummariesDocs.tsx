@@ -18,7 +18,7 @@ import {
   QUESTION_TYPES,
 } from '@/app/utils/constants';
 import { getDocumentImage } from '@/app/utils/functions';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import {
@@ -29,7 +29,7 @@ import {
 import { SocketPayload } from '@components/AI-Chat-Module/types/aiChat.types';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useSearch } from '../../context/SearchContext';
-import { selectFetchedUser } from '@/app/redux/slices/login';
+import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
 import { useSelector } from 'react-redux';
 
 const FileSummarySkeleton = () => {
@@ -130,6 +130,16 @@ export default function ShowGeneratedSummariesDocs({
       handleError(resultData.payload as ErrorResponse);
     }
   };
+
+  useEffect(() => {
+    if (fetchedUser?.id) {
+      dispatch(getUserById(fetchedUser?.id));
+    }
+  }, [summaryGeneratedDocList]);
+
+  const chatUsedCheck =
+    fetchedUser?.chat_used?.split('/')[0] ===
+    fetchedUser?.chat_used?.split('/')[1];
 
   return (
     <Box component="div" className={chatMessagesStyles.chatAl}>
@@ -352,8 +362,8 @@ export default function ShowGeneratedSummariesDocs({
           summaryGeneratedDocList?.length > 1 && (
             <Box className={chatMessagesStyles.chatAlSummaryButtonMain}>
               <Button
-                disabled={expiredStatus === 0}
-                className={`${chatMessagesStyles.chatAlSummaryButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
+                disabled={expiredStatus === 0 || chatUsedCheck}
+                className={`${chatMessagesStyles.chatAlSummaryButton} ${expiredStatus === 0 || chatUsedCheck ? 'limitation' : ''}`}
                 onClick={() =>
                   handleGenerateCombinedSummary({
                     thread_uuid: '',
