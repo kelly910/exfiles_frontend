@@ -820,9 +820,15 @@ export default function LogIncident() {
                                                 width: 20,
                                                 height: 20,
                                                 border:
-                                                  '1px solid var(--Subtext-Color)',
+                                                  theme === 'dark'
+                                                    ? '1.2px solid var(--Stroke-Color)'
+                                                    : '1.2px solid var(--Subtext-Color)',
+                                                // '1px solid var(--Subtext-Color)',
                                                 borderRadius: '6px',
-                                                backgroundColor: 'transparent',
+                                                backgroundColor:
+                                                  theme !== 'dark'
+                                                    ? 'transparent'
+                                                    : 'var(--Txt-On-Gradient)',
                                               }}
                                             />
                                           }
@@ -868,12 +874,38 @@ export default function LogIncident() {
                                         handleClick(event, item.id, item)
                                       }
                                     >
-                                      <Image
-                                        src="/images/more.svg"
-                                        alt="more"
-                                        width={20}
-                                        height={20}
-                                      />
+                                      {theme !== 'dark' ? (
+                                        <Image
+                                          src="/images/more.svg"
+                                          alt="more"
+                                          width={20}
+                                          height={20}
+                                        />
+                                      ) : (
+                                        <svg
+                                          width="20"
+                                          height="20"
+                                          viewBox="0 0 11 11"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M2.55539 4.44434C2.0665 4.44434 1.6665 4.84434 1.6665 5.33322C1.6665 5.82211 2.0665 6.22211 2.55539 6.22211C3.04428 6.22211 3.44428 5.82211 3.44428 5.33322C3.44428 4.84434 3.04428 4.44434 2.55539 4.44434Z"
+                                            stroke="var(--Subtext-Color)"
+                                            stroke-width="0.8"
+                                          />
+                                          <path
+                                            d="M8.77756 4.44434C8.28867 4.44434 7.88867 4.84434 7.88867 5.33322C7.88867 5.82211 8.28867 6.22211 8.77756 6.22211C9.26645 6.22211 9.66645 5.82211 9.66645 5.33322C9.66645 4.84434 9.26645 4.44434 8.77756 4.44434Z"
+                                            stroke="var(--Subtext-Color)"
+                                            stroke-width="0.8"
+                                          />
+                                          <path
+                                            d="M5.66672 4.44434C5.17783 4.44434 4.77783 4.84434 4.77783 5.33322C4.77783 5.82211 5.17783 6.22211 5.66672 6.22211C6.15561 6.22211 6.55561 5.82211 6.55561 5.33322C6.55561 4.84434 6.15561 4.44434 5.66672 4.44434Z"
+                                            stroke="var(--Subtext-Color)"
+                                            stroke-width="0.8"
+                                          />
+                                        </svg>
+                                      )}
                                     </IconButton>
                                     <Menu
                                       anchorEl={anchorEl}
@@ -896,12 +928,26 @@ export default function LogIncident() {
                                         className={styles.menuDropdown}
                                         onClick={editLogIncident}
                                       >
-                                        <Image
-                                          src="/images/edit-2.svg"
-                                          alt="edit"
-                                          width={18}
-                                          height={18}
-                                        />
+                                        <svg
+                                          width="18"
+                                          height="18"
+                                          viewBox="0 0 18 18"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M15.75 16.5H2.25C1.9425 16.5 1.6875 16.245 1.6875 15.9375C1.6875 15.63 1.9425 15.375 2.25 15.375H15.75C16.0575 15.375 16.3125 15.63 16.3125 15.9375C16.3125 16.245 16.0575 16.5 15.75 16.5Z"
+                                            fill="var(--Primary-Text-Color)"
+                                          />
+                                          <path
+                                            d="M14.2649 2.60926C12.8099 1.15426 11.3849 1.11676 9.89243 2.60926L8.98493 3.51676C8.90993 3.59176 8.87993 3.71176 8.90993 3.81676C9.47993 5.80426 11.0699 7.39426 13.0574 7.96426C13.0874 7.97176 13.1174 7.97926 13.1474 7.97926C13.2299 7.97926 13.3049 7.94926 13.3649 7.88926L14.2649 6.98176C15.0074 6.24676 15.3674 5.53426 15.3674 4.81426C15.3749 4.07176 15.0149 3.35176 14.2649 2.60926Z"
+                                            fill="var(--Primary-Text-Color)"
+                                          />
+                                          <path
+                                            d="M11.7075 8.64711C11.49 8.54211 11.28 8.43711 11.0775 8.31711C10.9125 8.21961 10.755 8.11461 10.5975 8.00211C10.47 7.91961 10.32 7.79961 10.1775 7.67961C10.1625 7.67211 10.11 7.62711 10.05 7.56711C9.80249 7.35711 9.52499 7.08711 9.27749 6.78711C9.25499 6.77211 9.21749 6.71961 9.16499 6.65211C9.08999 6.56211 8.96249 6.41211 8.84999 6.23961C8.75999 6.12711 8.65499 5.96211 8.55749 5.79711C8.43749 5.59461 8.33249 5.39211 8.22749 5.18211C8.12249 4.95711 8.03999 4.73961 7.96499 4.53711L3.25499 9.24711C3.1575 9.34461 3.06749 9.53211 3.04499 9.65961L2.63999 12.5321C2.56499 13.0421 2.7075 13.5221 3.0225 13.8446C3.2925 14.1071 3.66749 14.2496 4.07249 14.2496C4.16249 14.2496 4.25249 14.2421 4.34249 14.2271L7.22249 13.8221C7.35749 13.7996 7.54499 13.7096 7.63499 13.6121L12.345 8.90211C12.135 8.82711 11.9325 8.74461 11.7075 8.64711Z"
+                                            fill="var(--Primary-Text-Color)"
+                                          />
+                                        </svg>
                                         <Typography>Edit Incident</Typography>
                                       </MenuItem>
                                       <MenuItem
@@ -947,7 +993,7 @@ export default function LogIncident() {
                                     sx={{
                                       background:
                                         theme === 'dark'
-                                          ? 'var(--Stroke-Color)'
+                                          ? 'var(--Txt-On-Gradient)'
                                           : 'var(--Stroke-Color)',
                                     }}
                                   >
@@ -975,6 +1021,12 @@ export default function LogIncident() {
                                           tag?.name,
                                           searchParams
                                         ),
+                                      }}
+                                      sx={{
+                                        color:
+                                          theme == 'dark'
+                                            ? 'var(--Icon-Color)'
+                                            : 'var(--Subtext-Color)',
                                       }}
                                     />
                                   </Box>
@@ -1066,8 +1118,7 @@ export default function LogIncident() {
         onClose={() => setLimitDialog(false)}
         title={'Your Report Generation Limit is Over'}
         subtitle={'Reports'}
-        totalNumber={'3'}
-        usedNumber={'3'}
+        stats={fetchedUser?.reports_generated || ''}
       />
     </>
   );

@@ -692,9 +692,14 @@ const DownloadDocReport = () => {
                                           width: 20,
                                           height: 20,
                                           border:
-                                            '1px solid var(--Subtext-Color)',
+                                            theme === 'dark'
+                                              ? '1.2px solid var(--Stroke-Color)'
+                                              : '1.2px solid var(--Subtext-Color)',
                                           borderRadius: '6px',
-                                          backgroundColor: 'transparent',
+                                          backgroundColor:
+                                            theme !== 'dark'
+                                              ? 'transparent'
+                                              : 'var(--Txt-On-Gradient)',
                                         }}
                                       />
                                     }
@@ -803,8 +808,7 @@ const DownloadDocReport = () => {
         onClose={() => setLimitDialog(false)}
         title={'Your Report Generation Limit is Over'}
         subtitle={'Reports'}
-        totalNumber={'3'}
-        usedNumber={'3'}
+        stats={fetchedUser?.reports_generated || ''}
       />
     </>
   );

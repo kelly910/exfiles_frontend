@@ -20,6 +20,7 @@ import { logout } from '@/app/redux/slices/profileSetting';
 import { setLoader } from '@/app/redux/slices/loader';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -91,6 +92,8 @@ export default function LogoutDialog({
     }, 1000);
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -119,11 +122,19 @@ export default function LogoutDialog({
               >
                 <path
                   d="M5.4 1.5H7.35C9.75 1.5 11.25 3 11.25 5.4V8.4375H6.5625C6.255 8.4375 6 8.6925 6 9C6 9.3075 6.255 9.5625 6.5625 9.5625H11.25V12.6C11.25 15 9.75 16.5 7.35 16.5H5.4075C3.0075 16.5 1.5075 15 1.5075 12.6V5.4C1.5 3 3 1.5 5.4 1.5Z"
-                  fill="var(--Primary-Text-Color)"
+                  fill={
+                    theme === 'dark'
+                      ? 'var(--Red-Color)'
+                      : 'var(--Primary-Text-Color)'
+                  }
                 />
                 <path
                   d="M14.5799 8.43738L13.0274 6.88488C12.9149 6.77238 12.8624 6.62988 12.8624 6.48738C12.8624 6.34488 12.9149 6.19488 13.0274 6.08988C13.2449 5.87238 13.6049 5.87238 13.8224 6.08988L16.3349 8.60238C16.5524 8.81988 16.5524 9.17988 16.3349 9.39738L13.8224 11.9099C13.6049 12.1274 13.2449 12.1274 13.0274 11.9099C12.8099 11.6924 12.8099 11.3324 13.0274 11.1149L14.5799 9.56238H11.2499V8.43738H14.5799Z"
-                  fill="var(--Primary-Text-Color)"
+                  fill={
+                    theme === 'dark'
+                      ? 'var(--Red-Color)'
+                      : 'var(--Primary-Text-Color)'
+                  }
                 />
               </svg>
             </Box>

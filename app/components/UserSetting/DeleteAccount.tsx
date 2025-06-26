@@ -21,6 +21,7 @@ import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
 import { sendOtp } from '@/app/redux/slices/register';
 import Link from 'next/link';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const RESEND_TIME = 59;
 
@@ -176,6 +177,8 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
     }
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <div className={styles.headerDialogBox}>
@@ -214,7 +217,10 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                         borderRadius: '12px',
                         borderWidth: '0px',
                         color: 'var(--Primary-Text-Color)',
-                        backgroundColor: 'var(--Input-Box-Colors)',
+                        backgroundColor:
+                          theme === 'dark'
+                            ? 'var(--Txt-On-Gradient)'
+                            : 'var(--Input-Box-Colors)',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
@@ -314,7 +320,10 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                               borderRadius: '12px',
                               borderWidth: '0px',
                               color: 'var(--Primary-Text-Color)',
-                              backgroundColor: 'var(--Input-Box-Colors)',
+                              backgroundColor:
+                                theme === 'dark'
+                                  ? 'var(--Txt-On-Gradient)'
+                                  : 'var(--Input-Box-Colors)',
                               '& .MuiOutlinedInput-notchedOutline': {
                                 top: '-10px !important',
                               },

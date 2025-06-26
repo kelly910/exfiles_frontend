@@ -124,15 +124,17 @@
       border-radius: 12px;
       padding: 16px 34px;
       transition: all 0.2s;
+      background: var(--Input-Box-Colors);
 
       @media (max-width: 380px) {
         width: 100%;
       }
 
       &:hover {
-        color: var(--Txt-On-Gradient);
+        color: var(--Primary-Text-Color);
       }
     }
+
 
     .formContinueBtn {
       text-transform: capitalize;

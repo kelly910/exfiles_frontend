@@ -127,7 +127,7 @@ export default function PageHeader({
   const isDocumentsPage = pathname?.includes('/documents');
   const isLogIncidentPage = pathname?.includes('/log-incident');
   const isDocumentDownloadPage = pathname?.includes('/download-doc-report');
-  // const isPlanPage = pathname?.includes('/plans');
+  const isPlanPage = pathname?.includes('/plans');
 
   useEffect(() => {
     if (selectedActiveChat?.name) {
@@ -139,9 +139,9 @@ export default function PageHeader({
     }
   }, [selectedActiveChat]);
 
-  // useEffect(() => {
-  // console.log(".")
-  // }, [isPlanPage]);
+  useEffect(() => {
+    // console.log(".")
+  }, [isPlanPage]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -158,8 +158,8 @@ export default function PageHeader({
     setAnchorElUser(null);
     if (settingTitle === 'Settings') {
       setOpenSettingDialog(true);
-      // } else if (settingTitle === 'My Plan') {
-      //   router.push('/plans');
+    } else if (settingTitle === 'My Plan') {
+      router.push('/plans');
     } else {
       setOpenLogoutDialog(true);
     }
@@ -430,14 +430,14 @@ export default function PageHeader({
                     height={18}
                   />
                 )}
-                {/* {isPlanPage && (
+                {isPlanPage && (
                   <Image
                     src="/images/myPlan.svg"
                     alt="Log-incidents-icon"
                     width={18}
                     height={18}
                   />
-                )} */}
+                )}
                 {selectedPageHeaderData && selectedPageHeaderData.title && (
                   <Typography
                     variant="body1"
@@ -535,12 +535,22 @@ export default function PageHeader({
               >
                 <Box className={styles.timeLogInner}>
                   <Box className={styles.timeLogImage}>
-                    <Image
-                      src="/images/timer.svg"
-                      alt="search"
-                      width={20}
-                      height={20}
-                    />
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M10 3.875C6.01669 3.875 2.77502 7.11667 2.77502 11.1C2.77502 15.0833 6.01669 18.3333 10 18.3333C13.9834 18.3333 17.225 15.0917 17.225 11.1083C17.225 7.125 13.9834 3.875 10 3.875ZM10.625 10.8333C10.625 11.175 10.3417 11.4583 10 11.4583C9.65836 11.4583 9.37502 11.175 9.37502 10.8333V6.66667C9.37502 6.325 9.65836 6.04167 10 6.04167C10.3417 6.04167 10.625 6.325 10.625 6.66667V10.8333Z"
+                        fill="var(--Icon-Color)"
+                      />
+                      <path
+                        d="M12.4084 2.87533H7.5917C7.25837 2.87533 6.9917 2.60866 6.9917 2.27533C6.9917 1.94199 7.25837 1.66699 7.5917 1.66699H12.4084C12.7417 1.66699 13.0084 1.93366 13.0084 2.26699C13.0084 2.60033 12.7417 2.87533 12.4084 2.87533Z"
+                        fill="var(--Icon-Color)"
+                      />
+                    </svg>
                   </Box>
                   <Box className={styles.timeLogTime}>
                     {timerData.map((item, index) => (

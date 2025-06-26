@@ -361,13 +361,51 @@ const DocumentList: React.FC<DocumentListProps> = ({
                           }
                           sx={{ p: 0 }}
                         >
-                          <Image
-                            src="/images/more.svg"
-                            alt="more"
-                            width={16}
-                            height={16}
-                            className={styles.moreImg}
-                          />
+                          {theme !== 'dark' ? (
+                            <Image
+                              src="/images/more.svg"
+                              alt="more"
+                              width={16}
+                              height={16}
+                              className={styles.moreImg}
+                            />
+                          ) : (
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 11 11"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M2.55539 4.44434C2.0665 4.44434 1.6665 4.84434 1.6665 5.33322C1.6665 5.82211 2.0665 6.22211 2.55539 6.22211C3.04428 6.22211 3.44428 5.82211 3.44428 5.33322C3.44428 4.84434 3.04428 4.44434 2.55539 4.44434Z"
+                                stroke={
+                                  selectedDoc === doc?.uuid
+                                    ? 'var(--Primary-Text-Color)'
+                                    : 'var(--Subtext-Color)'
+                                }
+                                stroke-width="0.8"
+                              />
+                              <path
+                                d="M8.77756 4.44434C8.28867 4.44434 7.88867 4.84434 7.88867 5.33322C7.88867 5.82211 8.28867 6.22211 8.77756 6.22211C9.26645 6.22211 9.66645 5.82211 9.66645 5.33322C9.66645 4.84434 9.26645 4.44434 8.77756 4.44434Z"
+                                stroke={
+                                  selectedDoc === doc?.uuid
+                                    ? 'var(--Primary-Text-Color)'
+                                    : 'var(--Subtext-Color)'
+                                }
+                                stroke-width="0.8"
+                              />
+                              <path
+                                d="M5.66672 4.44434C5.17783 4.44434 4.77783 4.84434 4.77783 5.33322C4.77783 5.82211 5.17783 6.22211 5.66672 6.22211C6.15561 6.22211 6.55561 5.82211 6.55561 5.33322C6.55561 4.84434 6.15561 4.44434 5.66672 4.44434Z"
+                                stroke={
+                                  selectedDoc === doc?.uuid
+                                    ? 'var(--Primary-Text-Color)'
+                                    : 'var(--Subtext-Color)'
+                                }
+                                stroke-width="0.8"
+                              />
+                            </svg>
+                          )}
                         </IconButton>
                         <Menu
                           id="menu-appbar"
@@ -397,12 +435,18 @@ const DocumentList: React.FC<DocumentListProps> = ({
                             onClick={handleViewDocument}
                             className={`${styles.menuDropdown}`}
                           >
-                            <Image
-                              src="/images/view_document.svg"
-                              alt="tras"
-                              width={18}
-                              height={18}
-                            />
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 18 18"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M12.1425 1.5H5.8575C3.1275 1.5 1.5 3.1275 1.5 5.8575V12.135C1.5 14.8725 3.1275 16.5 5.8575 16.5H12.135C14.865 16.5 16.4925 14.8725 16.4925 12.1425V5.8575C16.5 3.1275 14.8725 1.5 12.1425 1.5ZM12.9375 9.2475C12.9375 9.555 12.6825 9.81 12.375 9.81C12.0675 9.81 11.8125 9.555 11.8125 9.2475V6.9825L6.0225 12.7725C5.91 12.885 5.7675 12.9375 5.625 12.9375C5.4825 12.9375 5.34 12.885 5.2275 12.7725C5.01 12.555 5.01 12.195 5.2275 11.9775L11.0175 6.1875H8.7525C8.445 6.1875 8.19 5.9325 8.19 5.625C8.19 5.3175 8.445 5.0625 8.7525 5.0625H12.375C12.6825 5.0625 12.9375 5.3175 12.9375 5.625V9.2475Z"
+                                fill="var(--Primary-Text-Color)"
+                              />
+                            </svg>
                             <Typography>View Document</Typography>
                           </MenuItem>
                           {expiredStatus !== 0 && (
@@ -411,12 +455,27 @@ const DocumentList: React.FC<DocumentListProps> = ({
                                 onClick={handleRenameDocument}
                                 className={`${styles.menuDropdown}`}
                               >
-                                <Image
-                                  src="/images/rename-document.svg"
-                                  alt="tras"
-                                  width={18}
-                                  height={18}
-                                />
+                                <svg
+                                  width="18"
+                                  height="18"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M15 22C14.59 22 14.25 21.66 14.25 21.25V2.75C14.25 2.34 14.59 2 15 2C15.41 2 15.75 2.34 15.75 2.75V21.25C15.75 21.66 15.41 22 15 22Z"
+                                    fill="var(--Primary-Text-Color)"
+                                  />
+                                  <path
+                                    d="M18 20H15V4H18C20.21 4 22 5.79 22 8V16C22 18.21 20.21 20 18 20Z"
+                                    fill="var(--Primary-Text-Color)"
+                                  />
+                                  <path
+                                    d="M6 4C3.79 4 2 5.79 2 8V16C2 18.21 3.79 20 6 20H11C11.55 20 12 19.55 12 19V5C12 4.45 11.55 4 11 4H6ZM7.75 15.5C7.75 15.91 7.41 16.25 7 16.25C6.59 16.25 6.25 15.91 6.25 15.5V8.5C6.25 8.09 6.59 7.75 7 7.75C7.41 7.75 7.75 8.09 7.75 8.5V15.5Z"
+                                    fill="var(--Primary-Text-Color)"
+                                  />
+                                </svg>
+
                                 <Typography>Rename Document</Typography>
                               </MenuItem>
                               <MenuItem

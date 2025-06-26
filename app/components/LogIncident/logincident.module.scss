@@ -52,7 +52,7 @@
       padding: 4px 4px 4px 12px;
       width: 100%;
       color: var(--Subtext-Color);
-      background: var(--Card-Color);
+      background: var(--Background-Color);
 
       &::after {
         content: none !important;
@@ -95,7 +95,7 @@
         justify-content: center;
         align-items: center;
         border: 0.72px solid var(--Stroke-Color);
-        background-color: var(--Background-Color);
+        background-color: var(--Card-Color);
         padding: 6px;
         border-radius: 8px;
       }
@@ -150,7 +150,7 @@
       font-weight: var(--Regular);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
-      color: var(--Txt-On-Gradient);
+      color: var(--Primary-Text-Color);
       width: 100%;
     }
 
@@ -286,7 +286,6 @@
         .logListBodyTagTitle {
           font-weight: var(--Lighter);
           font-size: var(--SubTitle-4);
-          color: var(--Subtext-Color);
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;

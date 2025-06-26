@@ -25,10 +25,15 @@ import { setLoader } from '@/app/redux/slices/loader';
 import Link from 'next/link';
 import DevicesLimit from '../Devices-Limit/DevicesLimit';
 import PlanExpired from '../Plan-Expired/PlanExpired';
+import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 
 export interface LoginFormValues {
   email: string;
   password: string;
+}
+
+export interface LoginToken {
+  access_token?: string;
 }
 
 const Page = () => {
@@ -43,9 +48,11 @@ const Page = () => {
   const dispatch = useAppDispatch();
   const [exceedLimitDialog, setExceedLimitDialog] = useState(false);
   const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
+  const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
   const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
     null
   );
+  const [access_token, setToken] = useState<LoginToken | null>(null);
 
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {
@@ -73,6 +80,11 @@ const Page = () => {
               setLoadingLogin(false);
               if (response.data.active_subscription?.status === 0) {
                 setOpenExpiredDialog(true);
+              } else if (
+                response.data.remaining_days === 1 ||
+                response.data.remaining_days === 2
+              ) {
+                setOpenCountDownDialog(true);
               } else {
                 router.push('/ai-chats');
               }
@@ -100,7 +112,9 @@ const Page = () => {
           socialGoogleLogin({ access_token: tokenResponse.access_token })
         ).unwrap();
         if (response.messages[0] === 'LimitExceeded') {
+          setToken({ access_token: tokenResponse.access_token });
           setExceedLimitDialog(true);
+          dispatch(setLoader(false));
         } else {
           localStorage.setItem('loggedInUser', JSON.stringify(response));
           const token: string | null = response?.data?.token || null;
@@ -110,6 +124,11 @@ const Page = () => {
           }
           if (response.data.active_subscription?.status === 0) {
             setOpenExpiredDialog(true);
+          } else if (
+            response.data.remaining_days === 1 ||
+            response.data.remaining_days === 2
+          ) {
+            setOpenCountDownDialog(true);
           } else {
             router.push('/ai-chats');
           }
@@ -465,10 +484,16 @@ const Page = () => {
         open={exceedLimitDialog}
         onClose={() => setExceedLimitDialog(false)}
         loginDetails={loginDetails}
+        tokenResponse={access_token}
       />
       <PlanExpired
         open={openExpiredDialog}
         onClose={() => setOpenExpiredDialog(false)}
+      />
+      <UpgradeTime
+        open={openCountDownDialog}
+        onClose={() => setOpenCountDownDialog(false)}
+        type={'login'}
       />
     </>
   );

@@ -14,6 +14,7 @@ import {
 import Image from 'next/image';
 import { LogIncidentDetails } from '../LogIncident/LogIncident';
 import dayjs from 'dayjs';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -49,6 +50,7 @@ export default function LogDetailsModel({
   onClose,
   itemDetails,
 }: DetailsDialogProps) {
+  const { theme } = useThemeMode();
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -119,7 +121,16 @@ export default function LogDetailsModel({
           </Typography>
           <Box component="div" className={LogStyle.logListBody}>
             {itemDetails?.tags_data?.map((tag, index) => (
-              <Box className={LogStyle.logListBodyTag} key={index}>
+              <Box
+                className={LogStyle.logListBodyTag}
+                key={index}
+                style={{
+                  background:
+                    theme === 'dark'
+                      ? 'var(--Txt-On-Gradient)'
+                      : 'var(--Stroke-Color)',
+                }}
+              >
                 {tag?.file_data?.file_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -139,6 +150,12 @@ export default function LogDetailsModel({
                 <Typography
                   variant="body1"
                   className={LogStyle.logListBodyTagTitle}
+                  style={{
+                    color:
+                      theme === 'dark'
+                        ? 'var(--Icon-Color)'
+                        : 'var(--Subtext-Color)',
+                  }}
                 >
                   {tag.name}
                 </Typography>

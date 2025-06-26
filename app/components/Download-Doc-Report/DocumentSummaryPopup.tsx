@@ -19,6 +19,7 @@ import {
   highlightText,
   processTextSummary,
 } from '@/app/utils/constants';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -58,6 +59,7 @@ export default function DocumentSummaryPopup({
   docType,
   searchParams,
 }: DetailsDialogProps) {
+  const { theme } = useThemeMode();
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -129,12 +131,27 @@ export default function DocumentSummaryPopup({
         <DialogContent className={LogStyle.dialogFormContentDetailsBox}>
           <Box component="div" className={LogStyle.logListBody}>
             {passDocumentSummary?.tags?.map((tag, index) => (
-              <Box className={LogStyle.logListBodyTag} key={index}>
+              <Box
+                className={LogStyle.logListBodyTag}
+                key={index}
+                style={{
+                  background:
+                    theme === 'dark'
+                      ? 'var(--Txt-On-Gradient)'
+                      : 'var(--Stroke-Color)',
+                }}
+              >
                 <Typography
                   variant="body1"
                   className={LogStyle.logListBodyTagTitle}
                   dangerouslySetInnerHTML={{
                     __html: highlightText(tag.name || '', searchParams || ''),
+                  }}
+                  style={{
+                    color:
+                      theme === 'dark'
+                        ? 'var(--Icon-Color)'
+                        : 'var(--Subtext-Color)',
                   }}
                 />
               </Box>

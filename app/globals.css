@@ -24,6 +24,7 @@
 
   --Icon-Color: rgb(255, 255, 255);
   --Icon-Color-Rgb: rgb(255, 255, 255);
+  --Black-Color: #1B1A25;
 
   --Bold: 700;
   --Medium: 600;
@@ -414,6 +415,7 @@ input {
 }
 
 .generate-document-btn {
+  color: var(--Primary-Text-Color) !important;
   background: transparent !important;
   outline: 1px solid var(--Card-Border) !important;
 }
@@ -421,6 +423,7 @@ input {
 .generate-document-btn img {
   margin-left: 4px;
 }
+
 
 .filter-date {
   background: transparent !important;
@@ -908,6 +911,25 @@ input::-webkit-inner-spin-button {
 
 
 /*  */
+
+:root[data-theme='dark'] .btn.btn-primary-arrow span.incident,
+:root[data-theme='dark'] .btn-arrow span.arrow,
+:root[data-theme='dark'] .btn.btn-primary-arrow span.arrow {
+  filter: brightness(0) invert(1);
+}
+
+:root[data-theme='dark'] .btn.btn-secondary {
+  color: var(--Card-Border);
+  border-color: var(--Card-Border);
+}
+
+:root[data-theme='dark'] .btn.btn-pluse img {
+  filter: brightness(0) invert(1);
+}
+
+:root[data-theme='dark'] .generate-document-btn img {
+  filter: brightness(0) !important;
+}
 
 .subscription-slider .slick-slider .slick-list {
   margin: -20px 0;

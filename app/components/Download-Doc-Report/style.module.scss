@@ -73,7 +73,7 @@
         padding: 4px 4px 4px 12px;
         width: 100%;
         color: var(--Subtext-Color);
-        background: var(--Card-Color);
+        background: var(--Background-Color);
 
         &::after {
           content: none !important;
@@ -132,7 +132,7 @@
       justify-content: center;
       align-items: center;
       border: 0.72px solid var(--Stroke-Color);
-      background-color: var(--Background-Color);
+      background-color: var(--Card-Color);
       padding: 6px;
       border-radius: 8px;
     }

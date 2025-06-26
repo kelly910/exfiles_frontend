@@ -32,6 +32,7 @@ import { showToast } from '@/app/shared/toast/ShowToast';
 import { editSummaryValidation } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useRouter } from 'next/navigation';
 import { selectFetchedUser } from '@/app/redux/slices/login';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 interface DocumentSummaryProps {
   docId: string;
@@ -157,6 +158,8 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     }, 1000);
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       {mobileView ? (
@@ -213,6 +216,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       key={tag?.id}
                       dangerouslySetInnerHTML={{
                         __html: highlightText(tag?.name, searchParams),
+                      }}
+                      style={{
+                        background:
+                          theme === 'dark'
+                            ? 'var(--Background-Color)'
+                            : 'var(--Card-Image)',
                       }}
                     ></span>
                   ))}
@@ -284,7 +293,10 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                                     borderRadius: '12px',
                                     borderWidth: '0px',
                                     color: 'var(--Primary-Text-Color)',
-                                    backgroundColor: 'var(--Input-Box-Colors)',
+                                    backgroundColor:
+                                      theme === 'dark'
+                                        ? 'var(--Card-Color)'
+                                        : 'var(--Input-Box-Colors)',
                                     padding: '14px 16px',
                                     '& .MuiOutlinedInput-notchedOutline': {
                                       top: '-10px !important',
@@ -520,6 +532,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         key={tag?.id}
                         dangerouslySetInnerHTML={{
                           __html: highlightText(tag?.name, searchParams),
+                        }}
+                        style={{
+                          background:
+                            theme === 'dark'
+                              ? 'var(--Background-Color)'
+                              : 'var(--Card-Image)',
                         }}
                       ></span>
                     ))}

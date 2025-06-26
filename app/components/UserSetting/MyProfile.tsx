@@ -22,6 +22,7 @@ import { setLoader } from '@/app/redux/slices/loader';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { getUserById, updateProfile } from '@/app/redux/slices/login';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export interface UpdateUserFormValues {
   contact_number: string;
@@ -102,6 +103,8 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
   //   setIsFieldFilled(isChanged);
   // };
 
+  const { theme } = useThemeMode();
+
   return (
     <div className={styles.headerDialogBox}>
       <Formik
@@ -117,8 +120,8 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                 <Avatar
                   alt="abbreviation"
                   sx={{
-                    backgroundColor: 'var(--Primary-Text-Color)',
-                    color: 'var(--Card-Color)',
+                    backgroundColor: 'var(--Txt-On-Gradient)',
+                    color: 'var(--Black-Color)',
                     fontSize: 'var(--Heading-2)',
                     fontWeight: 'var(--Medium)',
                     padding: '13px 15px',
@@ -165,7 +168,10 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                         borderRadius: '12px',
                         borderWidth: '0px',
                         color: 'var(--Primary-Text-Color)',
-                        backgroundColor: 'var(--Input-Box-Colors)',
+                        backgroundColor:
+                          theme === 'dark'
+                            ? 'var(--Txt-On-Gradient)'
+                            : 'var(--Input-Box-Colors)',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
@@ -237,7 +243,10 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                         borderRadius: '12px',
                         borderWidth: '0px',
                         color: 'var(--Primary-Text-Color)',
-                        backgroundColor: 'var(--Input-Box-Colors)',
+                        backgroundColor:
+                          theme === 'dark'
+                            ? 'var(--Txt-On-Gradient)'
+                            : 'var(--Input-Box-Colors)',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
@@ -301,7 +310,10 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                         borderRadius: '12px',
                         borderWidth: '0px',
                         color: 'var(--Primary-Text-Color)',
-                        backgroundColor: 'var(--Input-Box-Colors)',
+                        backgroundColor:
+                          theme === 'dark'
+                            ? 'var(--Txt-On-Gradient)'
+                            : 'var(--Input-Box-Colors)',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
@@ -382,7 +394,10 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                         borderRadius: '12px',
                         borderWidth: '0px',
                         color: 'var(--Primary-Text-Color)',
-                        backgroundColor: 'var(--Input-Box-Colors)',
+                        backgroundColor:
+                          theme === 'dark'
+                            ? 'var(--Txt-On-Gradient)'
+                            : 'var(--Input-Box-Colors)',
                         paddingLeft: '0',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
@@ -393,6 +408,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                           padding: '14px 16px',
                           fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
+                          lineHeight: '20px',
                           '&::placeholder': {
                             color: 'var(Placeholder-Text)',
                             fontWeight: 'var(--Regular)',

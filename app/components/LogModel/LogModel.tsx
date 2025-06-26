@@ -41,6 +41,7 @@ import { useRouter } from 'next/navigation';
 import { ALLOWED_FILE_TYPES } from '@/app/utils/constants';
 import UploadFileItem from '../AI-Chat/components/FileUpload/UploadFileItem';
 import { gtagEvent } from '@/app/utils/functions';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -578,6 +579,8 @@ export default function LogModel({
     }),
   });
 
+  const { theme } = useThemeMode();
+
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -684,7 +687,10 @@ export default function LogModel({
                           borderRadius: '12px',
                           borderWidth: '0px',
                           color: 'var(--Primary-Text-Color)',
-                          backgroundColor: 'var(--Input-Box-Colors)',
+                          backgroundColor:
+                            theme === 'dark'
+                              ? 'var(--Background-Color)'
+                              : 'var(--Input-Box-Colors)',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
@@ -745,6 +751,10 @@ export default function LogModel({
                         style={{
                           cursor: 'pointer',
                           userSelect: 'none',
+                          backgroundColor:
+                            theme === 'dark'
+                              ? 'var(--Background-Color)'
+                              : 'var(--Input-Box-Colors)',
                         }}
                         onClick={handleOpenUserFileInput}
                         onDrop={(e) => handleDrop(e, setFieldValue)}
@@ -828,7 +838,10 @@ export default function LogModel({
                             border: '1px solid var(--Stroke-Color)',
                             borderRadius: '12px',
                             overflow: 'hidden',
-                            backgroundColor: 'var(--Input-Box-Colors)',
+                            backgroundColor:
+                              theme === 'dark'
+                                ? 'var(--Background-Color)'
+                                : 'var(--Input-Box-Colors)',
                             width: '100%',
                           }}
                         >
@@ -965,7 +978,15 @@ export default function LogModel({
                                       }
                                     }}
                                   />
-                                  <label htmlFor={checkboxId}>
+                                  <label
+                                    htmlFor={checkboxId}
+                                    style={{
+                                      backgroundColor:
+                                        theme === 'dark'
+                                          ? 'var(--Background-Color)'
+                                          : 'var(--Input-Box-Colors)',
+                                    }}
+                                  >
                                     {tag.file_data?.file_url && (
                                       // eslint-disable-next-line @next/next/no-img-element
                                       <img
@@ -1003,7 +1024,15 @@ export default function LogModel({
                               setFieldValue('other_tag', '');
                           }}
                         />
-                        <label htmlFor="Other">
+                        <label
+                          htmlFor="Other"
+                          style={{
+                            backgroundColor:
+                              theme === 'dark'
+                                ? 'var(--Background-Color)'
+                                : 'var(--Input-Box-Colors)',
+                          }}
+                        >
                           <Image
                             src="/images/other.svg"
                             alt="close icon"
@@ -1045,7 +1074,10 @@ export default function LogModel({
                               borderRadius: '12px',
                               borderWidth: '0px',
                               color: 'var(--Primary-Text-Color)',
-                              backgroundColor: 'var(--Input-Box-Colors)',
+                              backgroundColor:
+                                theme === 'dark'
+                                  ? 'var(--Background-Color)'
+                                  : 'var(--Input-Box-Colors)',
                               '& .MuiOutlinedInput-notchedOutline': {
                                 top: '-10px !important',
                               },
@@ -1118,7 +1150,10 @@ export default function LogModel({
                           borderRadius: '12px',
                           borderWidth: '0px',
                           color: 'var(--Primary-Text-Color)',
-                          backgroundColor: 'var(--Input-Box-Colors)',
+                          backgroundColor:
+                            theme === 'dark'
+                              ? 'var(--Background-Color)'
+                              : 'var(--Input-Box-Colors)',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
@@ -1193,7 +1228,10 @@ export default function LogModel({
                           borderRadius: '12px',
                           borderWidth: '0px',
                           color: 'var(--Primary-Text-Color)',
-                          backgroundColor: 'var(--Input-Box-Colors)',
+                          backgroundColor:
+                            theme === 'dark'
+                              ? 'var(--Background-Color)'
+                              : 'var(--Input-Box-Colors)',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
@@ -1263,7 +1301,10 @@ export default function LogModel({
                           displayEmpty
                           inputProps={{ 'aria-label': 'Person Involved' }}
                           sx={{
-                            backgroundColor: 'var(--Input-Box-Colors)',
+                            backgroundColor:
+                              theme === 'dark'
+                                ? 'var(--Background-Color)'
+                                : 'var(--Input-Box-Colors)',
                             borderRadius: '12px',
                             fontSize: 'var(--SubTitle-3)',
                             fontWeight: 'var(--Regular)',
@@ -1330,7 +1371,10 @@ export default function LogModel({
                           displayEmpty
                           inputProps={{ 'aria-label': 'Person Involved' }}
                           sx={{
-                            backgroundColor: 'var(--Input-Box-Colors)',
+                            backgroundColor:
+                              theme === 'dark'
+                                ? 'var(--Background-Color)'
+                                : 'var(--Input-Box-Colors)',
                             borderRadius: '12px',
                             fontSize: 'var(--SubTitle-3)',
                             fontWeight: 'var(--Regular)',

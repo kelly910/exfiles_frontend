@@ -47,7 +47,7 @@
         padding: 4px 4px 4px 12px;
         width: 100%;
         color: var(--Subtext-Color);
-        background: var(--Card-Color);
+        background: var(--Background-Color);
 
         &::after {
           content: none !important;
@@ -79,7 +79,7 @@
       justify-content: center;
       align-items: center;
       border: 0.72px solid var(--Stroke-Color);
-      background-color: var(--Background-Color);
+      background-color: var(--Card-Color);
       padding: 6px;
       border-radius: 8px;
     }
@@ -500,7 +500,6 @@
       }
 
       span {
-        background: var(--Card-Image);
         border: 0.5px solid var(--Stroke-Color);
         padding: 4px 8px;
         border-radius: 500px;
@@ -942,6 +941,7 @@
     align-items: center;
     gap: 4px;
     min-width: 160px;
+    min-height: auto;
 
     &:hover {
       background-color: var(--Card-Image);

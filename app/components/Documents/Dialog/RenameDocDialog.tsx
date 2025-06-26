@@ -24,7 +24,7 @@ import { renameDocuments } from '@/app/redux/slices/documentByCategory';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
-    backgroundColor: 'var(--Background-Color)',
+    backgroundColor: 'var(--Card-Color)',
     margin: '0px',
     border: '1px solid var(--Stroke-Color)',
     borderRadius: '16px',
