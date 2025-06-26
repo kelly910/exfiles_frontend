@@ -30,8 +30,7 @@ interface LimitDialogProps {
   onClose: () => void;
   title: string;
   subtitle: string;
-  totalNumber: string;
-  usedNumber: string;
+  stats?: string;
 }
 
 export default function LimitOver({
@@ -39,8 +38,7 @@ export default function LimitOver({
   onClose,
   title,
   subtitle,
-  totalNumber,
-  usedNumber,
+  stats,
 }: LimitDialogProps) {
   const router = useRouter();
   return (
@@ -61,7 +59,7 @@ export default function LimitOver({
               <Box component="div" className={Style.dialogTimerLog}>
                 <Box component="div">
                   <p className={Style.dialogTimerStore}>
-                    {usedNumber} <span>/{totalNumber}</span>
+                    {stats?.split('/')[0]} <span>/{stats?.split('/')[1]}</span>
                   </p>
                   <p className={Style.dialogTimerStoreName}>{subtitle}</p>
                 </Box>
