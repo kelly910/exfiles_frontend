@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import Style from '@components/Devices-Limit/DevicesLimit.module.scss';
 import { Box, Button, CircularProgress, Dialog, styled } from '@mui/material';
 import Image from 'next/image';
-import { LoginFormValues } from '../Login/Login';
+import { LoginFormValues, LoginToken } from '../Login/Login';
 import { setLoader } from '@/app/redux/slices/loader';
-import { loginUser } from '@/app/redux/slices/login';
+import { loginUser, socialGoogleLogin } from '@/app/redux/slices/login';
 import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useAppDispatch } from '@/app/redux/hooks';
 import PlanExpired from '../Plan-Expired/PlanExpired';
+import { useGoogleLogin } from '@react-oauth/google';
+import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -34,55 +36,105 @@ interface DevicesLimitDialogProps {
   open: boolean;
   onClose: () => void;
   loginDetails?: LoginFormValues | null;
+  tokenResponse?: LoginToken | null;
 }
 
 export default function DevicesLimit({
   open,
   onClose,
   loginDetails,
+  tokenResponse,
 }: DevicesLimitDialogProps) {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
+  const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse: { access_token: string }) => {
+      try {
+        await dispatch(setLoader(true));
+        const response = await dispatch(
+          socialGoogleLogin({
+            access_token: tokenResponse.access_token,
+            logout_device: true,
+          })
+        ).unwrap();
+        onClose();
+        localStorage.setItem('loggedInUser', JSON.stringify(response));
+        const token: string | null = response?.data?.token || null;
+        if (token) {
+          document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+        }
+        if (response.data.active_subscription?.status === 0) {
+          setOpenExpiredDialog(true);
+        } else if (
+          response.data.remaining_days === 1 ||
+          response.data.remaining_days === 2
+        ) {
+          setOpenCountDownDialog(true);
+        } else {
+          router.push('/ai-chats');
+        }
+      } catch (error) {
+        handleError(error as ErrorResponse);
+      } finally {
+        dispatch(setLoader(false));
+      }
+    },
+    onError: (error) => {
+      handleError(error as ErrorResponse);
+      dispatch(setLoader(false));
+    },
+  });
 
   const handleLoginContinue = async () => {
-    if (!loginDetails) return;
-    const loginPayload = { ...loginDetails, logout_device: true };
-    try {
-      setLoading(true);
-      dispatch(setLoader(true));
-      setTimeout(async () => {
-        try {
-          const response = await dispatch(loginUser(loginPayload)).unwrap();
-          if (response && response.data && response.data.token) {
-            onClose();
-            localStorage.setItem('loggedInUser', JSON.stringify(response));
-            const token: string | null = response?.data?.token || null;
-            if (token) {
-              document.cookie = `accessToken=${token}; path=/; max-age=86400`;
-              window.opener?.postMessage(
-                { type: 'LOGIN_SUCCESS', user: response.data },
-                process.env.NEXT_PUBLIC_REDIRECT_URL
-              );
+    if (!loginDetails && !tokenResponse) return;
+    if (loginDetails) {
+      const loginPayload = { ...loginDetails, logout_device: true };
+      try {
+        setLoading(true);
+        dispatch(setLoader(true));
+        setTimeout(async () => {
+          try {
+            const response = await dispatch(loginUser(loginPayload)).unwrap();
+            if (response && response.data && response.data.token) {
+              onClose();
+              localStorage.setItem('loggedInUser', JSON.stringify(response));
+              const token: string | null = response?.data?.token || null;
+              if (token) {
+                document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+                window.opener?.postMessage(
+                  { type: 'LOGIN_SUCCESS', user: response.data },
+                  process.env.NEXT_PUBLIC_REDIRECT_URL
+                );
+              }
+              if (response.data.active_subscription?.status === 0) {
+                setOpenExpiredDialog(true);
+              } else if (
+                response.data.remaining_days === 1 ||
+                response.data.remaining_days === 2
+              ) {
+                setOpenCountDownDialog(true);
+              } else {
+                router.push('/ai-chats');
+              }
             }
-            if (response.data.active_subscription?.status === 0) {
-              setOpenExpiredDialog(true);
-            } else {
-              router.push('/ai-chats');
-            }
+          } catch (error) {
+            handleError(error as ErrorResponse);
+          } finally {
+            setLoading(false);
+            dispatch(setLoader(false));
           }
-        } catch (error) {
-          handleError(error as ErrorResponse);
-        } finally {
-          setLoading(false);
-          dispatch(setLoader(false));
-        }
-      }, 1000);
-    } catch (error) {
-      handleError(error as ErrorResponse);
-      setLoading(false);
-      dispatch(setLoader(false));
+        }, 1000);
+      } catch (error) {
+        handleError(error as ErrorResponse);
+        setLoading(false);
+        dispatch(setLoader(false));
+      }
+    } else if (tokenResponse) {
+      googleLogin();
     }
   };
 
@@ -135,6 +187,11 @@ export default function DevicesLimit({
       <PlanExpired
         open={openExpiredDialog}
         onClose={() => setOpenExpiredDialog(false)}
+      />
+      <UpgradeTime
+        open={openCountDownDialog}
+        onClose={() => setOpenCountDownDialog(false)}
+        type={'login'}
       />
     </>
   );

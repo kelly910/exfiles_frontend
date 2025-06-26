@@ -44,10 +44,12 @@ const initialState: ForgotPasswordState = {
 
 interface SocialGoogleLoginPayload {
   access_token: string;
+  logout_device?: boolean;
 }
 export interface SocialGoogleLoginResponse {
   messages: string[];
   data: {
+    remaining_days?: number;
     id: number;
     first_name: string;
     last_name: string;
@@ -207,12 +209,22 @@ export const socialGoogleLogin = createAsyncThunk<
   { rejectValue: string }
 >('login/googleLogin', async (payload, { rejectWithValue }) => {
   try {
-    const response = await api.post<SocialGoogleLoginResponse>(
-      urlMapper.googleLogin,
-      payload
-    );
-    showToast('success', 'Google Login is successfully.');
-    return response.data;
+    if (payload?.logout_device) {
+      const response = await api.post<SocialGoogleLoginResponse>(
+        `${urlMapper.googleLogin}?logout_device=true`,
+        payload
+      );
+      showToast('success', 'Google Login is successfully.');
+      return response.data;
+    } else {
+      delete payload.logout_device;
+      const response = await api.post<LoginResponse>(
+        urlMapper.googleLogin,
+        payload
+      );
+      showToast('success', 'Google Login is successfully.');
+      return response.data;
+    }
   } catch (error: unknown) {
     if (typeof error === 'object' && error !== null && 'response' in error) {
       const err = error as { response?: { data?: string } };
