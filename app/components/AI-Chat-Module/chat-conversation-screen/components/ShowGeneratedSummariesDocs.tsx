@@ -105,7 +105,7 @@ export default function ShowGeneratedSummariesDocs({
   const [limitDialog, setLimitDialog] = useState(false);
 
   const handleRetryDoc = async (docObj: UploadedDocument) => {
-    if (summaryUsedCheck) {
+    if (summaryUsedCheck && !fetchedUser?.staff_user) {
       setLimitDialog(true);
     } else {
     setIsLoading(true);
@@ -377,7 +377,7 @@ export default function ShowGeneratedSummariesDocs({
                 disabled={expiredStatus === 0}
                 className={`${chatMessagesStyles.chatAlSummaryButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
                 onClick={() => {
-                  if (summaryUsedCheck) {
+                  if (summaryUsedCheck && !fetchedUser?.staff_user) {
                     setLimitDialog(true);
                   } else {
                     handleGenerateCombinedSummary({
