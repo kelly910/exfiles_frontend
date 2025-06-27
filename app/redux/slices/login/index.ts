@@ -3,7 +3,6 @@ import api from '../../../utils/axiosConfig';
 import urlMapper from '@/app/utils/apiEndPoints/urlMapper';
 import { NewPasswordFormValues } from '@/app/components/New-Password/NewPassword';
 import { ForgotPasswordFormValues } from '@/app/components/Forgot-Password/ForgotPassword';
-import { showToast } from '@/app/shared/toast/ShowToast';
 import { UpdateUserFormValues } from '@/app/components/UserSetting/MyProfile';
 import { RootState } from '../../store';
 
@@ -141,12 +140,10 @@ export const loginUser = createAsyncThunk<
         `${urlMapper.login}?logout_device=true`,
         payload
       );
-      showToast('success', 'Login is successfully.');
       return response.data;
     } else {
       delete payload.logout_device;
       const response = await api.post<LoginResponse>(urlMapper.login, payload);
-      showToast('success', 'Login is successfully.');
       return response.data;
     }
   } catch (error: unknown) {
@@ -214,7 +211,6 @@ export const socialGoogleLogin = createAsyncThunk<
         `${urlMapper.googleLogin}?logout_device=true`,
         payload
       );
-      showToast('success', 'Google Login is successfully.');
       return response.data;
     } else {
       delete payload.logout_device;
@@ -222,7 +218,6 @@ export const socialGoogleLogin = createAsyncThunk<
         urlMapper.googleLogin,
         payload
       );
-      showToast('success', 'Google Login is successfully.');
       return response.data;
     }
   } catch (error: unknown) {

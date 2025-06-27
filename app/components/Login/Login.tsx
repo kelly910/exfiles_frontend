@@ -26,6 +26,7 @@ import Link from 'next/link';
 import DevicesLimit from '../Devices-Limit/DevicesLimit';
 import PlanExpired from '../Plan-Expired/PlanExpired';
 import UpgradeTime from '../Upgrade-Time/UpgradeTime';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 export interface LoginFormValues {
   email: string;
@@ -78,6 +79,7 @@ const Page = () => {
                 );
               }
               setLoadingLogin(false);
+              showToast('success', 'Login is successfully.');
               if (response.data.active_subscription?.status === 0) {
                 setOpenExpiredDialog(true);
               } else if (
@@ -122,6 +124,7 @@ const Page = () => {
             document.cookie = `accessToken=${token}; path=/; max-age=86400`;
             await dispatch(setLoader(false));
           }
+          showToast('success', 'Google Login is successfully.');
           if (response.data.active_subscription?.status === 0) {
             setOpenExpiredDialog(true);
           } else if (
