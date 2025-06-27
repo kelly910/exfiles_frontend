@@ -59,6 +59,7 @@ export interface SocialGoogleLoginResponse {
     token: string;
     google_login: boolean;
     active_subscription?: ActiveSubscription;
+    is_grace_point_used?: boolean;
   };
 }
 
@@ -86,6 +87,7 @@ export interface LoginResponse {
     reports_generated?: string;
     summary_used?: string;
     storage?: string;
+    is_grace_point_used?: boolean;
   };
 }
 
@@ -128,6 +130,7 @@ interface UpdateProfileResponse {
   reports_generated?: string;
   summary_used?: string;
   storage?: string;
+  is_grace_point_used?: boolean;
 }
 export const loginUser = createAsyncThunk<
   LoginResponse,

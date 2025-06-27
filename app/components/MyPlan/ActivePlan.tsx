@@ -13,10 +13,11 @@ import {
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
 import { cancelPlanSubscription } from '@/app/redux/slices/planHistory';
+import CancelDialog from './Dialog/CancelPlanDialog';
 
 export default function ActivePlan() {
   const loggedInUser = useSelector(
@@ -24,6 +25,7 @@ export default function ActivePlan() {
   );
   const dispatch = useAppDispatch();
   const fetchedUser = useSelector(selectFetchedUser);
+  const [cancelDialog, setCancelDialog] = useState(false);
 
   useEffect(() => {
     if (loggedInUser?.data?.id) {
@@ -64,6 +66,7 @@ export default function ActivePlan() {
         cancelPlanSubscription({ subscription_id: String(subscriptionId) })
       );
       setTimeout(() => {
+        setCancelDialog(false);
         if (cancelPlanSubscription.fulfilled.match(result)) {
           if (loggedInUser?.data?.id) {
             dispatch(getUserById(loggedInUser?.data?.id));
@@ -168,7 +171,7 @@ export default function ActivePlan() {
                     'cancelled' && (
                     <Button
                       className={styles['cancel-plan-btn']}
-                      onClick={cancelPlan}
+                      onClick={() => setCancelDialog(true)}
                     >
                       Cancel Plan
                     </Button>
@@ -191,6 +194,11 @@ export default function ActivePlan() {
           </Box>
         </Box>
       </Box>
+      <CancelDialog
+        open={cancelDialog}
+        onClose={() => setCancelDialog(false)}
+        cancelPlan={cancelPlan}
+      />
     </>
   );
 }
