@@ -121,12 +121,14 @@ export default function ActivePlan() {
                 </Box>
                 <Box className={styles['plan-status']}>
                   <Typography variant="body2">
-                    {fetchedUser?.active_subscription?.subscription_status ===
-                    'cancelled'
-                      ? 'Cancelled Plan'
-                      : fetchedUser?.active_subscription?.status === 1
-                        ? 'Active Plan'
-                        : 'Expired Plan'}
+                    {fetchedUser?.staff_user
+                      ? 'Staff User'
+                      : fetchedUser?.active_subscription
+                            ?.subscription_status === 'cancelled'
+                        ? 'Cancelled Plan'
+                        : fetchedUser?.active_subscription?.status === 1
+                          ? 'Active Plan'
+                          : 'Expired Plan'}
                   </Typography>
                 </Box>
               </Box>
@@ -272,8 +274,12 @@ function CircularProgressWithLabel(
 
       <Box className={styles['storage-info']}>
         <Typography variant="subtitle2">Storage</Typography>
-        <Typography variant="h5">{used ? parseFloat(used) : '0'} GB</Typography>
-        <Typography variant="body2">Total {total ? total : '0 GB'}</Typography>
+        <Typography variant="h5">{used ? used : '-'}</Typography>
+        <Typography variant="body2">
+          {fetchedUser?.staff_user
+            ? 'Unlimited'
+            : `Total ${total ? total : '-'}`}
+        </Typography>
       </Box>
     </Box>
   );
