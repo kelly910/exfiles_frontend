@@ -38,6 +38,7 @@ const urlMapper = {
   planHistory: `${BASE_URL}plan-history/`,
   getPaymentDetails: `${BASE_URL}payment-result/`,
   planCancel: `${BASE_URL}cancel-subscription/`,
+  upgradeSubscription: `${BASE_URL}upgrade-subscription/`,
 };
 
 export default urlMapper;

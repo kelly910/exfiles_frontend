@@ -36,6 +36,7 @@ import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useSelector } from 'react-redux';
 import { selectFetchedUser } from '@/app/redux/slices/login';
+import LimitOver from '@/app/components/Limit-Over/LimitOver';
 
 const DynamicDocUploadModal = dynamic(
   () => import('@components/AI-Chat-Module/modals/FileUploadDialog')
@@ -63,7 +64,14 @@ export default function ChatInputBox({
   const dispatch = useAppDispatch();
   const uploadedFiles = useAppSelector(selectUserUploadedFiles);
 
-  const { handleFiles } = useChunkedFileUpload();
+  const [limitDialog, setLimitDialog] = useState(false);
+  const [limitType, setLimitType] = useState('');
+
+  const { handleFiles } = useChunkedFileUpload((limitExceededType: string) => {
+    setLimitType(limitExceededType);
+    setLimitDialog(true);
+  });
+
   const [text, setText] = useState('');
   const [isOpenDocUpload, setIsOpenDocUpload] = useState(false);
   const fetchedUser = useSelector(selectFetchedUser);
@@ -251,6 +259,7 @@ export default function ChatInputBox({
   };
 
   return (
+    <>
     <Box component="div" className={AIChatStyles.chatBoard}>
       <Box className={AIChatStyles.fileInput}>
         {uploadedFiles && uploadedFiles?.length > 0 && (
@@ -373,5 +382,13 @@ export default function ChatInputBox({
         />
       )}
     </Box>
+    <LimitOver
+      open={limitDialog}
+      onClose={() => setLimitDialog(false)}
+      title={limitType === 'AI Summaries' ? 'Your Summary Generation Limit is Over' : 'Your Storage Limit is Over'}
+      subtitle={limitType === 'AI Summaries' ? 'Summary' : 'Storage'}
+      stats={limitType === 'AI Summaries' ? fetchedUser?.summary_used : fetchedUser?.storage}
+    />
+    </>
   );
 }

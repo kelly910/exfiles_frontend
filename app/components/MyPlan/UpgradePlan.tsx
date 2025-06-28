@@ -121,9 +121,13 @@ const UpgradePlan = () => {
     );
   };
 
-  const handleUpgradePlan = (planId: number, buttonLabel: string) => {
+  const handleUpgradePlan = (planId: number, buttonLabel: string, planSlug: string) => {
     if (buttonLabel === 'Upgrade Now') {
-      router.push(`/order-summary?planId=${planId}`);
+      if (fetchedUser?.active_subscription?.plan?.name === 'Free Tier') {
+        router.push(`/upgrade-plan-verification?planSlug=${planSlug}&email=${fetchedUser?.email}`)
+      } else {
+        router.push(`/order-summary?planId=${planId}`);
+      }
     }
   };
 
@@ -380,7 +384,7 @@ const UpgradePlan = () => {
                             className={`${styles['subscription-package-button']} ${buttonLabel === 'Not Applicable' && styles['default']}`}
                             variant="outlined"
                             onClick={() =>
-                              handleUpgradePlan(plan.id, buttonLabel)
+                              handleUpgradePlan(plan.id, buttonLabel, plan?.slug)
                             }
                           >
                             {buttonLabel}

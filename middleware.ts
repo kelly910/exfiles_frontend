@@ -38,5 +38,6 @@ export const config = {
     '/payment-successful',
     '/payment-pending',
     '/payment-failed',
+    '/upgrade-plan-verification',
   ], // Define which routes should trigger the middleware
 };

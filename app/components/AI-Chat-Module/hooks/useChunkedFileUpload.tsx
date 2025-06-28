@@ -20,7 +20,7 @@ import {
 } from '@/app/redux/slices/fileUpload/fileUploadTypes';
 import { showToast } from '@/app/shared/toast/ShowToast';
 
-export const useChunkedFileUpload = () => {
+export const useChunkedFileUpload = (onLimitExceeded?: (limitType: string) => void) => {
   const dispatch = useAppDispatch();
   const uploadedFiles = useAppSelector(selectUserUploadedFiles);
 
@@ -74,6 +74,15 @@ export const useChunkedFileUpload = () => {
 
           const data = await response.json();
 
+          if (
+            data?.messages?.[0]?.limit_exceeded &&
+            Array.isArray(data.messages[0].limit_exceeded)
+          ) {
+            const exceededType = data.messages[0].limit_exceeded[0];
+            onLimitExceeded?.(exceededType);
+            return false;
+          }
+
           if (chunkIndex === 0 && data.id) {
             documentId = data.id;
           } else if (chunkIndex === 0 && !data.id) {
@@ -112,7 +121,7 @@ export const useChunkedFileUpload = () => {
 
       return true;
     },
-    [dispatch, storedUser]
+    [dispatch, storedUser, onLimitExceeded]
   );
 
   const handleFiles = (files: File[] | FileList | null) => {

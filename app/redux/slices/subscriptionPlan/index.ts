@@ -23,6 +23,7 @@ interface Plan {
   currency: string;
   features: Feature[];
   plan_type: string;
+  slug: string;
 }
 
 interface PlansResponse {

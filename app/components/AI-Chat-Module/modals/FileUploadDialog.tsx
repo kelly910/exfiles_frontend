@@ -27,6 +27,9 @@ import {
 } from '@/app/redux/slices/fileUpload';
 import { useChunkedFileUpload } from '../hooks/useChunkedFileUpload';
 import { gtagEvent } from '@/app/utils/functions';
+import LimitOver from '../../Limit-Over/LimitOver';
+import { selectFetchedUser } from '@/app/redux/slices/login';
+import { useSelector } from 'react-redux';
 
 interface DocumentUploadModalProps {
   userInputText?: string;
@@ -45,7 +48,14 @@ export default function FileUploadDialog({
 }: DocumentUploadModalProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { handleFiles } = useChunkedFileUpload();
+  const fetchedUser = useSelector(selectFetchedUser);
+  const [limitDialog, setLimitDialog] = useState(false);
+  const [limitType, setLimitType] = useState('');
+
+  const { handleFiles } = useChunkedFileUpload((limitExceededType: string) => {
+    setLimitType(limitExceededType);
+    setLimitDialog(true);
+  });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const uploadedFiles = useAppSelector(selectUserUploadedFiles);
@@ -173,6 +183,7 @@ export default function FileUploadDialog({
   };
 
   return (
+    <>
     <BootstrapDialog
       onClose={isLoading ? undefined : handleClose} // Prevents calling handleClose when isLoading is true
       aria-labelledby="customized-dialog-title"
@@ -314,6 +325,14 @@ export default function FileUploadDialog({
         </Box>
       </DialogContent>
     </BootstrapDialog>
+    <LimitOver
+      open={limitDialog}
+      onClose={() => setLimitDialog(false)}
+      title={limitType === 'AI Summaries' ? 'Your Summary Generation Limit is Over' : 'Your Storage Limit is Over'}
+      subtitle={limitType === 'AI Summaries' ? 'Summary' : 'Storage'}
+      stats={limitType === 'AI Summaries' ? fetchedUser?.summary_used : fetchedUser?.storage}
+    />
+    </>
   );
 }
 
