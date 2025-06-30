@@ -28,6 +28,9 @@ import {
 import { useChunkedFileUpload } from '../hooks/useChunkedFileUpload';
 import { gtagEvent } from '@/app/utils/functions';
 import { useThemeMode } from '@/app/utils/ThemeContext';
+import LimitOver from '../../Limit-Over/LimitOver';
+import { selectFetchedUser } from '@/app/redux/slices/login';
+import { useSelector } from 'react-redux';
 
 interface DocumentUploadModalProps {
   userInputText?: string;
@@ -46,7 +49,14 @@ export default function FileUploadDialog({
 }: DocumentUploadModalProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { handleFiles } = useChunkedFileUpload();
+  const fetchedUser = useSelector(selectFetchedUser);
+  const [limitDialog, setLimitDialog] = useState(false);
+  const [limitType, setLimitType] = useState('');
+
+  const { handleFiles } = useChunkedFileUpload((limitExceededType: string) => {
+    setLimitType(limitExceededType);
+    setLimitDialog(true);
+  });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const uploadedFiles = useAppSelector(selectUserUploadedFiles);
@@ -176,161 +186,178 @@ export default function FileUploadDialog({
   const { theme } = useThemeMode();
 
   return (
-    <BootstrapDialog
-      onClose={isLoading ? undefined : handleClose} // Prevents calling handleClose when isLoading is true
-      aria-labelledby="customized-dialog-title"
-      open={open}
-      className={DocUploadStyles.dialogBox}
-      sx={{
-        background: 'rgb(17 16 27 / 0%)',
-        backdropFilter: 'blur(24px)',
-      }}
-    >
-      <Box component="div" className={DocUploadStyles.dialogHeader}>
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Documents Upload
-        </DialogTitle>
-        <IconButton
-          className={isLoading ? '' : DocUploadStyles.closeIcon}
-          aria-label="close"
-          onClick={isLoading ? undefined : handleClose}
-          sx={(theme) => ({
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: theme.palette.grey[500],
-            cursor: isLoading ? 'not-allowed' : 'pointer', // Change cursor
-            pointerEvents: isLoading ? 'none' : 'auto', // Prevent click when loading
-          })}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+    <>
+      <BootstrapDialog
+        onClose={isLoading ? undefined : handleClose} // Prevents calling handleClose when isLoading is true
+        aria-labelledby="customized-dialog-title"
+        open={open}
+        className={DocUploadStyles.dialogBox}
+        sx={{
+          background: 'rgb(17 16 27 / 0%)',
+          backdropFilter: 'blur(24px)',
+        }}
+      >
+        <Box component="div" className={DocUploadStyles.dialogHeader}>
+          <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+            Documents Upload
+          </DialogTitle>
+          <IconButton
+            className={isLoading ? '' : DocUploadStyles.closeIcon}
+            aria-label="close"
+            onClick={isLoading ? undefined : handleClose}
+            sx={(theme) => ({
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: theme.palette.grey[500],
+              cursor: isLoading ? 'not-allowed' : 'pointer', // Change cursor
+              pointerEvents: isLoading ? 'none' : 'auto', // Prevent click when loading
+            })}
           >
-            <path
-              d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
-              fill="var(--Primary-Text-Color)"
-            />
-          </svg>
-        </IconButton>
-      </Box>
-      <DialogContent dividers className={DocUploadStyles.dialogBody}>
-        {uploadedFiles && uploadedFiles?.length == 0 && (
-          <Box
-            className={`${DocUploadStyles.dialogContent}`}
-            role="button"
-            tabIndex={0}
-            style={{
-              cursor: 'pointer',
-              userSelect: 'none',
-            }}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                handleOpenUserFileInput();
-              }
-            }}
-            onDrop={(e) => handleDrop(e)}
-            onDragOver={(event) => event.preventDefault()}
-            onClick={() => handleOpenUserFileInput()}
-          >
-            <Box>
-              <Image
-                src={
-                  theme === 'dark'
-                    ? '/images/upload-img-new-light.png'
-                    : '/images/upload-img-new.png'
-                }
-                alt="Upload-img"
-                width={88}
-                height={94}
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                fill="var(--Primary-Text-Color)"
               />
-              <Typography gutterBottom>
-                Drag your documents here to upload or <span>Click here</span> to
-                upload
-              </Typography>
-              <Typography gutterBottom>
-                You can upload upto 10 documents together.
-              </Typography>
-            </Box>
-          </Box>
-        )}
-
-        <VisuallyHiddenInput
-          id="chat-file-uploads"
-          type="file"
-          name="file-uploads"
-          accept={ALLOWED_FILE_TYPES.join(',')}
-          multiple
-          ref={fileInputRef}
-          onChange={handleFileChange}
-        />
-
-        <Box component="div" className={DocUploadStyles.fileBoxBody}>
-          {uploadedFiles.map((upload, index) => (
-            <UploadFileItem
-              isShowDescField={true}
-              key={index}
-              fileName={upload.file.name}
-              fileId={upload.fileId}
-              fileSize={upload.file.size}
-              progress={upload.progress}
-              isUploading={upload.isUploading}
-              hasUploaded={upload.hasUploaded}
-              fileErrorMsg={upload.fileErrorMsg}
-              fileDesc={upload.docDesc}
-              hasError={upload.hasError}
-              onRemove={() => removeFile(upload.fileId)}
-              handleFileDesc={handleFileDesc}
-            />
-          ))}
+            </svg>
+          </IconButton>
         </Box>
-        <Box className={`${DocUploadStyles.dialogButtonBox}`} role="button">
-          <>
+        <DialogContent dividers className={DocUploadStyles.dialogBody}>
+          {uploadedFiles && uploadedFiles?.length == 0 && (
+            <Box
+              className={`${DocUploadStyles.dialogContent}`}
+              role="button"
+              tabIndex={0}
+              style={{
+                cursor: 'pointer',
+                userSelect: 'none',
+              }}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleOpenUserFileInput();
+                }
+              }}
+              onDrop={(e) => handleDrop(e)}
+              onDragOver={(event) => event.preventDefault()}
+              onClick={() => handleOpenUserFileInput()}
+            >
+              <Box>
+                <Image
+                  src={
+                    theme === 'dark'
+                      ? '/images/upload-img-new-light.png'
+                      : '/images/upload-img-new.png'
+                  }
+                  alt="Upload-img"
+                  width={88}
+                  height={94}
+                />
+                <Typography gutterBottom>
+                  Drag your documents here to upload or <span>Click here</span>{' '}
+                  to upload
+                </Typography>
+                <Typography gutterBottom>
+                  You can upload upto 10 documents together.
+                </Typography>
+              </Box>
+            </Box>
+          )}
+
+          <VisuallyHiddenInput
+            id="chat-file-uploads"
+            type="file"
+            name="file-uploads"
+            accept={ALLOWED_FILE_TYPES.join(',')}
+            multiple
+            ref={fileInputRef}
+            onChange={handleFileChange}
+          />
+
+          <Box component="div" className={DocUploadStyles.fileBoxBody}>
+            {uploadedFiles.map((upload, index) => (
+              <UploadFileItem
+                isShowDescField={true}
+                key={index}
+                fileName={upload.file.name}
+                fileId={upload.fileId}
+                fileSize={upload.file.size}
+                progress={upload.progress}
+                isUploading={upload.isUploading}
+                hasUploaded={upload.hasUploaded}
+                fileErrorMsg={upload.fileErrorMsg}
+                fileDesc={upload.docDesc}
+                hasError={upload.hasError}
+                onRemove={() => removeFile(upload.fileId)}
+                handleFileDesc={handleFileDesc}
+              />
+            ))}
+          </Box>
+          <Box className={`${DocUploadStyles.dialogButtonBox}`} role="button">
+            <>
+              <Button
+                variant="contained"
+                className={DocUploadStyles.uploadBtn}
+                fullWidth
+                sx={{ mt: 2 }}
+                onClick={handleOpenUserFileInput}
+                disabled={isLoading}
+              >
+                <Image
+                  src="/images/add-icon.svg"
+                  alt="Upload-img"
+                  width={20}
+                  height={20}
+                  className={DocUploadStyles.addIcon}
+                  style={{
+                    filter:
+                      theme === 'dark' ? 'brightness(0) invert(0.5)' : 'unset',
+                  }}
+                />
+                Add More
+              </Button>
+            </>
             <Button
               variant="contained"
-              className={DocUploadStyles.uploadBtn}
+              className="btn btn-primary"
               fullWidth
               sx={{ mt: 2 }}
-              onClick={handleOpenUserFileInput}
               disabled={isLoading}
+              onClick={() => handleContinue()}
             >
-              <Image
-                src="/images/add-icon.svg"
-                alt="Upload-img"
-                width={20}
-                height={20}
-                className={DocUploadStyles.addIcon}
-                style={{
-                  filter:
-                    theme === 'dark' ? 'brightness(0) invert(0.5)' : 'unset',
-                }}
-              />
-              Add More
+              {isLoading ? (
+                <CircularProgress
+                  size={20}
+                  style={{ color: 'var(--Txt-On-Gradient)' }}
+                />
+              ) : (
+                'Continue'
+              )}
             </Button>
-          </>
-          <Button
-            variant="contained"
-            className="btn btn-primary"
-            fullWidth
-            sx={{ mt: 2 }}
-            disabled={isLoading}
-            onClick={() => handleContinue()}
-          >
-            {isLoading ? (
-              <CircularProgress
-                size={20}
-                style={{ color: 'var(--Txt-On-Gradient)' }}
-              />
-            ) : (
-              'Continue'
-            )}
-          </Button>
-        </Box>
-      </DialogContent>
-    </BootstrapDialog>
+          </Box>
+        </DialogContent>
+      </BootstrapDialog>
+      <LimitOver
+        open={limitDialog}
+        onClose={() => setLimitDialog(false)}
+        title={
+          limitType === 'AI Summaries'
+            ? 'Your Summary Generation Limit is Over'
+            : 'Your Storage Limit is Over'
+        }
+        subtitle={limitType === 'AI Summaries' ? 'Summary' : 'Storage'}
+        stats={
+          limitType === 'AI Summaries'
+            ? fetchedUser?.summary_used
+            : fetchedUser?.storage
+        }
+      />
+    </>
   );
 }
 

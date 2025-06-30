@@ -30,6 +30,7 @@ interface VerifyOtpPayload {
   email: string;
   otp_type: string;
   otp: number;
+  new_plan_uuid?: string;
 }
 
 interface RegisterState {
@@ -92,6 +93,28 @@ export const verifyOtp = createAsyncThunk<
   try {
     const response = await api.post<{ messages: { otp_verified: boolean }[] }>(
       urlMapper.verifyOtp,
+      payload
+    );
+    return response.data;
+  } catch (error: unknown) {
+    if (typeof error === 'object' && error !== null && 'response' in error) {
+      const err = error as { response?: { data?: string } };
+      return rejectWithValue(
+        err.response?.data || 'Failed to verify OTP. Please try again.'
+      );
+    }
+    return rejectWithValue('Failed to verify OTP. Please try again.');
+  }
+});
+
+export const upgradePlanVerification = createAsyncThunk<
+  { messages: string[] },
+  VerifyOtpPayload,
+  { rejectValue: string }
+>('plan/upgradeSubscription', async (payload, { rejectWithValue }) => {
+  try {
+    const response = await api.post<{ messages: string[] }>(
+      urlMapper.upgradeSubscription,
       payload
     );
     return response.data;
