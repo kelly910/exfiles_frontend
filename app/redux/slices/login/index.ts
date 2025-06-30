@@ -3,7 +3,6 @@ import api from '../../../utils/axiosConfig';
 import urlMapper from '@/app/utils/apiEndPoints/urlMapper';
 import { NewPasswordFormValues } from '@/app/components/New-Password/NewPassword';
 import { ForgotPasswordFormValues } from '@/app/components/Forgot-Password/ForgotPassword';
-import { showToast } from '@/app/shared/toast/ShowToast';
 import { UpdateUserFormValues } from '@/app/components/UserSetting/MyProfile';
 import { RootState } from '../../store';
 
@@ -60,6 +59,8 @@ export interface SocialGoogleLoginResponse {
     token: string;
     google_login: boolean;
     active_subscription?: ActiveSubscription;
+    is_grace_point_used?: boolean;
+    staff_user?: boolean;
   };
 }
 
@@ -87,6 +88,8 @@ export interface LoginResponse {
     reports_generated?: string;
     summary_used?: string;
     storage?: string;
+    is_grace_point_used?: boolean;
+    staff_user?: boolean;
   };
 }
 
@@ -129,6 +132,8 @@ interface UpdateProfileResponse {
   reports_generated?: string;
   summary_used?: string;
   storage?: string;
+  is_grace_point_used?: boolean;
+  staff_user?: boolean;
 }
 export const loginUser = createAsyncThunk<
   LoginResponse,
@@ -141,12 +146,10 @@ export const loginUser = createAsyncThunk<
         `${urlMapper.login}?logout_device=true`,
         payload
       );
-      showToast('success', 'Login is successfully.');
       return response.data;
     } else {
       delete payload.logout_device;
       const response = await api.post<LoginResponse>(urlMapper.login, payload);
-      showToast('success', 'Login is successfully.');
       return response.data;
     }
   } catch (error: unknown) {
@@ -214,7 +217,6 @@ export const socialGoogleLogin = createAsyncThunk<
         `${urlMapper.googleLogin}?logout_device=true`,
         payload
       );
-      showToast('success', 'Google Login is successfully.');
       return response.data;
     } else {
       delete payload.logout_device;
@@ -222,7 +224,6 @@ export const socialGoogleLogin = createAsyncThunk<
         urlMapper.googleLogin,
         payload
       );
-      showToast('success', 'Google Login is successfully.');
       return response.data;
     }
   } catch (error: unknown) {

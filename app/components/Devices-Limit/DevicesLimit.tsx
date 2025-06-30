@@ -11,6 +11,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import PlanExpired from '../Plan-Expired/PlanExpired';
 import { useGoogleLogin } from '@react-oauth/google';
 import UpgradeTime from '../Upgrade-Time/UpgradeTime';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -67,6 +68,7 @@ export default function DevicesLimit({
         if (token) {
           document.cookie = `accessToken=${token}; path=/; max-age=86400`;
         }
+        showToast('success', 'Google Login is successfully.');
         if (response.data.active_subscription?.status === 0) {
           setOpenExpiredDialog(true);
         } else if (
@@ -110,6 +112,7 @@ export default function DevicesLimit({
                   process.env.NEXT_PUBLIC_REDIRECT_URL
                 );
               }
+              showToast('success', 'Login is successfully.');
               if (response.data.active_subscription?.status === 0) {
                 setOpenExpiredDialog(true);
               } else if (

@@ -73,7 +73,8 @@ export default function PlanHistory() {
                   </TableCell>
                   <TableCell>{plan.amount || '-'}</TableCell>
                   <TableCell sx={{ textAlign: 'center', width: '100px' }}>
-                    {plan?.payment_invoice_link !== null ? (
+                    {plan?.payment_invoice_link !== null &&
+                    plan?.plan_name !== 'Free Tier' ? (
                       <IconButton
                         aria-label="import"
                         onClick={() => {

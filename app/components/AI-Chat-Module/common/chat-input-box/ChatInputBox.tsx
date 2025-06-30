@@ -71,7 +71,8 @@ export default function ChatInputBox({
 
   const chatUsedCheck =
     fetchedUser?.chat_used?.split('/')[0] ===
-    fetchedUser?.chat_used?.split('/')[1];
+      fetchedUser?.chat_used?.split('/')[1] &&
+    fetchedUser?.is_grace_point_used === true;
 
   const isSendDisabled =
     isLoadingProp ||
@@ -288,7 +289,9 @@ export default function ChatInputBox({
           multiline
           minRows={1}
           maxRows={3}
-          disabled={expiredStatus === 0 || chatUsedCheck}
+          disabled={
+            !fetchedUser?.staff_user && (expiredStatus === 0 || chatUsedCheck)
+          }
           style={{ width: '100%' }}
           sx={{
             '.Mui-disabled': {
@@ -299,14 +302,18 @@ export default function ChatInputBox({
           endAdornment={
             <InputAdornment
               position="end"
-              className={`${AIChatStyles.fileIcon} ${expiredStatus === 0 || chatUsedCheck ? 'limitation-icon' : ''}`}
+              className={`${AIChatStyles.fileIcon} ${fetchedUser?.staff_user !== true && (expiredStatus === 0 || chatUsedCheck) ? 'limitation-icon' : ''}`}
               onClick={handleOpenDocUploadModal}
-              disablePointerEvents={expiredStatus === 0 || chatUsedCheck}
+              disablePointerEvents={
+                !fetchedUser?.staff_user &&
+                (expiredStatus === 0 || chatUsedCheck)
+              }
             >
               <span className={AIChatStyles.clip}></span>
             </InputAdornment>
           }
           startAdornment={
+            !fetchedUser?.staff_user &&
             (expiredStatus === 0 || chatUsedCheck) && (
               <InputAdornment position="start">
                 <span style={{ display: 'flex', alignItems: 'center' }}>
@@ -332,11 +339,15 @@ export default function ChatInputBox({
       <Button
         type="button"
         variant="contained"
-        className={`btn-arrow ${expiredStatus === 0 || chatUsedCheck ? 'limitation' : ''}`}
+        className={`btn-arrow ${fetchedUser?.staff_user !== true && (expiredStatus === 0 || chatUsedCheck) ? 'limitation' : ''}`}
         color="primary"
         fullWidth
         onClick={handleMessageSending}
-        disabled={isSendDisabled || expiredStatus === 0 || chatUsedCheck}
+        disabled={
+          isSendDisabled ||
+          (fetchedUser?.staff_user !== true &&
+            (expiredStatus === 0 || chatUsedCheck))
+        }
       >
         {isLoadingProp ? (
           <CircularProgress

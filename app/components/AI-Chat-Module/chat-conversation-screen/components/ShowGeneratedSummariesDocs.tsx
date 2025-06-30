@@ -31,6 +31,7 @@ import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useSearch } from '../../context/SearchContext';
 import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
 import { useSelector } from 'react-redux';
+import LimitOver from '@/app/components/Limit-Over/LimitOver';
 
 const FileSummarySkeleton = () => {
   return (
@@ -96,7 +97,17 @@ export default function ShowGeneratedSummariesDocs({
   const { searchingChat } = useSearch();
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
+
+  const summaryUsedCheck =
+    fetchedUser?.summary_used?.split('/')[0] ===
+    fetchedUser?.summary_used?.split('/')[1];
+
+  const [limitDialog, setLimitDialog] = useState(false);
+
   const handleRetryDoc = async (docObj: UploadedDocument) => {
+    if (summaryUsedCheck && !fetchedUser?.staff_user) {
+      setLimitDialog(true);
+    } else {
     setIsLoading(true);
 
     const payload = {
@@ -120,7 +131,8 @@ export default function ShowGeneratedSummariesDocs({
 
       showToast(
         'success',
-        resultData.payload.messages[0] || 'Answer message successfully updated'
+        resultData.payload.messages[0] ||
+          'Answer message successfully updated'
       );
     }
 
@@ -128,6 +140,7 @@ export default function ShowGeneratedSummariesDocs({
       setIsLoading(false);
 
       handleError(resultData.payload as ErrorResponse);
+    }
     }
   };
 
@@ -137,11 +150,8 @@ export default function ShowGeneratedSummariesDocs({
     }
   }, [summaryGeneratedDocList]);
 
-  const chatUsedCheck =
-    fetchedUser?.chat_used?.split('/')[0] ===
-    fetchedUser?.chat_used?.split('/')[1];
-
   return (
+    <>
     <Box component="div" className={chatMessagesStyles.chatAl}>
       <Box component="div" className={chatMessagesStyles.chatAlImg}>
         <IconButton sx={{ p: 0 }}>
@@ -293,7 +303,9 @@ export default function ShowGeneratedSummariesDocs({
                           <Box
                             component="div"
                             className={chatMessagesStyles.chatAlFileSummary}
-                            onClick={() => handleDocCategoryClick(documentItem)}
+                            onClick={() =>
+                              handleDocCategoryClick(documentItem)
+                            }
                           >
                             <Image
                               src="/images/folder.svg"
@@ -362,16 +374,20 @@ export default function ShowGeneratedSummariesDocs({
           summaryGeneratedDocList?.length > 1 && (
             <Box className={chatMessagesStyles.chatAlSummaryButtonMain}>
               <Button
-                disabled={expiredStatus === 0 || chatUsedCheck}
-                className={`${chatMessagesStyles.chatAlSummaryButton} ${expiredStatus === 0 || chatUsedCheck ? 'limitation' : ''}`}
-                onClick={() =>
-                  handleGenerateCombinedSummary({
-                    thread_uuid: '',
-                    message_type: QUESTION_TYPES.COMBINED_SUMMARY,
-                    chat_msg_uuid: messageObj.uuid,
-                    message: 'Generating combined summary',
-                  })
-                }
+                disabled={expiredStatus === 0}
+                className={`${chatMessagesStyles.chatAlSummaryButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
+                onClick={() => {
+                  if (summaryUsedCheck && !fetchedUser?.staff_user) {
+                    setLimitDialog(true);
+                  } else {
+                    handleGenerateCombinedSummary({
+                      thread_uuid: '',
+                      message_type: QUESTION_TYPES.COMBINED_SUMMARY,
+                      chat_msg_uuid: messageObj.uuid,
+                      message: 'Generating combined summary',
+                    });
+                  }
+                }}
               >
                 <Image
                   src="/images/combined.svg"
@@ -388,5 +404,13 @@ export default function ShowGeneratedSummariesDocs({
         </span>
       </Box>
     </Box>
+      <LimitOver
+        open={limitDialog}
+        onClose={() => setLimitDialog(false)}
+        title={'Your Summary Generation Limit is Over'}
+        subtitle={'Summary'}
+        stats={fetchedUser?.summary_used || ''}
+      />
+    </>
   );
 }

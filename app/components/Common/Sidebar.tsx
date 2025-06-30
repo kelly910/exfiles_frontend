@@ -593,7 +593,8 @@ const Sidebar = ({
                     {item.label}{' '}
                     {fetchedUser?.active_subscription?.status === 1 ? (
                       <Typography component="span">
-                        {item.used}/{item.total}
+                        {item.used}/
+                        {fetchedUser?.staff_user ? 'Unlimited' : item.total}
                       </Typography>
                     ) : (
                       <Typography component="span">{item.used}</Typography>
@@ -642,7 +643,8 @@ const Sidebar = ({
                       {item.label}{' '}
                       {fetchedUser?.active_subscription?.status === 1 ? (
                         <Typography component="span">
-                          {item.used}/{item.total}
+                          {item.used}/
+                          {fetchedUser?.staff_user ? 'Unlimited' : item.total}
                         </Typography>
                       ) : (
                         <Typography component="span">{item.used}</Typography>
