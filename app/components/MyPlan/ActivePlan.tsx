@@ -219,8 +219,9 @@ function CircularProgressWithLabel(
   props: CircularProgressProps & { value: number }
 ) {
   const fetchedUser = useSelector(selectFetchedUser);
-  const used = fetchedUser?.storage?.split('/')[0];
-  const total = fetchedUser?.storage?.split('/')[1];
+  const usedRaw = parseFloat(fetchedUser?.storage?.split('/')[0] || '0');
+  const used = Math.ceil(usedRaw * 100) / 100;
+  const total = parseFloat(fetchedUser?.storage?.split('/')[1] || '0');
   return (
     <Box
       sx={{
@@ -274,11 +275,12 @@ function CircularProgressWithLabel(
 
       <Box className={styles['storage-info']}>
         <Typography variant="subtitle2">Storage</Typography>
-        <Typography variant="h5">{used ? used : '-'}</Typography>
+        <Typography variant="h5">{used ? used : '-'} GB</Typography>
         <Typography variant="body2">
           {fetchedUser?.staff_user
             ? 'Unlimited'
-            : `Total ${total ? total : '-'}`}
+            : `Total ${total ? total : '-'}`}{' '}
+          GB
         </Typography>
       </Box>
     </Box>
