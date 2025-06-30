@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import { getPaymentDetailsByTransactionId } from '@/app/redux/slices/paymentStatus';
 import dayjs from 'dayjs';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export default function PaymentPending() {
   const isMobile = useMediaQuery('(max-width:768px)');
@@ -45,6 +46,8 @@ export default function PaymentPending() {
       })
     );
   }, [dispatch, transactionid]);
+
+  const { theme } = useThemeMode();
 
   return (
     <>
@@ -141,12 +144,21 @@ export default function PaymentPending() {
                   </Box>
                 </Box>
                 <Box className={Styles.PaymentCardBoxBorder}>
-                  <Image
-                    src="images/PaymentBorder.svg"
-                    width={550}
-                    height={50}
-                    alt="PaymentBorder"
-                  />
+                  {theme === 'dark' ? (
+                    <Image
+                      src="images/PaymentBorderLight.svg"
+                      width={550}
+                      height={50}
+                      alt="PaymentBorder"
+                    />
+                  ) : (
+                    <Image
+                      src="images/PaymentBorder.svg"
+                      width={550}
+                      height={50}
+                      alt="PaymentBorder"
+                    />
+                  )}
                 </Box>
                 <Box className={Styles.PaymentCardButton}>
                   <Button

@@ -12,6 +12,7 @@ import ClientAuthCheck from './components/ClientAuthCheck';
 import { SearchProvider } from './components/AI-Chat-Module/context/SearchContext';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import { ThemeProviderMode } from '@/app/utils/ThemeContext';
+import ThemeToggleButton from './components/ThemeToggleButton';
 
 // const fustatFont = localFont({
 //   src: './fonts/Fustat-VariableFont_wght.woff',
@@ -44,6 +45,7 @@ export default function RootLayout({
     <html lang="en">
       <ThemeProviderMode>
         <body>
+          {/* <ThemeToggleButton /> */}
           {isProduction && <GoogleAnalytics />}
           <SearchProvider>
             <ClientAuthCheck>

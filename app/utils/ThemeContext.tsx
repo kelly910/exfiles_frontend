@@ -1,4 +1,3 @@
-// src/context/ThemeContext.tsx.
 'use client';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
@@ -18,18 +17,36 @@ export const ThemeProviderMode = ({
 }) => {
   const [theme, setTheme] = useState<Theme>('light');
 
+  // Delay setting data-theme and class on mount
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme') as Theme | null;
-    const initialTheme = storedTheme || 'light';
-    setTheme(initialTheme);
-    document.documentElement.setAttribute('data-theme', initialTheme);
+    const storedTheme = (localStorage.getItem('theme') as Theme) || 'dark';
+    setTheme(storedTheme);
+
+    setTimeout(() => {
+      document.documentElement.setAttribute('data-theme', storedTheme);
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(storedTheme);
+    }, 900);
   }, []);
+
+  const triggerAnimation = () => {
+    const html = document.documentElement;
+    html.style.animation = 'none';
+    void html.offsetWidth;
+    html.style.animation = '';
+  };
 
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
+    triggerAnimation();
+
+    setTimeout(() => {
+      document.documentElement.setAttribute('data-theme', newTheme);
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(newTheme);
+    }, 900);
   };
 
   return (

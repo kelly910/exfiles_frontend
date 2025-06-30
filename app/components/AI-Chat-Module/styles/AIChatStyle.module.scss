@@ -138,6 +138,11 @@
   padding: 1px;
   overflow: hidden;
 
+  [data-theme='dark'] & {
+    border: 1px solid var(--Stroke-Color);
+    padding: 0;
+  }
+
   .chatBox {
     background-color: var(--Card-Color);
     padding: 24px 16px;

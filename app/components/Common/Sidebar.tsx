@@ -458,7 +458,8 @@ const Sidebar = ({
 
             <SidebarAccordion
               title={`All Chats ${threadList ? `(${threadList.count + pinnedChats?.count})` : ''}`}
-              icon="/images/messages.svg"
+              icon="messages"
+              matchPath="/ai-chats"
               expanded={expanded}
               panelKey="panel2"
               handleAccordionChange={handleAccordionChange}
@@ -523,21 +524,24 @@ const Sidebar = ({
 
             <SidebarButton
               btnTitle={'Log Incident'}
-              iconPath={'/images/log-incident-sidebar.svg'}
+              iconPath="logIncident"
               handleBtnClick={handleLogIncidentClick}
               isOpen={isOpen}
+              matchPath="/log-incident"
             />
             <SidebarButton
               btnTitle={'View Documents'}
-              iconPath={'/images/note-2.svg'}
+              iconPath="documents"
               handleBtnClick={handleDocumentClick}
               isOpen={isOpen}
+              matchPath="/documents"
             />
             <SidebarButton
               btnTitle={'Export Summaries'}
-              iconPath={'/images/report-icon.svg'}
+              iconPath="reportDocuments"
               handleBtnClick={handleDocReport}
               isOpen={isOpen}
+              matchPath="/download-doc-report"
             />
 
             {/* {isOpen ? (

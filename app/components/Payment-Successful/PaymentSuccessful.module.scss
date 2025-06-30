@@ -2,13 +2,17 @@
 
 .PaymentCardContainer {
   max-width: 1100px;
-  margin: 0 auto;
-  margin-top: 40px;
+  margin: 40px auto;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   min-height: fit-content;
+  padding: 24px 33px;
+
+  @media (max-width: 1200px) {
+    padding: 12px 16px;
+  }
 
   .PaymentCard {
     text-align: center;
@@ -64,6 +68,8 @@
     max-width: 550px;
     margin: 0 auto;
     margin-top: 16px;
+    position: relative;
+    z-index: 2;
 
     @media (max-width: 500px) {
       max-width: 95%;
@@ -173,7 +179,7 @@
     max-width: 550px;
     margin: 0 auto;
     position: relative;
-    z-index: -1;
+    z-index: 1;
 
     @media (max-width: 500px) {
       max-width: 95%;

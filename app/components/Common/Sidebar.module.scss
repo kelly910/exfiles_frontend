@@ -307,6 +307,7 @@
           display: flex;
           align-items: center;
 
+          svg,
           img {
             margin-right: 4px;
             height: 18px;
@@ -581,6 +582,7 @@
             font-size: 0;
             margin: 0 auto;
 
+            svg,
             img {
               margin-right: 0;
             }
@@ -673,6 +675,7 @@
           .heading {
             font-size: var(--SubTitle-3);
 
+            svg,
             img {
               margin-top: 0;
             }
@@ -705,6 +708,10 @@
   &:active {
     border: 1px solid var(--Stroke-Color);
     background-color: var(--Input-Box-Colors);
+
+    .heading {
+      font-weight: var(--Medium);
+    }
   }
 
   .MuiTouchRipple-root {
@@ -721,6 +728,7 @@
     flex-grow: 1;
     text-transform: capitalize;
 
+    svg,
     img {
       margin-right: 4px;
       height: 18px;
@@ -763,6 +771,7 @@
       font-size: 0;
       margin: 0 auto;
 
+      svg,
       img {
         margin-right: 0;
       }
@@ -911,7 +920,7 @@
 // storage-head
 
 .storage-main-body {
-  padding: 16px 12px;
+  padding: 0 12px 16px 12px;
 
   .storage-main {
     display: flex;
@@ -921,6 +930,11 @@
     gap: 16px;
     padding: 16px;
     background: var(--Card-Color);
+
+    [data-theme='dark'] & {
+      background: var(--Txt-On-Gradient);
+    }
+
     border: 1px solid var(--Stroke-Color);
     border-radius: 12px;
 
@@ -1055,9 +1069,5 @@
   .close-sidebar-logo,
   .opensidebar-logo {
     filter: brightness(1) invert(10);
-  }
-
-  .heading {
-    filter: brightness(1) invert(0.4);
   }
 }

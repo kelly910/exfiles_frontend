@@ -24,6 +24,7 @@ import Slider, { Settings } from 'react-slick';
 import { setLoader } from '@/app/redux/slices/loader';
 import { useRouter } from 'next/navigation';
 import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -127,6 +128,8 @@ const UpgradePlan = () => {
     }
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <Accordion
@@ -139,7 +142,11 @@ const UpgradePlan = () => {
             display: 'none',
           },
           '& .Mui-expanded': {
-            background: 'var(--Card-Color)',
+            background:
+              theme === 'dark'
+                ? 'var(--Input-Box-Colors)'
+                : 'var(--Card-Color)',
+            color: 'var(--Primary-Text-Color)',
           },
         }}
       >
@@ -148,8 +155,12 @@ const UpgradePlan = () => {
             <Image
               src="/images/arrow-down.svg"
               alt="Expand Icon"
-              width={24}
-              height={24}
+              width={16}
+              height={16}
+              style={{
+                filter:
+                  theme === 'dark' ? 'brightness(0.5) invert(0)' : 'unset',
+              }}
             />
           }
           aria-controls="panel1-content"
@@ -174,9 +185,33 @@ const UpgradePlan = () => {
         </AccordionSummary>
         <AccordionDetails className={styles['upgrade-plan-accordion-details']}>
           <Box className={styles['upgrade-plan-package-main']}>
-            <Box className={styles['subscription-plan-body']}>
-              <Box className={styles['subscription-plan-sidebar']}>
-                <Box className={styles['subscription-plan-container']}>
+            <Box
+              className={styles['subscription-plan-body']}
+              sx={{
+                background:
+                  theme === 'dark'
+                    ? 'linear-gradient(90deg, rgba(137, 139, 148, 0.4) 0%, rgba(137, 139, 148, 0) 100%)'
+                    : 'linear-gradient(90deg, #3e384c 0%, #11101b 100%)',
+              }}
+            >
+              <Box
+                className={styles['subscription-plan-sidebar']}
+                sx={{
+                  background:
+                    theme === 'dark'
+                      ? 'linear-gradient(90deg, var(--Card-Color) 0%, rgb(255 255 255 / 79%) 100%)'
+                      : 'linear-gradient(90deg, var(--Card-Color) 0%, rgba(185, 72, 255, 0) 100%)',
+                }}
+              >
+                <Box
+                  className={styles['subscription-plan-container']}
+                  sx={{
+                    background:
+                      theme === 'dark'
+                        ? 'linear-gradient(90deg, rgba(185, 72, 255, 0.08) 0%, rgba(185, 72, 255, 0) 100%)'
+                        : 'linear-gradient(90deg, rgba(185, 72, 255, 0.08) 0%, rgba(185, 72, 255, 0) 100%)',
+                  }}
+                >
                   <Box className={styles['subscription-plan-header']}>
                     <Typography variant="h2" component="h2">
                       Subscription Plan

@@ -13,6 +13,7 @@ import { getPaymentDetailsByTransactionId } from '@/app/redux/slices/paymentStat
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { checkoutSession } from '@/app/redux/slices/checkout';
 import dayjs from 'dayjs';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export default function PaymentFailed() {
   const isMobile = useMediaQuery('(max-width:768px)');
@@ -61,6 +62,7 @@ export default function PaymentFailed() {
     }
   };
 
+  const { theme } = useThemeMode();
   return (
     <>
       <main className="chat-body">
@@ -156,12 +158,21 @@ export default function PaymentFailed() {
                   </Box>
                 </Box>
                 <Box className={Styles.PaymentCardBoxBorder}>
-                  <Image
-                    src="images/PaymentBorder.svg"
-                    width={550}
-                    height={50}
-                    alt="PaymentBorder"
-                  />
+                  {theme === 'dark' ? (
+                    <Image
+                      src="images/PaymentBorderLight.svg"
+                      width={550}
+                      height={50}
+                      alt="PaymentBorder"
+                    />
+                  ) : (
+                    <Image
+                      src="images/PaymentBorder.svg"
+                      width={550}
+                      height={50}
+                      alt="PaymentBorder"
+                    />
+                  )}
                 </Box>
                 <Box className={Styles.PaymentCardButton}>
                   <Button

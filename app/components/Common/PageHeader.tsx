@@ -113,7 +113,7 @@ export default function PageHeader({
       title: 'Settings',
       img: <SettingsIcon />,
     },
-    // { title: 'My Plan', img: <MyPlanIcon /> },
+    { title: 'My Plan', img: <MyPlanIcon /> },
     { title: 'Log out', img: <LogoutIcon /> },
   ];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -128,6 +128,11 @@ export default function PageHeader({
   const isLogIncidentPage = pathname?.includes('/log-incident');
   const isDocumentDownloadPage = pathname?.includes('/download-doc-report');
   const isPlanPage = pathname?.includes('/plans');
+  const isPaymentSuccessPage = pathname?.includes('/payment-successful');
+  const isPaymentFailedPage = pathname?.includes('/payment-failed');
+  const isPaymentPendingdPage = pathname?.includes('/payment-pending');
+  const isPaymentStatusPage =
+    isPaymentSuccessPage || isPaymentFailedPage || isPaymentPendingdPage;
 
   useEffect(() => {
     if (selectedActiveChat?.name) {
@@ -327,6 +332,7 @@ export default function PageHeader({
     <>
       <AppBar
         position="static"
+        elevation={0}
         className="nav-open header"
         sx={{
           backgroundColor: 'var(--Background-Color)',
@@ -348,44 +354,49 @@ export default function PageHeader({
             disableGutters
             sx={{ justifyContent: 'space-between', gap: '16px' }}
           >
-            <Button onClick={toggleSidebar} className={styles.toggleBtnHedaer}>
-              {isSidebarOpen ? (
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
-                    fill="var(--Primary-Text-Color)"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  width="20"
-                  height="22"
-                  viewBox="0 0 20 22"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M18.0513 7.38137V14.6192C18.0513 17.763 16.2708 19.6372 13.2841 19.6372H8V2.36328H13.2841C16.2708 2.36328 18.0513 4.23751 18.0513 7.38137Z"
-                    fill="var(--Icon-Color)"
-                  />
-                  <path
-                    d="M6.76932 2.36328V19.6372H6.40829C3.42163 19.6372 1.64111 17.763 1.64111 14.6192V7.38137C1.64111 4.23751 3.42163 2.36328 6.40829 2.36328H6.76932Z"
-                    fill={
-                      theme === 'dark'
-                        ? 'var(--Icon-Color)'
-                        : 'var(--Subtext-Color)'
-                    }
-                    opacity={theme === 'dark' ? 0.2 : 1}
-                  />
-                </svg>
-              )}
-            </Button>
+            {!isPaymentStatusPage && (
+              <Button
+                onClick={toggleSidebar}
+                className={styles.toggleBtnHedaer}
+              >
+                {isSidebarOpen ? (
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                      fill="var(--Primary-Text-Color)"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    width="20"
+                    height="22"
+                    viewBox="0 0 20 22"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M18.0513 7.38137V14.6192C18.0513 17.763 16.2708 19.6372 13.2841 19.6372H8V2.36328H13.2841C16.2708 2.36328 18.0513 4.23751 18.0513 7.38137Z"
+                      fill="var(--Icon-Color)"
+                    />
+                    <path
+                      d="M6.76932 2.36328V19.6372H6.40829C3.42163 19.6372 1.64111 17.763 1.64111 14.6192V7.38137C1.64111 4.23751 3.42163 2.36328 6.40829 2.36328H6.76932Z"
+                      fill={
+                        theme === 'dark'
+                          ? 'var(--Icon-Color)'
+                          : 'var(--Subtext-Color)'
+                      }
+                      opacity={theme === 'dark' ? 0.2 : 1}
+                    />
+                  </svg>
+                )}
+              </Button>
+            )}
 
             <Box className={styles.mobileLogo}>
               <Image
@@ -394,50 +405,110 @@ export default function PageHeader({
                 width={40}
                 height={38}
                 onClick={() => router.push('/ai-chats')}
+                style={{
+                  filter:
+                    theme === 'dark' ? 'brightness(1) invert(10)' : 'unset',
+                }}
               />
             </Box>
             <Box sx={{ width: '100%' }} className={styles.docsHeader}>
+              {isPaymentStatusPage && (
+                <Box>
+                  <Image
+                    src="/images/logo.svg"
+                    alt="logo"
+                    width={200}
+                    height={44}
+                    style={{
+                      filter:
+                        theme === 'dark' ? 'brightness(1) invert(10)' : 'unset',
+                    }}
+                  />
+                </Box>
+              )}
+
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                {isChatPage && selectedActiveChat && (
-                  <Image
-                    src="/images/messages.svg"
-                    alt="messages-icon"
-                    width={18}
-                    height={18}
-                  />
-                )}
-                {isDocumentsPage && (
-                  <Image
-                    src="/images/note-2.svg"
-                    alt="Documents-icon"
-                    width={18}
-                    height={18}
-                  />
-                )}
-                {isDocumentDownloadPage && (
-                  <Image
-                    src="/images/report-icon.svg"
-                    alt="Documents-icon"
-                    width={18}
-                    height={18}
-                  />
-                )}
-                {isLogIncidentPage && (
-                  <Image
-                    src="/images/log-incident-sidebar.svg"
-                    alt="Log-incidents-icon"
-                    width={18}
-                    height={18}
-                  />
-                )}
-                {isPlanPage && (
-                  <Image
-                    src="/images/myPlan.svg"
-                    alt="Log-incidents-icon"
-                    width={18}
-                    height={18}
-                  />
-                )}
+                {isChatPage &&
+                  selectedActiveChat &&
+                  (theme === 'dark' ? (
+                    <Image
+                      src="/images/messagesLight.svg"
+                      alt="messages-icon"
+                      width={18}
+                      height={18}
+                    />
+                  ) : (
+                    <Image
+                      src="/images/messages.svg"
+                      alt="messages-icon"
+                      width={18}
+                      height={18}
+                    />
+                  ))}
+                {isDocumentsPage &&
+                  (theme === 'dark' ? (
+                    <Image
+                      src="/images/note-2Light.svg"
+                      alt="Documents-icon"
+                      width={18}
+                      height={18}
+                    />
+                  ) : (
+                    <Image
+                      src="/images/note-2.svg"
+                      alt="Documents-icon"
+                      width={18}
+                      height={18}
+                    />
+                  ))}
+                {isDocumentDownloadPage &&
+                  (theme === 'dark' ? (
+                    <Image
+                      src="/images/report-iconLight.svg"
+                      alt="Documents-icon"
+                      width={18}
+                      height={18}
+                    />
+                  ) : (
+                    <Image
+                      src="/images/report-icon.svg"
+                      alt="Documents-icon"
+                      width={18}
+                      height={18}
+                    />
+                  ))}
+                {isLogIncidentPage &&
+                  (theme === 'dark' ? (
+                    <Image
+                      src="/images/log-incident-sidebarLight.svg"
+                      alt="Log-incidents-icon"
+                      width={18}
+                      height={18}
+                    />
+                  ) : (
+                    <Image
+                      src="/images/log-incident-sidebar.svg"
+                      alt="Log-incidents-icon"
+                      width={18}
+                      height={18}
+                    />
+                  ))}
+                {isPlanPage &&
+                  (theme === 'dark' ? (
+                    <Image
+                      src="/images/myPlanLight.svg"
+                      alt="Log-incidents-icon"
+                      width={18}
+                      height={18}
+                    />
+                  ) : (
+                    <Image
+                      src="/images/myPlan.svg"
+                      alt="Log-incidents-icon"
+                      width={18}
+                      height={18}
+                    />
+                  ))}
                 {selectedPageHeaderData && selectedPageHeaderData.title && (
                   <Typography
                     variant="body1"

@@ -91,7 +91,7 @@
           h3 {
             font-size: var(--Heading-3);
             font-weight: var(--Bold);
-            color: var(--Txt-On-Gradient);
+            color: var(--Primary-Text-Color);
             text-transform: uppercase;
 
             @media (max-width: 450px) {
@@ -143,7 +143,7 @@
         p {
           font-size: var(--SubTitle-1);
           font-weight: var(--Bold);
-          color: var(--Txt-On-Gradient);
+          color: var(--Primary-Text-Color);
           margin: 0;
 
           @media (max-width: 450px) {
@@ -168,7 +168,6 @@
         justify-content: space-between;
         align-items: center;
         gap: 12px;
-        border-top: 1px solid var(--Stroke-Color);
         margin-top: 24px;
         padding-top: 20px;
 
@@ -219,7 +218,7 @@
           p {
             font-size: var(--SubTitle-3);
             font-weight: var(--Lighter);
-            color: var(--Txt-On-Gradient);
+            color: var(--Primary-Text-Color);
 
             @media (max-width: 370px) {
               display: flex;
@@ -420,7 +419,6 @@
 // subscription-plan
 
 .subscription-plan-body {
-  background: linear-gradient(90deg, #3e384c 0%, #11101b 100%);
   padding: 1px;
   border-radius: 16px 0 0 16px;
   width: 100%;
@@ -437,18 +435,11 @@
   }
 
   .subscription-plan-sidebar {
-    background: linear-gradient(90deg,
-        var(--Card-Color) 0%,
-        rgba(185, 72, 255, 0) 100%);
     border-radius: 16px 0 0 16px;
     height: 100%;
   }
 
   .subscription-plan-container {
-    background: linear-gradient(90deg,
-        rgba(185, 72, 255, 0.08) 0%,
-        rgba(185, 72, 255, 0) 100%);
-
     border-radius: 16px 0 0 16px;
     height: 100%;
     display: flex;
@@ -478,6 +469,11 @@
         padding: 4px;
         margin-top: 20px;
         background: var(--Card-Color);
+
+        [data-theme='dark'] & {
+          background: var(--Input-Box-Colors);
+          border: 1.2px solid var(--Subtext-Color);
+        }
 
         .toggle-button {
           margin: 0;
@@ -643,10 +639,15 @@
         color: var(--Primary-Text-Color);
         transition: all 0.4s;
 
+        [data-theme='dark'] & {
+          background: var(--Input-Box-Colors);
+          border: 1px solid var(--Card-Border);
+        }
+
         &.active,
         &:hover {
           background: var(--Main-Gradient);
-          color: var(--Primary-Text-Color);
+          color: var(--Txt-On-Gradient);
           border: 1px solid var(--Card-Color);
         }
 
@@ -929,7 +930,7 @@
 
 .subscription-package-body:hover .subscription-package-container .subscription-package-header .subscription-package-button {
   background: var(--Main-Gradient);
-  color: var(--Primary-Text-Color);
+  color: var(--Txt-On-Gradient);
   border: 1px solid var(--Card-Color);
 
   &.default {
@@ -938,10 +939,21 @@
     border: 1px solid var(--Stroke-Color);
     cursor: default;
 
+    [data-theme='dark'] & {
+      border: 1px solid var(--Card-Border);
+      background: var(--Input-Box-Colors);
+    }
+
     &:hover {
       background: var(--Card-Color);
       color: var(--Placeholder-Text);
       border: 1px solid var(--Stroke-Color);
+
+      [data-theme='dark'] & {
+        background: var(--Input-Box-Colors);
+        color: var(--Placeholder-Text);
+        border: 1px solid var(--Card-Border);
+      }
     }
   }
 }
@@ -1009,6 +1021,11 @@
     gap: 8px;
     position: relative;
     z-index: 1;
+
+    p {
+      font-weight: var(--Medium);
+      font-size: var(--SubTitle-3);
+    }
 
     span {
       margin: 0;
