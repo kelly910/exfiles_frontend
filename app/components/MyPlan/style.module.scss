@@ -823,6 +823,10 @@
     right: 0;
     z-index: 1;
 
+    [data-theme='dark'] & {
+      background: linear-gradient(90deg, rgba(161, 153, 255, 0) 0%, #FEFEFE 50.54%);
+    }
+
     @media (max-width: 768px) {
       content: '';
     }
@@ -842,6 +846,10 @@
     height: 100%;
     left: 0;
     z-index: 1;
+
+    [data-theme='dark'] & {
+      background: linear-gradient(270deg, rgba(161, 153, 255, 0) 0%, #FEFEFE 50.54%);
+    }
 
     @media (max-width: 768px) {
       content: '';

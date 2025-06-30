@@ -167,10 +167,6 @@ const UpgradePlan = () => {
               alt="Expand Icon"
               width={16}
               height={16}
-              style={{
-                filter:
-                  theme === 'dark' ? 'brightness(0.5) invert(0)' : 'unset',
-              }}
             />
           }
           aria-controls="panel1-content"
@@ -185,8 +181,16 @@ const UpgradePlan = () => {
               alignItems: 'center',
             },
 
+            img: {
+              filter: 'brightness(0) invert(1)',
+            },
+
             '& .Mui-expanded': {
               background: 'transparent',
+              img: {
+                filter:
+                  theme === 'dark' ? 'brightness(0.5) invert(0)' : 'unset',
+              },
             },
           }}
           className={styles['upgrade-plan-accordion-summary']}

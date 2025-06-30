@@ -351,6 +351,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
             top: '65px',
             right: '0',
             left: 'auto',
+            zIndex: '99',
             maxHeight: 'calc(100dvh - 65px)',
             '& .MuiPaper-root': {
               top: '65px',

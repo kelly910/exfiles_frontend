@@ -51,6 +51,7 @@
     position: fixed;
     left: 0;
     border-right: 1px solid var(--Stroke-Color);
+    filter: drop-shadow(2px 2px 50px #0000006e);
   }
 
   .main-logo {
@@ -845,7 +846,7 @@
 
   &:disabled {
     background: var(--Input-Box-Colors) !important;
-    color: var(--Stroke-Color) !important;
+    color: var(--Icon-Color-Rgb) !important;
     cursor: not-allowed !important;
     border: 1px solid var(--Stroke-Color) !important;
   }

@@ -26,7 +26,7 @@ export default function ActivePlan() {
   );
   const dispatch = useAppDispatch();
   const fetchedUser = useSelector(selectFetchedUser);
-  const [cancelDialog, setCancelDialog] = useState(false);
+  const [cancelDialog, setCancelDialog] = useState(true);
 
   useEffect(() => {
     if (loggedInUser?.data?.id) {

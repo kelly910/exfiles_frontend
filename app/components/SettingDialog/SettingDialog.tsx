@@ -153,14 +153,6 @@ export default function SettingDialog({
                     alt="user"
                     width={16}
                     height={16}
-                    style={{
-                      filter:
-                        theme !== 'dark'
-                          ? 'unset'
-                          : activeTab === 'setting'
-                            ? 'brightness(0) invert(0)'
-                            : 'brightness(0) invert(0.5)',
-                    }}
                   />
                 </Button>
                 {!googleLogin && (
