@@ -12,15 +12,12 @@ import ActivePlan from './ActivePlan';
 import UpgradePlan from './UpgradePlan';
 import PlanHistory from './PlanHistory';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPageHeaderData } from '@/app/redux/slices/login';
-import { RootState } from '@/app/redux/store';
+import { selectFetchedUser, setPageHeaderData } from '@/app/redux/slices/login';
 
 const MyPlan = () => {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const loggedInUser = useSelector(
-    (state: RootState) => state.login.loggedInUser
-  );
+  const fetchedUser = useSelector(selectFetchedUser);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -32,7 +29,7 @@ const MyPlan = () => {
     dispatch(
       setPageHeaderData({
         title: 'My Plan',
-        subTitle: `${loggedInUser?.data?.active_subscription?.plan?.name}  - ${loggedInUser?.data?.active_subscription?.plan?.description}`,
+        subTitle: `${fetchedUser?.active_subscription?.plan?.name}  - ${fetchedUser?.active_subscription?.plan?.description}`,
       })
     );
     if (isMobile) {
