@@ -118,7 +118,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
   };
 
   const [openCategoryDrawerMobile, setOpenCategoryDrawerMobile] =
-    useState(true);
+    useState(true); // document category sidebar changes
 
   const openCategoryDrawer = (value: boolean) => {
     setOpenCategoryDrawerMobile(value);
