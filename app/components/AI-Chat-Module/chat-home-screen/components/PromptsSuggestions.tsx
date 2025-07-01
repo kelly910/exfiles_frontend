@@ -29,7 +29,7 @@ export default function PromptsSuggestions({
   const chatUsedCheck =
     fetchedUser?.chat_used?.split('/')[0] ===
       fetchedUser?.chat_used?.split('/')[1] &&
-    fetchedUser?.is_grace_point_used === true;
+    fetchedUser?.chat_grace_point_used === true;
 
   return (
     <Grid

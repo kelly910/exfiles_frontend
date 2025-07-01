@@ -100,7 +100,8 @@ export default function ShowGeneratedSummariesDocs({
 
   const summaryUsedCheck =
     fetchedUser?.summary_used?.split('/')[0] ===
-    fetchedUser?.summary_used?.split('/')[1];
+      fetchedUser?.summary_used?.split('/')[1] &&
+    fetchedUser?.summary_grace_point_used === true;
 
   const [limitDialog, setLimitDialog] = useState(false);
 

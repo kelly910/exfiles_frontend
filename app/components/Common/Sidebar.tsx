@@ -21,6 +21,7 @@ import {
   Modal,
   styled,
   TextField,
+  Tooltip,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -203,6 +204,13 @@ const Sidebar = ({
     }
   };
 
+  const getGracePointColor = (value: boolean) => {
+    console.log(value, 'value');
+    if (fetchedUser?.active_subscription?.status === 1) {
+      return '#A6152B';
+    }
+  };
+
   const ColoredLinearProgress = styled(LinearProgress)<{ $barColor: string }>(
     ({ $barColor }) => ({
       height: 4,
@@ -224,16 +232,25 @@ const Sidebar = ({
       label: 'Summaries used',
       used: fetchedUser?.summary_used?.split('/')[0] || 0,
       total: fetchedUser?.summary_used?.split('/')[1] || 0,
+      gracePoint: fetchedUser?.summary_grace_point_used,
+      title:
+        'You have surpassed Summary generation limit. Please upgrade to continue using Exfiles AI',
     },
     {
       label: 'Chats used',
       used: fetchedUser?.chat_used?.split('/')[0] || 0,
       total: fetchedUser?.chat_used?.split('/')[1] || 0,
+      gracePoint: fetchedUser?.chat_grace_point_used,
+      title:
+        'You have surpassed AI Chat limit. Please upgrade to continue using Exfiles AI',
     },
     {
       label: 'Reports generated',
       used: fetchedUser?.reports_generated?.split('/')[0] || 0,
       total: fetchedUser?.reports_generated?.split('/')[1] || 0,
+      gracePoint: fetchedUser?.report_grace_point_used,
+      title:
+        'You have surpassed Report Generation limit. Please upgrade to continue using Exfiles AI',
     },
   ];
 
@@ -529,7 +546,14 @@ const Sidebar = ({
               return (
                 <Box key={idx} className={Style['storage-body']}>
                   <Typography variant="body1" className={Style['storage-head']}>
-                    {item.label}{' '}
+                    <Typography
+                      variant="body1"
+                      className={Style['storage-head']}
+                      sx={{ flex: '1 1 ' }}
+                    >
+                      {item.label}{' '}
+                    </Typography>
+
                     {fetchedUser?.active_subscription?.status === 1 ? (
                       <Typography component="span">
                         {item.used}/
@@ -538,13 +562,37 @@ const Sidebar = ({
                     ) : (
                       <Typography component="span">{item.used}</Typography>
                     )}
+                    {(item.gracePoint === false ||
+                      item.gracePoint === null) && (
+                      <Tooltip title={item.title} placement="right" arrow>
+                        <Typography
+                          component="span"
+                          className={Style['grace-points']}
+                        >
+                          +1
+                        </Typography>
+                      </Tooltip>
+                    )}
                   </Typography>
-
-                  <ColoredLinearProgress
-                    variant="determinate"
-                    value={value}
-                    $barColor={getColor(value)}
-                  />
+                  <Box className={Style['storage-body-inner']}>
+                    <ColoredLinearProgress
+                      variant="determinate"
+                      value={value}
+                      $barColor={getColor(value)}
+                      sx={{ maxWidth: '100%', width: '100%' }}
+                    />
+                    {(item.gracePoint === false ||
+                      item.gracePoint === null) && (
+                      <ColoredLinearProgress
+                        variant="determinate"
+                        value={0}
+                        $barColor={
+                          getGracePointColor(item.gracePoint) ?? '#A6152B'
+                        }
+                        sx={{ width: '25px', flex: '1 1 auto' }}
+                      />
+                    )}
+                  </Box>
                 </Box>
               );
             })}
@@ -579,7 +627,13 @@ const Sidebar = ({
                       variant="body1"
                       className={Style['storage-head']}
                     >
-                      {item.label}{' '}
+                      <Typography
+                        variant="body1"
+                        className={Style['storage-head']}
+                        sx={{ flex: '1 1 ' }}
+                      >
+                        {item.label}{' '}
+                      </Typography>
                       {fetchedUser?.active_subscription?.status === 1 ? (
                         <Typography component="span">
                           {item.used}/
@@ -588,13 +642,38 @@ const Sidebar = ({
                       ) : (
                         <Typography component="span">{item.used}</Typography>
                       )}
+                      {(item.gracePoint === false ||
+                        item.gracePoint === null) && (
+                        <Tooltip title={item.title} placement="right" arrow>
+                          <Typography
+                            component="span"
+                            className={Style['grace-points']}
+                          >
+                            +1
+                          </Typography>
+                        </Tooltip>
+                      )}
                     </Typography>
 
-                    <ColoredLinearProgress
-                      variant="determinate"
-                      value={value}
-                      $barColor={getColor(value)}
-                    />
+                    <Box className={Style['storage-body-inner']}>
+                      <ColoredLinearProgress
+                        variant="determinate"
+                        value={value}
+                        $barColor={getColor(value)}
+                        sx={{ maxWidth: '100%', width: '100%' }}
+                      />
+                      {(item.gracePoint === false ||
+                        item.gracePoint === null) && (
+                        <ColoredLinearProgress
+                          variant="determinate"
+                          value={0}
+                          $barColor={
+                            getGracePointColor(item.gracePoint) ?? '#A6152B'
+                          }
+                          sx={{ width: '25px', flex: '1 1 auto' }}
+                        />
+                      )}
+                    </Box>
                   </Box>
                 );
               })}
