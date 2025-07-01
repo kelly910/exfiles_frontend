@@ -623,8 +623,7 @@ const Sidebar = ({
                     ) : (
                       <Typography component="span">{item.used}</Typography>
                     )}
-                    {(item.gracePoint === false ||
-                      item.gracePoint === null) && (
+                    {item.gracePoint === false && value === 100 && (
                       <Tooltip title={item.title} placement="right" arrow>
                         <Typography
                           component="span"
@@ -642,8 +641,7 @@ const Sidebar = ({
                       $barColor={getColor(value)}
                       sx={{ maxWidth: '100%', width: '100%' }}
                     />
-                    {(item.gracePoint === false ||
-                      item.gracePoint === null) && (
+                    {item.gracePoint === false && value === 100 && (
                       <ColoredLinearProgress
                         variant="determinate"
                         value={0}
@@ -722,8 +720,7 @@ const Sidebar = ({
                       ) : (
                         <Typography component="span">{item.used}</Typography>
                       )}
-                      {(item.gracePoint === false ||
-                        item.gracePoint === null) && (
+                      {item.gracePoint === false && value === 100 && (
                         <Tooltip title={item.title} placement="right" arrow>
                           <Typography
                             component="span"
@@ -742,8 +739,7 @@ const Sidebar = ({
                         $barColor={getColor(value)}
                         sx={{ maxWidth: '100%', width: '100%' }}
                       />
-                      {(item.gracePoint === false ||
-                        item.gracePoint === null) && (
+                      {item.gracePoint === false && value === 100 && (
                         <ColoredLinearProgress
                           variant="determinate"
                           value={0}
