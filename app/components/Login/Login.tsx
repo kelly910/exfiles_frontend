@@ -72,6 +72,7 @@ const Page = () => {
               const token: string | null = response?.data?.token || null;
               if (token) {
                 const bc = new BroadcastChannel('react-auth-channel');
+                console.log('📤 Broadcasting login to auth channel');
                 bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
                 document.cookie = `accessToken=${token}; path=/; max-age=86400`;
                 window.opener?.postMessage(
@@ -122,7 +123,14 @@ const Page = () => {
           localStorage.setItem('loggedInUser', JSON.stringify(response));
           const token: string | null = response?.data?.token || null;
           if (token) {
+            const bc = new BroadcastChannel('react-auth-channel');
+            console.log('📤 Broadcasting login to auth channel');
+            bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
             document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+            window.opener?.postMessage(
+              { type: 'LOGIN_SUCCESS', user: response.data },
+              process.env.NEXT_PUBLIC_REDIRECT_URL
+            );
             await dispatch(setLoader(false));
           }
           showToast('success', 'Google Login is successfully.');

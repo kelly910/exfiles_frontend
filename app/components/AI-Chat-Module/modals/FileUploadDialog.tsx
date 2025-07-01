@@ -346,15 +346,31 @@ export default function FileUploadDialog({
         open={limitDialog}
         onClose={() => setLimitDialog(false)}
         title={
-          limitType === 'AI Summaries'
+          limitType === 'ai-summaries'
             ? 'Your Summary Generation Limit is Over'
-            : 'Your Storage Limit is Over'
+            : limitType === 'storage'
+              ? 'Your Storage Limit is Over'
+              : limitType === 'messages-documents'
+                ? 'Your Document Upload Limit is Over'
+                : 'Your Summary Generation Limit is Over'
         }
-        subtitle={limitType === 'AI Summaries' ? 'Summary' : 'Storage'}
+        subtitle={
+          limitType === 'ai-summaries'
+            ? 'Summary'
+            : limitType === 'storage'
+              ? 'Storage'
+              : limitType === 'messages-documents'
+                ? 'Message-Documents'
+                : 'Summary'
+        }
         stats={
-          limitType === 'AI Summaries'
+          limitType === 'ai-summaries'
             ? fetchedUser?.summary_used
-            : fetchedUser?.storage
+            : limitType === 'storage'
+              ? fetchedUser?.storage
+              : limitType === 'messages-documents'
+                ? '-/-'
+                : fetchedUser?.summary_used
         }
       />
     </>

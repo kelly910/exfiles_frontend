@@ -59,7 +59,10 @@ export interface SocialGoogleLoginResponse {
     token: string;
     google_login: boolean;
     active_subscription?: ActiveSubscription;
-    is_grace_point_used?: boolean;
+    chat_grace_point_used?: boolean;
+    document_grace_point_used?: boolean;
+    summary_grace_point_used?: boolean;
+    report_grace_point_used?: boolean;
     staff_user?: boolean;
   };
 }
@@ -88,7 +91,10 @@ export interface LoginResponse {
     reports_generated?: string;
     summary_used?: string;
     storage?: string;
-    is_grace_point_used?: boolean;
+    chat_grace_point_used?: boolean;
+    document_grace_point_used?: boolean;
+    summary_grace_point_used?: boolean;
+    report_grace_point_used?: boolean;
     staff_user?: boolean;
   };
 }
@@ -132,7 +138,10 @@ interface UpdateProfileResponse {
   reports_generated?: string;
   summary_used?: string;
   storage?: string;
-  is_grace_point_used?: boolean;
+  chat_grace_point_used?: boolean;
+  document_grace_point_used?: boolean;
+  summary_grace_point_used?: boolean;
+  report_grace_point_used?: boolean;
   staff_user?: boolean;
 }
 export const loginUser = createAsyncThunk<
