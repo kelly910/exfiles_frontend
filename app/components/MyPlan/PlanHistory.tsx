@@ -55,8 +55,14 @@ export default function PlanHistory() {
                   <TableCell>{plan.plan_name || '-'}</TableCell>
                   <TableCell style={{ textTransform: 'capitalize' }}>
                     {plan.duration_unit === 'day'
-                      ? '14 Days'
-                      : plan.duration_unit}
+                      ? plan.duration_value + ' Days'
+                      : plan.duration_unit === 'month'
+                        ? 'Month'
+                        : plan.duration_unit === 'year'
+                          ? 'Year'
+                          : plan.duration_unit === 'week'
+                            ? plan.duration_value + ' Week'
+                            : '-'}
                   </TableCell>
                   <TableCell>
                     {plan.activate_date

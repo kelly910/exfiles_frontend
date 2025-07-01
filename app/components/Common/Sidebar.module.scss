@@ -958,6 +958,20 @@
         font-size: var(--SubTitle-3);
         font-weight: var(--Lighter);
       }
+
+      span.grace-points {
+        background-color: var(--Stroke-Color);
+        color: var(--Red-Color);
+        border-radius: 4px;
+        padding: 0 2px;
+      }
+    }
+
+    .storage-body-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2px;
     }
   }
 

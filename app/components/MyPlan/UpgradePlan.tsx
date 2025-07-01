@@ -340,7 +340,13 @@ const UpgradePlan = () => {
                   const activePlanId =
                     fetchedUser?.active_subscription?.plan?.id;
                   const activePlan = plans.find((p) => p?.id === activePlanId);
-                  if (activePlan?.duration_unit === billingCycle) {
+                  const selectedDurationUnit =
+                    billingCycle === 'month'
+                      ? process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH
+                      : process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY;
+                  if (
+                    activePlan?.duration_unit === String(selectedDurationUnit)
+                  ) {
                     if (plan.name === activePlan.name) {
                       buttonLabel = 'Current Plan';
                     } else if (activePlan.name === 'Free Tier') {
