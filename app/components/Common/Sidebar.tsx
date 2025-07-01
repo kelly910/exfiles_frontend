@@ -562,16 +562,19 @@ const Sidebar = ({
                     ) : (
                       <Typography component="span">{item.used}</Typography>
                     )}
-                    {item.gracePoint === false && value === 100 && (
-                      <Tooltip title={item.title} placement="right" arrow>
-                        <Typography
-                          component="span"
-                          className={Style['grace-points']}
-                        >
-                          +1
-                        </Typography>
-                      </Tooltip>
-                    )}
+                    {item.gracePoint === false &&
+                      value === 100 &&
+                      !fetchedUser?.staff_user &&
+                      item?.total !== 'Unlimited' && (
+                        <Tooltip title={item.title} placement="right" arrow>
+                          <Typography
+                            component="span"
+                            className={Style['grace-points']}
+                          >
+                            +1
+                          </Typography>
+                        </Tooltip>
+                      )}
                   </Typography>
                   <Box className={Style['storage-body-inner']}>
                     <ColoredLinearProgress
@@ -580,16 +583,19 @@ const Sidebar = ({
                       $barColor={getColor(value)}
                       sx={{ maxWidth: '100%', width: '100%' }}
                     />
-                    {item.gracePoint === false && value === 100 && (
-                      <ColoredLinearProgress
-                        variant="determinate"
-                        value={0}
-                        $barColor={
-                          getGracePointColor(item.gracePoint) ?? '#A6152B'
-                        }
-                        sx={{ width: '25px', flex: '1 1 auto' }}
-                      />
-                    )}
+                    {item.gracePoint === false &&
+                      value === 100 &&
+                      !fetchedUser?.staff_user &&
+                      item?.total !== 'Unlimited' && (
+                        <ColoredLinearProgress
+                          variant="determinate"
+                          value={0}
+                          $barColor={
+                            getGracePointColor(item.gracePoint) ?? '#A6152B'
+                          }
+                          sx={{ width: '25px', flex: '1 1 auto' }}
+                        />
+                      )}
                   </Box>
                 </Box>
               );
@@ -640,16 +646,19 @@ const Sidebar = ({
                       ) : (
                         <Typography component="span">{item.used}</Typography>
                       )}
-                      {item.gracePoint === false && value === 100 && (
-                        <Tooltip title={item.title} placement="right" arrow>
-                          <Typography
-                            component="span"
-                            className={Style['grace-points']}
-                          >
-                            +1
-                          </Typography>
-                        </Tooltip>
-                      )}
+                      {item.gracePoint === false &&
+                        value === 100 &&
+                        !fetchedUser?.staff_user &&
+                        item?.total !== 'Unlimited' && (
+                          <Tooltip title={item.title} placement="right" arrow>
+                            <Typography
+                              component="span"
+                              className={Style['grace-points']}
+                            >
+                              +1
+                            </Typography>
+                          </Tooltip>
+                        )}
                     </Typography>
 
                     <Box className={Style['storage-body-inner']}>
@@ -659,16 +668,19 @@ const Sidebar = ({
                         $barColor={getColor(value)}
                         sx={{ maxWidth: '100%', width: '100%' }}
                       />
-                      {item.gracePoint === false && value === 100 && (
-                        <ColoredLinearProgress
-                          variant="determinate"
-                          value={0}
-                          $barColor={
-                            getGracePointColor(item.gracePoint) ?? '#A6152B'
-                          }
-                          sx={{ width: '25px', flex: '1 1 auto' }}
-                        />
-                      )}
+                      {item.gracePoint === false &&
+                        value === 100 &&
+                        !fetchedUser?.staff_user &&
+                        item?.total !== 'Unlimited' && (
+                          <ColoredLinearProgress
+                            variant="determinate"
+                            value={0}
+                            $barColor={
+                              getGracePointColor(item.gracePoint) ?? '#A6152B'
+                            }
+                            sx={{ width: '25px', flex: '1 1 auto' }}
+                          />
+                        )}
                     </Box>
                   </Box>
                 );
