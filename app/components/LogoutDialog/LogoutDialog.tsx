@@ -82,6 +82,7 @@ export default function LogoutDialog({
         process.env.NEXT_PUBLIC_REDIRECT_URL
       );
       const bc = new BroadcastChannel('react-auth-channel');
+      console.log('📤 Broadcasting logout to auth channel');
       bc.postMessage({ type: 'LOGOUT_SUCCESS' });
       setLoading(false);
       dispatch(setLoader(false));
