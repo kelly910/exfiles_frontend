@@ -85,56 +85,67 @@ const Page = () => {
                   process.env.NEXT_PUBLIC_REDIRECT_URL
                 );
                 // ✅ Call WordPress API with JWT (autologin)
-                try {
-                  console.log('try');
-                  const wpToken = jwt.sign(
-                    {
-                      email: response.data.email,
-                      exp: Math.floor(Date.now() / 1000) + 60 * 2,
-                    },
-                    '0630b2087bd2ae22c760f186831ce89b8109d33fc2b85d73c5767bd01b18e092'
-                  );
 
-                  const wpResponse = await fetch(
-                    'https://exfiles.trooinbounddevs.com/wp-json/custom-login/v1/autologin',
-                    {
-                      method: 'POST',
-                      credentials: 'include',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({ token: wpToken }),
-                    }
-                  );
+                const wpToken = jwt.sign(
+                  {
+                    email: response.data.email,
+                    exp: Math.floor(Date.now() / 1000) + 60 * 2,
+                  },
+                  '0630b2087bd2ae22c760f186831ce89b8109d33fc2b85d73c5767bd01b18e092'
+                );
 
-                  const contentType = wpResponse.headers.get('content-type');
+                console.log(wpToken, 'wpTToken');
 
-                  if (!wpResponse.ok) {
-                    const errorText = await wpResponse.text();
-                    console.log(
-                      '❌ WordPress responded with error HTML/text:',
-                      errorText
-                    );
-                    throw new Error('Failed WordPress response');
-                  }
+                // try {
+                //   console.log('try');
+                //   const wpToken = jwt.sign(
+                //     {
+                //       email: response.data.email,
+                //       exp: Math.floor(Date.now() / 1000) + 60 * 2,
+                //     },
+                //     '0630b2087bd2ae22c760f186831ce89b8109d33fc2b85d73c5767bd01b18e092'
+                //   );
 
-                  if (
-                    !contentType ||
-                    !contentType.includes('application/json')
-                  ) {
-                    const rawText = await wpResponse.text();
-                    console.log(
-                      '❌ WP did not return JSON. Returned:',
-                      rawText
-                    );
-                    throw new Error('Unexpected content type');
-                  }
+                //   const wpResponse = await fetch(
+                //     'https://exfiles.trooinbounddevs.com/wp-json/custom-login/v1/autologin',
+                //     {
+                //       method: 'POST',
+                //       credentials: 'include',
+                //       headers: {
+                //         'Content-Type': 'application/json',
+                //       },
+                //       body: JSON.stringify({ token: wpToken }),
+                //     }
+                //   );
 
-                  const wpData = await wpResponse.json();
-                  console.log('✅ WordPress auto-login response:', wpData);
-                } catch (wpError) {
-                  console.log('❌ WordPress auto-login failed:', wpError);
-                }
+                //   const contentType = wpResponse.headers.get('content-type');
+
+                //   if (!wpResponse.ok) {
+                //     const errorText = await wpResponse.text();
+                //     console.log(
+                //       '❌ WordPress responded with error HTML/text:',
+                //       errorText
+                //     );
+                //     throw new Error('Failed WordPress response');
+                //   }
+
+                //   if (
+                //     !contentType ||
+                //     !contentType.includes('application/json')
+                //   ) {
+                //     const rawText = await wpResponse.text();
+                //     console.log(
+                //       '❌ WP did not return JSON. Returned:',
+                //       rawText
+                //     );
+                //     throw new Error('Unexpected content type');
+                //   }
+
+                //   const wpData = await wpResponse.json();
+                //   console.log('✅ WordPress auto-login response:', wpData);
+                // } catch (wpError) {
+                //   console.log('❌ WordPress auto-login failed:', wpError);
+                // }
                 // ✅ Call WordPress API with JWT (autologin)
               }
               setLoadingLogin(false);
