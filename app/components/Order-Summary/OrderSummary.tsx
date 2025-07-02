@@ -98,8 +98,8 @@ export default function OrderSummary() {
                   component="p"
                   className={Styles.OrderSummarySemiTitle}
                 >
-                  scelerisque viverra convallis. ex libero, Nullam odio Quisque
-                  porta faucibus fringilla non
+                  All the tools you need to document, track, and protect
+                  yourself—organized and AI-powered.
                 </Typography>
               </Box>
               <Box className={Styles.OrderSummaryBody}>
