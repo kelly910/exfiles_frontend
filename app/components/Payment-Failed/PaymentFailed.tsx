@@ -94,8 +94,8 @@ export default function PaymentFailed() {
                     component="p"
                     className={Styles.PaymentCardSemiTitle}
                   >
-                    Lorem ipsum dolor sit amet consectetur Rhoncus nisl vel in
-                    at varius in.
+                    Looks like there was a hiccup processing your payment.
+                    Double-check your info or try a different card.
                   </Typography>
                   <Typography
                     variant="body1"

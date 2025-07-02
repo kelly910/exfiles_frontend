@@ -79,8 +79,8 @@ export default function PaymentSuccessful() {
                     component="p"
                     className={Styles.PaymentCardSemiTitle}
                   >
-                    Lorem ipsum dolor sit amet consectetur Rhoncus nisl vel in
-                    at varius in.
+                    You’re all set. Your plan is now active, and you’re ready to
+                    upload, organize, and start building your documentation.
                   </Typography>
                   <Typography
                     variant="body1"

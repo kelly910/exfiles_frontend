@@ -79,8 +79,8 @@ export default function PaymentPending() {
                     component="p"
                     className={Styles.PaymentCardSemiTitle}
                   >
-                    Lorem ipsum dolor sit amet consectetur Rhoncus nisl vel in
-                    at varius in.
+                    We’ve received your request. Hang tight—this usually takes
+                    just a few seconds to process.
                   </Typography>
                   <Typography
                     variant="body1"
