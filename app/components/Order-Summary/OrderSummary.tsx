@@ -171,23 +171,23 @@ export default function OrderSummary() {
                         Plan Price
                       </Typography>
                       <Typography variant="body2" component="span">
-                        ${orderDetail?.plan_price}
+                        ${orderDetail?.total_payable_amount}
                       </Typography>
                     </Box>
-                    <Box className={Styles.PaymentPriceListHead}>
+                    {/* <Box className={Styles.PaymentPriceListHead}>
                       <Typography variant="body1" component="p">
                         Sales Tax (8%)
                       </Typography>
                       <Typography variant="body2" component="span">
                         +${orderDetail?.sales_tax}
                       </Typography>
-                    </Box>
+                    </Box> */}
                     <Box className={Styles.PaymentTotalPrice}>
                       <Typography variant="body1" component="p">
                         Total Payable Amount
                       </Typography>
                       <Typography variant="body2" component="span">
-                        {orderDetail?.total_payable_amount}
+                        ${orderDetail?.total_payable_amount}
                       </Typography>
                     </Box>
                     <Button
