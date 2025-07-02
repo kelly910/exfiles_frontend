@@ -67,8 +67,11 @@ export default function LimitOver({
             </Box>
             <Typography variant="h2">{title}</Typography>
             <Typography variant="body2">
-              Lorem ipsum dolor sitamet consectetur Purus lacus sagittis
-              facilisi fringilla purus lacus
+              {subtitle === 'Summary'
+                ? 'You’ve used all your AI summaries for the month. Upgrade your plan to generate more'
+                : subtitle === 'Reports'
+                  ? "You've used all available reports for this month. Upgrade to unlock more and keep building your case history."
+                  : 'You’ve used all available ExFiles AI chats for this month. Upgrade to continue getting help with messages and responses.'}
             </Typography>
             <Box component="div" className={Style.dialogFormButtonBox}>
               <Button className={Style.formCancelBtn} onClick={onClose}>

@@ -3,6 +3,7 @@ import Style from '@components/Plan-Expired/PlanExpired.module.scss';
 import { Box, Button, Dialog, styled, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { LoginResponse } from '@/app/redux/slices/login';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -27,9 +28,14 @@ const BootstrapDialog = styled(Dialog)(() => ({
 interface PlanExpiredDialogProps {
   open: boolean;
   onClose: () => void;
+  loginData?: LoginResponse | null;
 }
 
-export default function PlanExpired({ open, onClose }: PlanExpiredDialogProps) {
+export default function PlanExpired({
+  open,
+  onClose,
+  loginData,
+}: PlanExpiredDialogProps) {
   const router = useRouter();
 
   const notNow = () => {
@@ -66,8 +72,12 @@ export default function PlanExpired({ open, onClose }: PlanExpiredDialogProps) {
             </Box>
             <Typography variant="h2">Your Plan has Expired</Typography>
             <Typography variant="body2">
-              Lorem ipsum dolor sitamet consectetur Purus lacus sagittis
-              facilisi fringilla purus lacus
+              To keep accessing your documents, reports, and AI tools, please{' '}
+              {loginData?.data?.active_subscription?.plan?.name === 'Free Tier'
+                ? 'renew'
+                : 'upgrade'}{' '}
+              your plan. Don&apos;t worry - your data is safe and waiting for
+              you.
             </Typography>
             <Box component="div" className={Style.dialogFormButtonBox}>
               <Button className={Style.formCancelBtn} onClick={notNow}>
