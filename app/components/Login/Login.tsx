@@ -86,15 +86,15 @@ const Page = () => {
                 );
                 // ✅ Call WordPress API with JWT (autologin)
 
-                const wpToken = jwt.sign(
-                  {
-                    email: response.data.email,
-                    exp: Math.floor(Date.now() / 1000) + 60 * 2,
-                  },
-                  '0630b2087bd2ae22c760f186831ce89b8109d33fc2b85d73c5767bd01b18e092'
-                );
+                // const wpToken = jwt.sign(
+                //   {
+                //     email: response.data.email,
+                //     exp: Math.floor(Date.now() / 1000) + 60 * 2,
+                //   },
+                //   '0630b2087bd2ae22c760f186831ce89b8109d33fc2b85d73c5767bd01b18e092'
+                // );
 
-                console.log(wpToken, 'wpTToken');
+                // console.log(wpToken, 'wpTToken');
 
                 // try {
                 //   console.log('try');
