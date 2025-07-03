@@ -172,8 +172,9 @@ export default function UpgradeTime({
             </Box>
             <Typography variant="h2">It’s Time for Your Upgrade!</Typography>
             <Typography variant="body2">
-              Lorem ipsum dolor sitamet consectetur Purus lacus sagittis
-              facilisi fringilla purus lacus
+              You&apos;re close to hitting your plan limits. Upgrade now to
+              continue building your case with full access to summaries, chats,
+              and reports without interruption.
             </Typography>
             <Box component="div" className={Style.dialogFormButtonBox}>
               <Button className={Style.formCancelBtn} onClick={notNow}>

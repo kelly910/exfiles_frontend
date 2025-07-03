@@ -47,6 +47,14 @@ export default function PaymentPending() {
     );
   }, [dispatch, transactionid]);
 
+  const planBasePrice = Number(paymentData?.plan_base_price || 0);
+  const salesTaxPercentage = Number(paymentData?.sales_tax_percentage || 0);
+  let salesTaxAmount = Number(paymentData?.sales_tax_amount || 0);
+
+  if (salesTaxAmount === 0) {
+    salesTaxAmount = (planBasePrice * salesTaxPercentage) / 100;
+  }
+
   const { theme } = useThemeMode();
 
   return (
@@ -82,8 +90,8 @@ export default function PaymentPending() {
                     component="p"
                     className={Styles.PaymentCardSemiTitle}
                   >
-                    Lorem ipsum dolor sit amet consectetur Rhoncus nisl vel in
-                    at varius in.
+                    We’ve received your request. Hang tight—this usually takes
+                    just a few seconds to process.
                   </Typography>
                   <Typography
                     variant="body1"
@@ -126,10 +134,10 @@ export default function PaymentPending() {
                       </Box>
                       <Box className={Styles.PaymentCardDetailsListPlanInner}>
                         <Typography variant="body1" component="p">
-                          Sales Tax (8%)
+                          Sales Tax ({paymentData?.sales_tax_percentage}%)
                         </Typography>
                         <Typography variant="body2" component="span">
-                          +${paymentData?.sales_tax_amount || '0.00'}
+                          +${salesTaxAmount.toFixed(2)}
                         </Typography>
                       </Box>
                     </Box>
@@ -138,7 +146,7 @@ export default function PaymentPending() {
                         Total Payable Amount
                       </Typography>
                       <Typography variant="body2" component="span">
-                        {paymentData?.amount || '0.00'}
+                        ${paymentData?.amount || '0.00'}
                       </Typography>
                     </Box>
                   </Box>

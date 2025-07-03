@@ -141,7 +141,7 @@ export default function Conversation({ threadId }: { threadId: string }) {
     if (getThreadDetailsById.fulfilled.match(resultData)) {
       dispatch(setActiveThread(resultData.payload));
       const threadCreatedDate = dayjs(resultData.payload.created).format(
-        'DD-MM-YYYY'
+        'MM-DD-YYYY'
       );
       dispatch(
         setPageHeaderData({
@@ -337,7 +337,10 @@ export default function Conversation({ threadId }: { threadId: string }) {
               return (
                 <React.Fragment key={date}>
                   <Box component="div" className={chatMessagesStyles.chatDate}>
-                    <span> {date}</span>
+                    <span>
+                      {' '}
+                      {dayjs(date, 'DD-MM-YYYY').format('MM-DD-YYYY')}
+                    </span>
                   </Box>
                   <Box
                     component="div"

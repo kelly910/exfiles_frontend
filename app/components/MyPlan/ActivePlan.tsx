@@ -286,11 +286,11 @@ function CircularProgressWithLabel(
 
       <Box className={styles['storage-info']}>
         <Typography variant="subtitle2">Storage</Typography>
-        <Typography variant="h5">{used ? used : '-'} GB</Typography>
+        <Typography variant="h5">{used ? used : '0'} GB</Typography>
         <Typography variant="body2">
           {fetchedUser?.staff_user
             ? 'Unlimited'
-            : `Total ${total ? total : '-'}`}{' '}
+            : `Total ${total ? total : '0'}`}{' '}
           GB
         </Typography>
       </Box>

@@ -19,7 +19,11 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { loginValidationSchema } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useRouter } from 'next/navigation';
 import { useGoogleLogin } from '@react-oauth/google';
-import { loginUser, socialGoogleLogin } from '@/app/redux/slices/login';
+import {
+  LoginResponse,
+  loginUser,
+  socialGoogleLogin,
+} from '@/app/redux/slices/login';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { setLoader } from '@/app/redux/slices/loader';
 import Link from 'next/link';
@@ -28,6 +32,7 @@ import PlanExpired from '../Plan-Expired/PlanExpired';
 import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 import { useThemeMode } from '@/app/utils/ThemeContext';
 import { showToast } from '@/app/shared/toast/ShowToast';
+// import jwt from 'jsonwebtoken';
 
 export interface LoginFormValues {
   email: string;
@@ -54,6 +59,7 @@ const Page = () => {
   const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
     null
   );
+  const [loginData, setLoginData] = useState<LoginResponse | null>(null);
   const [access_token, setToken] = useState<LoginToken | null>(null);
 
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
@@ -79,10 +85,74 @@ const Page = () => {
                   { type: 'LOGIN_SUCCESS', user: response.data },
                   process.env.NEXT_PUBLIC_REDIRECT_URL
                 );
+                // ✅ Call WordPress API with JWT (autologin)
+
+                // const wpToken = jwt.sign(
+                //   {
+                //     email: response.data.email,
+                //     exp: Math.floor(Date.now() / 1000) + 60 * 2,
+                //   },
+                //   '0630b2087bd2ae22c760f186831ce89b8109d33fc2b85d73c5767bd01b18e092'
+                // );
+
+                // console.log(wpToken, 'wpTToken');
+
+                // try {
+                //   console.log('try');
+                //   const wpToken = jwt.sign(
+                //     {
+                //       email: response.data.email,
+                //       exp: Math.floor(Date.now() / 1000) + 60 * 2,
+                //     },
+                //     '0630b2087bd2ae22c760f186831ce89b8109d33fc2b85d73c5767bd01b18e092'
+                //   );
+
+                //   const wpResponse = await fetch(
+                //     'https://exfiles.trooinbounddevs.com/wp-json/custom-login/v1/autologin',
+                //     {
+                //       method: 'POST',
+                //       credentials: 'include',
+                //       headers: {
+                //         'Content-Type': 'application/json',
+                //       },
+                //       body: JSON.stringify({ token: wpToken }),
+                //     }
+                //   );
+
+                //   const contentType = wpResponse.headers.get('content-type');
+
+                //   if (!wpResponse.ok) {
+                //     const errorText = await wpResponse.text();
+                //     console.log(
+                //       '❌ WordPress responded with error HTML/text:',
+                //       errorText
+                //     );
+                //     throw new Error('Failed WordPress response');
+                //   }
+
+                //   if (
+                //     !contentType ||
+                //     !contentType.includes('application/json')
+                //   ) {
+                //     const rawText = await wpResponse.text();
+                //     console.log(
+                //       '❌ WP did not return JSON. Returned:',
+                //       rawText
+                //     );
+                //     throw new Error('Unexpected content type');
+                //   }
+
+                //   const wpData = await wpResponse.json();
+                //   console.log('✅ WordPress auto-login response:', wpData);
+                // } catch (wpError) {
+                //   console.log('❌ WordPress auto-login failed:', wpError);
+                // }
+                // ✅ Call WordPress API with JWT (autologin)
               }
               setLoadingLogin(false);
               showToast('success', 'Login is successfully.');
               if (response.data.active_subscription?.status === 0) {
+                setLoginData(response);
                 setOpenExpiredDialog(true);
               } else if (
                 response.data.remaining_days === 1 ||
@@ -135,6 +205,7 @@ const Page = () => {
           }
           showToast('success', 'Google Login is successfully.');
           if (response.data.active_subscription?.status === 0) {
+            setLoginData(response);
             setOpenExpiredDialog(true);
           } else if (
             response.data.remaining_days === 1 ||
@@ -573,6 +644,7 @@ const Page = () => {
       <PlanExpired
         open={openExpiredDialog}
         onClose={() => setOpenExpiredDialog(false)}
+        loginData={loginData}
       />
       <UpgradeTime
         open={openCountDownDialog}

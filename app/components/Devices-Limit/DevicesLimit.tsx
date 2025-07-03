@@ -4,7 +4,11 @@ import { Box, Button, CircularProgress, Dialog, styled } from '@mui/material';
 import Image from 'next/image';
 import { LoginFormValues, LoginToken } from '../Login/Login';
 import { setLoader } from '@/app/redux/slices/loader';
-import { loginUser, socialGoogleLogin } from '@/app/redux/slices/login';
+import {
+  LoginResponse,
+  loginUser,
+  socialGoogleLogin,
+} from '@/app/redux/slices/login';
 import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useAppDispatch } from '@/app/redux/hooks';
@@ -51,6 +55,7 @@ export default function DevicesLimit({
   const router = useRouter();
   const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
   const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
+  const [loginData, setLoginData] = useState<LoginResponse | null>(null);
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse: { access_token: string }) => {
@@ -77,6 +82,7 @@ export default function DevicesLimit({
         }
         showToast('success', 'Google Login is successfully.');
         if (response.data.active_subscription?.status === 0) {
+          setLoginData(response);
           setOpenExpiredDialog(true);
         } else if (
           response.data.remaining_days === 1 ||
@@ -124,6 +130,7 @@ export default function DevicesLimit({
               }
               showToast('success', 'Login is successfully.');
               if (response.data.active_subscription?.status === 0) {
+                setLoginData(response);
                 setOpenExpiredDialog(true);
               } else if (
                 response.data.remaining_days === 1 ||
@@ -200,6 +207,7 @@ export default function DevicesLimit({
       <PlanExpired
         open={openExpiredDialog}
         onClose={() => setOpenExpiredDialog(false)}
+        loginData={loginData}
       />
       <UpgradeTime
         open={openCountDownDialog}
