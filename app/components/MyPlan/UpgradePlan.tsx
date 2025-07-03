@@ -24,6 +24,8 @@ import Slider, { Settings } from 'react-slick';
 import { setLoader } from '@/app/redux/slices/loader';
 import { useRouter } from 'next/navigation';
 import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
+import ConfirmationUpgradePlanDialog from './Dialog/ConfirmationUpgradePlanDialog';
+import UpgradePlanVerification from './Dialog/UpgradePlanVerification';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -50,6 +52,12 @@ const UpgradePlan = () => {
   );
   const fetchedUser = useSelector(selectFetchedUser);
   const router = useRouter();
+  const [confirmationDialog, setConfirmationDialog] = useState(false);
+  const [verificationDialog, setVerificationDialog] = useState(false);
+  const [pendingPlanData, setPendingPlanData] = useState<{
+    planSlug: string;
+    email: string;
+  } | null>(null);
 
   useEffect(() => {
     dispatch(fetchPlansList(billingCycle));
@@ -128,12 +136,21 @@ const UpgradePlan = () => {
   ) => {
     if (buttonLabel === 'Upgrade Now') {
       if (fetchedUser?.active_subscription?.plan?.name !== 'Free Tier') {
-        router.push(
-          `/upgrade-plan-verification?planSlug=${planSlug}&email=${fetchedUser?.email}`
-        );
+        setPendingPlanData({
+          planSlug,
+          email: fetchedUser?.email || '',
+        });
+        setConfirmationDialog(true);
       } else {
         router.push(`/order-summary?planId=${planId}`);
       }
+    }
+  };
+
+  const continueUpgrade = () => {
+    if (pendingPlanData) {
+      setConfirmationDialog(false);
+      setVerificationDialog(true);
     }
   };
 
@@ -455,6 +472,16 @@ const UpgradePlan = () => {
           </Box>
         </AccordionDetails>
       </Accordion>
+      <ConfirmationUpgradePlanDialog
+        open={confirmationDialog}
+        onClose={() => setConfirmationDialog(false)}
+        upgradeContinue={continueUpgrade}
+      />
+      <UpgradePlanVerification
+        open={verificationDialog}
+        onClose={() => setVerificationDialog(false)}
+        pendingPlanData={pendingPlanData}
+      />
     </>
   );
 };
