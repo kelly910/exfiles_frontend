@@ -19,6 +19,8 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Field, Form, Formik } from 'formik';
+import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
+import { useSelector } from 'react-redux';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -71,6 +73,7 @@ export default function UpgradePlanVerification({
   const [timer, setTimer] = useState(RESEND_TIME);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  const fetchedUser = useSelector(selectFetchedUser);
 
   useEffect(() => {
     if (pendingPlanData && open) {
@@ -183,8 +186,11 @@ export default function UpgradePlanVerification({
 
         setTimeout(() => {
           if (isSuccess) {
+            showToast('success', 'Plan upgrade successfully!');
             onClose();
-            showToast('success', 'OTP verified successfully!');
+            if (fetchedUser) {
+              dispatch(getUserById(fetchedUser?.id));
+            }
             router.push('/plans');
           } else {
             showToast('error', 'OTP verification failed. Please try again.');

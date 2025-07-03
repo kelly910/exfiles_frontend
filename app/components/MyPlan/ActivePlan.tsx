@@ -229,10 +229,18 @@ const GradientCircularProgress = styled(CircularProgress)(() => ({
 function CircularProgressWithLabel(
   props: CircularProgressProps & { value: number }
 ) {
+  const dispatch = useAppDispatch();
   const fetchedUser = useSelector(selectFetchedUser);
   const usedRaw = parseFloat(fetchedUser?.storage?.split('/')[0] || '0');
   const used = Math.ceil(usedRaw * 100) / 100;
   const total = parseFloat(fetchedUser?.storage?.split('/')[1] || '0');
+
+  useEffect(() => {
+    if (fetchedUser) {
+      dispatch(getUserById(fetchedUser?.id));
+    }
+  }, [dispatch]);
+
   return (
     <Box
       sx={{
