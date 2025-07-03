@@ -349,7 +349,7 @@ export default function Conversation({ threadId }: { threadId: string }) {
                     {groupedData[date].map((record: ChatMessage) => (
                       <React.Fragment key={record.uuid}>
                         {loggedInUser &&
-                        loggedInUser.data.id == record.sender ? (
+                        loggedInUser.data?.id == record.sender ? (
                           <>
                             {record.uploaded_documents?.length > 0 ? (
                               <QuestionCardWithFiles

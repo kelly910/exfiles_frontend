@@ -22,6 +22,10 @@
 
   --Background-Color: #11101B;
 
+  --Icon-Color: rgb(255, 255, 255);
+  --Icon-Color-Rgb: rgb(255, 255, 255);
+  --Black-Color: #1B1A25;
+
   --Bold: 700;
   --Medium: 600;
   --Regular: 500;
@@ -45,7 +49,7 @@
 }
 
 
-/* html[data-theme='dark'] {
+html[data-theme='dark'] {
   --Primary-Text-Color: #11101B;
   --Subtext-Color: #898B94;
   --Txt-On-Gradient: #FFFFFF;
@@ -62,7 +66,10 @@
   --Red-Color: #E72240;
 
   --Background-Color: #FEFEFE;
-} */
+
+  --Icon-Color: rgb(185, 72, 255);
+  --Icon-Color-Rgb: rgb(185, 72, 255, 0.2);
+}
 
 /* WebKit Browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
@@ -94,6 +101,19 @@
   /* thumb color & track color */
 }
 
+body .MuiInputBase-input:-webkit-autofill {
+  -webkit-text-fill-color: var(--Primary-Text-Color);
+  box-shadow: 0 0 0px 1000px #b948ff20 inset;
+  caret-color: var(--Primary-Text-Color);
+}
+
+body .MuiInputBase-input:-webkit-autofill:hover,
+body .MuiInputBase-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--Primary-Text-Color);
+  caret-color: var(--Primary-Text-Color);
+}
+
+
 /* Internet Explorer & Edge (Legacy) */
 main.chat-body {
   -ms-overflow-style: none;
@@ -122,7 +142,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  font-family: "Fustat", sans-serif;
+  font-family: var(--font-fustat);
 }
 
 body {
@@ -141,6 +161,10 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+html {
+  background: var(--Background-Color);
 }
 
 /* new custom componants css */
@@ -273,7 +297,7 @@ input {
   font-size: var(--SubTitle-5) !important;
   line-height: var(--SubTitle-5);
   outline: 0.5px solid transparent;
-  transition: all 0.4s;
+  transition: all 0.2s;
 }
 
 .btn.btn-primary-arrow:hover {
@@ -383,7 +407,7 @@ input {
   min-width: 140px;
   white-space: nowrap;
   outline: 0.5px solid transparent;
-  transition: all 0.4s;
+  transition: all 0.2s;
 }
 
 .download-document-btn {
@@ -395,6 +419,7 @@ input {
 }
 
 .generate-document-btn {
+  color: var(--Primary-Text-Color) !important;
   background: transparent !important;
   outline: 1px solid var(--Card-Border) !important;
 }
@@ -402,6 +427,7 @@ input {
 .generate-document-btn img {
   margin-left: 4px;
 }
+
 
 .filter-date {
   background: transparent !important;
@@ -883,18 +909,42 @@ input::-webkit-inner-spin-button {
 @media (max-width: 500px) {
   .plan-slider .slick-track .slick-slide {
     padding-right: 0;
-    padding: 0 10px;
+    padding: 20px 10px;
   }
 }
 
 
 /*  */
 
+:root[data-theme='dark'] .btn.btn-primary-arrow span.incident,
+:root[data-theme='dark'] .btn-arrow span.arrow,
+:root[data-theme='dark'] .btn.btn-primary-arrow span.arrow {
+  filter: brightness(0) invert(1);
+}
+
+:root[data-theme='dark'] .btn.btn-primary-arrow span.incident {
+  filter: unset;
+}
+
+:root[data-theme='dark'] .btn.btn-secondary {
+  color: var(--Card-Border);
+  border-color: var(--Card-Border);
+}
+
+:root[data-theme='dark'] .btn.btn-pluse img {
+  filter: brightness(0) invert(1);
+}
+
+:root[data-theme='dark'] .generate-document-btn img {
+  filter: brightness(0) !important;
+}
+
 .subscription-slider .slick-slider .slick-list {
   margin: -20px 0;
   padding: 20px 1px;
 }
 
+body .limitation,
 body .limitation,
 body .btn.limitation {
   color: var(--Subtext-Color) !important;
@@ -909,6 +959,7 @@ body .btn.limitation:hover {
 }
 
 body .limitation img,
+body .limitation img,
 body .btn.limitation img {
   filter: brightness(0.5);
 }
@@ -916,5 +967,3 @@ body .btn.limitation img {
 .limitation-icon {
   filter: brightness(0) invert(0.5);
 }
-
-/*  */

@@ -70,9 +70,17 @@
 
         &.active,
         &:hover {
+          p {
+            [data-theme='dark'] & {
+              color: var(--Primary-Text-Color);
+              font-weight: var(--Medium);
+            }
+          }
+
           background-color: var(--Card-Image);
         }
 
+        svg,
         img {
           flex: 0 0 auto;
           margin-right: 5.5px;
@@ -86,6 +94,11 @@
           line-height: 1.4;
           color: var(--Primary-Text-Color);
           margin-right: 4px;
+
+          [data-theme='dark'] & {
+            color: var(--Subtext-Color);
+            font-weight: var(--Lighter);
+          }
         }
       }
     }
@@ -145,6 +158,11 @@
       line-height: 22.65px;
       color: var(--Primary-Text-Color);
       margin-top: 12px;
+
+      [data-theme='dark'] & {
+        color: var(--Subtext-Color);
+
+      }
     }
   }
 }
@@ -216,7 +234,7 @@
     transition: all 0.2s;
 
     &:hover {
-      color: var(--Primary-Text-Color);
+      color: var(--Subtext-Color);
     }
   }
 
@@ -332,7 +350,7 @@
 
   .mobileInput svg {
     right: 0;
-    fill: white;
+    fill: var(--Primary-Text-Color);
     top: 0;
     transform: translateY(50%);
   }

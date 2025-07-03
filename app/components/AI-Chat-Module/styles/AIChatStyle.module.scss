@@ -138,6 +138,11 @@
   padding: 1px;
   overflow: hidden;
 
+  [data-theme='dark'] & {
+    border: 1px solid var(--Stroke-Color);
+    padding: 0;
+  }
+
   .chatBox {
     background-color: var(--Card-Color);
     padding: 24px 16px;
@@ -173,7 +178,7 @@
     right: 0px;
     bottom: 0px;
     background: var(--Main-Gradient);
-    z-index: -1;
+    z-index: 0;
     border-radius: 14px;
   }
 }
@@ -484,3 +489,21 @@
 }
 
 // Drag and drop styles
+
+// dark mode
+
+:root[data-theme='dark'] {
+  .chatBoard {
+    background-color: var(--Input-Box-Colors);
+
+    .fileInput {
+      background-color: var(--Txt-On-Gradient);
+    }
+  }
+
+  .fileIcon {
+    .clip {
+      filter: brightness(0.5);
+    }
+  }
+}

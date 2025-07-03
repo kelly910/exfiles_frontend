@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
 import { cancelPlanSubscription } from '@/app/redux/slices/planHistory';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 import CancelDialog from './Dialog/CancelPlanDialog';
 
 export default function ActivePlan() {
@@ -75,6 +76,8 @@ export default function ActivePlan() {
       }, 2000);
     }
   };
+
+  const { theme } = useThemeMode();
 
   return (
     <>
@@ -148,7 +151,15 @@ export default function ActivePlan() {
                 </Typography>
               </Typography>
             </Box>
-            <Box className={styles['plan-footer']}>
+            <Box
+              className={styles['plan-footer']}
+              sx={{
+                borderTop:
+                  theme === 'dark'
+                    ? '1px solid var(--Subtext-Color)'
+                    : '1px solid var(--Stroke-Color)',
+              }}
+            >
               <Box className={styles['plan-footer-description']}>
                 <Typography variant="body2">
                   <Typography component="span" variant="body2">

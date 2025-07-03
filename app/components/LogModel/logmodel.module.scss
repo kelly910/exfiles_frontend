@@ -37,7 +37,7 @@
     font-weight: var(--Bold);
     font-size: var(--SubTitle-1);
     line-height: 1.4;
-    color: var(--Txt-On-Gradient);
+    color: var(--Primary-Text-Color);
   }
 }
 
@@ -109,7 +109,6 @@
   box-sizing: border-box;
   width: 100%;
   color: var(--Subtext-Color);
-  background: var(--Input-Box-Colors);
   transition: background 0.3s ease;
   font-size: var(--SubTitle-2);
   font-weight: var(--Lighter);
@@ -154,7 +153,6 @@
 // upload
 
 .dialogContent {
-  background-color: var(--Input-Box-Colors);
   border: 1px solid var(--Stroke-Color);
   border-radius: 10px;
   padding: 18px 20px;
@@ -211,7 +209,7 @@
       }
 
       svg {
-        fill: white;
+        fill: var(--Primary-Text-Color);
       }
     }
   }
@@ -347,14 +345,12 @@
       align-items: center;
       gap: 4px;
       padding: 2px 8px;
-      background: var(--Stroke-Color);
       border-radius: 500px;
       max-width: 100%;
 
       .logListBodyTagTitle {
         font-weight: var(--Lighter);
         font-size: var(--SubTitle-4);
-        color: var(--Subtext-Color);
         white-space: nowrap;
         text-overflow: ellipsis;
         max-width: 100%;

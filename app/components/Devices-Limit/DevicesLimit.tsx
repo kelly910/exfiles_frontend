@@ -16,6 +16,7 @@ import PlanExpired from '../Plan-Expired/PlanExpired';
 import { useGoogleLogin } from '@react-oauth/google';
 import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 import { showToast } from '@/app/shared/toast/ShowToast';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -158,6 +159,8 @@ export default function DevicesLimit({
     }
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <React.Fragment>
@@ -173,12 +176,21 @@ export default function DevicesLimit({
         >
           <Box component="div" className={Style.dialogHeader}>
             <figure>
-              <Image
-                src="/images/DevicesLimit.svg"
-                alt="DevicesLimit"
-                width={120}
-                height={100}
-              />
+              {theme === 'dark' ? (
+                <Image
+                  src="/images/DevicesLimitLite.svg"
+                  alt="DevicesLimit"
+                  width={120}
+                  height={100}
+                />
+              ) : (
+                <Image
+                  src="/images/DevicesLimit.svg"
+                  alt="DevicesLimit"
+                  width={120}
+                  height={100}
+                />
+              )}
             </figure>
             <h2>Login Devices Limit Exceeded</h2>
             <p>

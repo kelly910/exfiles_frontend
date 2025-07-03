@@ -109,7 +109,7 @@
     background-color: var(--Stroke-Color);
     top: 50%;
     left: 50%;
-    z-index: -1;
+    z-index: 1;
     transform: translate(-50%, 50%);
   }
 
@@ -129,6 +129,8 @@
     text-align: center;
     text-transform: uppercase;
     color: var(--Subtext-Color);
+    position: relative;
+    z-index: 2;
   }
 }
 
@@ -950,6 +952,19 @@ span.chatTime {
 
       @media (max-width: 1200px) {
         font-size: var(--SubTitle-3);
+      }
+    }
+  }
+}
+
+:root[data-theme='dark'] {
+  .chatAlFileSummary {
+
+    img {
+      filter: brightness(10) invert(1);
+
+      &:first-child {
+        filter: brightness(10) invert(1);
       }
     }
   }

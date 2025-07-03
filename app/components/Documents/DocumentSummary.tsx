@@ -32,6 +32,7 @@ import { showToast } from '@/app/shared/toast/ShowToast';
 import { editSummaryValidation } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useRouter } from 'next/navigation';
 import { selectFetchedUser } from '@/app/redux/slices/login';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 interface DocumentSummaryProps {
   docId: string;
@@ -157,6 +158,8 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     }, 1000);
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       {mobileView ? (
@@ -193,12 +196,18 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     className={styles.closeButton}
                     sx={{ marginBottom: '24px' }}
                   >
-                    <Image
-                      src="/images/close.svg"
-                      alt="user"
-                      width={16}
-                      height={16}
-                    />
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                        fill="var(--Primary-Text-Color)"
+                      />
+                    </svg>
                   </Button>
                 </Box>
                 <div className={styles.docsInnerTag}>
@@ -207,6 +216,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       key={tag?.id}
                       dangerouslySetInnerHTML={{
                         __html: highlightText(tag?.name, searchParams),
+                      }}
+                      style={{
+                        background:
+                          theme === 'dark'
+                            ? 'var(--Background-Color)'
+                            : 'var(--Card-Image)',
                       }}
                     ></span>
                   ))}
@@ -278,7 +293,10 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                                     borderRadius: '12px',
                                     borderWidth: '0px',
                                     color: 'var(--Primary-Text-Color)',
-                                    backgroundColor: 'var(--Input-Box-Colors)',
+                                    backgroundColor:
+                                      theme === 'dark'
+                                        ? 'var(--Card-Color)'
+                                        : 'var(--Input-Box-Colors)',
                                     padding: '14px 16px',
                                     '& .MuiOutlinedInput-notchedOutline': {
                                       top: '-10px !important',
@@ -453,12 +471,21 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       className={styles.backButton}
                       sx={{ marginBottom: '24px' }}
                     >
-                      <Image
-                        src="/images/arrow-left.svg"
-                        alt="user"
-                        width={16}
-                        height={16}
-                      />
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
+                          stroke="var(--Primary-Text-Color)"
+                          stroke-miterlimit="10"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
                     </Button>
                     <div className={styles.docsInner}>
                       <Typography
@@ -485,12 +512,18 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       className={styles.closeButton}
                       sx={{ marginBottom: '24px' }}
                     >
-                      <Image
-                        src="/images/close.svg"
-                        alt="user"
-                        width={16}
-                        height={16}
-                      />
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                          fill="var(--Primary-Text-Color)"
+                        />
+                      </svg>
                     </Button>
                   </Box>
                   <div className={styles.docsInnerTag}>
@@ -499,6 +532,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         key={tag?.id}
                         dangerouslySetInnerHTML={{
                           __html: highlightText(tag?.name, searchParams),
+                        }}
+                        style={{
+                          background:
+                            theme === 'dark'
+                              ? 'var(--Background-Color)'
+                              : 'var(--Card-Image)',
                         }}
                       ></span>
                     ))}

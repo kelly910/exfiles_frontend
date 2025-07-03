@@ -73,6 +73,7 @@
         padding: 4px 4px 4px 12px;
         width: 100%;
         color: var(--Subtext-Color);
+        background: var(--Background-Color);
 
         &::after {
           content: none !important;
@@ -123,18 +124,16 @@
     cursor: pointer;
 
     .search {
-      background-image: url('/images/search.svg');
+      // background-image: url('/images/search.svg');
       width: 28px;
       height: 28px;
       aspect-ratio: 1 / 1;
-      display: block;
-      position: relative;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       border: 0.72px solid var(--Stroke-Color);
-      background-color: var(--Card-Image);
-      padding: 7px;
+      background-color: var(--Card-Color);
+      padding: 6px;
       border-radius: 8px;
     }
   }

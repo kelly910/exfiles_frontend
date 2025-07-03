@@ -37,7 +37,7 @@
     font-weight: var(--Bold);
     font-size: var(--SubTitle-2);
     line-height: 1.4;
-    color: var(--Txt-On-Gradient);
+    color: var(--Primary-Text-Color);
     word-break: break-word;
   }
 }
@@ -129,7 +129,6 @@
       .logListBodyTagTitle {
         font-weight: var(--Lighter);
         font-size: var(--SubTitle-4);
-        color: var(--Subtext-Color);
         white-space: nowrap;
         text-overflow: ellipsis;
         max-width: 100%;

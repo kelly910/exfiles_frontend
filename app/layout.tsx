@@ -11,6 +11,8 @@ import FullPageLoader from './components/Full-Page-Loader/FullPageLoader';
 import ClientAuthCheck from './components/ClientAuthCheck';
 import { SearchProvider } from './components/AI-Chat-Module/context/SearchContext';
 import GoogleAnalytics from './components/GoogleAnalytics';
+import { ThemeProviderMode } from '@/app/utils/ThemeContext';
+import ThemeToggleButton from './components/ThemeToggleButton';
 
 // const fustatFont = localFont({
 //   src: './fonts/Fustat-VariableFont_wght.woff',
@@ -41,25 +43,28 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>
-        {isProduction && <GoogleAnalytics />}
-        <SearchProvider>
-          <ClientAuthCheck>
-            <GoogleOAuthProvider
-              clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}
-            >
-              <ReduxProvider>
-                <ThemeRegistry>
-                  <ToastProvider>
-                    <FullPageLoader />
-                    {children}
-                  </ToastProvider>
-                </ThemeRegistry>
-              </ReduxProvider>
-            </GoogleOAuthProvider>
-          </ClientAuthCheck>
-        </SearchProvider>
-      </body>
+      <ThemeProviderMode>
+        <body>
+          <ThemeToggleButton />
+          {isProduction && <GoogleAnalytics />}
+          <SearchProvider>
+            <ClientAuthCheck>
+              <GoogleOAuthProvider
+                clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}
+              >
+                <ReduxProvider>
+                  <ThemeRegistry>
+                    <ToastProvider>
+                      <FullPageLoader />
+                      {children}
+                    </ToastProvider>
+                  </ThemeRegistry>
+                </ReduxProvider>
+              </GoogleOAuthProvider>
+            </ClientAuthCheck>
+          </SearchProvider>
+        </body>
+      </ThemeProviderMode>
     </html>
   );
 }

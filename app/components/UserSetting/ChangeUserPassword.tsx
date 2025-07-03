@@ -19,6 +19,7 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { changeUserPassword } from '@/app/redux/slices/changePassword';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export interface ChangePasswordFormValues {
   old_password: string;
@@ -77,6 +78,8 @@ const ChangeUserPassword = ({
     }
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <div className={styles.headerDialogBox}>
@@ -130,7 +133,10 @@ const ChangeUserPassword = ({
                           borderRadius: '12px',
                           borderWidth: '0px',
                           color: 'var(--Primary-Text-Color)',
-                          backgroundColor: 'var(--Input-Box-Colors)',
+                          backgroundColor:
+                            theme === 'dark'
+                              ? 'var(--Txt-On-Gradient)'
+                              : 'var(--Input-Box-Colors)',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
@@ -149,10 +155,10 @@ const ChangeUserPassword = ({
                             borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                             borderWidth: '1px',
                             color: 'var(--Txt-On-Gradient)',
                           },
@@ -247,7 +253,10 @@ const ChangeUserPassword = ({
                           borderRadius: '12px',
                           borderWidth: '0px',
                           color: 'var(--Primary-Text-Color)',
-                          backgroundColor: 'var(--Input-Box-Colors)',
+                          backgroundColor:
+                            theme === 'dark'
+                              ? 'var(--Txt-On-Gradient)'
+                              : 'var(--Input-Box-Colors)',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
@@ -266,10 +275,10 @@ const ChangeUserPassword = ({
                             borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                             borderWidth: '1px',
                             color: 'var(--Txt-On-Gradient)',
                           },
@@ -361,7 +370,10 @@ const ChangeUserPassword = ({
                           borderRadius: '12px',
                           borderWidth: '0px',
                           color: 'var(--Primary-Text-Color)',
-                          backgroundColor: 'var(--Input-Box-Colors)',
+                          backgroundColor:
+                            theme === 'dark'
+                              ? 'var(--Txt-On-Gradient)'
+                              : 'var(--Input-Box-Colors)',
                           '& .MuiOutlinedInput-notchedOutline': {
                             top: '-10px !important',
                           },
@@ -380,10 +392,10 @@ const ChangeUserPassword = ({
                             borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: 'var(--Txt-On-Gradient)',
+                            borderColor: 'var(--Primary-Text-Color)',
                             borderWidth: '1px',
                             color: 'var(--Txt-On-Gradient)',
                           },

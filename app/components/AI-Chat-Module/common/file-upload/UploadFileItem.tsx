@@ -5,6 +5,7 @@ import DocUploadStyles from '@components/AI-Chat-Module/styles/DocumentUploadMod
 import { Box, LinearProgress, TextField, Typography } from '@mui/material';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { formatFileSizeLabel, getDocumentImage } from '@/app/utils/functions';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 interface FileItemProps {
   isShowDescField?: boolean;
@@ -66,6 +67,8 @@ export default function UploadFileItem({
     };
   }, [debouncedHandleFileDesc]);
 
+  const { theme } = useThemeMode();
+
   return (
     <Box component="div" className={DocUploadStyles.fileBoxInner}>
       <div className={DocUploadStyles.fileGridBox}>
@@ -106,6 +109,9 @@ export default function UploadFileItem({
               height={16}
               className={DocUploadStyles.trashImg}
               onClick={() => onRemove(fileId)}
+              style={{
+                filter: theme === 'dark' ? 'brightness(0) invert(0)' : 'unset',
+              }}
             />
           )}
         </div>
@@ -146,8 +152,8 @@ export default function UploadFileItem({
                   background: 'var(--Card-Color)',
                   // backgroundColor: 'var(--Input-Box-Colors)',
                   '&::placeholder': {
-                    color: 'var(--Txt-On-Gradient)',
-                    // color: 'var(--Primary-Text-Color)',
+                    // color: 'var(--Txt-On-Gradient)',
+                    color: 'var(--Primary-Text-Color)',
                     fontWeight: 'var(--Lighter)',
                   },
                 },

@@ -11,6 +11,7 @@ import { RootState } from '@/app/redux/store';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getPaymentDetailsByTransactionId } from '@/app/redux/slices/paymentStatus';
 import dayjs from 'dayjs';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export default function PaymentSuccessful() {
   const isMobile = useMediaQuery('(max-width:768px)');
@@ -53,6 +54,8 @@ export default function PaymentSuccessful() {
   if (salesTaxAmount === 0) {
     salesTaxAmount = (planBasePrice * salesTaxPercentage) / 100;
   }
+
+  const { theme } = useThemeMode();
 
   return (
     <>
@@ -126,7 +129,9 @@ export default function PaymentSuccessful() {
                           Plan Price
                         </Typography>
                         <Typography variant="body2" component="span">
-                          ${paymentData?.plan_base_price || '0.00'}
+                          $
+                          {Number(paymentData?.plan_base_price) -
+                            Number(salesTaxAmount) || '0.00'}
                         </Typography>
                       </Box>
                       <Box className={Styles.PaymentCardDetailsListPlanInner}>
@@ -149,12 +154,21 @@ export default function PaymentSuccessful() {
                   </Box>
                 </Box>
                 <Box className={Styles.PaymentCardBoxBorder}>
-                  <Image
-                    src="images/PaymentBorder.svg"
-                    width={550}
-                    height={50}
-                    alt="PaymentBorder"
-                  />
+                  {theme === 'dark' ? (
+                    <Image
+                      src="images/PaymentBorderLight.svg"
+                      width={550}
+                      height={50}
+                      alt="PaymentBorder"
+                    />
+                  ) : (
+                    <Image
+                      src="images/PaymentBorder.svg"
+                      width={550}
+                      height={50}
+                      alt="PaymentBorder"
+                    />
+                  )}
                 </Box>
                 <Box className={Styles.PaymentCardButton}>
                   <Button
