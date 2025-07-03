@@ -766,12 +766,21 @@ export default function LogModel({
                         }}
                       >
                         <Box>
-                          <Image
-                            src="/images/upload-img-new.png"
-                            alt="Upload-img"
-                            width={51}
-                            height={55}
-                          />
+                          {theme === 'dark' ? (
+                            <Image
+                              src="/images/upload-img-new-light.png"
+                              alt="Upload-img"
+                              width={51}
+                              height={55}
+                            />
+                          ) : (
+                            <Image
+                              src="/images/upload-img-new.png"
+                              alt="Upload-img"
+                              width={51}
+                              height={55}
+                            />
+                          )}
                           <Typography gutterBottom>
                             Click here to upload Supported Evidences
                           </Typography>

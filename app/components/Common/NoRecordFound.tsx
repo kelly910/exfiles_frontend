@@ -6,10 +6,10 @@ import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export default function NoRecordFound({
   title,
-  imageSrc,
+  // imageSrc,
 }: {
   title: string;
-  imageSrc?: string;
+  // imageSrc?: string;
 }) {
   const { theme } = useThemeMode();
   return (

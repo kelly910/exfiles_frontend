@@ -961,10 +961,10 @@ span.chatTime {
   .chatAlFileSummary {
 
     img {
-      filter: brightness(1) invert(0.4);
+      filter: brightness(10) invert(1);
 
       &:first-child {
-        filter: brightness(1) invert(0.4);
+        filter: brightness(10) invert(1);
       }
     }
   }

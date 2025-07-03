@@ -15,7 +15,6 @@ import {
   Typography,
 } from '@mui/material';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import Image from 'next/image';
 import { feedbackValidation } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { setLoader } from '@/app/redux/slices/loader';

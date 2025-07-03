@@ -107,10 +107,10 @@ export default function FilterModal({
                 },
                 '&[aria-checked="true"].Mui-selected': {
                   backgroundColor: 'var(--Card-Border)',
-                  color: 'var(--Primary-Text-Color)',
+                  color: 'var(--Txt-On-Gradient)',
                   '&:hover': {
                     backgroundColor: 'var(--Card-Border)',
-                    color: 'var(--Primary-Text-Color)',
+                    color: 'var(--Txt-On-Gradient)',
                   },
                 },
                 '&.MuiPickersDay-today': {
@@ -140,11 +140,11 @@ export default function FilterModal({
               },
               '&[aria-selected="true"].Mui-selected': {
                 backgroundColor: 'var(--Card-Border)',
-                color: 'var(--Primary-Text-Color)',
+                color: 'var(--Txt-On-Gradient)',
                 '&:hover': {
                   backgroundColor: 'var(--Card-Border)',
                   border: '1px solid var(--Card-Border)',
-                  color: 'var(--Primary-Text-Color)',
+                  color: 'var(--Txt-On-Gradient)',
                 },
               },
               '&[aria-current="date"].MuiPickersDay-today': {

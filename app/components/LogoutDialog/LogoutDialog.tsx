@@ -13,7 +13,6 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { logout } from '@/app/redux/slices/profileSetting';

@@ -45,7 +45,7 @@ export default function RootLayout({
     <html lang="en">
       <ThemeProviderMode>
         <body>
-          {/* <ThemeToggleButton /> */}
+          <ThemeToggleButton />
           {isProduction && <GoogleAnalytics />}
           <SearchProvider>
             <ClientAuthCheck>

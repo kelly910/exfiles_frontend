@@ -5,7 +5,6 @@ import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { deepmerge } from '@mui/utils';
 import { Box, Button, Typography } from '@mui/material';
 import Style from '@components/Common/Sidebar.module.scss';
-import Image from 'next/image';
 import { Dayjs } from 'dayjs';
 import { useState } from 'react';
 
@@ -90,10 +89,10 @@ export default function DateSelectionFilter({
                 },
                 '&[aria-checked="true"].Mui-selected': {
                   backgroundColor: 'var(--Card-Border)',
-                  color: 'var(--Primary-Text-Color)',
+                  color: 'var(--Txt-On-Gradient)',
                   '&:hover': {
                     backgroundColor: 'var(--Card-Border)',
-                    color: 'var(--Primary-Text-Color)',
+                    color: 'var(--Txt-On-Gradient)',
                   },
                 },
                 '&.MuiPickersDay-today': {
@@ -123,11 +122,11 @@ export default function DateSelectionFilter({
               },
               '&[aria-selected="true"].Mui-selected': {
                 backgroundColor: 'var(--Card-Border)',
-                color: 'var(--Primary-Text-Color)',
+                color: 'var(--Txt-On-Gradient)',
                 '&:hover': {
                   backgroundColor: 'var(--Card-Border)',
                   border: '1px solid var(--Card-Border)',
-                  color: 'var(--Primary-Text-Color)',
+                  color: 'var(--Txt-On-Gradient)',
                 },
               },
               '&[aria-current="date"].MuiPickersDay-today': {
