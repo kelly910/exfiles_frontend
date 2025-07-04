@@ -17,7 +17,6 @@ import { sendOtp, upgradePlanVerification } from '@/app/redux/slices/register';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/app/redux/hooks';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Field, Form, Formik } from 'formik';
 import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
 import { useSelector } from 'react-redux';
@@ -364,14 +363,6 @@ export default function UpgradePlanVerification({
               </Formik>
             </Box>
           </Box>
-
-          <div className={styles.before}>
-            <Image src="/images/before.svg" alt="-" height={500} width={500} />
-          </div>
-
-          <div className={styles.after}>
-            <Image src="/images/after.svg" alt="-" height={306} width={947} />
-          </div>
         </BootstrapDialog>
       </React.Fragment>
     </>
