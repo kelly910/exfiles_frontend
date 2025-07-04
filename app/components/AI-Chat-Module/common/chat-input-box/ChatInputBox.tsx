@@ -184,6 +184,9 @@ export default function ChatInputBox({
   };
 
   const handleMessageSending = async () => {
+    if (chatUsedCheck) {
+      setLimitDialog(true);
+    } else {
     if (uploadedFiles && uploadedFiles?.length > 0) {
       const payloadDocs = uploadedFiles
         .filter(({ uploadedFileId }) => typeof uploadedFileId === 'number')
@@ -222,6 +225,7 @@ export default function ChatInputBox({
       };
       sendMessage(message);
       setText('');
+    }
     }
   };
 
@@ -298,9 +302,7 @@ export default function ChatInputBox({
           multiline
           minRows={1}
           maxRows={3}
-          disabled={
-            !fetchedUser?.staff_user && (expiredStatus === 0 || chatUsedCheck)
-          }
+          disabled={!fetchedUser?.staff_user && expiredStatus === 0}
           style={{ width: '100%' }}
           sx={{
             '.Mui-disabled': {
@@ -311,11 +313,10 @@ export default function ChatInputBox({
           endAdornment={
             <InputAdornment
               position="end"
-              className={`${AIChatStyles.fileIcon} ${fetchedUser?.staff_user !== true && (expiredStatus === 0 || chatUsedCheck) ? 'limitation-icon' : ''}`}
+              className={`${AIChatStyles.fileIcon} ${fetchedUser?.staff_user !== true && expiredStatus === 0 ? 'limitation-icon' : ''}`}
               onClick={handleOpenDocUploadModal}
               disablePointerEvents={
-                !fetchedUser?.staff_user &&
-                (expiredStatus === 0 || chatUsedCheck)
+                !fetchedUser?.staff_user && expiredStatus === 0
               }
             >
               <span className={AIChatStyles.clip}></span>
@@ -323,7 +324,7 @@ export default function ChatInputBox({
           }
           startAdornment={
             !fetchedUser?.staff_user &&
-            (expiredStatus === 0 || chatUsedCheck) && (
+            expiredStatus === 0 && (
               <InputAdornment position="start">
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <svg
@@ -348,14 +349,13 @@ export default function ChatInputBox({
       <Button
         type="button"
         variant="contained"
-        className={`btn-arrow ${fetchedUser?.staff_user !== true && (expiredStatus === 0 || chatUsedCheck) ? 'limitation' : ''}`}
+        className={`btn-arrow ${fetchedUser?.staff_user !== true && expiredStatus === 0 ? 'limitation' : ''}`}
         color="primary"
         fullWidth
         onClick={handleMessageSending}
         disabled={
           isSendDisabled ||
-          (fetchedUser?.staff_user !== true &&
-            (expiredStatus === 0 || chatUsedCheck))
+          (fetchedUser?.staff_user !== true && expiredStatus === 0)
         }
       >
         {isLoadingProp ? (
@@ -392,7 +392,7 @@ export default function ChatInputBox({
             ? 'Your Storage Limit is Over'
             : limitType === 'messages-documents'
               ? 'Your Document Upload Limit is Over'
-              : 'Your Summary Generation Limit is Over'
+              : 'Your Copilot Chats Limit is Over'
       }
       subtitle={
         limitType === 'ai-summaries'
@@ -401,7 +401,7 @@ export default function ChatInputBox({
             ? 'Storage'
             : limitType === 'messages-documents'
               ? 'Message-Documents'
-              : 'Summary'
+              : 'Chats'
       }
       stats={
         limitType === 'ai-summaries'
@@ -410,7 +410,7 @@ export default function ChatInputBox({
             ? fetchedUser?.storage
             : limitType === 'messages-documents'
               ? '-/-'
-              : fetchedUser?.summary_used
+              : fetchedUser?.chat_used
       }
     />
     </>

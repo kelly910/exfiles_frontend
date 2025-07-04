@@ -215,7 +215,7 @@ export default function OrderSummary() {
                       disabled={loading}
                     >
                       {loading ? (
-                        <CircularProgress size={20} color="inherit" />
+                        <CircularProgress size={24} color="inherit" />
                       ) : (
                         'Pay Now'
                       )}

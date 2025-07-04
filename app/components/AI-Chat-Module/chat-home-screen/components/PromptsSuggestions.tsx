@@ -26,11 +26,6 @@ export default function PromptsSuggestions({
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
 
-  const chatUsedCheck =
-    fetchedUser?.chat_used?.split('/')[0] ===
-      fetchedUser?.chat_used?.split('/')[1] &&
-    fetchedUser?.chat_grace_point_used === true;
-
   return (
     <Grid
       container
@@ -66,13 +61,10 @@ export default function PromptsSuggestions({
           <div className={AIChatStyles.chatBox}>
             <Typography variant="body1">{CHAT_PROMPS[0]}</Typography>
             <Button
-              disabled={
-                !fetchedUser?.staff_user &&
-                (expiredStatus === 0 || chatUsedCheck)
-              }
+              disabled={!fetchedUser?.staff_user && expiredStatus === 0}
               type="button"
               variant="contained"
-              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${fetchedUser?.staff_user !== true && (expiredStatus === 0 || chatUsedCheck) ? 'limitation' : ''}`}
+              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${fetchedUser?.staff_user !== true && expiredStatus === 0 ? 'limitation' : ''}`}
               color="primary"
               fullWidth
               onClick={() => handlePromptClick(CHAT_PROMPS[0])}
@@ -88,13 +80,10 @@ export default function PromptsSuggestions({
           <div className={AIChatStyles.chatBox}>
             <Typography variant="body1">{CHAT_PROMPS[1]}</Typography>
             <Button
-              disabled={
-                !fetchedUser?.staff_user &&
-                (expiredStatus === 0 || chatUsedCheck)
-              }
+              disabled={!fetchedUser?.staff_user && expiredStatus === 0}
               type="button"
               variant="contained"
-              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${fetchedUser?.staff_user !== true && (expiredStatus === 0 || chatUsedCheck) ? 'limitation' : ''}`}
+              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${fetchedUser?.staff_user !== true && expiredStatus === 0 ? 'limitation' : ''}`}
               color="primary"
               fullWidth
               onClick={() => handlePromptClick(CHAT_PROMPS[1])}
