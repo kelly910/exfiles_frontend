@@ -860,6 +860,11 @@
   border: 1px solid var(--Stroke-Color);
   border-radius: 10px;
   padding: 0;
+  background: var(--Input-Box-Colors);
+
+  [data-theme='dark'] & {
+    background: var(--Txt-On-Gradient);
+  }
 }
 
 .filter-btn-box {

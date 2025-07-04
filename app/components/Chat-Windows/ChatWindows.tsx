@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export default function ChatWindows() {
   const chatDate = ['March 5, 2025', '25-03-2025', 'today'];
@@ -46,6 +47,7 @@ function ChatDate({ date }: { date: string }) {
 }
 
 function ChatAl() {
+  const { theme } = useThemeMode();
   return (
     <Box component="div" className={styles.chatAl}>
       <Box component="div" className={styles.chatAlImg}>
@@ -56,6 +58,9 @@ function ChatAl() {
               width={40}
               height={40}
               src="/images/close-sidebar-logo.svg"
+              style={{
+                filter: theme === 'dark' ? 'brightness(0) invert(0)' : '',
+              }}
             />
           </IconButton>
         </Tooltip>

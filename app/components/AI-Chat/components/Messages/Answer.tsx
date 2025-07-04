@@ -16,6 +16,7 @@ import {
 import { useAppDispatch } from '@/app/redux/hooks';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useState } from 'react';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const DynamicEditCombineSummaryModal = dynamic(
   () => import('@/app/components/AI-Chat/components/Modals/EditCombinedSummary')
@@ -124,6 +125,8 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
     setIsOpenEditSummary(false);
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <Box component="div" className={chatMessagesStyles.chatAl}>
@@ -134,6 +137,9 @@ export default function Answer({ messageObj }: { messageObj: ChatMessage }) {
               width={40}
               height={40}
               src="/images/close-sidebar-logo.svg"
+              style={{
+                filter: theme === 'dark' ? 'brightness(0) invert(0)' : '',
+              }}
             />
           </IconButton>
         </Box>

@@ -32,6 +32,7 @@ import { useSearch } from '../../context/SearchContext';
 import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
 import { useSelector } from 'react-redux';
 import LimitOver from '@/app/components/Limit-Over/LimitOver';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const FileSummarySkeleton = () => {
   return (
@@ -151,6 +152,8 @@ export default function ShowGeneratedSummariesDocs({
     }
   }, [summaryGeneratedDocList]);
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <Box component="div" className={chatMessagesStyles.chatAl}>
@@ -161,6 +164,9 @@ export default function ShowGeneratedSummariesDocs({
               width={40}
               height={40}
               src="/images/close-sidebar-logo.svg"
+              style={{
+                filter: theme === 'dark' ? 'brightness(0) invert(0)' : '',
+              }}
             />
           </IconButton>
         </Box>

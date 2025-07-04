@@ -24,6 +24,7 @@ import { Dayjs } from 'dayjs';
 import { highlightText } from '@/app/utils/constants';
 import { selectFetchedUser } from '@/app/redux/slices/login';
 import { useSelector } from 'react-redux';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 const NoRecordFound = dynamic(() => import('@components/Common/NoRecordFound'));
 interface DynamicThreadsListProps {
   handleThreadClick: (threadUUID: string) => void;
@@ -238,6 +239,8 @@ export default function DynamicThreadsList({
     }
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <div
       ref={containerRef}
@@ -304,12 +307,41 @@ export default function DynamicThreadsList({
                     aria-expanded={'true'}
                     onClick={(e) => handleActionMenuClick(e, chat)}
                   >
-                    <Image
-                      src="/images/more.svg"
-                      alt="user-icon"
-                      height={10}
-                      width={10}
-                    />
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 11 11"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2.55539 4.44434C2.0665 4.44434 1.6665 4.84434 1.6665 5.33322C1.6665 5.82211 2.0665 6.22211 2.55539 6.22211C3.04428 6.22211 3.44428 5.82211 3.44428 5.33322C3.44428 4.84434 3.04428 4.44434 2.55539 4.44434Z"
+                        stroke={
+                          theme !== 'dark'
+                            ? 'var(--Primary-Text-Color)'
+                            : 'var(--Subtext-Color)'
+                        }
+                        stroke-width="0.8"
+                      />
+                      <path
+                        d="M8.77756 4.44434C8.28867 4.44434 7.88867 4.84434 7.88867 5.33322C7.88867 5.82211 8.28867 6.22211 8.77756 6.22211C9.26645 6.22211 9.66645 5.82211 9.66645 5.33322C9.66645 4.84434 9.26645 4.44434 8.77756 4.44434Z"
+                        stroke={
+                          theme !== 'dark'
+                            ? 'var(--Primary-Text-Color)'
+                            : 'var(--Subtext-Color)'
+                        }
+                        stroke-width="0.8"
+                      />
+                      <path
+                        d="M5.66672 4.44434C5.17783 4.44434 4.77783 4.84434 4.77783 5.33322C4.77783 5.82211 5.17783 6.22211 5.66672 6.22211C6.15561 6.22211 6.55561 5.82211 6.55561 5.33322C6.55561 4.84434 6.15561 4.44434 5.66672 4.44434Z"
+                        stroke={
+                          theme !== 'dark'
+                            ? 'var(--Primary-Text-Color)'
+                            : 'var(--Subtext-Color)'
+                        }
+                        stroke-width="0.8"
+                      />
+                    </svg>
                   </Button>
                 </div>
               )}
