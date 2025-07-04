@@ -1,5 +1,11 @@
 'use client';
-import { Box, Button, Typography, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import Styles from '@components/Order-Summary/OrderSummary.module.scss';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -20,6 +26,7 @@ export default function OrderSummary() {
   const dynamicPlanId = useSearchParams();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const { orderDetail } = useSelector(
     (state: RootState) => state.orderDetailSummary
@@ -56,12 +63,14 @@ export default function OrderSummary() {
   }, []);
 
   const paynow = async (slug: string) => {
+    setLoading(true);
     const result = await dispatch(checkoutSession({ plan: slug }));
     if (checkoutSession.fulfilled.match(result)) {
       window.location.href = result.payload;
     } else {
       showToast('error', result.payload || 'Checkout failed.');
     }
+    setLoading(false);
   };
 
   return (
@@ -203,8 +212,13 @@ export default function OrderSummary() {
                       className="btn-primary btn"
                       sx={{ width: '100% !important', marginTop: '24px' }}
                       onClick={() => paynow(orderDetail?.slug as string)}
+                      disabled={loading}
                     >
-                      Pay Now
+                      {loading ? (
+                        <CircularProgress size={20} color="inherit" />
+                      ) : (
+                        'Pay Now'
+                      )}
                     </Button>
                   </Box>
                 </Box>

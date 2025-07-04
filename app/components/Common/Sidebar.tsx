@@ -474,7 +474,7 @@ const Sidebar = ({
             </SidebarAccordion> */}
 
             <SidebarAccordion
-              title={`All Chats ${threadList ? `(${threadList.count + pinnedChats?.count})` : ''}`}
+              title={`AI Chats ${threadList ? `(${threadList.count + pinnedChats?.count})` : ''}`}
               icon="messages"
               matchPath="/ai-chats"
               expanded={expanded}
@@ -489,7 +489,7 @@ const Sidebar = ({
               innerAccordions={[
                 {
                   panelKey: 'nested1',
-                  title: 'Pinned Chats',
+                  title: 'Pinned AI Chats',
                   // icon: '',
                   children: (
                     <DynamicPinnedMessagesList
@@ -503,7 +503,7 @@ const Sidebar = ({
                 },
                 {
                   panelKey: 'nested2',
-                  title: 'Chat History',
+                  title: 'AI Chat History',
                   // icon: '',
                   children: (
                     <DynamicThreadsList
