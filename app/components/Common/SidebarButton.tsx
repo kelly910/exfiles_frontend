@@ -120,8 +120,6 @@ export default function SidebarButton({
     return null;
   }
 
-  console.log('iconPath:', iconPath);
-
   return (
     <Tooltip title={!isOpen ? btnTitle : ''} placement="right" arrow>
       <Button

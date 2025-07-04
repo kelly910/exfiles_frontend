@@ -136,6 +136,15 @@ const DownloadDocReport = () => {
   );
 
   useEffect(() => {
+    dispatch(
+      setPageHeaderData({
+        title: 'Export Summaries',
+        subTitle: `No. of Export Summaries : ${count || 0}`,
+      })
+    );
+  }, [dispatch]);
+
+  useEffect(() => {
     dispatch(setLoader(true));
     setTimeout(async () => {
       try {
