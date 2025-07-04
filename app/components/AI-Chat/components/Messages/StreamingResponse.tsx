@@ -2,6 +2,7 @@ import { Box, IconButton, Typography } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 
 import Image from 'next/image';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 interface StreamingResponseProps {
   inputText: string;
@@ -39,6 +40,8 @@ const processText = (text: string) => {
 export default function StreamingResponse(props: StreamingResponseProps) {
   const { inputText } = props;
 
+  const { theme } = useThemeMode();
+
   return (
     <Box
       component="div"
@@ -51,6 +54,9 @@ export default function StreamingResponse(props: StreamingResponseProps) {
             width={40}
             height={40}
             src="/images/close-sidebar-logo.svg"
+            style={{
+              filter: theme === 'dark' ? 'brightness(0) invert(0)' : '',
+            }}
           />
         </IconButton>
       </Box>
