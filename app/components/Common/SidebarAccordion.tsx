@@ -5,7 +5,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import { useThemeMode } from '@/app/utils/ThemeContext';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface InnerAccordionItem {
   panelKey: string;
@@ -49,11 +49,15 @@ const SidebarAccordion = ({
   setExpandedNested,
   matchPath,
 }: SidebarAccordionProps) => {
+  const router = useRouter();
   const redirection = (expanded: string) => {
     if (expanded === 'panel3') {
       // router.push('/documents');
     } else if (expanded === 'panel1' || expanded === 'panel2') {
       closeDocumentSummary?.();
+      if (expanded === 'panel2') {
+        router.push('/');
+      }
     }
     expandPanel?.('panel2');
   };
