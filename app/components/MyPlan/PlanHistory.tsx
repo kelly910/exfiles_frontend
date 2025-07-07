@@ -50,61 +50,71 @@ export default function PlanHistory() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {planHistoryData?.map((plan, idx) => (
-                <TableRow key={idx}>
-                  <TableCell>{plan.plan_name || '-'}</TableCell>
-                  <TableCell style={{ textTransform: 'capitalize' }}>
-                    {plan.duration_unit === 'day'
-                      ? plan.duration_value + ' Days'
-                      : plan.duration_unit === 'month'
-                        ? 'Month'
-                        : plan.duration_unit === 'year'
-                          ? 'Year'
-                          : plan.duration_unit === 'week'
-                            ? plan.duration_value + ' Week'
-                            : '-'}
-                  </TableCell>
-                  <TableCell>
-                    {plan.activate_date
-                      ? dayjs(
-                          plan.activate_date?.replace(
-                            /([+-]\d{2}:\d{2}):\d{2}$/,
-                            '$1'
-                          )
-                        ).format('MM/DD/YYYY')
-                      : '-'}
-                  </TableCell>
-                  <TableCell style={{ textTransform: 'capitalize' }}>
-                    {plan.payment_method || '-'}
-                  </TableCell>
-                  <TableCell>{plan.amount || '-'}</TableCell>
-                  <TableCell sx={{ textAlign: 'center', width: '100px' }}>
-                    {plan?.payment_invoice_link !== null &&
-                    plan?.plan_name !== 'Free Tier' ? (
-                      <IconButton
-                        aria-label="import"
-                        onClick={() => {
-                          const link = document.createElement('a');
-                          link.href = plan?.payment_invoice_link;
-                          link.download = '';
-                          document.body.appendChild(link);
-                          link.click();
-                          document.body.removeChild(link);
-                        }}
-                      >
-                        <Image
-                          src="/images/import.svg"
-                          alt="import Icon"
-                          width={24}
-                          height={24}
-                        />
-                      </IconButton>
-                    ) : (
-                      '-'
-                    )}
+              {planHistoryData && planHistoryData.length ? (
+                planHistoryData?.map((plan, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell>{plan.plan_name || '-'}</TableCell>
+                    <TableCell style={{ textTransform: 'capitalize' }}>
+                      {plan.duration_unit === 'day'
+                        ? plan.duration_value + ' Days'
+                        : plan.duration_unit === 'month'
+                          ? 'Month'
+                          : plan.duration_unit === 'year'
+                            ? 'Year'
+                            : plan.duration_unit === 'week'
+                              ? plan.duration_value + ' Week'
+                              : '-'}
+                    </TableCell>
+                    <TableCell>
+                      {plan.activate_date
+                        ? dayjs(
+                            plan.activate_date?.replace(
+                              /([+-]\d{2}:\d{2}):\d{2}$/,
+                              '$1'
+                            )
+                          ).format('MM/DD/YYYY')
+                        : '-'}
+                    </TableCell>
+                    <TableCell style={{ textTransform: 'capitalize' }}>
+                      {plan.payment_method || '-'}
+                    </TableCell>
+                    <TableCell>{plan.amount || '-'}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', width: '100px' }}>
+                      {plan?.payment_invoice_link !== null &&
+                      plan?.plan_name !== 'Free Tier' ? (
+                        <IconButton
+                          aria-label="import"
+                          onClick={() => {
+                            const link = document.createElement('a');
+                            link.href = plan?.payment_invoice_link;
+                            link.download = '';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                          }}
+                        >
+                          <Image
+                            src="/images/import.svg"
+                            alt="import Icon"
+                            width={24}
+                            height={24}
+                          />
+                        </IconButton>
+                      ) : (
+                        '-'
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5}>
+                    <Typography className={styles['table-empty']}>
+                      Currently there is no plan available in ExFiles AI.
+                    </Typography>
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </TableContainer>

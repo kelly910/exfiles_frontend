@@ -383,52 +383,54 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                 )}
               </div>
               {documentSummary?.summary && !editMode && (
-                <Box component={'div'} className={styles.docsButtonBox}>
-                  <Button className={styles.docsButton} onClick={copySummary}>
-                    <Image
-                      src="/images/copy.svg"
-                      alt="Download"
-                      width={24}
-                      height={24}
-                    />
-                    Copy
-                  </Button>
-                  {documentSummary?.can_download_summary_pdf && (
-                    <>
-                      <span className={styles.docsDas}></span>
-                      <Button
-                        className={styles.docsButton}
-                        onClick={downloadSummary}
-                        disabled={downloadingSummaryLoading}
-                      >
-                        {downloadingSummaryLoading ? (
-                          <CircularProgress size={18} color="inherit" />
-                        ) : (
-                          <Image
-                            src="/images/download_summary.svg"
-                            alt="Download"
-                            width={24}
-                            height={24}
-                          />
-                        )}
-                        Download Summary
-                      </Button>
-                    </>
-                  )}
-                  <span className={styles.docsDas}></span>
-                  <Button
-                    className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
-                    onClick={editSummary}
-                    disabled={expiredStatus === 0}
-                  >
-                    <Image
-                      src="/images/edit.svg"
-                      alt="Download"
-                      width={24}
-                      height={24}
-                    />
-                    Edit
-                  </Button>
+                <Box className={styles.docsButtonBoxMain}>
+                  <Box component={'div'} className={styles.docsButtonBox}>
+                    <Button className={styles.docsButton} onClick={copySummary}>
+                      <Image
+                        src="/images/copy.svg"
+                        alt="Download"
+                        width={24}
+                        height={24}
+                      />
+                      Copy
+                    </Button>
+                    {documentSummary?.can_download_summary_pdf && (
+                      <>
+                        <span className={styles.docsDas}></span>
+                        <Button
+                          className={styles.docsButton}
+                          onClick={downloadSummary}
+                          disabled={downloadingSummaryLoading}
+                        >
+                          {downloadingSummaryLoading ? (
+                            <CircularProgress size={18} color="inherit" />
+                          ) : (
+                            <Image
+                              src="/images/download_summary.svg"
+                              alt="Download"
+                              width={24}
+                              height={24}
+                            />
+                          )}
+                          Download Summary
+                        </Button>
+                      </>
+                    )}
+                    <span className={styles.docsDas}></span>
+                    <Button
+                      className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
+                      onClick={editSummary}
+                      disabled={expiredStatus === 0}
+                    >
+                      <Image
+                        src="/images/edit.svg"
+                        alt="Download"
+                        width={24}
+                        height={24}
+                      />
+                      Edit
+                    </Button>
+                  </Box>
                 </Box>
               )}
             </>
@@ -700,51 +702,56 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                   )}
                 </div>
                 {documentSummary?.summary && !editMode && (
-                  <Box component={'div'} className={styles.docsButtonBox}>
-                    <Button className={styles.docsButton} onClick={copySummary}>
-                      <Image
-                        src="/images/copy.svg"
-                        alt="Download"
-                        width={24}
-                        height={24}
-                      />
-                      Copy
-                    </Button>
-                    {documentSummary?.can_download_summary_pdf && (
-                      <>
-                        <span className={styles.docsDas}></span>
-                        <Button
-                          className={styles.docsButton}
-                          onClick={downloadSummary}
-                          disabled={downloadingSummaryLoading}
-                        >
-                          {downloadingSummaryLoading ? (
-                            <CircularProgress size={18} color="inherit" />
-                          ) : (
-                            <Image
-                              src="/images/download_summary.svg"
-                              alt="Download"
-                              width={24}
-                              height={24}
-                            />
-                          )}
-                          Download Summary
-                        </Button>
-                      </>
-                    )}
-                    <span className={styles.docsDas}></span>
-                    <Button
-                      className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
-                      onClick={editSummary}
-                    >
-                      <Image
-                        src="/images/edit.svg"
-                        alt="Download"
-                        width={24}
-                        height={24}
-                      />
-                      Edit
-                    </Button>
+                  <Box className={styles.docsButtonBoxMain}>
+                    <Box component={'div'} className={styles.docsButtonBox}>
+                      <Button
+                        className={styles.docsButton}
+                        onClick={copySummary}
+                      >
+                        <Image
+                          src="/images/copy.svg"
+                          alt="Download"
+                          width={24}
+                          height={24}
+                        />
+                        Copy
+                      </Button>
+                      {documentSummary?.can_download_summary_pdf && (
+                        <>
+                          <span className={styles.docsDas}></span>
+                          <Button
+                            className={styles.docsButton}
+                            onClick={downloadSummary}
+                            disabled={downloadingSummaryLoading}
+                          >
+                            {downloadingSummaryLoading ? (
+                              <CircularProgress size={18} color="inherit" />
+                            ) : (
+                              <Image
+                                src="/images/download_summary.svg"
+                                alt="Download"
+                                width={24}
+                                height={24}
+                              />
+                            )}
+                            Download Summary
+                          </Button>
+                        </>
+                      )}
+                      <span className={styles.docsDas}></span>
+                      <Button
+                        className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
+                        onClick={editSummary}
+                      >
+                        <Image
+                          src="/images/edit.svg"
+                          alt="Download"
+                          width={24}
+                          height={24}
+                        />
+                        Edit
+                      </Button>
+                    </Box>
                   </Box>
                 )}
               </>
