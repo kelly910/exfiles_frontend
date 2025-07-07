@@ -774,6 +774,27 @@
     }
   }
 
+  .docsButtonBoxMain {
+    background: var(--Background-Color);
+    text-align: center;
+    margin-top: 24px;
+    margin-bottom: 56px;
+
+    position: sticky;
+    bottom: 0;
+    padding: 20px 0;
+
+
+    @media (max-width: 1200px) {
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 425px) {
+      flex-wrap: wrap;
+    }
+
+  }
+
   .docsButtonBox {
     display: flex;
     justify-content: center;
@@ -783,16 +804,6 @@
     border-radius: 12px;
     width: fit-content;
     margin: 0 auto;
-    margin-top: 24px;
-    margin-bottom: 56px;
-
-    @media (max-width: 1200px) {
-      margin-bottom: 30px;
-    }
-
-    @media (max-width: 425px) {
-      flex-wrap: wrap;
-    }
 
     span.docsDas {
       border: 1px solid var(--Primary-Text-Color);

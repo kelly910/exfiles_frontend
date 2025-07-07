@@ -50,7 +50,7 @@ export default function PlanHistory() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {planHistoryData?.map((plan, idx) => (
+              {/* {planHistoryData?.map((plan, idx) => (
                 <TableRow key={idx}>
                   <TableCell>{plan.plan_name || '-'}</TableCell>
                   <TableCell style={{ textTransform: 'capitalize' }}>
@@ -104,7 +104,14 @@ export default function PlanHistory() {
                     )}
                   </TableCell>
                 </TableRow>
-              ))}
+              ))} */}
+              <TableRow>
+                <TableCell colSpan={5}>
+                  <Typography className={styles['table-empty']}>
+                    test
+                  </Typography>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>

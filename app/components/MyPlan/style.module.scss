@@ -375,6 +375,13 @@
       max-height: 400px;
       overflow-y: auto;
 
+      .table-empty {
+        text-align: center;
+        color: var(--Subtext-Color);
+        font-size: var(--SubTitle-3);
+        font-weight: var(--Lighter);
+      }
+
       table {
         thead {
           position: sticky;
