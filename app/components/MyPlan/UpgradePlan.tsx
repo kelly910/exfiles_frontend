@@ -161,7 +161,7 @@ const UpgradePlan = () => {
     <>
       <Accordion
         className={styles['upgrade-plan-accordion']}
-        defaultExpanded={false}
+        defaultExpanded={true}
         sx={{
           backgroundColor: 'transparent',
           boxShadow: 'none',
