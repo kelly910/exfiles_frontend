@@ -94,11 +94,11 @@ const RenameDialog = ({ open, onClose, category }: RenameProps) => {
         }
       })
       .catch((error) => {
-        setTimeout(() => {
-          showToast('error', error?.category_id[0]);
-          setLoading(false);
-          dispatch(setLoader(false));
-        }, 1000);
+        setLoading(false);
+        if (error) {
+          showToast('error', error?.detail[0] ?? 'Something went wrong');
+        }
+        dispatch(setLoader(false));
       });
   };
 
