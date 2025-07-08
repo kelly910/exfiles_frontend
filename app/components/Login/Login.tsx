@@ -32,6 +32,7 @@ import PlanExpired from '../Plan-Expired/PlanExpired';
 import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 import { useThemeMode } from '@/app/utils/ThemeContext';
 import { showToast } from '@/app/shared/toast/ShowToast';
+import { sendDataToWordPressForLogin } from '@/app/utils/functions';
 // import jwt from 'jsonwebtoken';
 
 export interface LoginFormValues {
@@ -84,44 +85,7 @@ const Page = () => {
                   { type: 'LOGIN_SUCCESS', user: response.data },
                   process.env.NEXT_PUBLIC_REDIRECT_URL
                 );
-                // ✅ Call WordPress API with JWT (autologin)
-                try {
-                  const token =
-                    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2V4ZmlsZXMudHJvb2luYm91bmRkZXZzLmNvbSIsImlhdCI6MTc1MTU0MTgwNiwibmJmIjoxNzUxNTQxODA2LCJleHAiOjE3NTIxNDY2MDYsImRhdGEiOnsidXNlciI6eyJpZCI6IjIifX19.7o5HvU3HvdJqx8okUode1W1lFaUmfKTfRDnfjUXeNrI';
-                  const wpResponse = await fetch(
-                    'https://exfiles.trooinbounddevs.com/wp-json/custom/v1/receive-user-data',
-                    {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                      },
-                      body: JSON.stringify(response.data),
-                    }
-                  );
-                  const contentType = wpResponse.headers.get('content-type');
-                  if (!wpResponse.ok) {
-                    const errorText = await wpResponse.text();
-                    console.log('WordPress responded with error:', errorText);
-                    throw new Error('Failed WordPress response');
-                  }
-                  if (
-                    !contentType ||
-                    !contentType.includes('application/json')
-                  ) {
-                    const rawText = await wpResponse.text();
-                    console.log(
-                      'Unexpected content type from WordPress:',
-                      rawText
-                    );
-                    throw new Error('Unexpected content type');
-                  }
-                  const wpData = await wpResponse.json();
-                  console.log('WordPress response:', wpData);
-                } catch (wpError) {
-                  console.log('WordPress API call failed:', wpError);
-                }
-                // ✅ Call WordPress API with JWT (autologin)
+                await sendDataToWordPressForLogin(response.data);
               }
               setLoadingLogin(false);
               showToast('success', 'Login is successfully.');
@@ -168,13 +132,13 @@ const Page = () => {
           const token: string | null = response?.data?.token || null;
           if (token) {
             const bc = new BroadcastChannel('react-auth-channel');
-            console.log('📤 Broadcasting login to auth channel');
             bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
             document.cookie = `accessToken=${token}; path=/; max-age=86400`;
             window.opener?.postMessage(
               { type: 'LOGIN_SUCCESS', user: response.data },
               process.env.NEXT_PUBLIC_REDIRECT_URL
             );
+            await sendDataToWordPressForLogin(response.data);
             await dispatch(setLoader(false));
           }
           showToast('success', 'Google Login is successfully.');

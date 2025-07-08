@@ -62,7 +62,6 @@ export default function LogoutDialog({
     window.addEventListener('message', (event) => {
       if (event.origin !== process.env.NEXT_PUBLIC_REDIRECT_URL) return;
       if (event.data.type === 'LOGOUT') {
-        console.log(event.data.type, 'inside if');
         logoutUser();
       }
     });
@@ -82,7 +81,6 @@ export default function LogoutDialog({
         process.env.NEXT_PUBLIC_REDIRECT_URL
       );
       const bc = new BroadcastChannel('react-auth-channel');
-      console.log('📤 Broadcasting logout to auth channel');
       bc.postMessage({ type: 'LOGOUT_SUCCESS' });
       setLoading(false);
       dispatch(setLoader(false));

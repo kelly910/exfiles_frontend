@@ -1,3 +1,4 @@
+import { LoginResponse } from '../redux/slices/login';
 import { documentType } from './constants';
 
 export async function computeChecksum(blob: Blob) {
@@ -71,5 +72,45 @@ export function gtagEvent({
     });
   } else {
     console.warn('GTAG event not fired: gtag not available');
+  }
+}
+
+const WORDPRESS_API_TOKEN =
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2V4ZmlsZXMudHJvb2luYm91bmRkZXZzLmNvbSIsImlhdCI6MTc1MTU0MTgwNiwibmJmIjoxNzUxNTQxODA2LCJleHAiOjE3NTIxNDY2MDYsImRhdGEiOnsidXNlciI6eyJpZCI6IjIifX19.7o5HvU3HvdJqx8okUode1W1lFaUmfKTfRDnfjUXeNrI';
+
+export async function sendDataToWordPressForLogin(
+  userData: LoginResponse['data']
+): Promise<void> {
+  try {
+    const wpResponse = await fetch(
+      'https://exfiles.trooinbounddevs.com/wp-json/custom/v1/receive-user-data',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${WORDPRESS_API_TOKEN}`,
+        },
+        body: JSON.stringify(userData),
+      }
+    );
+
+    const contentType = wpResponse.headers.get('content-type');
+
+    if (!wpResponse.ok) {
+      const errorText = await wpResponse.text();
+      console.error('WordPress responded with error:', errorText);
+      throw new Error('Failed WordPress response');
+    }
+
+    if (!contentType || !contentType.includes('application/json')) {
+      const rawText = await wpResponse.text();
+      console.error('Unexpected content type from WordPress:', rawText);
+      throw new Error('Unexpected content type');
+    }
+
+    const wpData = await wpResponse.json();
+    console.log('WordPress response:', wpData);
+  } catch (error) {
+    console.error('WordPress API call failed:', error);
   }
 }
