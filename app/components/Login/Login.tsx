@@ -19,21 +19,15 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { loginValidationSchema } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useRouter } from 'next/navigation';
 import { useGoogleLogin } from '@react-oauth/google';
-import {
-  LoginResponse,
-  loginUser,
-  socialGoogleLogin,
-} from '@/app/redux/slices/login';
+import { loginUser, socialGoogleLogin } from '@/app/redux/slices/login';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { setLoader } from '@/app/redux/slices/loader';
 import Link from 'next/link';
 import DevicesLimit from '../Devices-Limit/DevicesLimit';
-import PlanExpired from '../Plan-Expired/PlanExpired';
 import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 import { useThemeMode } from '@/app/utils/ThemeContext';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { sendDataToWordPressForLogin } from '@/app/utils/functions';
-// import jwt from 'jsonwebtoken';
 
 export interface LoginFormValues {
   email: string;
@@ -55,12 +49,10 @@ const Page = () => {
   };
   const dispatch = useAppDispatch();
   const [exceedLimitDialog, setExceedLimitDialog] = useState(false);
-  const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
   const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
   const [loginDetails, setLoginDetails] = useState<LoginFormValues | null>(
     null
   );
-  const [loginData, setLoginData] = useState<LoginResponse | null>(null);
   const [access_token, setToken] = useState<LoginToken | null>(null);
 
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
@@ -89,10 +81,7 @@ const Page = () => {
               }
               setLoadingLogin(false);
               showToast('success', 'Login is successfully.');
-              if (response.data.active_subscription?.status === 0) {
-                setLoginData(response);
-                setOpenExpiredDialog(true);
-              } else if (
+              if (
                 response.data.remaining_days === 1 ||
                 response.data.remaining_days === 2
               ) {
@@ -142,10 +131,7 @@ const Page = () => {
             await dispatch(setLoader(false));
           }
           showToast('success', 'Google Login is successfully.');
-          if (response.data.active_subscription?.status === 0) {
-            setLoginData(response);
-            setOpenExpiredDialog(true);
-          } else if (
+          if (
             response.data.remaining_days === 1 ||
             response.data.remaining_days === 2
           ) {
@@ -578,11 +564,6 @@ const Page = () => {
         onClose={() => setExceedLimitDialog(false)}
         loginDetails={loginDetails}
         tokenResponse={access_token}
-      />
-      <PlanExpired
-        open={openExpiredDialog}
-        onClose={() => setOpenExpiredDialog(false)}
-        loginData={loginData}
       />
       <UpgradeTime
         open={openCountDownDialog}
