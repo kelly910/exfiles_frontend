@@ -398,9 +398,11 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       <>
                         <span className={styles.docsDas}></span>
                         <Button
-                          className={styles.docsButton}
+                          className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
                           onClick={downloadSummary}
-                          disabled={downloadingSummaryLoading}
+                          disabled={
+                            downloadingSummaryLoading || expiredStatus === 0
+                          }
                         >
                           {downloadingSummaryLoading ? (
                             <CircularProgress size={18} color="inherit" />
@@ -720,9 +722,11 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         <>
                           <span className={styles.docsDas}></span>
                           <Button
-                            className={styles.docsButton}
+                            className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
                             onClick={downloadSummary}
-                            disabled={downloadingSummaryLoading}
+                            disabled={
+                              downloadingSummaryLoading || expiredStatus === 0
+                            }
                           >
                             {downloadingSummaryLoading ? (
                               <CircularProgress size={18} color="inherit" />
@@ -742,6 +746,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       <Button
                         className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
                         onClick={editSummary}
+                        disabled={expiredStatus === 0}
                       >
                         <Image
                           src="/images/edit.svg"
