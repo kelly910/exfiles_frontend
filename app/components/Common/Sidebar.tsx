@@ -488,20 +488,6 @@ const Sidebar = ({
               setExpandedNested={setExpandedNested}
               innerAccordions={[
                 {
-                  panelKey: 'nested1',
-                  title: 'Pinned AI Chats',
-                  // icon: '',
-                  children: (
-                    <DynamicPinnedMessagesList
-                      searchVal={searchValue}
-                      fromDateVal={fromDate}
-                      toDateVal={toDate}
-                      handlePinnedAnswerClick={handlePinnedAnswerClick}
-                      resetTrigger={resetTrigger}
-                    />
-                  ),
-                },
-                {
                   panelKey: 'nested2',
                   title: 'AI Chat History',
                   // icon: '',
@@ -511,6 +497,20 @@ const Sidebar = ({
                       fromDateVal={fromDate}
                       toDateVal={toDate}
                       handleThreadClick={handleThreadClick}
+                      resetTrigger={resetTrigger}
+                    />
+                  ),
+                },
+                {
+                  panelKey: 'nested1',
+                  title: 'Pinned AI Chats',
+                  // icon: '',
+                  children: (
+                    <DynamicPinnedMessagesList
+                      searchVal={searchValue}
+                      fromDateVal={fromDate}
+                      toDateVal={toDate}
+                      handlePinnedAnswerClick={handlePinnedAnswerClick}
                       resetTrigger={resetTrigger}
                     />
                   ),

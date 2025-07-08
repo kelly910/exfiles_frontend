@@ -17,6 +17,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { useThemeMode } from '@/app/utils/ThemeContext';
+import { sendDataToWordPressForLogin } from '@/app/utils/functions';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
@@ -73,13 +74,13 @@ export default function DevicesLimit({
         const token: string | null = response?.data?.token || null;
         if (token) {
           const bc = new BroadcastChannel('react-auth-channel');
-          console.log('📤 Broadcasting login to auth channel');
           bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
           document.cookie = `accessToken=${token}; path=/; max-age=86400`;
           window.opener?.postMessage(
             { type: 'LOGIN_SUCCESS', user: response.data },
             process.env.NEXT_PUBLIC_REDIRECT_URL
           );
+          await sendDataToWordPressForLogin(response.data);
         }
         showToast('success', 'Google Login is successfully.');
         if (response.data.active_subscription?.status === 0) {
@@ -121,13 +122,13 @@ export default function DevicesLimit({
               const token: string | null = response?.data?.token || null;
               if (token) {
                 const bc = new BroadcastChannel('react-auth-channel');
-                console.log('📤 Broadcasting login to auth channel');
                 bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
                 document.cookie = `accessToken=${token}; path=/; max-age=86400`;
                 window.opener?.postMessage(
                   { type: 'LOGIN_SUCCESS', user: response.data },
                   process.env.NEXT_PUBLIC_REDIRECT_URL
                 );
+                await sendDataToWordPressForLogin(response.data);
               }
               showToast('success', 'Login is successfully.');
               if (response.data.active_subscription?.status === 0) {
