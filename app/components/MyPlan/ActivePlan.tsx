@@ -127,11 +127,12 @@ export default function ActivePlan() {
                     {fetchedUser?.staff_user
                       ? 'Staff User'
                       : fetchedUser?.active_subscription
-                            ?.subscription_status === 'cancelled'
+                            ?.subscription_status === 'cancelled' &&
+                          fetchedUser?.active_subscription?.status === 1
                         ? 'Cancelled Plan'
                         : fetchedUser?.active_subscription?.status === 1
                           ? 'Active Plan'
-                          : 'Expired Plan'}
+                          : 'Viewer Mode'}
                   </Typography>
                 </Box>
               </Box>

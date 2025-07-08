@@ -354,9 +354,7 @@ const UpgradePlan = () => {
               <MaybeSlider condition={isSliderActive} settings={settings}>
                 {plans.map((plan, index) => {
                   let buttonLabel = 'Not Applicable';
-                  const activePlanId =
-                    fetchedUser?.active_subscription?.plan?.id;
-                  const activePlan = plans.find((p) => p?.id === activePlanId);
+                  const activePlan = fetchedUser?.active_subscription?.plan;
                   const selectedDurationUnit =
                     billingCycle === 'month'
                       ? process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH
@@ -381,7 +379,29 @@ const UpgradePlan = () => {
                         ? 'Current Plan'
                         : 'Upgrade Now';
                   } else {
-                    buttonLabel = 'Not Applicable';
+                    if (
+                      activePlan?.name === 'Essential' &&
+                      activePlan?.duration_unit ===
+                        process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH &&
+                      String(selectedDurationUnit) ===
+                        process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY
+                    ) {
+                      buttonLabel =
+                        plan.name === 'Essential'
+                          ? 'Upgrade Now'
+                          : plan.name === 'Free Tier'
+                            ? 'Not Applicable'
+                            : 'Upgrade Now';
+                    } else if (
+                      activePlan?.name === 'Pro' &&
+                      activePlan?.duration_unit ===
+                        process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH &&
+                      String(selectedDurationUnit) ===
+                        process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY
+                    ) {
+                      buttonLabel =
+                        plan.name === 'Pro' ? 'Upgrade Now' : 'Not Applicable';
+                    }
                   }
                   return (
                     <Box

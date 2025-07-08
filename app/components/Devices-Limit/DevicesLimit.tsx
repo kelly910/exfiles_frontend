@@ -4,15 +4,10 @@ import { Box, Button, CircularProgress, Dialog, styled } from '@mui/material';
 import Image from 'next/image';
 import { LoginFormValues, LoginToken } from '../Login/Login';
 import { setLoader } from '@/app/redux/slices/loader';
-import {
-  LoginResponse,
-  loginUser,
-  socialGoogleLogin,
-} from '@/app/redux/slices/login';
+import { loginUser, socialGoogleLogin } from '@/app/redux/slices/login';
 import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useAppDispatch } from '@/app/redux/hooks';
-import PlanExpired from '../Plan-Expired/PlanExpired';
 import { useGoogleLogin } from '@react-oauth/google';
 import UpgradeTime from '../Upgrade-Time/UpgradeTime';
 import { showToast } from '@/app/shared/toast/ShowToast';
@@ -55,9 +50,7 @@ export default function DevicesLimit({
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [openExpiredDialog, setOpenExpiredDialog] = useState(false);
   const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
-  const [loginData, setLoginData] = useState<LoginResponse | null>(null);
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse: { access_token: string }) => {
@@ -83,10 +76,7 @@ export default function DevicesLimit({
           await sendDataToWordPressForLogin(response.data);
         }
         showToast('success', 'Google Login is successfully.');
-        if (response.data.active_subscription?.status === 0) {
-          setLoginData(response);
-          setOpenExpiredDialog(true);
-        } else if (
+        if (
           response.data.remaining_days === 1 ||
           response.data.remaining_days === 2
         ) {
@@ -131,10 +121,7 @@ export default function DevicesLimit({
                 await sendDataToWordPressForLogin(response.data);
               }
               showToast('success', 'Login is successfully.');
-              if (response.data.active_subscription?.status === 0) {
-                setLoginData(response);
-                setOpenExpiredDialog(true);
-              } else if (
+              if (
                 response.data.remaining_days === 1 ||
                 response.data.remaining_days === 2
               ) {
@@ -217,11 +204,6 @@ export default function DevicesLimit({
           </Box>
         </BootstrapDialog>
       </React.Fragment>
-      <PlanExpired
-        open={openExpiredDialog}
-        onClose={() => setOpenExpiredDialog(false)}
-        loginData={loginData}
-      />
       <UpgradeTime
         open={openCountDownDialog}
         onClose={() => setOpenCountDownDialog(false)}
