@@ -55,6 +55,8 @@ const Page = () => {
   );
   const [access_token, setToken] = useState<LoginToken | null>(null);
 
+  const storedTheme = localStorage.getItem('theme');
+
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {
       setLoadingLogin(true);
@@ -71,10 +73,18 @@ const Page = () => {
               const token: string | null = response?.data?.token || null;
               if (token) {
                 const bc = new BroadcastChannel('react-auth-channel');
-                bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
+                bc.postMessage({
+                  type: 'LOGIN_SUCCESS',
+                  user: response.data,
+                  theme: storedTheme === 'dark' ? 'light' : 'dark',
+                });
                 document.cookie = `accessToken=${token}; path=/; max-age=86400`;
                 window.opener?.postMessage(
-                  { type: 'LOGIN_SUCCESS', user: response.data },
+                  {
+                    type: 'LOGIN_SUCCESS',
+                    user: response.data,
+                    theme: storedTheme === 'dark' ? 'light' : 'dark',
+                  },
                   process.env.NEXT_PUBLIC_REDIRECT_URL
                 );
                 await sendDataToWordPressForLogin(response.data);
@@ -121,10 +131,18 @@ const Page = () => {
           const token: string | null = response?.data?.token || null;
           if (token) {
             const bc = new BroadcastChannel('react-auth-channel');
-            bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
+            bc.postMessage({
+              type: 'LOGIN_SUCCESS',
+              user: response.data,
+              theme: storedTheme === 'dark' ? 'light' : 'dark',
+            });
             document.cookie = `accessToken=${token}; path=/; max-age=86400`;
             window.opener?.postMessage(
-              { type: 'LOGIN_SUCCESS', user: response.data },
+              {
+                type: 'LOGIN_SUCCESS',
+                user: response.data,
+                theme: storedTheme === 'dark' ? 'light' : 'dark',
+              },
               process.env.NEXT_PUBLIC_REDIRECT_URL
             );
             await sendDataToWordPressForLogin(response.data);
