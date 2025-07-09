@@ -69,7 +69,6 @@ const Sidebar = ({
   selectedDocIdNull?: () => void;
   title: string;
 }) => {
-  console.log(handlePinnedAnswerClick, 'handlePinnedAnswerClick');
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
