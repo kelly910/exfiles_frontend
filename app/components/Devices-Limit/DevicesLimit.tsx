@@ -52,6 +52,8 @@ export default function DevicesLimit({
   const router = useRouter();
   const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
 
+  const storedTheme = localStorage.getItem('theme');
+
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse: { access_token: string }) => {
       try {
@@ -67,10 +69,18 @@ export default function DevicesLimit({
         const token: string | null = response?.data?.token || null;
         if (token) {
           const bc = new BroadcastChannel('react-auth-channel');
-          bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
+          bc.postMessage({
+            type: 'LOGIN_SUCCESS',
+            user: response.data,
+            theme: storedTheme === 'dark' ? 'light' : 'dark',
+          });
           document.cookie = `accessToken=${token}; path=/; max-age=86400`;
           window.opener?.postMessage(
-            { type: 'LOGIN_SUCCESS', user: response.data },
+            {
+              type: 'LOGIN_SUCCESS',
+              user: response.data,
+              theme: storedTheme === 'dark' ? 'light' : 'dark',
+            },
             process.env.NEXT_PUBLIC_REDIRECT_URL
           );
           await sendDataToWordPressForLogin(response.data);
@@ -112,10 +122,18 @@ export default function DevicesLimit({
               const token: string | null = response?.data?.token || null;
               if (token) {
                 const bc = new BroadcastChannel('react-auth-channel');
-                bc.postMessage({ type: 'LOGIN_SUCCESS', user: response.data });
+                bc.postMessage({
+                  type: 'LOGIN_SUCCESS',
+                  user: response.data,
+                  theme: storedTheme === 'dark' ? 'light' : 'dark',
+                });
                 document.cookie = `accessToken=${token}; path=/; max-age=86400`;
                 window.opener?.postMessage(
-                  { type: 'LOGIN_SUCCESS', user: response.data },
+                  {
+                    type: 'LOGIN_SUCCESS',
+                    user: response.data,
+                    theme: storedTheme === 'dark' ? 'light' : 'dark',
+                  },
                   process.env.NEXT_PUBLIC_REDIRECT_URL
                 );
                 await sendDataToWordPressForLogin(response.data);

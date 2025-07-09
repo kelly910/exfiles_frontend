@@ -83,7 +83,7 @@ export async function sendDataToWordPressForLogin(
 ): Promise<void> {
   try {
     const wpResponse = await fetch(
-      'https://exfiles.trooinbounddevs.com/wp-json/custom/v1/receive-user-data',
+      `${process.env.NEXT_PUBLIC_REDIRECT_URL}wp-json/custom/v1/receive-user-data`,
       {
         method: 'POST',
         headers: {
