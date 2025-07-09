@@ -76,14 +76,14 @@ const Page = () => {
                 bc.postMessage({
                   type: 'LOGIN_SUCCESS',
                   user: response.data,
-                  theme: storedTheme === 'dark' ? 'light' : 'dark',
+                  theme: storedTheme,
                 });
                 document.cookie = `accessToken=${token}; path=/; max-age=86400`;
                 window.opener?.postMessage(
                   {
                     type: 'LOGIN_SUCCESS',
                     user: response.data,
-                    theme: storedTheme === 'dark' ? 'light' : 'dark',
+                    theme: storedTheme,
                   },
                   process.env.NEXT_PUBLIC_REDIRECT_URL
                 );
@@ -134,14 +134,14 @@ const Page = () => {
             bc.postMessage({
               type: 'LOGIN_SUCCESS',
               user: response.data,
-              theme: storedTheme === 'dark' ? 'light' : 'dark',
+              theme: storedTheme,
             });
             document.cookie = `accessToken=${token}; path=/; max-age=86400`;
             window.opener?.postMessage(
               {
                 type: 'LOGIN_SUCCESS',
                 user: response.data,
-                theme: storedTheme === 'dark' ? 'light' : 'dark',
+                theme: storedTheme,
               },
               process.env.NEXT_PUBLIC_REDIRECT_URL
             );
