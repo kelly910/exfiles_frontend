@@ -50,6 +50,7 @@ import Slider from 'react-slick';
 import { gtagEvent } from '@/app/utils/functions';
 import LimitOver from '../Limit-Over/LimitOver';
 import { useThemeMode } from '@/app/utils/ThemeContext';
+import PlanExpired from '../Plan-Expired/PlanExpired';
 
 export interface FileDataImage {
   file_url: string;
@@ -132,7 +133,7 @@ export default function LogIncident() {
   const [toDate, setToDate] = useState<Dayjs | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [expiredDialog, setExpiredDialog] = useState(false);
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
   const [limitDialog, setLimitDialog] = useState(false);
@@ -144,8 +145,12 @@ export default function LogIncident() {
   );
 
   const handleOpenAddIncident = () => {
-    setEditLogIncidentData(null);
-    setOpenAddIncident(true);
+    if (expiredStatus === 0) {
+      setExpiredDialog(true);
+    } else {
+      setEditLogIncidentData(null);
+      setOpenAddIncident(true);
+    }
   };
 
   const editLogIncident = () => {
@@ -619,13 +624,8 @@ export default function LogIncident() {
                       setSelectedTags={setSelectedTags}
                     />
                     <Button
-                      className={
-                        expiredStatus === 0
-                          ? 'btn btn-pluse limitation'
-                          : 'btn btn-pluse'
-                      }
+                      className={'btn btn-pluse'}
                       onClick={handleOpenAddIncident}
-                      disabled={expiredStatus === 0}
                     >
                       <Image
                         src="/images/add-icon.svg"
@@ -1119,6 +1119,10 @@ export default function LogIncident() {
         title={'Your Report Generation Limit is Over'}
         subtitle={'Reports'}
         stats={fetchedUser?.reports_generated || ''}
+      />
+      <PlanExpired
+        open={expiredDialog}
+        onClose={() => setExpiredDialog(false)}
       />
     </>
   );

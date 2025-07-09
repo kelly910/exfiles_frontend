@@ -6,18 +6,22 @@ import LogModel from '../LogModel/LogModel';
 import { selectFetchedUser } from '@/app/redux/slices/login';
 import { useSelector } from 'react-redux';
 import { useThemeMode } from '@/app/utils/ThemeContext';
+import PlanExpired from '../Plan-Expired/PlanExpired';
 
 export default function LogincidentEmpty() {
   const [openModel, setOpenModel] = useState(false);
-
-  const openLogIncidentModel = () => {
-    setOpenModel(true);
-  };
-
   const { theme } = useThemeMode();
-
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
+  const [expiredDialog, setExpiredDialog] = useState(false);
+
+  const openLogIncidentModel = () => {
+    if (expiredStatus === 0) {
+      setExpiredDialog(true);
+    } else {
+      setOpenModel(true);
+    }
+  };
 
   return (
     <>
@@ -37,13 +41,7 @@ export default function LogincidentEmpty() {
           No Incidents are logged yet.
           <div>Click the button below to log an incident.</div>
         </Typography>
-        <Button
-          className={
-            expiredStatus === 0 ? 'btn btn-pluse limitation' : 'btn btn-pluse'
-          }
-          onClick={openLogIncidentModel}
-          disabled={expiredStatus === 0}
-        >
+        <Button className={'btn btn-pluse'} onClick={openLogIncidentModel}>
           <Image src="/images/add-icon.svg" alt="re" width={20} height={20} />
           Add Incident
         </Button>
@@ -52,6 +50,10 @@ export default function LogincidentEmpty() {
         open={openModel}
         handleClose={() => setOpenModel(false)}
         editedData={null}
+      />
+      <PlanExpired
+        open={expiredDialog}
+        onClose={() => setExpiredDialog(false)}
       />
     </>
   );
