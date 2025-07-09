@@ -29,18 +29,22 @@ interface PlanExpiredDialogProps {
   open: boolean;
   onClose: () => void;
   loginData?: LoginResponse | null;
+  type?: string;
 }
 
 export default function PlanExpired({
   open,
   onClose,
   loginData,
+  type,
 }: PlanExpiredDialogProps) {
   const router = useRouter();
 
   const notNow = () => {
     onClose();
-    router.push('/ai-chats');
+    if (type !== 'LogIncident') {
+      router.push('/ai-chats');
+    }
   };
 
   return (

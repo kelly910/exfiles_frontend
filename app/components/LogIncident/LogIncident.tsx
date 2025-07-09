@@ -1123,6 +1123,7 @@ export default function LogIncident() {
       <PlanExpired
         open={expiredDialog}
         onClose={() => setExpiredDialog(false)}
+        type={'LogIncident'}
       />
     </>
   );
