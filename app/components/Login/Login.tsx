@@ -12,7 +12,7 @@ import {
 import { Button } from '@mui/material';
 import styles from './login.module.scss';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -56,6 +56,12 @@ const Page = () => {
   const [access_token, setToken] = useState<LoginToken | null>(null);
 
   const storedTheme = localStorage.getItem('theme');
+
+  useEffect(() => {
+    if (!localStorage.getItem('theme')) {
+      localStorage.setItem('theme', 'dark');
+    }
+  }, []);
 
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {
