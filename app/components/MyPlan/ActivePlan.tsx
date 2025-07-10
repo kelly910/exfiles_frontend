@@ -181,6 +181,7 @@ export default function ActivePlan() {
               <Box className={styles['plan-footer-actions']}>
                 {fetchedUser?.active_subscription?.plan?.name !== 'Free Tier' &&
                   fetchedUser?.active_subscription?.status === 1 &&
+                  !fetchedUser?.staff_user &&
                   fetchedUser?.active_subscription?.subscription_status !==
                     'cancelled' && (
                     <Button
