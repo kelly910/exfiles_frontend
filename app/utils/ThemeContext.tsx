@@ -29,6 +29,18 @@ export const ThemeProviderMode = ({
     setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
+    const themePostMessage = new BroadcastChannel('react-auth-channel');
+    themePostMessage.postMessage({
+      type: 'THEME',
+      theme: theme === 'light' ? 'light' : 'dark',
+    });
+    window.opener?.postMessage(
+      {
+        type: 'THEME',
+        theme: theme === 'light' ? 'light' : 'dark',
+      },
+      process.env.NEXT_PUBLIC_REDIRECT_URL
+    );
   };
 
   return (
