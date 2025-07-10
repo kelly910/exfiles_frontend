@@ -449,7 +449,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
                             </svg>
                             <Typography>View Document</Typography>
                           </MenuItem>
-                          {expiredStatus !== 0 && (
+                          {(expiredStatus !== 0 || fetchedUser?.staff_user) && (
                             <>
                               <MenuItem
                                 onClick={handleRenameDocument}

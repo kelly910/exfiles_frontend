@@ -70,7 +70,9 @@ export default function ChatInputBox({
   const [expiredDialog, setExpireDialog] = useState(false);
   const { handleFiles } = useChunkedFileUpload((limitExceededType: string) => {
     setLimitType(limitExceededType);
-    setLimitDialog(true);
+    if (!fetchedUser?.staff_user) {
+      setLimitDialog(true);
+    }
   });
 
   const [text, setText] = useState('');
@@ -185,10 +187,10 @@ export default function ChatInputBox({
   };
 
   const handleMessageSending = async () => {
-    if (expiredStatus === 0) {
+    if (expiredStatus === 0 && !fetchedUser?.staff_user) {
       setExpireDialog(true);
     } else {
-      if (chatUsedCheck) {
+      if (chatUsedCheck && !fetchedUser?.staff_user) {
         setLimitDialog(true);
       } else {
         if (uploadedFiles && uploadedFiles?.length > 0) {
@@ -294,9 +296,9 @@ export default function ChatInputBox({
             id="input-with-icon-adornment"
             className={AIChatStyles.fileInputInner}
             placeholder={
-              expiredStatus === 0
+              expiredStatus === 0 && !fetchedUser?.staff_user
                 ? 'Your Plan has Expired'
-                : chatUsedCheck
+                : chatUsedCheck && !fetchedUser?.staff_user
                   ? 'Your copilot Chats Limit is Over'
                   : 'Write your question here'
             }

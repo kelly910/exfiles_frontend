@@ -265,7 +265,9 @@ const DownloadDocReport = () => {
           })
           .catch((error) => {
             console.log(error, 'error');
-            setLimitDialog(true);
+            if (!fetchedUser?.staff_user) {
+              setLimitDialog(true);
+            }
           });
         if (loggedInUser?.data?.id) {
           dispatch(getUserById(loggedInUser?.data?.id));
@@ -292,7 +294,9 @@ const DownloadDocReport = () => {
           })
           .catch((error) => {
             console.log(error, 'error');
-            setLimitDialog(true);
+            if (!fetchedUser?.staff_user) {
+              setLimitDialog(true);
+            }
           });
         if (loggedInUser?.data?.id) {
           dispatch(getUserById(loggedInUser?.data?.id));
@@ -492,12 +496,15 @@ const DownloadDocReport = () => {
                   />
                   <Button
                     className={
-                      expiredStatus === 0
+                      expiredStatus === 0 && !fetchedUser?.staff_user
                         ? 'btn btn-pluse download-document-btn limitation'
                         : 'btn btn-pluse download-document-btn'
                     }
                     onClick={downloadSelectedDocReport}
-                    disabled={loading || expiredStatus === 0}
+                    disabled={
+                      loading ||
+                      (expiredStatus === 0 && !fetchedUser?.staff_user)
+                    }
                   >
                     {loading ? (
                       <CircularProgress size={24} color="inherit" />

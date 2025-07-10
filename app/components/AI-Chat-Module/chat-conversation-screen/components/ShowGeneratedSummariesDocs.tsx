@@ -278,9 +278,13 @@ export default function ShowGeneratedSummariesDocs({
                                 Error in training while processing this document
                               </Typography>
                               <Button
-                                className={`${chatMessagesStyles.charAlRetryButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
+                                className={`${chatMessagesStyles.charAlRetryButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation' : ''}`}
                                 onClick={() => handleRetryDoc(documentItem)}
-                                disabled={isLoading || expiredStatus === 0}
+                                disabled={
+                                  isLoading ||
+                                  (expiredStatus === 0 &&
+                                    !fetchedUser?.staff_user)
+                                }
                               >
                                 {isLoading ? (
                                   <CircularProgress
@@ -381,8 +385,8 @@ export default function ShowGeneratedSummariesDocs({
             summaryGeneratedDocList?.length > 1 && (
               <Box className={chatMessagesStyles.chatAlSummaryButtonMain}>
                 <Button
-                  disabled={expiredStatus === 0}
-                  className={`${chatMessagesStyles.chatAlSummaryButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
+                  disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
+                  className={`${chatMessagesStyles.chatAlSummaryButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation' : ''}`}
                   onClick={() => {
                     if (summaryUsedCheck && !fetchedUser?.staff_user) {
                       setLimitDialog(true);

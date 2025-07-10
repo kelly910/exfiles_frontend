@@ -229,7 +229,7 @@ export default function DynamicPinnedMessagesList({
               ></p>
             </div>
             <div className={Style['right']}>
-              {expiredStatus !== 0 && (
+              {(expiredStatus !== 0 || fetchedUser?.staff_user) && (
                 <div className={Style['pin-img']}>
                   {isLoading && ''}
                   {/* <Image

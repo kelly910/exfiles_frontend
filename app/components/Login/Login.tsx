@@ -98,8 +98,9 @@ const Page = () => {
               setLoadingLogin(false);
               showToast('success', 'Login is successfully.');
               if (
-                response.data.remaining_days === 1 ||
-                response.data.remaining_days === 2
+                (response.data.remaining_days === 1 ||
+                  response.data.remaining_days === 2) &&
+                !response?.data?.staff_user
               ) {
                 setOpenCountDownDialog(true);
               } else {
@@ -156,8 +157,9 @@ const Page = () => {
           }
           showToast('success', 'Google Login is successfully.');
           if (
-            response.data.remaining_days === 1 ||
-            response.data.remaining_days === 2
+            (response.data.remaining_days === 1 ||
+              response.data.remaining_days === 2) &&
+            !response?.data?.staff_user
           ) {
             setOpenCountDownDialog(true);
           } else {

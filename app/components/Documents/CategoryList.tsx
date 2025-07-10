@@ -219,7 +219,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
                       No. of Docs : <span>{category?.no_of_docs || 0}</span>
                     </Typography>
                   </div>
-                  {expiredStatus !== 0 && (
+                  {(expiredStatus !== 0 || fetchedUser?.staff_user) && (
                     <>
                       <IconButton
                         onClick={(e) => handleOpenUserMenu(e, category)}

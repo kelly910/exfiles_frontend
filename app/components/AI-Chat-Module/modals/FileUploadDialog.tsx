@@ -55,7 +55,9 @@ export default function FileUploadDialog({
 
   const { handleFiles } = useChunkedFileUpload((limitExceededType: string) => {
     setLimitType(limitExceededType);
-    setLimitDialog(true);
+    if (!fetchedUser?.staff_user) {
+      setLimitDialog(true);
+    }
   });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);

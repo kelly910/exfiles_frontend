@@ -32,12 +32,12 @@ export const ThemeProviderMode = ({
     const themePostMessage = new BroadcastChannel('react-auth-channel');
     themePostMessage.postMessage({
       type: 'THEME',
-      theme: theme === 'light' ? 'light' : 'dark',
+      theme: theme === 'dark' ? 'light' : 'dark',
     });
     window.opener?.postMessage(
       {
         type: 'THEME',
-        theme: theme === 'light' ? 'light' : 'dark',
+        theme: theme === 'dark' ? 'light' : 'dark',
       },
       process.env.NEXT_PUBLIC_REDIRECT_URL
     );

@@ -40,11 +40,11 @@ export default function PromptsSuggestions({
               Log an incident - document what happened today.
             </Typography>
             <Button
-              disabled={expiredStatus === 0}
+              disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
               onClick={openLogIncidentModel}
               type="button"
               variant="contained"
-              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${expiredStatus === 0 ? 'limitation' : ''}`}
+              className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation' : ''}`}
               color="primary"
               fullWidth
             >
