@@ -259,8 +259,12 @@ export default function AnswerComponent({
           </span>
           <Box component="div" className={chatMessagesStyles.chatAlIcon}>
             <Button
-              disabled={expiredStatus === 0}
-              className={expiredStatus === 0 ? 'limitation-icon' : ''}
+              disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
+              className={
+                expiredStatus === 0 && !fetchedUser?.staff_user
+                  ? 'limitation-icon'
+                  : ''
+              }
             >
               {/* Like */}
               <svg
@@ -280,8 +284,12 @@ export default function AnswerComponent({
               </svg>
             </Button>
             <Button
-              disabled={expiredStatus === 0}
-              className={expiredStatus === 0 ? 'limitation-icon' : ''}
+              disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
+              className={
+                expiredStatus === 0 && !fetchedUser?.staff_user
+                  ? 'limitation-icon'
+                  : ''
+              }
             >
               {/* dislike */}
               <svg
@@ -326,8 +334,12 @@ export default function AnswerComponent({
                       e.stopPropagation();
                     }
                   }}
-                  disabled={expiredStatus === 0}
-                  className={expiredStatus === 0 ? 'limitation-icon' : ''}
+                  disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
+                  className={
+                    expiredStatus === 0 && !fetchedUser?.staff_user
+                      ? 'limitation-icon'
+                      : ''
+                  }
                 >
                   <Image
                     src="/images/chat-edit.svg"
@@ -345,8 +357,12 @@ export default function AnswerComponent({
                   e.stopPropagation();
                 }
               }}
-              disabled={expiredStatus === 0}
-              className={expiredStatus === 0 ? 'limitation-icon' : ''}
+              disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
+              className={
+                expiredStatus === 0 && !fetchedUser?.staff_user
+                  ? 'limitation-icon'
+                  : ''
+              }
             >
               {/* pin */}
               <svg

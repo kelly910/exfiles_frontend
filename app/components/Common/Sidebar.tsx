@@ -205,6 +205,8 @@ const Sidebar = ({
       if (value <= 90) return '#FF7E22'; // Orange
       if (value == 100) return '#E72240'; // Red
       return 'var(--Main-Gradient)'; // Gradient
+    } else if (fetchedUser?.staff_user) {
+      return 'var(--Stroke-Color)';
     } else {
       return 'var(--Main-Gradient)'; // Gradient
     }
@@ -213,6 +215,10 @@ const Sidebar = ({
   const getGracePointColor = (value: boolean) => {
     console.log(value, 'value');
     if (fetchedUser?.active_subscription?.status === 1) {
+      return '#A6152B';
+    } else if (fetchedUser?.staff_user) {
+      return 'var(--Stroke-Color)';
+    } else {
       return '#A6152B';
     }
   };
@@ -728,7 +734,8 @@ const Sidebar = ({
                       {item.label}{' '}
                     </Typography>
 
-                    {fetchedUser?.active_subscription?.status === 1 ? (
+                    {fetchedUser?.active_subscription?.status === 1 ||
+                    fetchedUser?.staff_user ? (
                       <Typography component="span">
                         {item.used}/
                         {fetchedUser?.staff_user ? 'Unlimited' : item.total}
@@ -759,7 +766,7 @@ const Sidebar = ({
                     />
                     {item.gracePoint === false &&
                       value === 100 &&
-                      !fetchedUser?.staff_user &&
+                      // !fetchedUser?.staff_user &&
                       item?.total !== 'Unlimited' && (
                         <ColoredLinearProgress
                           variant="determinate"
@@ -831,7 +838,8 @@ const Sidebar = ({
                       >
                         {item.label}{' '}
                       </Typography>
-                      {fetchedUser?.active_subscription?.status === 1 ? (
+                      {fetchedUser?.active_subscription?.status === 1 ||
+                      fetchedUser?.staff_user ? (
                         <Typography component="span">
                           {item.used}/
                           {fetchedUser?.staff_user ? 'Unlimited' : item.total}
@@ -863,7 +871,7 @@ const Sidebar = ({
                       />
                       {item.gracePoint === false &&
                         value === 100 &&
-                        !fetchedUser?.staff_user &&
+                        // !fetchedUser?.staff_user &&
                         item?.total !== 'Unlimited' && (
                           <ColoredLinearProgress
                             variant="determinate"

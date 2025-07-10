@@ -141,7 +141,7 @@ export default function ChatHomeScreen() {
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        {expiredStatus === 0 && <PlanExpiredMG />}
+        {expiredStatus === 0 && !fetchedUser?.staff_user && <PlanExpiredMG />}
         {/* Drag and Drop file upload */}
         {isDragging && <DraggingUI />}
         {/* Drag and Drop file upload */}

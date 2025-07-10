@@ -55,7 +55,7 @@ const SidebarAccordion = ({
       // router.push('/documents');
     } else if (expanded === 'panel1' || expanded === 'panel2') {
       closeDocumentSummary?.();
-      if (expanded === 'panel2') {
+      if (expanded === 'panel2' && !isOpen) {
         router.push('/');
       }
     }

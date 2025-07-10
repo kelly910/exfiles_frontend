@@ -16,7 +16,7 @@ export default function LogincidentEmpty() {
   const [expiredDialog, setExpiredDialog] = useState(false);
 
   const openLogIncidentModel = () => {
-    if (expiredStatus === 0) {
+    if (expiredStatus === 0 && !fetchedUser?.staff_user) {
       setExpiredDialog(true);
     } else {
       setOpenModel(true);

@@ -398,10 +398,11 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       <>
                         <span className={styles.docsDas}></span>
                         <Button
-                          className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
+                          className={`${styles.docsButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation-icon' : ''}`}
                           onClick={downloadSummary}
                           disabled={
-                            downloadingSummaryLoading || expiredStatus === 0
+                            downloadingSummaryLoading ||
+                            (expiredStatus === 0 && !fetchedUser?.staff_user)
                           }
                         >
                           {downloadingSummaryLoading ? (
@@ -420,9 +421,9 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     )}
                     <span className={styles.docsDas}></span>
                     <Button
-                      className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
+                      className={`${styles.docsButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation-icon' : ''}`}
                       onClick={editSummary}
-                      disabled={expiredStatus === 0}
+                      disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
                     >
                       <Image
                         src="/images/edit.svg"
@@ -722,10 +723,11 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         <>
                           <span className={styles.docsDas}></span>
                           <Button
-                            className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
+                            className={`${styles.docsButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation-icon' : ''}`}
                             onClick={downloadSummary}
                             disabled={
-                              downloadingSummaryLoading || expiredStatus === 0
+                              downloadingSummaryLoading ||
+                              (expiredStatus === 0 && !fetchedUser?.staff_user)
                             }
                           >
                             {downloadingSummaryLoading ? (
@@ -744,9 +746,11 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       )}
                       <span className={styles.docsDas}></span>
                       <Button
-                        className={`${styles.docsButton} ${expiredStatus === 0 ? 'limitation-icon' : ''}`}
+                        className={`${styles.docsButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation-icon' : ''}`}
                         onClick={editSummary}
-                        disabled={expiredStatus === 0}
+                        disabled={
+                          expiredStatus === 0 && !fetchedUser?.staff_user
+                        }
                       >
                         <Image
                           src="/images/edit.svg"

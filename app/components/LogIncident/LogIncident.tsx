@@ -145,7 +145,7 @@ export default function LogIncident() {
   );
 
   const handleOpenAddIncident = () => {
-    if (expiredStatus === 0) {
+    if (expiredStatus === 0 && !fetchedUser?.staff_user) {
       setExpiredDialog(true);
     } else {
       setEditLogIncidentData(null);
@@ -305,7 +305,9 @@ export default function LogIncident() {
           })
           .catch((error) => {
             console.log(error, 'error');
-            setLimitDialog(true);
+            if (!fetchedUser?.staff_user) {
+              setLimitDialog(true);
+            }
           });
         if (loggedInUser?.data?.id) {
           dispatch(getUserById(loggedInUser?.data?.id));
@@ -331,7 +333,9 @@ export default function LogIncident() {
           })
           .catch((error) => {
             console.log(error, 'error');
-            setLimitDialog(true);
+            if (!fetchedUser?.staff_user) {
+              setLimitDialog(true);
+            }
           });
         if (loggedInUser?.data?.id) {
           dispatch(getUserById(loggedInUser?.data?.id));
@@ -764,9 +768,12 @@ export default function LogIncident() {
                       </div>
                     </div>
                     <Button
-                      className={`${'btn btn-pluse generate-document-btn'} ${styles.generateDocBtn} ${expiredStatus === 0 ? 'limitation' : ''}`}
+                      className={`${'btn btn-pluse generate-document-btn'} ${styles.generateDocBtn} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation' : ''}`}
                       onClick={downloadLogsReport}
-                      disabled={loading || expiredStatus === 0}
+                      disabled={
+                        loading ||
+                        (expiredStatus === 0 && !fetchedUser?.staff_user)
+                      }
                     >
                       {loading ? (
                         <CircularProgress size={24} color="inherit" />

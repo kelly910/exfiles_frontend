@@ -226,7 +226,7 @@ export default function ThreadList({
             </p>
           </div>
           <div className={Style['right']}>
-            {expiredStatus !== 0 && (
+            {(expiredStatus !== 0 || fetchedUser?.staff_user) && (
               <div>
                 <Button
                   id="fade-button"
