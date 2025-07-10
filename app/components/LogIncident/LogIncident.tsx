@@ -806,7 +806,8 @@ export default function LogIncident() {
                               component="div"
                               className={styles.logListHeader}
                             >
-                              {expiredStatus !== 0 && (
+                              {(expiredStatus !== 0 ||
+                                fetchedUser?.staff_user) && (
                                 <Box
                                   component="div"
                                   className={styles.logListHeaderLeft}

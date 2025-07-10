@@ -691,7 +691,7 @@ const DownloadDocReport = () => {
                               ),
                             }}
                           />
-                          {expiredStatus !== 0 && (
+                          {(expiredStatus !== 0 || fetchedUser?.staff_user) && (
                             <Box className={styles.allSelect}>
                               <FormControlLabel
                                 control={
