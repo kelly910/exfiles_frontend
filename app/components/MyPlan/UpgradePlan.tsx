@@ -360,47 +360,61 @@ const UpgradePlan = () => {
                       ? process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH
                       : process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY;
                   if (
-                    activePlan?.duration_unit === String(selectedDurationUnit)
+                    fetchedUser?.active_subscription?.status === 1 &&
+                    fetchedUser?.active_subscription?.subscription_status ===
+                      'cancelled'
                   ) {
-                    if (plan.name === activePlan.name) {
-                      buttonLabel = 'Current Plan';
-                    } else if (activePlan.name === 'Free Tier') {
-                      buttonLabel = 'Upgrade Now';
-                    } else if (activePlan.name === 'Essential') {
-                      if (plan.name === 'Pro') {
-                        buttonLabel = 'Upgrade Now';
-                      }
-                    } else if (activePlan.name === 'Pro') {
-                      buttonLabel = 'Not Applicable';
-                    }
-                  } else if (activePlan?.name === 'Free Tier') {
                     buttonLabel =
-                      plan.name === 'Free Tier'
+                      plan.name === activePlan?.name &&
+                      plan.duration_unit === activePlan?.duration_unit
                         ? 'Current Plan'
-                        : 'Upgrade Now';
+                        : 'Not Applicable';
                   } else {
                     if (
-                      activePlan?.name === 'Essential' &&
-                      activePlan?.duration_unit ===
-                        process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH &&
-                      String(selectedDurationUnit) ===
-                        process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY
+                      activePlan?.duration_unit === String(selectedDurationUnit)
                     ) {
+                      if (plan.name === activePlan.name) {
+                        buttonLabel = 'Current Plan';
+                      } else if (activePlan.name === 'Free Tier') {
+                        buttonLabel = 'Upgrade Now';
+                      } else if (activePlan.name === 'Essential') {
+                        if (plan.name === 'Pro') {
+                          buttonLabel = 'Upgrade Now';
+                        }
+                      } else if (activePlan.name === 'Pro') {
+                        buttonLabel = 'Not Applicable';
+                      }
+                    } else if (activePlan?.name === 'Free Tier') {
                       buttonLabel =
-                        plan.name === 'Essential'
-                          ? 'Upgrade Now'
-                          : plan.name === 'Free Tier'
-                            ? 'Not Applicable'
-                            : 'Upgrade Now';
-                    } else if (
-                      activePlan?.name === 'Pro' &&
-                      activePlan?.duration_unit ===
-                        process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH &&
-                      String(selectedDurationUnit) ===
-                        process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY
-                    ) {
-                      buttonLabel =
-                        plan.name === 'Pro' ? 'Upgrade Now' : 'Not Applicable';
+                        plan.name === 'Free Tier'
+                          ? 'Current Plan'
+                          : 'Upgrade Now';
+                    } else {
+                      if (
+                        activePlan?.name === 'Essential' &&
+                        activePlan?.duration_unit ===
+                          process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH &&
+                        String(selectedDurationUnit) ===
+                          process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY
+                      ) {
+                        buttonLabel =
+                          plan.name === 'Essential'
+                            ? 'Upgrade Now'
+                            : plan.name === 'Free Tier'
+                              ? 'Not Applicable'
+                              : 'Upgrade Now';
+                      } else if (
+                        activePlan?.name === 'Pro' &&
+                        activePlan?.duration_unit ===
+                          process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH &&
+                        String(selectedDurationUnit) ===
+                          process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY
+                      ) {
+                        buttonLabel =
+                          plan.name === 'Pro'
+                            ? 'Upgrade Now'
+                            : 'Not Applicable';
+                      }
                     }
                   }
                   return (
