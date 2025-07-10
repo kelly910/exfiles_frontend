@@ -35,6 +35,7 @@ import LimitOver from '@/app/components/Limit-Over/LimitOver';
 import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const FileSummarySkeleton = () => {
+  const { theme } = useThemeMode();
   return (
     <>
       {/* Category Block Skeleton */}
@@ -43,7 +44,12 @@ const FileSummarySkeleton = () => {
           variant="circular"
           width={14}
           height={14}
-          sx={{ bgcolor: 'rgba(255, 255, 255, 0.1)' }}
+          sx={{
+            bgcolor:
+              theme !== 'dark'
+                ? 'rgba(255, 255, 255, 0.1)'
+                : 'rgba(0, 0, 0, 0.05)',
+          }}
         />
         <Skeleton
           variant="text"
@@ -51,7 +57,10 @@ const FileSummarySkeleton = () => {
           height={20}
           sx={{
             mx: 1,
-            bgcolor: 'rgba(255, 255, 255, 0.1)',
+            bgcolor:
+              theme !== 'dark'
+                ? 'rgba(255, 255, 255, 0.1)'
+                : 'rgba(0, 0, 0, 0.05)',
             borderRadius: '4px',
           }}
         />
@@ -59,7 +68,12 @@ const FileSummarySkeleton = () => {
           variant="circular"
           width={12}
           height={12}
-          sx={{ bgcolor: 'rgba(255, 255, 255, 0.1)' }}
+          sx={{
+            bgcolor:
+              theme !== 'dark'
+                ? 'rgba(255, 255, 255, 0.1)'
+                : 'rgba(0, 0, 0, 0.05)',
+          }}
         />
       </Box>
       {/* Summary Block Skeleton */}
@@ -68,13 +82,24 @@ const FileSummarySkeleton = () => {
           variant="text"
           width={100}
           height={20}
-          sx={{ bgcolor: 'rgba(255, 255, 255, 0.1)' }}
+          sx={{
+            bgcolor:
+              theme !== 'dark'
+                ? 'rgba(255, 255, 255, 0.1)'
+                : 'rgba(0, 0, 0, 0.05)',
+          }}
         />
         <Skeleton
           variant="circular"
           width={12}
           height={12}
-          sx={{ ml: 1, bgcolor: 'rgba(255, 255, 255, 0.1)' }}
+          sx={{
+            ml: 1,
+            bgcolor:
+              theme !== 'dark'
+                ? 'rgba(255, 255, 255, 0.1)'
+                : 'rgba(0, 0, 0, 0.05)',
+          }}
         />
       </Box>
     </>

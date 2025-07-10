@@ -213,7 +213,6 @@ const Sidebar = ({
   };
 
   const getGracePointColor = (value: boolean) => {
-    console.log(value, 'value');
     if (fetchedUser?.active_subscription?.status === 1) {
       return '#A6152B';
     } else if (fetchedUser?.staff_user) {
