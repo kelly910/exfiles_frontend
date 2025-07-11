@@ -45,7 +45,7 @@ export default function AnswerComponent({
       targetData = processText(messageObj.message);
     }
 
-    const cleanText = targetData
+    const cleanHtml = targetData
       .replace(/<br\s*\/?>/gi, '<br>')
       .replace(/<(i|em)[^>]*>([\s\S]*?)<\/\1>/gi, '<em>$2</em>')
       .replace(
@@ -61,9 +61,17 @@ export default function AnswerComponent({
       .replace(/<p[^>]*>([\s\S]*?)<\/p>/gi, '<p>$1</p>')
       .trim();
 
+    const plainText = cleanHtml
+      .replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&');
+
     try {
-      const blob = new Blob([cleanText], { type: 'text/html' });
-      const clipboardItem = new ClipboardItem({ 'text/html': blob });
+      const clipboardItem = new ClipboardItem({
+        'text/plain': new Blob([plainText], { type: 'text/plain' }),
+        'text/html': new Blob([cleanHtml], { type: 'text/html' }),
+      });
+
       await navigator.clipboard.write([clipboardItem]);
       showToast('success', 'Message copied successfully!');
     } catch (err) {
