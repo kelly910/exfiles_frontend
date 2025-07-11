@@ -27,6 +27,7 @@ import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
 import { useThemeMode } from '@/app/utils/ThemeContext';
 import ConfirmationUpgradePlanDialog from './Dialog/ConfirmationUpgradePlanDialog';
 import UpgradePlanVerification from './Dialog/UpgradePlanVerification';
+import { gtagEvent } from '@/app/utils/functions';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -142,6 +143,11 @@ const UpgradePlan = () => {
         setPendingPlanData({
           planSlug,
           email: fetchedUser?.email || '',
+        });
+        gtagEvent({
+          action: 'upgrade_started',
+          category: 'Subscription',
+          label: 'Upgrade button clicked',
         });
         setConfirmationDialog(true);
       } else {
