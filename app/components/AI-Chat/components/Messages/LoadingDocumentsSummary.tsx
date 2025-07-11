@@ -3,12 +3,14 @@ import Image from 'next/image';
 import chatMessagesStyles from '@components/AI-Chat/styles/ChatMessagesStyle.module.scss';
 import { ChatMessage } from '@store/slices/Chat/chatTypes';
 import { formatTo12HourTimeManually } from '@/app/utils/functions';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export default function LoadingDocumentsSummary({
   messageObj,
 }: {
   messageObj: ChatMessage;
 }) {
+  const { theme } = useThemeMode();
   return (
     <Box component="div" className={chatMessagesStyles.chatAl}>
       <Box component="div" className={chatMessagesStyles.chatAlImg}>
@@ -18,6 +20,9 @@ export default function LoadingDocumentsSummary({
             width={40}
             height={40}
             src="/images/close-sidebar-logo.svg"
+            style={{
+              filter: theme === 'dark' ? 'brightness(0) invert(0)' : '',
+            }}
           />
         </IconButton>
       </Box>

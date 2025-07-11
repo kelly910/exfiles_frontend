@@ -91,7 +91,7 @@
           h3 {
             font-size: var(--Heading-3);
             font-weight: var(--Bold);
-            color: var(--Txt-On-Gradient);
+            color: var(--Primary-Text-Color);
             text-transform: uppercase;
 
             @media (max-width: 450px) {
@@ -143,7 +143,7 @@
         p {
           font-size: var(--SubTitle-1);
           font-weight: var(--Bold);
-          color: var(--Txt-On-Gradient);
+          color: var(--Primary-Text-Color);
           margin: 0;
 
           @media (max-width: 450px) {
@@ -168,7 +168,6 @@
         justify-content: space-between;
         align-items: center;
         gap: 12px;
-        border-top: 1px solid var(--Stroke-Color);
         margin-top: 24px;
         padding-top: 20px;
 
@@ -219,7 +218,7 @@
           p {
             font-size: var(--SubTitle-3);
             font-weight: var(--Lighter);
-            color: var(--Txt-On-Gradient);
+            color: var(--Primary-Text-Color);
 
             @media (max-width: 370px) {
               display: flex;
@@ -227,6 +226,7 @@
               align-items: center;
               width: 100%;
             }
+
             span {
               color: var(--Subtext-Color);
               font-size: var(--SubTitle-3);
@@ -257,7 +257,7 @@
           .cancel-plan-btn {
             font-size: var(--SubTitle-3);
             font-weight: var(--Medium);
-            color: #e72240;
+            color: var(--Red-Color);
             padding: 0;
           }
         }
@@ -334,7 +334,7 @@
           .plan-status {
             p {
               background-color: #e722401a;
-              color: #e72240;
+              color: var(--Red-Color);
             }
           }
         }
@@ -372,14 +372,30 @@
       background: var(--Background-Color);
       border-radius: 12px;
       white-space: nowrap;
+      max-height: 400px;
+      overflow-y: auto;
+
+      .table-empty {
+        text-align: center;
+        color: var(--Subtext-Color);
+        font-size: var(--SubTitle-3);
+        font-weight: var(--Lighter);
+      }
 
       table {
+        thead {
+          position: sticky;
+          top: 0;
+          z-index: 1;
+          background: var(--Background-Color);
+        }
+
         tr {
           th {
             color: var(--Subtext-Color);
             font-size: var(--SubTitle-3);
             font-weight: var(--Lighter);
-            border: 1px solid #3a3948;
+            border: 1px solid var(--Stroke-Color);
             border-width: 0px 0px 1px 0px;
             padding: 10px 24px;
 
@@ -410,7 +426,6 @@
 // subscription-plan
 
 .subscription-plan-body {
-  background: linear-gradient(90deg, #3e384c 0%, #11101b 100%);
   padding: 1px;
   border-radius: 16px 0 0 16px;
   width: 100%;
@@ -427,22 +442,11 @@
   }
 
   .subscription-plan-sidebar {
-    background: linear-gradient(
-      90deg,
-      var(--Card-Color) 0%,
-      rgba(185, 72, 255, 0) 100%
-    );
     border-radius: 16px 0 0 16px;
     height: 100%;
   }
 
   .subscription-plan-container {
-    background: linear-gradient(
-      90deg,
-      rgba(185, 72, 255, 0.08) 0%,
-      rgba(185, 72, 255, 0) 100%
-    );
-
     border-radius: 16px 0 0 16px;
     height: 100%;
     display: flex;
@@ -472,6 +476,11 @@
         padding: 4px;
         margin-top: 20px;
         background: var(--Card-Color);
+
+        [data-theme='dark'] & {
+          background: var(--Input-Box-Colors);
+          border: 1.2px solid var(--Subtext-Color);
+        }
 
         .toggle-button {
           margin: 0;
@@ -520,6 +529,7 @@
         &:last-child p {
           border-bottom: none;
         }
+
         p {
           padding: 6px 20px;
           font-size: var(--SubTitle-3);
@@ -575,6 +585,7 @@
 
         .subscription-package-header-title-text {
           margin-top: 18px;
+
           h2 {
             font-size: var(--Heading-2);
             font-weight: var(--Bold);
@@ -635,10 +646,15 @@
         color: var(--Primary-Text-Color);
         transition: all 0.4s;
 
+        [data-theme='dark'] & {
+          background: var(--Input-Box-Colors);
+          border: 1px solid var(--Card-Border);
+        }
+
         &.active,
         &:hover {
           background: var(--Main-Gradient);
-          color: var(--Primary-Text-Color);
+          color: var(--Txt-On-Gradient);
           border: 1px solid var(--Card-Color);
         }
 
@@ -662,10 +678,12 @@
 
       div {
         text-align: center;
+
         &:last-child figure,
         &:last-child p {
           border-bottom: none;
         }
+
         p {
           padding: 6px 20px;
           font-size: var(--SubTitle-3);
@@ -697,6 +715,7 @@
             }
           }
         }
+
         figure {
           padding: 6px 20px;
           border-bottom: 1px solid rgb(137, 139, 148, 0.2);
@@ -790,6 +809,7 @@
     }
   }
 }
+
 .subscription-package-main {
   display: flex;
   justify-content: start;
@@ -809,6 +829,10 @@
     height: 100%;
     right: 0;
     z-index: 1;
+
+    [data-theme='dark'] & {
+      background: linear-gradient(90deg, rgba(161, 153, 255, 0) 0%, #FEFEFE 50.54%);
+    }
 
     @media (max-width: 768px) {
       content: '';
@@ -830,9 +854,14 @@
     left: 0;
     z-index: 1;
 
+    [data-theme='dark'] & {
+      background: linear-gradient(270deg, rgba(161, 153, 255, 0) 0%, #FEFEFE 50.54%);
+    }
+
     @media (max-width: 768px) {
       content: '';
     }
+
     @media (max-width: 500px) {
       width: 30px;
       left: -20px;
@@ -860,12 +889,12 @@
     max-width: calc(100% + 40px);
   }
 
-  & > div {
+  &>div {
     max-width: 100%;
   }
 
-  & > :last-child,
-  & > .slick-slide :last-child .subscription-package-body {
+  &> :last-child,
+  &>.slick-slide :last-child .subscription-package-body {
     border-right: 0;
 
     @media (max-width: 1100px) {
@@ -873,16 +902,16 @@
     }
   }
 
-  & > :last-child .subscription-package-container {
+  &> :last-child .subscription-package-container {
     border-radius: 0 16px 16px 0;
   }
 
-  & > :first-child .subscription-package-container {
+  &> :first-child .subscription-package-container {
     border-radius: 16px 0 0 16px;
   }
 
-  & > div,
-  & > div .subscription-package-body {
+  &>div,
+  &>div .subscription-package-body {
     border-right: 1px solid var(--Stroke-Color);
 
     @media (max-width: 1100px) {
@@ -914,12 +943,9 @@
   border-radius: 16px;
 }
 
-.subscription-package-body:hover
-  .subscription-package-container
-  .subscription-package-header
-  .subscription-package-button {
+.subscription-package-body:hover .subscription-package-container .subscription-package-header .subscription-package-button {
   background: var(--Main-Gradient);
-  color: var(--Primary-Text-Color);
+  color: var(--Txt-On-Gradient);
   border: 1px solid var(--Card-Color);
 
   &.default {
@@ -928,10 +954,21 @@
     border: 1px solid var(--Stroke-Color);
     cursor: default;
 
+    [data-theme='dark'] & {
+      border: 1px solid var(--Card-Border);
+      background: var(--Input-Box-Colors);
+    }
+
     &:hover {
       background: var(--Card-Color);
       color: var(--Placeholder-Text);
       border: 1px solid var(--Stroke-Color);
+
+      [data-theme='dark'] & {
+        background: var(--Input-Box-Colors);
+        color: var(--Placeholder-Text);
+        border: 1px solid var(--Card-Border);
+      }
     }
   }
 }
@@ -976,7 +1013,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: #3a3948;
+    background: var(--Stroke-Color);
     border-radius: 500px;
     z-index: 0;
     width: 100%;
@@ -999,6 +1036,11 @@
     gap: 8px;
     position: relative;
     z-index: 1;
+
+    p {
+      font-weight: var(--Medium);
+      font-size: var(--SubTitle-3);
+    }
 
     span {
       margin: 0;

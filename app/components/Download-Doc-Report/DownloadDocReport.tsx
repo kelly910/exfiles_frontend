@@ -25,12 +25,16 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useRouter } from 'next/navigation';
-import { setPageHeaderData } from '@/app/redux/slices/login';
+import {
+  getUserById,
+  selectFetchedUser,
+  setPageHeaderData,
+} from '@/app/redux/slices/login';
 import {
   downloadSelectedDocsReport,
   fetchAllDocuments,
 } from '@/app/redux/slices/documentByCategory';
-import { getDocumentImage } from '@/app/utils/functions';
+import { getDocumentImage, gtagEvent } from '@/app/utils/functions';
 import {
   convertDateFormat,
   convertDateFormatForIncident,
@@ -41,6 +45,8 @@ import { Dayjs } from 'dayjs';
 import Slider from 'react-slick';
 import { fetchDocumentSummaryById } from '@/app/redux/slices/documentSummary';
 import DocumentSummaryPopup from './DocumentSummaryPopup';
+import { useThemeMode } from '@/app/utils/ThemeContext';
+import LimitOver from '../Limit-Over/LimitOver';
 
 type Tag = {
   id: number;
@@ -93,10 +99,17 @@ const DownloadDocReport = () => {
     (state: RootState) => state.categoryListing
   );
   const [loading, setLoading] = useState(false);
+  const [limitDialog, setLimitDialog] = useState(false);
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
+
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
 
   useEffect(() => {
     if (isMobile) {
@@ -121,6 +134,15 @@ const DownloadDocReport = () => {
   const { allDocuments, count } = useSelector(
     (state: RootState) => state.documentListing
   );
+
+  useEffect(() => {
+    dispatch(
+      setPageHeaderData({
+        title: 'Export Summaries',
+        subTitle: `No. of Export Summaries : ${count || 0}`,
+      })
+    );
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(setLoader(true));
@@ -236,7 +258,25 @@ const DownloadDocReport = () => {
         const payload = {
           document_uuid: selectedDocsDownload.join(','),
         };
-        await dispatch(downloadSelectedDocsReport(payload));
+        await dispatch(downloadSelectedDocsReport(payload))
+          .unwrap()
+          .then((res) => {
+            console.log(res, 'res');
+          })
+          .catch((error) => {
+            console.log(error, 'error');
+            if (!fetchedUser?.staff_user) {
+              setLimitDialog(true);
+            }
+          });
+        if (loggedInUser?.data?.id) {
+          dispatch(getUserById(loggedInUser?.data?.id));
+        }
+        gtagEvent({
+          action: 'export_summary',
+          category: 'Export',
+          label: 'Summary report exported',
+        });
         setLoading(false);
       } else {
         const payload = {
@@ -247,7 +287,25 @@ const DownloadDocReport = () => {
           search: searchParams.length > 3 ? searchParams : '',
           type: 'all',
         };
-        await dispatch(downloadSelectedDocsReport(payload));
+        await dispatch(downloadSelectedDocsReport(payload))
+          .unwrap()
+          .then((res) => {
+            console.log(res, 'res');
+          })
+          .catch((error) => {
+            console.log(error, 'error');
+            if (!fetchedUser?.staff_user) {
+              setLimitDialog(true);
+            }
+          });
+        if (loggedInUser?.data?.id) {
+          dispatch(getUserById(loggedInUser?.data?.id));
+        }
+        gtagEvent({
+          action: 'export_summary',
+          category: 'Export',
+          label: 'Summary report exported',
+        });
         setLoading(false);
       }
       setLoading(false);
@@ -341,6 +399,8 @@ const DownloadDocReport = () => {
     ),
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <main className="chat-body">
@@ -377,10 +437,30 @@ const DownloadDocReport = () => {
                         position="end"
                         className={styles.searchIcon}
                       >
-                        <span
-                          className={styles.search}
-                          onClick={handleSearch}
-                        ></span>
+                        <span className={styles.search} onClick={handleSearch}>
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M6.53492 11.3413C9.30241 11.3413 11.5459 9.09782 11.5459 6.33033C11.5459 3.56283 9.30241 1.31934 6.53492 1.31934C3.76742 1.31934 1.52393 3.56283 1.52393 6.33033C1.52393 9.09782 3.76742 11.3413 6.53492 11.3413Z"
+                              stroke="var(--Icon-Color)"
+                              stroke-width="1.67033"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="M14.8866 14.6815L11.5459 11.3408"
+                              stroke="var(--Icon-Color)"
+                              stroke-width="1.67033"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
                       </InputAdornment>
                     }
                   />
@@ -389,12 +469,18 @@ const DownloadDocReport = () => {
                       className={`${styles['search-btn']} ${styles['filter-btn']}`}
                       onClick={() => setFilterOpen(true)}
                     >
-                      <Image
-                        src="/images/filter_list.svg"
-                        alt="filter_list"
-                        width={20}
-                        height={20}
-                      />
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 14 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6.32411 9.26749C6.11045 9.26749 5.93128 9.19533 5.78661 9.05099C5.64206 8.90655 5.56978 8.7276 5.56978 8.51416C5.56978 8.30072 5.64295 8.12077 5.78928 7.97433C5.93573 7.82799 6.11534 7.75483 6.32811 7.75483H7.67345C7.88711 7.75483 8.06628 7.82799 8.21095 7.97433C8.3555 8.12077 8.42778 8.30072 8.42778 8.51416C8.42778 8.7276 8.35461 8.90655 8.20828 9.05099C8.06184 9.19533 7.88223 9.26749 7.66945 9.26749H6.32411ZM3.63361 5.75483C3.41984 5.75483 3.24067 5.68266 3.09611 5.53833C2.95156 5.39388 2.87928 5.21494 2.87928 5.00149C2.87928 4.78805 2.95156 4.6081 3.09611 4.46166C3.24067 4.31533 3.41984 4.24216 3.63361 4.24216H10.3599C10.5737 4.24216 10.7529 4.31533 10.8974 4.46166C11.042 4.6081 11.1143 4.78805 11.1143 5.00149C11.1143 5.21494 11.042 5.39388 10.8974 5.53833C10.7529 5.68266 10.5737 5.75483 10.3599 5.75483H3.63361ZM1.61761 2.24216C1.40384 2.24216 1.22467 2.16994 1.08011 2.02549C0.935559 1.88116 0.863281 1.70227 0.863281 1.48883C0.863281 1.27538 0.936448 1.09544 1.08278 0.948992C1.22923 0.802659 1.40884 0.729492 1.62161 0.729492H12.3799C12.5937 0.729492 12.7729 0.802659 12.9174 0.948992C13.062 1.09544 13.1343 1.27538 13.1343 1.48883C13.1343 1.70227 13.0611 1.88116 12.9148 2.02549C12.7683 2.16994 12.5887 2.24216 12.3759 2.24216H1.61761Z"
+                          fill="var(--Icon-Color)"
+                        />
+                      </svg>
                     </Button>
                   </Box>
                   <FilterModal
@@ -409,9 +495,16 @@ const DownloadDocReport = () => {
                     setSelectedCategories={setSelectedCategories}
                   />
                   <Button
-                    className="btn btn-pluse download-document-btn"
+                    className={
+                      expiredStatus === 0 && !fetchedUser?.staff_user
+                        ? 'btn btn-pluse download-document-btn limitation'
+                        : 'btn btn-pluse download-document-btn'
+                    }
                     onClick={downloadSelectedDocReport}
-                    disabled={loading}
+                    disabled={
+                      loading ||
+                      (expiredStatus === 0 && !fetchedUser?.staff_user)
+                    }
                   >
                     {loading ? (
                       <CircularProgress size={24} color="inherit" />
@@ -474,12 +567,18 @@ const DownloadDocReport = () => {
                             ).unwrap();
                           }}
                         >
-                          <Image
-                            src="/images/close.svg"
-                            alt="sidebar-hide-icon"
-                            width={10}
-                            height={10}
-                          />
+                          <svg
+                            width="10"
+                            height="10"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                              fill="var(--Primary-Text-Color)"
+                            />
+                          </svg>
                         </Button>
                       </div>
                     )}
@@ -529,12 +628,18 @@ const DownloadDocReport = () => {
                                   });
                                 }}
                               >
-                                <Image
-                                  src="/images/close.svg"
-                                  alt="sidebar-hide-icon"
-                                  width={10}
-                                  height={10}
-                                />
+                                <svg
+                                  width="10"
+                                  height="10"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                                    fill="var(--Primary-Text-Color)"
+                                  />
+                                </svg>
                               </Button>
                             </div>
                           );
@@ -563,6 +668,12 @@ const DownloadDocReport = () => {
                             width={19}
                             height={24}
                             className={styles.pdfImg}
+                            style={{
+                              background:
+                                theme == 'dark'
+                                  ? 'var(--Txt-On-Gradient)'
+                                  : 'var(--Card-Color)',
+                            }}
                           />
                           <Typography
                             variant="body1"
@@ -580,62 +691,70 @@ const DownloadDocReport = () => {
                               ),
                             }}
                           />
-                          <Box className={styles.allSelect}>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={selectedDocsDownload.includes(
-                                    doc?.uuid || ''
-                                  )}
-                                  onChange={() =>
-                                    handleSelectDoc(doc?.uuid || '')
-                                  }
-                                  icon={
-                                    <Box
-                                      sx={{
-                                        width: 20,
-                                        height: 20,
-                                        border: '1px solid #ffffff99',
-                                        borderRadius: '6px',
-                                        backgroundColor: 'transparent',
-                                      }}
-                                    />
-                                  }
-                                  checkedIcon={
-                                    <Box
-                                      sx={{
-                                        width: 20,
-                                        height: 20,
-                                        background: 'var(--Main-Gradient)',
-                                        borderRadius: '6px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                      }}
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="12"
-                                        height="8"
-                                        viewBox="0 0 12 8"
-                                        fill="none"
+                          {(expiredStatus !== 0 || fetchedUser?.staff_user) && (
+                            <Box className={styles.allSelect}>
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={selectedDocsDownload.includes(
+                                      doc?.uuid || ''
+                                    )}
+                                    onChange={() =>
+                                      handleSelectDoc(doc?.uuid || '')
+                                    }
+                                    icon={
+                                      <Box
+                                        sx={{
+                                          width: 20,
+                                          height: 20,
+                                          border:
+                                            theme === 'dark'
+                                              ? '1.2px solid var(--Stroke-Color)'
+                                              : '1.2px solid var(--Subtext-Color)',
+                                          borderRadius: '6px',
+                                          backgroundColor:
+                                            theme !== 'dark'
+                                              ? 'transparent'
+                                              : 'var(--Txt-On-Gradient)',
+                                        }}
+                                      />
+                                    }
+                                    checkedIcon={
+                                      <Box
+                                        sx={{
+                                          width: 20,
+                                          height: 20,
+                                          background: 'var(--Main-Gradient)',
+                                          borderRadius: '6px',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                        }}
                                       >
-                                        <path
-                                          d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
-                                          stroke="white"
-                                          strokeWidth="1.8"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        />
-                                      </svg>
-                                    </Box>
-                                  }
-                                  sx={{ padding: 0 }}
-                                />
-                              }
-                              label=""
-                            />
-                          </Box>
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width="12"
+                                          height="8"
+                                          viewBox="0 0 12 8"
+                                          fill="none"
+                                        >
+                                          <path
+                                            d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
+                                            stroke="white"
+                                            strokeWidth="1.8"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                          />
+                                        </svg>
+                                      </Box>
+                                    }
+                                    sx={{ padding: 0 }}
+                                  />
+                                }
+                                label=""
+                              />
+                            </Box>
+                          )}
                         </div>
                         <div className={styles.docDateBox}>
                           <div className={styles.docTagBox}>
@@ -646,6 +765,12 @@ const DownloadDocReport = () => {
                                   doc?.category?.name || '',
                                   searchParams || ''
                                 ),
+                              }}
+                              style={{
+                                background:
+                                  theme == 'dark'
+                                    ? 'var(--Txt-On-Gradient)'
+                                    : 'var(--Card-Image)',
                               }}
                             />
                           </div>
@@ -693,6 +818,13 @@ const DownloadDocReport = () => {
         onClose={() => setOpenDialog(false)}
         docType={docType}
         searchParams={searchParams}
+      />
+      <LimitOver
+        open={limitDialog}
+        onClose={() => setLimitDialog(false)}
+        title={'Your Report Generation Limit is Over'}
+        subtitle={'Reports'}
+        stats={fetchedUser?.reports_generated || ''}
       />
     </>
   );

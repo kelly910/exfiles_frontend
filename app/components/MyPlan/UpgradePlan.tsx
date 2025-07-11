@@ -23,6 +23,10 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import Slider, { Settings } from 'react-slick';
 import { setLoader } from '@/app/redux/slices/loader';
 import { useRouter } from 'next/navigation';
+import { getUserById, selectFetchedUser } from '@/app/redux/slices/login';
+import { useThemeMode } from '@/app/utils/ThemeContext';
+import ConfirmationUpgradePlanDialog from './Dialog/ConfirmationUpgradePlanDialog';
+import UpgradePlanVerification from './Dialog/UpgradePlanVerification';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   [`& .${toggleButtonGroupClasses.grouped}`]: {
@@ -44,12 +48,25 @@ const UpgradePlan = () => {
   const dispatch = useAppDispatch();
   const [billingCycle, setBillingCycle] = useState('month');
   const { plans } = useSelector((state: RootState) => state.plans);
-  const storedUser = localStorage.getItem('loggedInUser');
-  const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
+  const loggedInUser = useSelector(
+    (state: RootState) => state.login.loggedInUser
+  );
+  const fetchedUser = useSelector(selectFetchedUser);
   const router = useRouter();
+  const [confirmationDialog, setConfirmationDialog] = useState(false);
+  const [verificationDialog, setVerificationDialog] = useState(false);
+  const [pendingPlanData, setPendingPlanData] = useState<{
+    planSlug: string;
+    email: string;
+  } | null>(null);
+
+  const { theme } = useThemeMode();
 
   useEffect(() => {
     dispatch(fetchPlansList(billingCycle));
+    if (loggedInUser?.data?.id) {
+      dispatch(getUserById(loggedInUser?.data?.id));
+    }
   }, [dispatch]);
 
   const settings = {
@@ -115,9 +132,28 @@ const UpgradePlan = () => {
     );
   };
 
-  const handleUpgradePlan = (planId: number, buttonLabel: string) => {
+  const handleUpgradePlan = (
+    planId: number,
+    buttonLabel: string,
+    planSlug: string
+  ) => {
     if (buttonLabel === 'Upgrade Now') {
-      router.push(`/order-summary?planId=${planId}`);
+      if (fetchedUser?.active_subscription?.plan?.name !== 'Free Tier') {
+        setPendingPlanData({
+          planSlug,
+          email: fetchedUser?.email || '',
+        });
+        setConfirmationDialog(true);
+      } else {
+        router.push(`/order-summary?planId=${planId}`);
+      }
+    }
+  };
+
+  const continueUpgrade = () => {
+    if (pendingPlanData) {
+      setConfirmationDialog(false);
+      setVerificationDialog(true);
     }
   };
 
@@ -125,7 +161,7 @@ const UpgradePlan = () => {
     <>
       <Accordion
         className={styles['upgrade-plan-accordion']}
-        defaultExpanded={false}
+        defaultExpanded={true}
         sx={{
           backgroundColor: 'transparent',
           boxShadow: 'none',
@@ -133,7 +169,11 @@ const UpgradePlan = () => {
             display: 'none',
           },
           '& .Mui-expanded': {
-            background: 'var(--Card-Color)',
+            background:
+              theme === 'dark'
+                ? 'var(--Input-Box-Colors)'
+                : 'var(--Card-Color)',
+            color: 'var(--Primary-Text-Color)',
           },
         }}
       >
@@ -142,8 +182,8 @@ const UpgradePlan = () => {
             <Image
               src="/images/arrow-down.svg"
               alt="Expand Icon"
-              width={24}
-              height={24}
+              width={16}
+              height={16}
             />
           }
           aria-controls="panel1-content"
@@ -158,8 +198,16 @@ const UpgradePlan = () => {
               alignItems: 'center',
             },
 
+            img: {
+              filter: 'brightness(0) invert(1)',
+            },
+
             '& .Mui-expanded': {
               background: 'transparent',
+              img: {
+                filter:
+                  theme === 'dark' ? 'brightness(0.5) invert(0)' : 'unset',
+              },
             },
           }}
           className={styles['upgrade-plan-accordion-summary']}
@@ -168,9 +216,33 @@ const UpgradePlan = () => {
         </AccordionSummary>
         <AccordionDetails className={styles['upgrade-plan-accordion-details']}>
           <Box className={styles['upgrade-plan-package-main']}>
-            <Box className={styles['subscription-plan-body']}>
-              <Box className={styles['subscription-plan-sidebar']}>
-                <Box className={styles['subscription-plan-container']}>
+            <Box
+              className={styles['subscription-plan-body']}
+              sx={{
+                background:
+                  theme === 'dark'
+                    ? 'linear-gradient(90deg, rgba(137, 139, 148, 0.4) 0%, rgba(137, 139, 148, 0) 100%)'
+                    : 'linear-gradient(90deg, #3e384c 0%, #11101b 100%)',
+              }}
+            >
+              <Box
+                className={styles['subscription-plan-sidebar']}
+                sx={{
+                  background:
+                    theme === 'dark'
+                      ? 'linear-gradient(90deg, var(--Card-Color) 0%, rgb(255 255 255 / 79%) 100%)'
+                      : 'linear-gradient(90deg, var(--Card-Color) 0%, rgba(185, 72, 255, 0) 100%)',
+                }}
+              >
+                <Box
+                  className={styles['subscription-plan-container']}
+                  sx={{
+                    background:
+                      theme === 'dark'
+                        ? 'linear-gradient(90deg, rgba(185, 72, 255, 0.08) 0%, rgba(185, 72, 255, 0) 100%)'
+                        : 'linear-gradient(90deg, rgba(185, 72, 255, 0.08) 0%, rgba(185, 72, 255, 0) 100%)',
+                  }}
+                >
                   <Box className={styles['subscription-plan-header']}>
                     <Typography variant="h2" component="h2">
                       Subscription Plan
@@ -282,28 +354,68 @@ const UpgradePlan = () => {
               <MaybeSlider condition={isSliderActive} settings={settings}>
                 {plans.map((plan, index) => {
                   let buttonLabel = 'Not Applicable';
-                  const activePlanId =
-                    loggedInUser?.data?.active_subscription?.plan?.id;
-                  const activePlan = plans.find((p) => p?.id === activePlanId);
-                  if (activePlan?.duration_unit === billingCycle) {
-                    if (plan.name === activePlan.name) {
-                      buttonLabel = 'Current Plan';
-                    } else if (activePlan.name === 'Free Tier') {
-                      buttonLabel = 'Upgrade Now';
-                    } else if (activePlan.name === 'Essential') {
-                      if (plan.name === 'Pro') {
-                        buttonLabel = 'Upgrade Now';
-                      }
-                    } else if (activePlan.name === 'Pro') {
-                      buttonLabel = 'Not Applicable';
-                    }
-                  } else if (activePlan?.name === 'Free Tier') {
+                  const activePlan = fetchedUser?.active_subscription?.plan;
+                  const selectedDurationUnit =
+                    billingCycle === 'month'
+                      ? process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH
+                      : process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY;
+                  if (
+                    fetchedUser?.active_subscription?.status === 1 &&
+                    fetchedUser?.active_subscription?.subscription_status ===
+                      'cancelled'
+                  ) {
                     buttonLabel =
-                      plan.name === 'Free Tier'
+                      plan.name === activePlan?.name &&
+                      plan.duration_unit === activePlan?.duration_unit
                         ? 'Current Plan'
-                        : 'Upgrade Now';
+                        : 'Not Applicable';
                   } else {
-                    buttonLabel = 'Not Applicable';
+                    if (
+                      activePlan?.duration_unit === String(selectedDurationUnit)
+                    ) {
+                      if (plan.name === activePlan.name) {
+                        buttonLabel = 'Current Plan';
+                      } else if (activePlan.name === 'Free Tier') {
+                        buttonLabel = 'Upgrade Now';
+                      } else if (activePlan.name === 'Essential') {
+                        if (plan.name === 'Pro') {
+                          buttonLabel = 'Upgrade Now';
+                        }
+                      } else if (activePlan.name === 'Pro') {
+                        buttonLabel = 'Not Applicable';
+                      }
+                    } else if (activePlan?.name === 'Free Tier') {
+                      buttonLabel =
+                        plan.name === 'Free Tier'
+                          ? 'Current Plan'
+                          : 'Upgrade Now';
+                    } else {
+                      if (
+                        activePlan?.name === 'Essential' &&
+                        activePlan?.duration_unit ===
+                          process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH &&
+                        String(selectedDurationUnit) ===
+                          process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY
+                      ) {
+                        buttonLabel =
+                          plan.name === 'Essential'
+                            ? 'Upgrade Now'
+                            : plan.name === 'Free Tier'
+                              ? 'Not Applicable'
+                              : 'Upgrade Now';
+                      } else if (
+                        activePlan?.name === 'Pro' &&
+                        activePlan?.duration_unit ===
+                          process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH &&
+                        String(selectedDurationUnit) ===
+                          process.env.NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY
+                      ) {
+                        buttonLabel =
+                          plan.name === 'Pro'
+                            ? 'Upgrade Now'
+                            : 'Not Applicable';
+                      }
+                    }
                   }
                   return (
                     <Box
@@ -374,7 +486,11 @@ const UpgradePlan = () => {
                             className={`${styles['subscription-package-button']} ${buttonLabel === 'Not Applicable' && styles['default']}`}
                             variant="outlined"
                             onClick={() =>
-                              handleUpgradePlan(plan.id, buttonLabel)
+                              handleUpgradePlan(
+                                plan.id,
+                                buttonLabel,
+                                plan?.slug
+                              )
                             }
                           >
                             {buttonLabel}
@@ -429,6 +545,16 @@ const UpgradePlan = () => {
           </Box>
         </AccordionDetails>
       </Accordion>
+      <ConfirmationUpgradePlanDialog
+        open={confirmationDialog}
+        onClose={() => setConfirmationDialog(false)}
+        upgradeContinue={continueUpgrade}
+      />
+      <UpgradePlanVerification
+        open={verificationDialog}
+        onClose={() => setVerificationDialog(false)}
+        pendingPlanData={pendingPlanData}
+      />
     </>
   );
 };

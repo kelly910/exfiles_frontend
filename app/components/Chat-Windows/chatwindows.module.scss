@@ -37,7 +37,7 @@
     padding: 2px 4px;
     background-color: var(--Background-Color);
     font-weight: var(--Lighter);
-    font-size: 10px;
+    font-size: var(--SubTitle-6);
     line-height: 1.4;
     letter-spacing: 3.68px;
     text-align: center;
@@ -58,6 +58,12 @@
   margin-bottom: 32px;
 
   .chatAlImg {
+
+    div {
+      background-color: var(--Primary-Text-Color);
+      color: var(--Background-Color);
+    }
+
     div,
     button {
       width: 22px;
@@ -109,7 +115,6 @@
       font-weight: var(--Lighter);
       font-size: var(--SubTitle-3);
       line-height: 1.4;
-      letter-spacing: 0%;
       text-align: left;
       color: var(--Primary-Text-Color);
       padding: 8px 15px;
@@ -154,12 +159,12 @@
 
       .chatAlSummaryInner {
         border-radius: 12px;
-        border: 1px solid #3a3948;
+        border: 1px solid var(--Stroke-Color);
       }
 
       .chatAlSummaryBox {
         padding: 12px 8px;
-        border-bottom: 1px solid #3a3948;
+        border-bottom: 1px solid var(--Stroke-Color);
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -182,7 +187,6 @@
             font-weight: var(--Medium);
             font-size: var(--SubTitle-3);
             line-height: 140%;
-            letter-spacing: 0%;
             color: var(--Primary-Text-Color);
           }
 
@@ -190,7 +194,6 @@
             font-weight: var(--Regular);
             font-size: var(--SubTitle-5);
             line-height: 140%;
-            letter-spacing: 0%;
             color: var(--Placeholder-Text);
           }
         }
@@ -237,7 +240,7 @@
         background-color: var(--Input-Box-Colors);
         border-radius: 12px;
         padding: 8px;
-        border: 1px solid #3a3948;
+        border: 1px solid var(--Stroke-Color);
         height: 100%;
 
         display: flex;
@@ -337,7 +340,7 @@
         background-color: var(--Input-Box-Colors);
         border-radius: 6px;
         padding: 7px 8px;
-        border: 1px solid #3a3948;
+        border: 1px solid var(--Stroke-Color);
 
         &:first-child {
           margin-top: 0;
@@ -390,7 +393,6 @@
           font-weight: var(--Medium);
           font-size: var(--SubTitle-3);
           line-height: 140%;
-          letter-spacing: 0%;
           color: var(--Primary-Text-Color);
 
           span {
@@ -398,12 +400,12 @@
             font-weight: var(--Medium);
             font-size: var(--SubTitle-6);
             line-height: 140%;
-            letter-spacing: 0%;
             color: var(--Placeholder-Text);
           }
         }
       }
     }
+
     .chatAlUploadFailed {
       padding: 5px 8px;
       background-color: var(--Card-Color);
@@ -457,7 +459,7 @@ span.chatTime {
   width: 100%;
   text-align: right;
   font-weight: var(--Regular);
-  font-size: 10px;
+  font-size: var(--SubTitle-6);
   line-height: 1.4;
   color: var(--Placeholder-Text);
   padding: 6px 8px;
@@ -520,7 +522,6 @@ span.chatTime {
         font-weight: var(--Regular);
         font-size: var(--SubTitle-5);
         line-height: 1.4;
-        letter-spacing: 0%;
         color: var(--Subtext-Color);
         text-align: start;
       }
@@ -678,16 +679,20 @@ span.chatTime {
     min-width: 150px;
     align-items: flex-start;
     flex-direction: column;
+
     .chatAlImg {
       order: 1;
     }
   }
+
   .chatAlContent {
     order: 2;
   }
+
   .chatAlUser {
     align-items: flex-end;
   }
+
   .chatUserProgress {
     max-width: 100%;
     order: 2;

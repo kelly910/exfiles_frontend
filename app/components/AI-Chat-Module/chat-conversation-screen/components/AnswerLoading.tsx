@@ -2,8 +2,10 @@ import { Box, IconButton, Typography } from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat-Module/styles/ChatMessagesStyle.module.scss';
 
 import Image from 'next/image';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export default function AnswerLoading() {
+  const { theme } = useThemeMode();
   return (
     <Box component="div" className={chatMessagesStyles.chatAl}>
       <Box component="div" className={chatMessagesStyles.chatAlImg}>
@@ -13,6 +15,9 @@ export default function AnswerLoading() {
             alt="Logo"
             width={40}
             height={40}
+            style={{
+              filter: theme === 'dark' ? 'brightness(0) invert(0)' : '',
+            }}
           />
         </IconButton>
       </Box>

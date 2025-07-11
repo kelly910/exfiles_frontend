@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export default function ChatWindows() {
   const chatDate = ['March 5, 2025', '25-03-2025', 'today'];
@@ -46,6 +47,7 @@ function ChatDate({ date }: { date: string }) {
 }
 
 function ChatAl() {
+  const { theme } = useThemeMode();
   return (
     <Box component="div" className={styles.chatAl}>
       <Box component="div" className={styles.chatAlImg}>
@@ -56,6 +58,9 @@ function ChatAl() {
               width={40}
               height={40}
               src="/images/close-sidebar-logo.svg"
+              style={{
+                filter: theme === 'dark' ? 'brightness(0) invert(0)' : '',
+              }}
             />
           </IconButton>
         </Tooltip>
@@ -135,10 +140,10 @@ function ChatAlSummary() {
               alt="A S"
               src="/static/images/avatar/2.jpg"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '140%',
               }}
@@ -206,10 +211,10 @@ function ChatAlHold() {
               alt="A S"
               src="/static/images/avatar/2.jpg"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '140%',
               }}
@@ -261,10 +266,10 @@ function ChatAlFiles() {
               alt="A S"
               src="/static/images/avatar/2.jpg"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '140%',
               }}
@@ -539,10 +544,10 @@ function ChatAlCombined() {
               alt="A S"
               src="/static/images/avatar/2.jpg"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '140%',
               }}
@@ -612,10 +617,10 @@ function ChatAlError() {
               alt="A S"
               src="/static/images/avatar/2.jpg"
               sx={{
-                backgroundColor: '#DADAE1',
-                color: '#1B1A25',
-                fontSize: '16px',
-                fontWeight: 600,
+                backgroundColor: 'var(--Primary-Text-Color)',
+                color: 'var(--Card-Color)',
+                fontSize: 'var(--SubTitle-2)',
+                fontWeight: 'var(--Medium)',
                 padding: '9px 10px',
                 lineHeight: '140%',
               }}
@@ -684,10 +689,10 @@ function ChatUser() {
       <Box component="div" className={styles.chatAlImg}>
         <Avatar
           sx={{
-            backgroundColor: '#DADAE1',
-            color: '#1B1A25',
-            fontSize: '16px',
-            fontWeight: 600,
+            backgroundColor: 'var(--Primary-Text-Color)',
+            color: 'var(--Card-Color)',
+            fontSize: 'var(--SubTitle-2)',
+            fontWeight: 'var(--Medium)',
             padding: '9px 10px',
             lineHeight: '140%',
           }}
@@ -848,10 +853,10 @@ function UserDocsUpload() {
       <Box component="div" className={styles.chatAlImg}>
         <Avatar
           sx={{
-            backgroundColor: '#DADAE1',
-            color: '#1B1A25',
-            fontSize: '16px',
-            fontWeight: 600,
+            backgroundColor: 'var(--Primary-Text-Color)',
+            color: 'var(--Card-Color)',
+            fontSize: 'var(--SubTitle-2)',
+            fontWeight: 'var(--Medium)',
             padding: '9px 10px',
             lineHeight: '140%',
           }}
@@ -891,10 +896,10 @@ function GeneratingCombined() {
       <Box component="div" className={styles.chatAlImg}>
         <Avatar
           sx={{
-            backgroundColor: '#DADAE1',
-            color: '#1B1A25',
-            fontSize: '16px',
-            fontWeight: 600,
+            backgroundColor: 'var(--Primary-Text-Color)',
+            color: 'var(--Card-Color)',
+            fontSize: 'var(--SubTitle-2)',
+            fontWeight: 'var(--Medium)',
             padding: '9px 10px',
             lineHeight: '140%',
           }}

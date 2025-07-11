@@ -3,7 +3,6 @@ import api from '../../../utils/axiosConfig';
 import urlMapper from '@/app/utils/apiEndPoints/urlMapper';
 import { NewPasswordFormValues } from '@/app/components/New-Password/NewPassword';
 import { ForgotPasswordFormValues } from '@/app/components/Forgot-Password/ForgotPassword';
-import { showToast } from '@/app/shared/toast/ShowToast';
 import { UpdateUserFormValues } from '@/app/components/UserSetting/MyProfile';
 import { RootState } from '../../store';
 
@@ -18,6 +17,7 @@ interface ForgotPasswordState {
   changePassword: boolean;
   loggedInUser: LoginResponse | null;
   pageHeaderData: PageHeaderDataType;
+  fetchedUser: UpdateProfileResponse | null;
 }
 
 export interface ForgotPasswordResponse {
@@ -32,6 +32,7 @@ const initialState: ForgotPasswordState = {
   forgotPasswordEmailSent: false,
   changePassword: false,
   loggedInUser: null,
+  fetchedUser: null,
   pageHeaderData: {
     title: '',
     subTitle: '',
@@ -42,10 +43,12 @@ const initialState: ForgotPasswordState = {
 
 interface SocialGoogleLoginPayload {
   access_token: string;
+  logout_device?: boolean;
 }
 export interface SocialGoogleLoginResponse {
   messages: string[];
   data: {
+    remaining_days?: number;
     id: number;
     first_name: string;
     last_name: string;
@@ -56,6 +59,11 @@ export interface SocialGoogleLoginResponse {
     token: string;
     google_login: boolean;
     active_subscription?: ActiveSubscription;
+    chat_grace_point_used?: boolean;
+    document_grace_point_used?: boolean;
+    summary_grace_point_used?: boolean;
+    report_grace_point_used?: boolean;
+    staff_user?: boolean;
   };
 }
 
@@ -78,6 +86,16 @@ export interface LoginResponse {
     token: string;
     google_login: boolean;
     active_subscription?: ActiveSubscription;
+    remaining_days?: number;
+    chat_used?: string;
+    reports_generated?: string;
+    summary_used?: string;
+    storage?: string;
+    chat_grace_point_used?: boolean;
+    document_grace_point_used?: boolean;
+    summary_grace_point_used?: boolean;
+    report_grace_point_used?: boolean;
+    staff_user?: boolean;
   };
 }
 
@@ -88,6 +106,7 @@ export interface ActiveSubscription {
   deactivate_date?: string | null;
   used_limit_counts?: number | null;
   plan?: Plan;
+  subscription_status?: string | null;
 }
 
 export interface Plan {
@@ -114,8 +133,17 @@ interface UpdateProfileResponse {
   contact_number: string;
   user_type: string;
   is_email_verified: boolean;
+  active_subscription?: ActiveSubscription;
+  chat_used?: string;
+  reports_generated?: string;
+  summary_used?: string;
+  storage?: string;
+  chat_grace_point_used?: boolean;
+  document_grace_point_used?: boolean;
+  summary_grace_point_used?: boolean;
+  report_grace_point_used?: boolean;
+  staff_user?: boolean;
 }
-
 export const loginUser = createAsyncThunk<
   LoginResponse,
   LoginPayload,
@@ -123,17 +151,14 @@ export const loginUser = createAsyncThunk<
 >('login/loginUser', async (payload, { rejectWithValue }) => {
   try {
     if (payload?.logout_device) {
-      delete payload.logout_device;
       const response = await api.post<LoginResponse>(
         `${urlMapper.login}?logout_device=true`,
         payload
       );
-      showToast('success', 'Login is successfully.');
       return response.data;
     } else {
       delete payload.logout_device;
       const response = await api.post<LoginResponse>(urlMapper.login, payload);
-      showToast('success', 'Login is successfully.');
       return response.data;
     }
   } catch (error: unknown) {
@@ -196,12 +221,20 @@ export const socialGoogleLogin = createAsyncThunk<
   { rejectValue: string }
 >('login/googleLogin', async (payload, { rejectWithValue }) => {
   try {
-    const response = await api.post<SocialGoogleLoginResponse>(
-      urlMapper.googleLogin,
-      payload
-    );
-    showToast('success', 'Google Login is successfully.');
-    return response.data;
+    if (payload?.logout_device) {
+      const response = await api.post<SocialGoogleLoginResponse>(
+        `${urlMapper.googleLogin}?logout_device=true`,
+        payload
+      );
+      return response.data;
+    } else {
+      delete payload.logout_device;
+      const response = await api.post<LoginResponse>(
+        urlMapper.googleLogin,
+        payload
+      );
+      return response.data;
+    }
   } catch (error: unknown) {
     if (typeof error === 'object' && error !== null && 'response' in error) {
       const err = error as { response?: { data?: string } };
@@ -310,11 +343,17 @@ const loginSlice = createSlice({
         }
       }
     );
+    builder.addCase(
+      getUserById.fulfilled,
+      (state, action: PayloadAction<UpdateProfileResponse>) => {
+        state.fetchedUser = action.payload;
+      }
+    );
   },
 });
 
 export const { setPageHeaderData, clearPageHeaderData } = loginSlice.actions;
-
+export const selectFetchedUser = (state: RootState) => state.login.fetchedUser;
 export const selectPageHeaderData = (state: RootState) =>
   state.login.pageHeaderData;
 

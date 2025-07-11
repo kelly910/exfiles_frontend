@@ -16,6 +16,8 @@ const DynamicConfirmDeleteModal = dynamic(() => import('./ConfirmationDialog'));
 import { selectActiveThread } from '@/app/redux/slices/Chat';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { selectFetchedUser } from '@/app/redux/slices/login';
 
 interface ThreadListProps {
   initialAllChatsData: Thread[];
@@ -41,6 +43,9 @@ export default function ThreadList({
   const [currentSelectedItem, setCurrentSelectedItem] = useState<Thread | null>(
     null
   );
+
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   // Rename Thread
   const [isOpenRenameModal, setIsOpenRenameModal] = useState(false);
@@ -221,22 +226,24 @@ export default function ThreadList({
             </p>
           </div>
           <div className={Style['right']}>
-            <div>
-              <Button
-                id="fade-button"
-                aria-controls={'fade-menu'}
-                aria-haspopup="true"
-                aria-expanded={'true'}
-                onClick={(e) => handleActionMenuClick(e, chat)}
-              >
-                <Image
-                  src="/images/more.svg"
-                  alt="user-icon"
-                  height={10}
-                  width={10}
-                />
-              </Button>
-            </div>
+            {(expiredStatus !== 0 || fetchedUser?.staff_user) && (
+              <div>
+                <Button
+                  id="fade-button"
+                  aria-controls={'fade-menu'}
+                  aria-haspopup="true"
+                  aria-expanded={'true'}
+                  onClick={(e) => handleActionMenuClick(e, chat)}
+                >
+                  <Image
+                    src="/images/more.svg"
+                    alt="user-icon"
+                    height={10}
+                    width={10}
+                  />
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       ))}

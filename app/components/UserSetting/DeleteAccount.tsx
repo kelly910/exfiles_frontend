@@ -7,7 +7,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from '@components/SettingDialog/setting.module.scss';
 import { Field, Form, Formik } from 'formik';
@@ -21,6 +20,7 @@ import { RootState } from '@/app/redux/store';
 import { useSelector } from 'react-redux';
 import { sendOtp } from '@/app/redux/slices/register';
 import Link from 'next/link';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const RESEND_TIME = 59;
 
@@ -176,6 +176,8 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
     }
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <div className={styles.headerDialogBox}>
@@ -213,32 +215,35 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '12px',
                         borderWidth: '0px',
-                        color: '#DADAE1',
-                        backgroundColor: '#252431',
+                        color: 'var(--Primary-Text-Color)',
+                        backgroundColor:
+                          theme === 'dark'
+                            ? 'var(--Txt-On-Gradient)'
+                            : 'var(--Input-Box-Colors)',
                         '& .MuiOutlinedInput-notchedOutline': {
                           top: '-10px !important',
                         },
                         '& .MuiOutlinedInput-input': {
-                          fontSize: '14px',
-                          color: '#DADAE1',
+                          fontSize: 'var(--SubTitle-3)',
+                          color: 'var(--Primary-Text-Color)',
                           padding: '14px 16px',
-                          fontWeight: 500,
+                          fontWeight: 'var(--Regular)',
                           borderRadius: '12px',
                           '&::placeholder': {
-                            color: '#888',
-                            fontWeight: 400,
+                            color: 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Lighter)',
                           },
                         },
                         '& fieldset': {
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                         },
                         '&:hover fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Primary-Text-Color)',
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: '#fff',
+                          borderColor: 'var(--Primary-Text-Color)',
                           borderWidth: '1px',
-                          color: '#fff',
+                          color: 'var(--Primary-Text-Color)',
                         },
                       },
                     }}
@@ -314,7 +319,10 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                               borderRadius: '12px',
                               borderWidth: '0px',
                               color: 'var(--Primary-Text-Color)',
-                              backgroundColor: 'var(--Input-Box-Colors)',
+                              backgroundColor:
+                                theme === 'dark'
+                                  ? 'var(--Txt-On-Gradient)'
+                                  : 'var(--Input-Box-Colors)',
                               '& .MuiOutlinedInput-notchedOutline': {
                                 top: '-10px !important',
                               },
@@ -356,7 +364,9 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                       onClick={resendOtp}
                       style={{
                         cursor: 'pointer',
-                        color: isResendDisabled ? '#888' : '#007bff',
+                        color: isResendDisabled
+                          ? 'var(--Placeholder-Text)'
+                          : 'var(--Subtext-Color)',
                         pointerEvents: isResendDisabled ? 'none' : 'auto',
                         textDecoration: 'underline',
                         marginTop: '32px',
@@ -376,12 +386,25 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                       className={styles.formBackBtn}
                       onClick={handleBackClick}
                     >
-                      <Image
-                        src="/images/arrow-left.svg"
-                        alt="left arrow"
-                        width={16}
-                        height={16}
-                      />{' '}
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
+                          stroke={
+                            theme === 'dark'
+                              ? 'var(--Subtext-Color)'
+                              : '#DADAE1'
+                          }
+                          stroke-miterlimit="10"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>{' '}
                       Back
                     </Button>
                     <Button

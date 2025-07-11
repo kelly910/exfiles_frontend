@@ -4,6 +4,7 @@ import chatMessagesStyles from '@components/AI-Chat-Module/styles/ChatMessagesSt
 import Image from 'next/image';
 import { highlightText, processText } from '@/app/utils/constants';
 import { useSearch } from '../../context/SearchContext';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 interface StreamingResponseProps {
   inputText: string;
@@ -13,6 +14,7 @@ interface StreamingResponseProps {
 export default function StreamingAnswer(props: StreamingResponseProps) {
   const { inputText } = props;
   const { searchingChat } = useSearch();
+  const { theme } = useThemeMode();
 
   return (
     <Box
@@ -26,6 +28,9 @@ export default function StreamingAnswer(props: StreamingResponseProps) {
             width={40}
             height={40}
             src="/images/close-sidebar-logo.svg"
+            style={{
+              filter: theme === 'dark' ? 'brightness(0) invert(0)' : '',
+            }}
           />
         </IconButton>
       </Box>

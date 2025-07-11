@@ -24,9 +24,9 @@ import { renameDocuments } from '@/app/redux/slices/documentByCategory';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
-    backgroundColor: '#11101b',
+    backgroundColor: 'var(--Card-Color)',
     margin: '0px',
-    border: '1px solid #3a3948',
+    border: '1px solid var(--Stroke-Color)',
     borderRadius: '16px',
     minWidth: '600px',
     maxWidth: '90vw',
@@ -152,12 +152,18 @@ const DocumentRenameDialog = ({
               color: theme.palette.grey[500],
             })}
           >
-            <Image
-              src="/images/close.svg"
-              alt="close-icon"
-              width={24}
-              height={24}
-            />
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                fill="var(--Primary-Text-Color)"
+              />
+            </svg>
           </IconButton>
         </Box>
         <Formik
@@ -216,8 +222,8 @@ const DocumentRenameDialog = ({
                     '& .MuiFormHelperText-root': {
                       color:
                         errors.file_name && touched.file_name
-                          ? '#ff4d4d'
-                          : '#b0b0b0',
+                          ? 'var(--Red-Color)'
+                          : 'var(--Placeholder-Text)',
                     },
                   }}
                 />

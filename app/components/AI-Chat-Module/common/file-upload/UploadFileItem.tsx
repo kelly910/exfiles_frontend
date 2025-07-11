@@ -5,6 +5,7 @@ import DocUploadStyles from '@components/AI-Chat-Module/styles/DocumentUploadMod
 import { Box, LinearProgress, TextField, Typography } from '@mui/material';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { formatFileSizeLabel, getDocumentImage } from '@/app/utils/functions';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 interface FileItemProps {
   isShowDescField?: boolean;
@@ -66,6 +67,8 @@ export default function UploadFileItem({
     };
   }, [debouncedHandleFileDesc]);
 
+  const { theme } = useThemeMode();
+
   return (
     <Box component="div" className={DocUploadStyles.fileBoxInner}>
       <div className={DocUploadStyles.fileGridBox}>
@@ -106,6 +109,9 @@ export default function UploadFileItem({
               height={16}
               className={DocUploadStyles.trashImg}
               onClick={() => onRemove(fileId)}
+              style={{
+                filter: theme === 'dark' ? 'brightness(0) invert(0)' : 'unset',
+              }}
             />
           )}
         </div>
@@ -141,14 +147,14 @@ export default function UploadFileItem({
                   color: 'var(--Primary-Text-Color)',
                   // padding: '12px 8px',
                   padding: '4px 4px',
-                  fontWeight: 500,
+                  fontWeight: 'var(--Regular)',
                   borderRadius: '6px',
                   background: 'var(--Card-Color)',
-                  // backgroundColor: '#252431',
+                  // backgroundColor: 'var(--Input-Box-Colors)',
                   '&::placeholder': {
-                    color: 'var(--Txt-On-Gradient)',
-                    // color: 'var(--Primary-Text-Color)',
-                    fontWeight: 400,
+                    // color: 'var(--Txt-On-Gradient)',
+                    color: 'var(--Primary-Text-Color)',
+                    fontWeight: 'var(--Lighter)',
                   },
                 },
                 '& fieldset': {
@@ -164,7 +170,7 @@ export default function UploadFileItem({
                 },
               },
               '& .MuiFormHelperText-root': {
-                // color: error ? '#ff4d4d' : '#b0b0b0',
+                // color: error ? 'var(--Red-Color)' : 'var(--Placeholder-Text)',
               },
             }}
           />

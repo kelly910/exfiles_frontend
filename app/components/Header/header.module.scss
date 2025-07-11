@@ -25,7 +25,7 @@ header {
   ul {
     border-radius: 12px;
     padding: 0;
-    background-color: var(--Card-Color);
+    background-color: var(--Input-Box-Colors);
     color: var(--Primary-Text-Color);
     padding: 4px;
     box-shadow: -5px 8px 21px 0px #00000026;
@@ -48,7 +48,6 @@ header {
       font-weight: var(--Regular);
       font-size: var(--SubTitle-4);
       line-height: 1.4;
-      letter-spacing: 0%;
       color: var(--Primary-Text-Color);
       width: 100%;
     }

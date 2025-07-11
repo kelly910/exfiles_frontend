@@ -22,7 +22,7 @@
       font-weight: var(--Medium);
       font-size: var(--SubTitle-2);
       line-height: 1.4;
-      color: var(--Txt-On-Gradient);
+      color: var(--Primary-Text-Color);
     }
   }
 
@@ -129,7 +129,6 @@
           font-weight: var(--Lighter);
           font-size: var(--SubTitle-5);
           line-height: 140%;
-          letter-spacing: 0%;
           color: var(--Subtext-Color);
         }
       }
@@ -171,6 +170,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    color: var(--Subtext-Color);
     padding: 0;
     background-color: unset;
     margin: 0;
@@ -187,26 +187,19 @@
 }
 
 .chatAlProgress {
-  background-color: #1b1a25;
+  background-color: var(--Card-Color);
   margin-top: 8px;
 
   span {
     border: none;
-    background: #2c2a38;
+    background: var(--Card-Image);
     border-radius: 500px;
     height: 8px;
     overflow: hidden;
 
     span {
       background-color: transparent;
-      background: linear-gradient(
-        90deg,
-        #2a1ad8 0%,
-        #4e26e2 25%,
-        #7231ec 50%,
-        #953df5 75%,
-        #b948ff 100%
-      );
+      background: var(--Main-Gradient);
       border-radius: 500px;
     }
   }
@@ -232,7 +225,7 @@
   }
 
   p {
-    font-weight: 400;
+    font-weight: var(--Lighter);
     font-size: var(--SubTitle-6);
     line-height: 7px;
     color: var(--Subtext-Color);

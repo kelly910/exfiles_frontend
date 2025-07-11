@@ -1,3 +1,6 @@
+'use client';
+
+import { fetchPlanHistory } from '@/app/redux/slices/planHistory';
 import styles from './style.module.scss';
 import {
   Table,
@@ -12,26 +15,22 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import React from 'react';
-
-const planHistory = [
-  {
-    name: 'Essential',
-    period: 'Year',
-    date: '25/01/2025',
-    payment: 'Credit Card',
-    amount: '$190',
-  },
-  {
-    name: 'Premium',
-    period: 'Year',
-    date: '25/01/2025',
-    payment: 'Credit Card',
-    amount: '$190',
-  },
-];
+import React, { useEffect } from 'react';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
+import dayjs from 'dayjs';
 
 export default function PlanHistory() {
+  const dispatch = useAppDispatch();
+  const { planHistoryData } = useSelector(
+    (state: RootState) => state.planHistory
+  );
+
+  useEffect(() => {
+    dispatch(fetchPlanHistory({ page_size: 'all' }));
+  }, [dispatch]);
+
   return (
     <Box className={styles['history-plan-main']}>
       <Box className={styles['history-plan']}>
@@ -51,25 +50,71 @@ export default function PlanHistory() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {planHistory.map((plan, idx) => (
-                <TableRow key={idx}>
-                  <TableCell>{plan.name}</TableCell>
-                  <TableCell>{plan.period}</TableCell>
-                  <TableCell>{plan.date}</TableCell>
-                  <TableCell>{plan.payment}</TableCell>
-                  <TableCell>{plan.amount}</TableCell>
-                  <TableCell sx={{ textAlign: 'center', width: '100px' }}>
-                    <IconButton aria-label="import">
-                      <Image
-                        src="/images/import.svg"
-                        alt="import Icon"
-                        width={24}
-                        height={24}
-                      />
-                    </IconButton>
+              {planHistoryData && planHistoryData.length ? (
+                planHistoryData?.map((plan, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell>{plan.plan_name || '-'}</TableCell>
+                    <TableCell style={{ textTransform: 'capitalize' }}>
+                      {plan.duration_unit === 'day'
+                        ? plan.duration_value + ' Days'
+                        : plan.duration_unit === 'month'
+                          ? 'Month'
+                          : plan.duration_unit === 'year'
+                            ? 'Year'
+                            : plan.duration_unit === 'week'
+                              ? plan.duration_value + ' Week'
+                              : '-'}
+                    </TableCell>
+                    <TableCell>
+                      {plan.activate_date
+                        ? dayjs(
+                            plan.activate_date?.replace(
+                              /([+-]\d{2}:\d{2}):\d{2}$/,
+                              '$1'
+                            )
+                          ).format('MM/DD/YYYY')
+                        : '-'}
+                    </TableCell>
+                    <TableCell style={{ textTransform: 'capitalize' }}>
+                      {plan.payment_method || '-'}
+                    </TableCell>
+                    <TableCell>{plan.amount || '-'}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', width: '100px' }}>
+                      {plan?.payment_invoice_link !== null &&
+                      plan?.plan_name !== 'Free Tier' ? (
+                        <IconButton
+                          aria-label="import"
+                          onClick={() => {
+                            const link = document.createElement('a');
+                            link.href = plan?.payment_invoice_link;
+                            link.download = '';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                          }}
+                        >
+                          <Image
+                            src="/images/import.svg"
+                            alt="import Icon"
+                            width={24}
+                            height={24}
+                          />
+                        </IconButton>
+                      ) : (
+                        '-'
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5}>
+                    <Typography className={styles['table-empty']}>
+                      Currently there is no plan available in ExFiles AI.
+                    </Typography>
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </TableContainer>

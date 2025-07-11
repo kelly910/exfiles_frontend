@@ -43,9 +43,9 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         sx={{
           display: 'block',
           marginBottom: '4px',
-          fontSize: '16px',
-          color: error ? '#ff4d4d' : '#676972',
-          fontWeight: 500,
+          fontSize: 'var(--SubTitle-2)',
+          color: error ? 'var(--Red-Color)' : 'var(--Placeholder-Text)',
+          fontWeight: 'var(--Medium)',
         }}
       >
         {label}
@@ -62,41 +62,41 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
         autoComplete={autoComplete}
         error={!!error}
         helperText={error || ''}
-        InputLabelProps={{ style: { color: '#b0b0b0' } }}
+        InputLabelProps={{ style: { color: 'var(--Placeholder-Text)' } }}
         sx={{
           marginTop: '5px',
           padding: '0px 0 15px 0',
           '& .MuiOutlinedInput-root': {
             borderRadius: '12px',
             borderWidth: '0px',
-            color: '#fff',
-            backgroundColor: '#252431',
+            color: 'var(--Txt-On-Gradient)',
+            backgroundColor: 'var(--Input-Box-Colors)',
             '& .MuiOutlinedInput-input': {
-              fontSize: '16px',
-              color: '#fff',
+              fontSize: 'var(--SubTitle-2)',
+              color: 'var(--Txt-On-Gradient)',
               padding: '14px 16px',
-              fontWeight: 500,
+              fontWeight: 'var(--Medium)',
               borderRadius: '12px',
-              // backgroundColor: '#252431',
+              // backgroundColor: 'var(--Input-Box-Colors)',
               '&::placeholder': {
-                color: '#888',
-                fontWeight: 400,
+                color: 'var(--Placeholder-Text)',
+                fontWeight: 'var(--Lighter)',
               },
             },
             '& fieldset': {
-              borderColor: '#3A3948',
+              borderColor: 'var(--Stroke-Color)',
             },
             '&:hover fieldset': {
-              borderColor: '#fff',
+              borderColor: 'var(--Txt-On-Gradient)',
             },
             '&.Mui-focused fieldset': {
-              borderColor: '#fff',
+              borderColor: 'var(--Txt-On-Gradient)',
               borderWidth: '1px',
-              color: '#fff',
+              color: 'var(--Txt-On-Gradient)',
             },
           },
           '& .MuiFormHelperText-root': {
-            color: error ? '#ff4d4d' : '#b0b0b0',
+            color: error ? 'var(--Red-Color)' : 'var(--Placeholder-Text)',
           },
         }}
         InputProps={{
@@ -109,12 +109,12 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
                 onChange={(e) => setCountryCode(e.target.value)}
                 sx={{
                   padding: '0px',
-                  color: '#b0b0b0',
-                  fontWeight: 'bold',
+                  color: 'var(--Placeholder-Text)',
+                  fontWeight: 'var(--Bold)',
                   width: '60px',
                   background: 'transparent',
                   '& .MuiSelect-icon': {
-                    color: '#fff',
+                    color: 'var(--Txt-On-Gradient)',
                     position: 'absolute',
                     right: '-10px',
                   },
@@ -136,9 +136,9 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
                 edge="end"
               >
                 {showPassword ? (
-                  <VisibilityOff sx={{ color: '#b0b0b0' }} />
+                  <VisibilityOff sx={{ color: 'var(--Primary-Text-Color)' }} />
                 ) : (
-                  <Visibility sx={{ color: '#b0b0b0' }} />
+                  <Visibility sx={{ color: 'var(--Primary-Text-Color)' }} />
                 )}
               </IconButton>
             </InputAdornment>

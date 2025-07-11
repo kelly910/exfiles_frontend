@@ -56,14 +56,14 @@ export default function Page() {
                         marginTop: '0px',
                         '& .MuiOutlinedInput-root': {
                           backgroundColor: 'transparent',
-                          color: '#ffffff',
+                          color: 'var(--Txt-On-Gradient)',
                           borderRadius: '8px',
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                           '& fieldset': {
-                            borderColor: '#3A3948',
+                            borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#ffffff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                           },
                           '&.Mui-focused fieldset': {
                             borderColor: '#fff', // Focus border color
@@ -84,14 +84,14 @@ export default function Page() {
                         marginTop: '0px',
                         '& .MuiOutlinedInput-root': {
                           backgroundColor: 'transparent',
-                          color: '#ffffff',
+                          color: 'var(--Txt-On-Gradient)',
                           borderRadius: '8px',
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                           '& fieldset': {
-                            borderColor: '#3A3948',
+                            borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#ffffff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                           },
                           '&.Mui-focused fieldset': {
                             borderColor: '#fff', // Focus border color
@@ -112,14 +112,14 @@ export default function Page() {
                         marginTop: '0px',
                         '& .MuiOutlinedInput-root': {
                           backgroundColor: 'transparent',
-                          color: '#ffffff',
+                          color: 'var(--Txt-On-Gradient)',
                           borderRadius: '8px',
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                           '& fieldset': {
-                            borderColor: '#3A3948',
+                            borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#ffffff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                           },
                           '&.Mui-focused fieldset': {
                             borderColor: '#fff', // Focus border color
@@ -140,14 +140,14 @@ export default function Page() {
                         marginTop: '0px',
                         '& .MuiOutlinedInput-root': {
                           backgroundColor: 'transparent',
-                          color: '#ffffff',
+                          color: 'var(--Txt-On-Gradient)',
                           borderRadius: '8px',
-                          borderColor: '#3A3948',
+                          borderColor: 'var(--Stroke-Color)',
                           '& fieldset': {
-                            borderColor: '#3A3948',
+                            borderColor: 'var(--Stroke-Color)',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#ffffff',
+                            borderColor: 'var(--Txt-On-Gradient)',
                           },
                           '&.Mui-focused fieldset': {
                             borderColor: '#fff', // Focus border color

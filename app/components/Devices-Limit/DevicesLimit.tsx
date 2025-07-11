@@ -2,18 +2,23 @@ import React, { useState } from 'react';
 import Style from '@components/Devices-Limit/DevicesLimit.module.scss';
 import { Box, Button, CircularProgress, Dialog, styled } from '@mui/material';
 import Image from 'next/image';
-import { LoginFormValues } from '../Login/Login';
+import { LoginFormValues, LoginToken } from '../Login/Login';
 import { setLoader } from '@/app/redux/slices/loader';
-import { loginUser } from '@/app/redux/slices/login';
+import { loginUser, socialGoogleLogin } from '@/app/redux/slices/login';
 import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useAppDispatch } from '@/app/redux/hooks';
+import { useGoogleLogin } from '@react-oauth/google';
+import UpgradeTime from '../Upgrade-Time/UpgradeTime';
+import { showToast } from '@/app/shared/toast/ShowToast';
+import { useThemeMode } from '@/app/utils/ThemeContext';
+import { sendDataToWordPressForLogin } from '@/app/utils/functions';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiPaper-root': {
     backgroundColor: 'var(--Card-Color)',
     margin: '0px',
-    border: '1px solid #3a3948',
+    border: '1px solid var(--Stroke-Color)',
     borderRadius: '24px',
     minWidth: '450px',
     width: '515px',
@@ -33,51 +38,136 @@ interface DevicesLimitDialogProps {
   open: boolean;
   onClose: () => void;
   loginDetails?: LoginFormValues | null;
+  tokenResponse?: LoginToken | null;
 }
 
 export default function DevicesLimit({
   open,
   onClose,
   loginDetails,
+  tokenResponse,
 }: DevicesLimitDialogProps) {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [openCountDownDialog, setOpenCountDownDialog] = useState(false);
+
+  const storedTheme = localStorage.getItem('theme');
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse: { access_token: string }) => {
+      try {
+        await dispatch(setLoader(true));
+        const response = await dispatch(
+          socialGoogleLogin({
+            access_token: tokenResponse.access_token,
+            logout_device: true,
+          })
+        ).unwrap();
+        onClose();
+        localStorage.setItem('loggedInUser', JSON.stringify(response));
+        const token: string | null = response?.data?.token || null;
+        if (token) {
+          const bc = new BroadcastChannel('react-auth-channel');
+          bc.postMessage({
+            type: 'LOGIN_SUCCESS',
+            user: response.data,
+            theme: storedTheme === 'light' ? 'light' : 'dark',
+          });
+          document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+          window.opener?.postMessage(
+            {
+              type: 'LOGIN_SUCCESS',
+              user: response.data,
+              theme: storedTheme === 'light' ? 'light' : 'dark',
+            },
+            process.env.NEXT_PUBLIC_REDIRECT_URL
+          );
+          await sendDataToWordPressForLogin(response.data);
+        }
+        showToast('success', 'Google Login is successfully.');
+        if (
+          (response.data.remaining_days === 1 ||
+            response.data.remaining_days === 2) &&
+          !response?.data?.staff_user
+        ) {
+          setOpenCountDownDialog(true);
+        } else {
+          router.push('/ai-chats');
+        }
+      } catch (error) {
+        handleError(error as ErrorResponse);
+      } finally {
+        dispatch(setLoader(false));
+      }
+    },
+    onError: (error) => {
+      handleError(error as ErrorResponse);
+      dispatch(setLoader(false));
+    },
+  });
 
   const handleLoginContinue = async () => {
-    if (!loginDetails) return;
-    try {
-      setLoading(true);
-      dispatch(setLoader(true));
-      setTimeout(async () => {
-        try {
-          const response = await dispatch(loginUser(loginDetails)).unwrap();
-          if (response && response.data && response.data.token) {
-            onClose();
-            localStorage.setItem('loggedInUser', JSON.stringify(response));
-            const token: string | null = response?.data?.token || null;
-            if (token) {
-              document.cookie = `accessToken=${token}; path=/; max-age=86400`;
-              window.opener?.postMessage(
-                { type: 'LOGIN_SUCCESS', user: response.data },
-                process.env.NEXT_PUBLIC_REDIRECT_URL
-              );
-              router.push('/ai-chats');
+    if (!loginDetails && !tokenResponse) return;
+    if (loginDetails) {
+      const loginPayload = { ...loginDetails, logout_device: true };
+      try {
+        setLoading(true);
+        dispatch(setLoader(true));
+        setTimeout(async () => {
+          try {
+            const response = await dispatch(loginUser(loginPayload)).unwrap();
+            if (response && response.data && response.data.token) {
+              onClose();
+              localStorage.setItem('loggedInUser', JSON.stringify(response));
+              const token: string | null = response?.data?.token || null;
+              if (token) {
+                const bc = new BroadcastChannel('react-auth-channel');
+                bc.postMessage({
+                  type: 'LOGIN_SUCCESS',
+                  user: response.data,
+                  theme: storedTheme === 'light' ? 'light' : 'dark',
+                });
+                document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+                window.opener?.postMessage(
+                  {
+                    type: 'LOGIN_SUCCESS',
+                    user: response.data,
+                    theme: storedTheme === 'light' ? 'light' : 'dark',
+                  },
+                  process.env.NEXT_PUBLIC_REDIRECT_URL
+                );
+                await sendDataToWordPressForLogin(response.data);
+              }
+              showToast('success', 'Login is successfully.');
+              if (
+                (response.data.remaining_days === 1 ||
+                  response.data.remaining_days === 2) &&
+                !response?.data?.staff_user
+              ) {
+                setOpenCountDownDialog(true);
+              } else {
+                router.push('/ai-chats');
+              }
             }
+          } catch (error) {
+            handleError(error as ErrorResponse);
+          } finally {
+            setLoading(false);
+            dispatch(setLoader(false));
           }
-        } catch (error) {
-          handleError(error as ErrorResponse);
-        } finally {
-          setLoading(false);
-          dispatch(setLoader(false));
-        }
-      }, 1000);
-    } catch (error) {
-      handleError(error as ErrorResponse);
-      setLoading(false);
-      dispatch(setLoader(false));
+        }, 1000);
+      } catch (error) {
+        handleError(error as ErrorResponse);
+        setLoading(false);
+        dispatch(setLoader(false));
+      }
+    } else if (tokenResponse) {
+      googleLogin();
     }
   };
+
+  const { theme } = useThemeMode();
 
   return (
     <>
@@ -94,12 +184,21 @@ export default function DevicesLimit({
         >
           <Box component="div" className={Style.dialogHeader}>
             <figure>
-              <Image
-                src="/images/DevicesLimit.svg"
-                alt="DevicesLimit"
-                width={120}
-                height={100}
-              />
+              {theme === 'dark' ? (
+                <Image
+                  src="/images/DevicesLimitLite.svg"
+                  alt="DevicesLimit"
+                  width={120}
+                  height={100}
+                />
+              ) : (
+                <Image
+                  src="/images/DevicesLimit.svg"
+                  alt="DevicesLimit"
+                  width={120}
+                  height={100}
+                />
+              )}
             </figure>
             <h2>Login Devices Limit Exceeded</h2>
             <p>
@@ -125,6 +224,11 @@ export default function DevicesLimit({
           </Box>
         </BootstrapDialog>
       </React.Fragment>
+      <UpgradeTime
+        open={openCountDownDialog}
+        onClose={() => setOpenCountDownDialog(false)}
+        type={'login'}
+      />
     </>
   );
 }

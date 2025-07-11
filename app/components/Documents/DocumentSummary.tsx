@@ -31,6 +31,8 @@ import { editSummaryByDocId } from '@/app/redux/slices/editSummary';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { editSummaryValidation } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useRouter } from 'next/navigation';
+import { selectFetchedUser } from '@/app/redux/slices/login';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 interface DocumentSummaryProps {
   docId: string;
@@ -68,6 +70,9 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   const cancelEditMode = () => {
     setEditMode(false);
   };
+
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   useEffect(() => {
     if (!docId) return;
@@ -153,6 +158,8 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
     }, 1000);
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       {mobileView ? (
@@ -189,12 +196,18 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     className={styles.closeButton}
                     sx={{ marginBottom: '24px' }}
                   >
-                    <Image
-                      src="/images/close.svg"
-                      alt="user"
-                      width={16}
-                      height={16}
-                    />
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                        fill="var(--Primary-Text-Color)"
+                      />
+                    </svg>
                   </Button>
                 </Box>
                 <div className={styles.docsInnerTag}>
@@ -203,6 +216,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       key={tag?.id}
                       dangerouslySetInnerHTML={{
                         __html: highlightText(tag?.name, searchParams),
+                      }}
+                      style={{
+                        background:
+                          theme === 'dark'
+                            ? 'var(--Background-Color)'
+                            : 'var(--Card-Image)',
                       }}
                     ></span>
                   ))}
@@ -273,42 +292,45 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                                   '& .MuiOutlinedInput-root': {
                                     borderRadius: '12px',
                                     borderWidth: '0px',
-                                    color: '#DADAE1',
-                                    backgroundColor: '#252431',
+                                    color: 'var(--Primary-Text-Color)',
+                                    backgroundColor:
+                                      theme === 'dark'
+                                        ? 'var(--Card-Color)'
+                                        : 'var(--Input-Box-Colors)',
                                     padding: '14px 16px',
                                     '& .MuiOutlinedInput-notchedOutline': {
                                       top: '-10px !important',
                                     },
                                     '& .MuiOutlinedInput-input': {
-                                      fontSize: '14px',
-                                      color: '#DADAE1',
-                                      fontWeight: 500,
+                                      fontSize: 'var(--SubTitle-3)',
+                                      color: 'var(--Primary-Text-Color)',
+                                      fontWeight: 'var(--Regular)',
                                       borderRadius: '12px',
                                       padding: '2px',
                                       maxHeight: '350px',
                                       overflowY: 'auto !important',
                                       '&::placeholder': {
-                                        color: '#888',
-                                        fontWeight: 400,
+                                        color: 'var(--Placeholder-Text)',
+                                        fontWeight: 'var(--Lighter)',
                                       },
                                     },
                                     '& fieldset': {
-                                      borderColor: '#3A3948',
+                                      borderColor: 'var(--Stroke-Color)',
                                     },
                                     '&:hover fieldset': {
-                                      borderColor: '#fff',
+                                      borderColor: 'var(--Txt-On-Gradient)',
                                     },
                                     '&.Mui-focused fieldset': {
-                                      borderColor: '#fff',
+                                      borderColor: 'var(--Txt-On-Gradient)',
                                       borderWidth: '1px',
-                                      color: '#fff',
+                                      color: 'var(--Txt-On-Gradient)',
                                     },
                                   },
                                   '& .MuiFormHelperText-root': {
                                     color:
                                       errors.summary && touched.summary
-                                        ? '#ff4d4d'
-                                        : '#b0b0b0',
+                                        ? 'var(--Red-Color)'
+                                        : 'var(--Placeholder-Text)',
                                   },
                                 }}
                               />
@@ -361,48 +383,57 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                 )}
               </div>
               {documentSummary?.summary && !editMode && (
-                <Box component={'div'} className={styles.docsButtonBox}>
-                  <Button className={styles.docsButton} onClick={copySummary}>
-                    <Image
-                      src="/images/copy.svg"
-                      alt="Download"
-                      width={24}
-                      height={24}
-                    />
-                    Copy
-                  </Button>
-                  {documentSummary?.can_download_summary_pdf && (
-                    <>
-                      <span className={styles.docsDas}></span>
-                      <Button
-                        className={styles.docsButton}
-                        onClick={downloadSummary}
-                        disabled={downloadingSummaryLoading}
-                      >
-                        {downloadingSummaryLoading ? (
-                          <CircularProgress size={18} color="inherit" />
-                        ) : (
-                          <Image
-                            src="/images/download_summary.svg"
-                            alt="Download"
-                            width={24}
-                            height={24}
-                          />
-                        )}
-                        Download Summary
-                      </Button>
-                    </>
-                  )}
-                  <span className={styles.docsDas}></span>
-                  <Button className={styles.docsButton} onClick={editSummary}>
-                    <Image
-                      src="/images/edit.svg"
-                      alt="Download"
-                      width={24}
-                      height={24}
-                    />
-                    Edit
-                  </Button>
+                <Box className={styles.docsButtonBoxMain}>
+                  <Box component={'div'} className={styles.docsButtonBox}>
+                    <Button className={styles.docsButton} onClick={copySummary}>
+                      <Image
+                        src="/images/copy.svg"
+                        alt="Download"
+                        width={24}
+                        height={24}
+                      />
+                      Copy
+                    </Button>
+                    {documentSummary?.can_download_summary_pdf && (
+                      <>
+                        <span className={styles.docsDas}></span>
+                        <Button
+                          className={`${styles.docsButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation-icon' : ''}`}
+                          onClick={downloadSummary}
+                          disabled={
+                            downloadingSummaryLoading ||
+                            (expiredStatus === 0 && !fetchedUser?.staff_user)
+                          }
+                        >
+                          {downloadingSummaryLoading ? (
+                            <CircularProgress size={18} color="inherit" />
+                          ) : (
+                            <Image
+                              src="/images/download_summary.svg"
+                              alt="Download"
+                              width={24}
+                              height={24}
+                            />
+                          )}
+                          Download Summary
+                        </Button>
+                      </>
+                    )}
+                    <span className={styles.docsDas}></span>
+                    <Button
+                      className={`${styles.docsButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation-icon' : ''}`}
+                      onClick={editSummary}
+                      disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
+                    >
+                      <Image
+                        src="/images/edit.svg"
+                        alt="Download"
+                        width={24}
+                        height={24}
+                      />
+                      Edit
+                    </Button>
+                  </Box>
                 </Box>
               )}
             </>
@@ -424,7 +455,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
               width: '100%',
               maxHeight: 'calc(100dvh - 65px)',
               background: 'var(--Background-Color)',
-              borderLeft: '1px solid  #3A3948',
+              borderLeft: '1px solid  var(--Stroke-Color)',
             },
             '& .MuiBackdrop-root': {
               top: '65px',
@@ -445,12 +476,21 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       className={styles.backButton}
                       sx={{ marginBottom: '24px' }}
                     >
-                      <Image
-                        src="/images/arrow-left.svg"
-                        alt="user"
-                        width={16}
-                        height={16}
-                      />
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
+                          stroke="var(--Primary-Text-Color)"
+                          stroke-miterlimit="10"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
                     </Button>
                     <div className={styles.docsInner}>
                       <Typography
@@ -477,12 +517,18 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       className={styles.closeButton}
                       sx={{ marginBottom: '24px' }}
                     >
-                      <Image
-                        src="/images/close.svg"
-                        alt="user"
-                        width={16}
-                        height={16}
-                      />
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7.1 18.3C6.7134 18.6866 6.0866 18.6866 5.7 18.3C5.3134 17.9134 5.3134 17.2866 5.7 16.9L9.89289 12.7071C10.2834 12.3166 10.2834 11.6834 9.89289 11.2929L5.7 7.1C5.3134 6.7134 5.3134 6.0866 5.7 5.7C6.0866 5.3134 6.7134 5.3134 7.1 5.7L11.2929 9.89289C11.6834 10.2834 12.3166 10.2834 12.7071 9.89289L16.9 5.7C17.2866 5.3134 17.9134 5.3134 18.3 5.7C18.6866 6.0866 18.6866 6.7134 18.3 7.1L14.1071 11.2929C13.7166 11.6834 13.7166 12.3166 14.1071 12.7071L18.3 16.9C18.6866 17.2866 18.6866 17.9134 18.3 18.3C17.9134 18.6866 17.2866 18.6866 16.9 18.3L12.7071 14.1071C12.3166 13.7166 11.6834 13.7166 11.2929 14.1071L7.1 18.3Z"
+                          fill="var(--Primary-Text-Color)"
+                        />
+                      </svg>
                     </Button>
                   </Box>
                   <div className={styles.docsInnerTag}>
@@ -491,6 +537,12 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         key={tag?.id}
                         dangerouslySetInnerHTML={{
                           __html: highlightText(tag?.name, searchParams),
+                        }}
+                        style={{
+                          background:
+                            theme === 'dark'
+                              ? 'var(--Background-Color)'
+                              : 'var(--Card-Image)',
                         }}
                       ></span>
                     ))}
@@ -561,42 +613,43 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                                     '& .MuiOutlinedInput-root': {
                                       borderRadius: '12px',
                                       borderWidth: '0px',
-                                      color: '#DADAE1',
-                                      backgroundColor: '#252431',
+                                      color: 'var(--Primary-Text-Color)',
+                                      backgroundColor:
+                                        'var(--Input-Box-Colors)',
                                       padding: '14px 16px',
                                       '& .MuiOutlinedInput-notchedOutline': {
                                         top: '-10px !important',
                                       },
                                       '& .MuiOutlinedInput-input': {
-                                        fontSize: '14px',
-                                        color: '#DADAE1',
-                                        fontWeight: 500,
+                                        fontSize: 'var(--SubTitle-3)',
+                                        color: 'var(--Primary-Text-Color)',
+                                        fontWeight: 'var(--Regular)',
                                         borderRadius: '12px',
                                         padding: '2px',
                                         maxHeight: '350px',
                                         overflowY: 'auto !important',
                                         '&::placeholder': {
-                                          color: '#888',
-                                          fontWeight: 400,
+                                          color: 'var(--Placeholder-Text)',
+                                          fontWeight: 'var(--Lighter)',
                                         },
                                       },
                                       '& fieldset': {
-                                        borderColor: '#3A3948',
+                                        borderColor: 'var(--Stroke-Color)',
                                       },
                                       '&:hover fieldset': {
-                                        borderColor: '#fff',
+                                        borderColor: 'var(--Txt-On-Gradient)',
                                       },
                                       '&.Mui-focused fieldset': {
-                                        borderColor: '#fff',
+                                        borderColor: 'var(--Txt-On-Gradient)',
                                         borderWidth: '1px',
-                                        color: '#fff',
+                                        color: 'var(--Txt-On-Gradient)',
                                       },
                                     },
                                     '& .MuiFormHelperText-root': {
                                       color:
                                         errors.summary && touched.summary
-                                          ? '#ff4d4d'
-                                          : '#b0b0b0',
+                                          ? 'var(--Red-Color)'
+                                          : 'var(--Placeholder-Text)',
                                     },
                                   }}
                                 />
@@ -652,48 +705,62 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                   )}
                 </div>
                 {documentSummary?.summary && !editMode && (
-                  <Box component={'div'} className={styles.docsButtonBox}>
-                    <Button className={styles.docsButton} onClick={copySummary}>
-                      <Image
-                        src="/images/copy.svg"
-                        alt="Download"
-                        width={24}
-                        height={24}
-                      />
-                      Copy
-                    </Button>
-                    {documentSummary?.can_download_summary_pdf && (
-                      <>
-                        <span className={styles.docsDas}></span>
-                        <Button
-                          className={styles.docsButton}
-                          onClick={downloadSummary}
-                          disabled={downloadingSummaryLoading}
-                        >
-                          {downloadingSummaryLoading ? (
-                            <CircularProgress size={18} color="inherit" />
-                          ) : (
-                            <Image
-                              src="/images/download_summary.svg"
-                              alt="Download"
-                              width={24}
-                              height={24}
-                            />
-                          )}
-                          Download Summary
-                        </Button>
-                      </>
-                    )}
-                    <span className={styles.docsDas}></span>
-                    <Button className={styles.docsButton} onClick={editSummary}>
-                      <Image
-                        src="/images/edit.svg"
-                        alt="Download"
-                        width={24}
-                        height={24}
-                      />
-                      Edit
-                    </Button>
+                  <Box className={styles.docsButtonBoxMain}>
+                    <Box component={'div'} className={styles.docsButtonBox}>
+                      <Button
+                        className={styles.docsButton}
+                        onClick={copySummary}
+                      >
+                        <Image
+                          src="/images/copy.svg"
+                          alt="Download"
+                          width={24}
+                          height={24}
+                        />
+                        Copy
+                      </Button>
+                      {documentSummary?.can_download_summary_pdf && (
+                        <>
+                          <span className={styles.docsDas}></span>
+                          <Button
+                            className={`${styles.docsButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation-icon' : ''}`}
+                            onClick={downloadSummary}
+                            disabled={
+                              downloadingSummaryLoading ||
+                              (expiredStatus === 0 && !fetchedUser?.staff_user)
+                            }
+                          >
+                            {downloadingSummaryLoading ? (
+                              <CircularProgress size={18} color="inherit" />
+                            ) : (
+                              <Image
+                                src="/images/download_summary.svg"
+                                alt="Download"
+                                width={24}
+                                height={24}
+                              />
+                            )}
+                            Download Summary
+                          </Button>
+                        </>
+                      )}
+                      <span className={styles.docsDas}></span>
+                      <Button
+                        className={`${styles.docsButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation-icon' : ''}`}
+                        onClick={editSummary}
+                        disabled={
+                          expiredStatus === 0 && !fetchedUser?.staff_user
+                        }
+                      >
+                        <Image
+                          src="/images/edit.svg"
+                          alt="Download"
+                          width={24}
+                          height={24}
+                        />
+                        Edit
+                      </Button>
+                    </Box>
                   </Box>
                 )}
               </>

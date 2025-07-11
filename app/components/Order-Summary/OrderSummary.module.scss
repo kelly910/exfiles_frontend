@@ -8,7 +8,7 @@
 .backButton {
   background-color: var(--Input-Box-Colors) !important;
   padding: 8px !important;
-  border: 1px solid #3a3948 !important;
+  border: 1px solid var(--Stroke-Color) !important;
   min-width: fit-content !important;
   margin-right: 12px !important;
 }
@@ -85,6 +85,7 @@
             font-size: var(--Heading-2);
             font-weight: var(--Bold);
           }
+
           span {
             color: var(--Primary-Text-Color);
             font-size: var(--SubTitle-5);
@@ -98,6 +99,7 @@
             font-size: var(--Heading-3);
             font-weight: var(--Medium);
           }
+
           span {
             color: var(--Subtext-Color);
             font-size: var(--SubTitle-3);
@@ -263,12 +265,14 @@
         font-size: var(--Heading-2);
       }
     }
+
     .PaymentCardSemiTitle {
       color: var(--Subtext-Color);
       font-size: var(--SubTitle-2);
       font-weight: var(--Lighter);
       margin-top: 8px;
     }
+
     .PaymentCardTime {
       color: var(--Primary-Text-Color);
       font-size: var(--SubTitle-3);

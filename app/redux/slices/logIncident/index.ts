@@ -123,8 +123,15 @@ export const downloadSelectedLogsReport = createAsyncThunk<
         payload,
         {
           responseType: 'blob',
+          validateStatus: () => true,
         }
       );
+
+      if (response.status !== 200 && response.status === 403) {
+        const errorText = await response.data.text();
+        const fallbackMessage = 'Something went wrong. Please try again.';
+        return rejectWithValue(errorText || fallbackMessage);
+      }
       const blob = new Blob([response.data], {
         type: response.headers['content-type'],
       });

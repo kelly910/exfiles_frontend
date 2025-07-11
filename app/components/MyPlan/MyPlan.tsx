@@ -11,30 +11,37 @@ import { useRouter } from 'next/navigation';
 import ActivePlan from './ActivePlan';
 import UpgradePlan from './UpgradePlan';
 import PlanHistory from './PlanHistory';
-import { useDispatch } from 'react-redux';
-import { setPageHeaderData } from '@/app/redux/slices/login';
+import { useSelector } from 'react-redux';
+import { selectFetchedUser, setPageHeaderData } from '@/app/redux/slices/login';
+import { fetchPlanHistory } from '@/app/redux/slices/planHistory';
+import { useAppDispatch } from '@/app/redux/hooks';
 
 const MyPlan = () => {
   const isMobile = useMediaQuery('(max-width:768px)');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const fetchedUser = useSelector(selectFetchedUser);
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
 
   useEffect(() => {
-    dispatch(
-      setPageHeaderData({
-        title: 'My Plan',
-        subTitle: 'Essential - Steady Support',
-      })
-    );
     if (isMobile) {
       setIsSidebarOpen(false);
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(
+      setPageHeaderData({
+        title: 'My Plan',
+        subTitle: `${fetchedUser?.active_subscription?.plan?.name}  - ${fetchedUser?.active_subscription?.plan?.description}`,
+      })
+    );
+    dispatch(fetchPlanHistory({ page_size: 'all' }));
+  }, [dispatch]);
 
   const handlePinnedAnswerClick = (selectedMessage: PinnedAnswerMessage) => {
     if (selectedMessage.thread && selectedMessage.uuid) {

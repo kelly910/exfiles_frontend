@@ -1,5 +1,11 @@
 'use client';
-import { Box, Button, Typography, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import Styles from '@components/Order-Summary/OrderSummary.module.scss';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -11,6 +17,8 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { setPageHeaderData } from '@/app/redux/slices/login';
 import { fetchOrderSummaryById } from '@/app/redux/slices/orderSummery';
 import { setLoader } from '@/app/redux/slices/loader';
+import { checkoutSession } from '@/app/redux/slices/checkout';
+import { showToast } from '@/app/shared/toast/ShowToast';
 
 export default function OrderSummary() {
   const isMobile = useMediaQuery('(max-width:768px)');
@@ -18,6 +26,7 @@ export default function OrderSummary() {
   const dynamicPlanId = useSearchParams();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const { orderDetail } = useSelector(
     (state: RootState) => state.orderDetailSummary
@@ -52,6 +61,18 @@ export default function OrderSummary() {
       setIsSidebarOpen(false);
     }
   }, []);
+
+  const paynow = async (slug: string) => {
+    setLoading(true);
+    const result = await dispatch(checkoutSession({ plan: slug }));
+    if (checkoutSession.fulfilled.match(result)) {
+      window.location.href = result.payload;
+    } else {
+      showToast('error', result.payload || 'Checkout failed.');
+    }
+    setLoading(false);
+  };
+
   return (
     <>
       <main className="chat-body">
@@ -70,12 +91,21 @@ export default function OrderSummary() {
                     className={Styles.backButton}
                     onClick={() => router.push('/plans')}
                   >
-                    <Image
-                      src="/images/arrow-left.svg"
-                      alt="user"
-                      width={16}
-                      height={16}
-                    />
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
+                        stroke="var(--Primary-Text-Color)"
+                        stroke-miterlimit="10"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
                   </Button>
                   <Typography variant="h2" className={Styles.OrderSummaryTitle}>
                     Order Summary
@@ -86,8 +116,8 @@ export default function OrderSummary() {
                   component="p"
                   className={Styles.OrderSummarySemiTitle}
                 >
-                  scelerisque viverra convallis. ex libero, Nullam odio Quisque
-                  porta faucibus fringilla non
+                  All the tools you need to document, track, and protect
+                  yourself—organized and AI-powered.
                 </Typography>
               </Box>
               <Box className={Styles.OrderSummaryBody}>
@@ -159,30 +189,36 @@ export default function OrderSummary() {
                         Plan Price
                       </Typography>
                       <Typography variant="body2" component="span">
-                        ${orderDetail?.plan_price}
+                        ${orderDetail?.total_payable_amount}
                       </Typography>
                     </Box>
-                    <Box className={Styles.PaymentPriceListHead}>
+                    {/* <Box className={Styles.PaymentPriceListHead}>
                       <Typography variant="body1" component="p">
                         Sales Tax (8%)
                       </Typography>
                       <Typography variant="body2" component="span">
                         +${orderDetail?.sales_tax}
                       </Typography>
-                    </Box>
+                    </Box> */}
                     <Box className={Styles.PaymentTotalPrice}>
                       <Typography variant="body1" component="p">
                         Total Payable Amount
                       </Typography>
                       <Typography variant="body2" component="span">
-                        {orderDetail?.total_payable_amount}
+                        ${orderDetail?.total_payable_amount}
                       </Typography>
                     </Box>
                     <Button
                       className="btn-primary btn"
                       sx={{ width: '100% !important', marginTop: '24px' }}
+                      onClick={() => paynow(orderDetail?.slug as string)}
+                      disabled={loading}
                     >
-                      Pay Now
+                      {loading ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : (
+                        'Pay Now'
+                      )}
                     </Button>
                   </Box>
                 </Box>

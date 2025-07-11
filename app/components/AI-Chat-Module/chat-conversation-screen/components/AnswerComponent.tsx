@@ -17,6 +17,9 @@ import { useAppDispatch } from '@/app/redux/hooks';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { useState } from 'react';
 import { useSearch } from '../../context/SearchContext';
+import { selectFetchedUser } from '@/app/redux/slices/login';
+import { useSelector } from 'react-redux';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const DynamicEditCombineSummaryModal = dynamic(
   () => import('@/app/components/AI-Chat-Module/modals/EditCombinedSummaryAns')
@@ -30,6 +33,9 @@ export default function AnswerComponent({
   const dispatch = useAppDispatch();
   const [isOpenEditSummary, setIsOpenEditSummary] = useState(false);
   const { searchingChat } = useSearch();
+
+  const fetchedUser = useSelector(selectFetchedUser);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
   // Copy Message
   const handleCopyThread = async (messageObj: ChatMessage) => {
     let targetData;
@@ -39,7 +45,7 @@ export default function AnswerComponent({
       targetData = processText(messageObj.message);
     }
 
-    const cleanText = targetData
+    const cleanHtml = targetData
       .replace(/<br\s*\/?>/gi, '<br>')
       .replace(/<(i|em)[^>]*>([\s\S]*?)<\/\1>/gi, '<em>$2</em>')
       .replace(
@@ -55,9 +61,17 @@ export default function AnswerComponent({
       .replace(/<p[^>]*>([\s\S]*?)<\/p>/gi, '<p>$1</p>')
       .trim();
 
+    const plainText = cleanHtml
+      .replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&');
+
     try {
-      const blob = new Blob([cleanText], { type: 'text/html' });
-      const clipboardItem = new ClipboardItem({ 'text/html': blob });
+      const clipboardItem = new ClipboardItem({
+        'text/plain': new Blob([plainText], { type: 'text/plain' }),
+        'text/html': new Blob([cleanHtml], { type: 'text/html' }),
+      });
+
       await navigator.clipboard.write([clipboardItem]);
       showToast('success', 'Message copied successfully!');
     } catch (err) {
@@ -164,6 +178,8 @@ export default function AnswerComponent({
     setIsOpenEditSummary(false);
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <Box component="div" className={chatMessagesStyles.chatAl}>
@@ -174,6 +190,9 @@ export default function AnswerComponent({
               width={40}
               height={40}
               src="/images/close-sidebar-logo.svg"
+              style={{
+                filter: theme === 'dark' ? 'brightness(0) invert(0)' : '',
+              }}
             />
           </IconButton>
         </Box>
@@ -247,7 +266,14 @@ export default function AnswerComponent({
             {formatTo12HourTimeManually(messageObj.created)}
           </span>
           <Box component="div" className={chatMessagesStyles.chatAlIcon}>
-            <Button>
+            <Button
+              disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
+              className={
+                expiredStatus === 0 && !fetchedUser?.staff_user
+                  ? 'limitation-icon'
+                  : ''
+              }
+            >
               {/* Like */}
               <svg
                 className={
@@ -265,7 +291,14 @@ export default function AnswerComponent({
                 <path d="M3.03925 3.72168H2.43841C1.53425 3.72168 1.16675 4.07168 1.16675 4.93501V10.8033C1.16675 11.6667 1.53425 12.0167 2.43841 12.0167H3.03925C3.94341 12.0167 4.31091 11.6667 4.31091 10.8033V4.93501C4.31091 4.07168 3.94341 3.72168 3.03925 3.72168Z" />
               </svg>
             </Button>
-            <Button>
+            <Button
+              disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
+              className={
+                expiredStatus === 0 && !fetchedUser?.staff_user
+                  ? 'limitation-icon'
+                  : ''
+              }
+            >
               {/* dislike */}
               <svg
                 className={
@@ -309,6 +342,12 @@ export default function AnswerComponent({
                       e.stopPropagation();
                     }
                   }}
+                  disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
+                  className={
+                    expiredStatus === 0 && !fetchedUser?.staff_user
+                      ? 'limitation-icon'
+                      : ''
+                  }
                 >
                   <Image
                     src="/images/chat-edit.svg"
@@ -326,6 +365,12 @@ export default function AnswerComponent({
                   e.stopPropagation();
                 }
               }}
+              disabled={expiredStatus === 0 && !fetchedUser?.staff_user}
+              className={
+                expiredStatus === 0 && !fetchedUser?.staff_user
+                  ? 'limitation-icon'
+                  : ''
+              }
             >
               {/* pin */}
               <svg

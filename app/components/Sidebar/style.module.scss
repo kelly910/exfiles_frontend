@@ -6,6 +6,7 @@
   width: 300px;
   top: 0;
   z-index: 9999;
+
   // overflow-y: auto;
   .main-logo {
     width: auto;
@@ -14,16 +15,20 @@
     justify-content: start;
     padding: 10px 12px;
     border-bottom: 1px solid var(--Stroke-Color);
+
     .close-sidebar-logo {
       display: none;
       height: 44px;
+
       img {
         height: 100%;
         width: 100%;
       }
     }
+
     .opensidebar-logo {
       height: 44px;
+
       img {
         height: 100%;
       }
@@ -103,9 +108,11 @@
   .sidebar-list-details {
     padding: 0;
     margin-bottom: 16px;
+
     li {
       padding: 0;
     }
+
     .sidebar-btn {
       background: var(--Main-Gradient);
       outline: 0.5px solid transparent;
@@ -122,9 +129,11 @@
       width: 100%;
       line-height: normal;
       transition: 0.2s ease-in-out;
+
       &:hover {
         outline: 0.5px solid var(--Card-Border);
       }
+
       span {
         vertical-align: middle;
         margin-left: 5px;
@@ -139,10 +148,12 @@
 
 .sidebar-accordian {
   overflow-y: auto;
+
   .accordian {
     margin-bottom: 16px;
     background-color: unset;
     box-shadow: unset;
+
     &:before {
       content: unset;
     }
@@ -161,7 +172,6 @@
           color: var(--Primary-Text-Color);
           font-weight: var(--Medium) var(--SubTitle-2);
           line-height: 1.4;
-          letter-spacing: 0%;
           display: flex;
           align-items: center;
 
@@ -210,7 +220,6 @@
       color: var(--Primary-Text-Color);
       font-weight: var(--Medium) var(--SubTitle-3);
       line-height: 1.4;
-      letter-spacing: 0%;
       margin: 0;
     }
   }
@@ -230,10 +239,12 @@
     }
   }
 }
+
 .sidebar-btm {
   margin-top: auto;
   margin-bottom: 10px;
   padding: 12px;
+
   .sidebar-btm-card {
     background-image: url('/images/sidebar-btm-img.png');
     background-size: contain;
@@ -242,26 +253,30 @@
     background-repeat: no-repeat;
     border-radius: 12px;
     padding: 20px 12px 10px 12px;
+
     p {
       color: var(--Primary-Text-Color);
       font-weight: var(--Regular);
       font-size: var(--SubTitle-3);
       line-height: 1.4;
-      letter-spacing: 0%;
+
       &:first-child {
         margin-bottom: 60px;
         max-width: 150px;
       }
+
       a {
         color: var(--Primary-Text-Color);
         text-decoration: none;
         transition: 0.5s ease-in-out;
+
         &:hover {
           color: var(--Background-Color);
         }
       }
     }
   }
+
   .close-sidebar-btm {
     display: none;
   }
@@ -269,95 +284,118 @@
 
 .closesidebar {
   width: 65px !important;
+
   .main-logo {
     .close-sidebar-logo {
       display: block !important;
     }
+
     .opensidebar-logo {
       display: none !important;
     }
   }
 }
+
 .paddingremove {
   padding-left: 75px !important;
 }
+
 .closesidebar {
   .sidebar-details {
     height: calc(100vh - 65px - 77px);
   }
+
   .main-logo {
     justify-content: center;
   }
+
   .sidebar-top {
     justify-content: center;
+
     .right {
       display: none;
     }
   }
+
   .sidebar-list {
     .sidebar-list-details {
       padding: 0;
       margin-bottom: 16px;
+
       .sidebar-btn {
         //    transition: 0.5s ease-in-out;
         width: 40px;
         font-size: 0;
         padding: 0;
         height: 40px;
+
         .btn-text {
           display: none;
         }
+
         span {
           margin: 0;
         }
       }
     }
   }
+
   .sidebar-accordian {
     .accordian {
       .customAccordionHeading {
         background-color: unset;
+
         &:hover {
           background-color: var(--Card-Image);
         }
+
         .customAccordionContent {
           .heading {
             font-size: 0;
             margin: 0 auto;
+
             img {
               margin-right: 0;
             }
           }
         }
+
         .img-none {
           display: none;
         }
       }
     }
   }
+
   .accordion-content {
     display: none;
   }
+
   .sidebar-btm {
     margin-bottom: 0;
     padding: 16px 12px 16px 13px;
+
     .sidebar-btm-card {
       display: none;
     }
+
     .close-sidebar-btm {
       display: block;
     }
   }
+
   .bottom-content {
     display: none;
   }
 }
+
 .sidebar-dropdown {
   box-shadow: unset !important;
   --Paper-shadow: unset !important;
 }
+
 .main-content {
-  color: #fff;
+  color: var(--Txt-On-Gradient);
 }
 
 @media (max-width: 1366px) {
@@ -366,7 +404,8 @@
       .customAccordionHeading {
         .customAccordionContent {
           .heading {
-            font-size: 15px;
+            font-size: var(--SubTitle-2);
+
             img {
               margin-top: 0;
             }
