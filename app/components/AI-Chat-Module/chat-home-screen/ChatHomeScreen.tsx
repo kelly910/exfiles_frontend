@@ -38,9 +38,23 @@ export default function ChatHomeScreen() {
     version: number;
   } | null>(null);
   const [droppedFiles, setDroppedFiles] = useState<File[]>([]);
+  const [chatStartTime] = useState(Date.now()); // Track when user enters chat home screen
 
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
+
+  // Track time spent when user leaves the chat home screen
+  useEffect(() => {
+    return () => {
+      const chatDuration = (Date.now() - chatStartTime) / 1000; // Convert to seconds
+      // @ts-ignore - gtag is added by GoogleAnalytics component
+      window.gtag?.('event', 'chat_duration', {
+        event_category: 'User Engagement',
+        event_label: 'Chat Home Screen',
+        value: Math.round(chatDuration),
+      });
+    };
+  }, [chatStartTime]);
 
   const handleNewSendMessage = async (payloadData: SocketPayload) => {
     setIsLoading(true);
