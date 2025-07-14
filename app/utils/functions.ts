@@ -75,8 +75,7 @@ export function gtagEvent({
   }
 }
 
-const WORDPRESS_API_TOKEN =
-  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2V4ZmlsZXMudHJvb2luYm91bmRkZXZzLmNvbSIsImlhdCI6MTc1MTU0MTgwNiwibmJmIjoxNzUxNTQxODA2LCJleHAiOjE3NTIxNDY2MDYsImRhdGEiOnsidXNlciI6eyJpZCI6IjIifX19.7o5HvU3HvdJqx8okUode1W1lFaUmfKTfRDnfjUXeNrI';
+const WORDPRESS_API_TOKEN = process.env.NEXT_PUBLIC_WORDPRESS_TOKEN;
 
 export async function sendDataToWordPressForLogin(
   userData: LoginResponse['data']
