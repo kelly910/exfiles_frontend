@@ -60,6 +60,7 @@ export default function Conversation({ threadId }: { threadId: string }) {
   const isStreamingMessages = useSelector(selectIsStreaming);
   const messagesChunks = useSelector(selectMessagesChunks);
   const chatElementRef = useRef<HTMLInputElement>(null);
+  const [chatStartTime] = useState(Date.now()); // Track when user enters conversation
 
   const [page, setPage] = useState(1);
   const [droppedFiles, setDroppedFiles] = useState<File[] | null>([]);
@@ -276,6 +277,19 @@ export default function Conversation({ threadId }: { threadId: string }) {
     // console.log('Dropped files:', files);
     // Handle files here
   };
+
+  // Track time spent when user leaves the conversation
+  useEffect(() => {
+    return () => {
+      const chatDuration = (Date.now() - chatStartTime) / 1000; // Convert to seconds
+      window.gtag?.('event', 'chat_duration', {
+        event_category: 'User Engagement',
+        event_label: 'Chat Conversation',
+        value: Math.round(chatDuration),
+        thread_id: threadId, // Track which conversation thread
+      });
+    };
+  }, [chatStartTime, threadId]);
 
   return (
     <>

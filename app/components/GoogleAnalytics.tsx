@@ -6,10 +6,11 @@ import { useEffect } from 'react';
 
 export default function GoogleAnalytics() {
   const pathname = usePathname();
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
   useEffect(() => {
-    if (typeof window.gtag === 'function') {
-      window.gtag('config', process.env.NEXT_PUBLIC_GA_ID, {
+    if (typeof window.gtag === 'function' && gaId) {
+      window.gtag('config', gaId, {
         page_path: pathname,
       });
     }

@@ -12,6 +12,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { getPaymentDetailsByTransactionId } from '@/app/redux/slices/paymentStatus';
 import dayjs from 'dayjs';
 import { useThemeMode } from '@/app/utils/ThemeContext';
+import { gtagEvent } from '@/app/utils/functions';
 
 export default function PaymentSuccessful() {
   const isMobile = useMediaQuery('(max-width:768px)');
@@ -38,6 +39,11 @@ export default function PaymentSuccessful() {
   useEffect(() => {
     if (transactionid) {
       dispatch(getPaymentDetailsByTransactionId(transactionid as string));
+      gtagEvent({
+        action: 'upgrade_completed',
+        category: 'Subscription',
+        label: 'Upgrade successful',
+      });
     }
     dispatch(
       setPageHeaderData({
