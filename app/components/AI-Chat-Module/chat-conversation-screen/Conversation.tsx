@@ -282,7 +282,6 @@ export default function Conversation({ threadId }: { threadId: string }) {
   useEffect(() => {
     return () => {
       const chatDuration = (Date.now() - chatStartTime) / 1000; // Convert to seconds
-      // @ts-ignore - gtag is added by GoogleAnalytics component
       window.gtag?.('event', 'chat_duration', {
         event_category: 'User Engagement',
         event_label: 'Chat Conversation',
