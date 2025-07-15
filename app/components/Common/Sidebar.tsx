@@ -96,7 +96,7 @@ const Sidebar = ({
   const pathname = usePathname();
   const isChatPage = pathname?.includes('/ai-chats');
   const [expanded, setExpanded] = useState<boolean | string>(
-    isChatPage ? 'panel2' : ''
+    isChatPage ? '' : ''
   ); // Track which accordion is expanded
   const [expandedNested, setExpandedNested] = useState<string | false>(
     'nested2'
