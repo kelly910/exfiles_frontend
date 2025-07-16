@@ -144,10 +144,12 @@ export default function PaymentFailed() {
                         </Typography>
                         <Typography variant="body2" component="span">
                           $
-                          {(
-                            Number(paymentData?.plan_base_price) -
-                            Number(salesTaxAmount)
-                          )?.toFixed(2) || '0.00'}
+                          {Number(paymentData?.sales_tax_amount)
+                            ? Number(paymentData?.plan_base_price) || '0.00'
+                            : (
+                                Number(paymentData?.plan_base_price) -
+                                Number(salesTaxAmount)
+                              )?.toFixed(2) || '0.00'}
                         </Typography>
                       </Box>
                       <Box className={Styles.PaymentCardDetailsListPlanInner}>

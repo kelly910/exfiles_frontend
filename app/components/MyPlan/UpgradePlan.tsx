@@ -444,7 +444,7 @@ const UpgradePlan = () => {
                                 {plan.name}
                               </Typography>
                               <Typography variant="body1" component="p">
-                                ${plan.amount.split('.')[0]}{' '}
+                                ${plan.amount}
                                 <Typography
                                   component="span"
                                   style={{ textTransform: 'capitalize' }}
