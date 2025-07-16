@@ -287,8 +287,8 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                         variant="body1"
                         className={styles.accountFormDetails}
                       >
-                        We have sent you an OTP on your registered mobile
-                        number. Please enter OTP below to continue.
+                        We have sent you an OTP on your registered email
+                        address. Please enter OTP below to continue.
                       </Typography>
                     </Box>
                     <div
