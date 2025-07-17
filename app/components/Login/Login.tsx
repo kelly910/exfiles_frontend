@@ -86,10 +86,13 @@ const Page = () => {
                   user: response.data,
                   theme: storedTheme === 'light' ? 'light' : 'dark',
                 });
-                document.cookie =
-                  productionServer === 'production'
-                    ? `accessToken=${token}; isLogin=yes userDataId=${response.data.id}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
-                    : `accessToken=${token}; path=/; max-age=86400`;
+                if (productionServer === 'production') {
+                  document.cookie = `accessToken=${token}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
+                  document.cookie = `isLogin=yes; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
+                  document.cookie = `userDataId=${response.data.id}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
+                } else {
+                  document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+                }
                 window.opener?.postMessage(
                   {
                     type: 'LOGIN_SUCCESS',
@@ -148,10 +151,13 @@ const Page = () => {
               user: response.data,
               theme: storedTheme === 'light' ? 'light' : 'dark',
             });
-            document.cookie =
-              productionServer === 'production'
-                ? `accessToken=${token}; isLogin=yes userDataId=${response.data.id}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
-                : `accessToken=${token}; path=/; max-age=86400`;
+            if (productionServer === 'production') {
+              document.cookie = `accessToken=${token}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
+              document.cookie = `isLogin=yes; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
+              document.cookie = `userDataId=${response.data.id}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
+            } else {
+              document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+            }
             window.opener?.postMessage(
               {
                 type: 'LOGIN_SUCCESS',
