@@ -79,7 +79,7 @@ export default function DevicesLimit({
           const userData = encodeURIComponent(JSON.stringify(response.data));
           document.cookie =
             productionServer === 'production'
-              ? `userData=${userData}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
+              ? `accessToken=${token}; userData=${userData}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
               : `accessToken=${token}; path=/; max-age=86400`;
           window.opener?.postMessage(
             {
@@ -139,7 +139,7 @@ export default function DevicesLimit({
                 );
                 document.cookie =
                   productionServer === 'production'
-                    ? `userData=${userData}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
+                    ? `accessToken=${token}; userData=${userData}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
                     : `accessToken=${token}; path=/; max-age=86400`;
                 window.opener?.postMessage(
                   {
