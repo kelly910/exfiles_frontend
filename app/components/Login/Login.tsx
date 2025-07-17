@@ -86,12 +86,9 @@ const Page = () => {
                   user: response.data,
                   theme: storedTheme === 'light' ? 'light' : 'dark',
                 });
-                const userData = encodeURIComponent(
-                  JSON.stringify(response.data)
-                );
                 document.cookie =
                   productionServer === 'production'
-                    ? `accessToken=${token}; userData=${userData}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
+                    ? `accessToken=${token}; isLogin=yes userDataId=${response.data.id}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
                     : `accessToken=${token}; path=/; max-age=86400`;
                 window.opener?.postMessage(
                   {
@@ -151,10 +148,9 @@ const Page = () => {
               user: response.data,
               theme: storedTheme === 'light' ? 'light' : 'dark',
             });
-            const userData = encodeURIComponent(JSON.stringify(response.data));
             document.cookie =
               productionServer === 'production'
-                ? `accessToken=${token}; userData=${userData}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
+                ? `accessToken=${token}; isLogin=yes userDataId=${response.data.id}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
                 : `accessToken=${token}; path=/; max-age=86400`;
             window.opener?.postMessage(
               {
