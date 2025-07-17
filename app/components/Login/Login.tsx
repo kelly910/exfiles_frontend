@@ -63,6 +63,8 @@ const Page = () => {
     }
   }, []);
 
+  const productionServer = process.env.NEXT_PUBLIC_ENVIRONMENT_SERVER;
+
   const loginUserClick = async (values: LoginFormValues): Promise<void> => {
     try {
       setLoadingLogin(true);
@@ -84,7 +86,13 @@ const Page = () => {
                   user: response.data,
                   theme: storedTheme === 'light' ? 'light' : 'dark',
                 });
-                document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+                const userData = encodeURIComponent(
+                  JSON.stringify(response.data)
+                );
+                document.cookie =
+                  productionServer === 'production'
+                    ? `userData=${userData}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
+                    : `accessToken=${token}; path=/; max-age=86400`;
                 window.opener?.postMessage(
                   {
                     type: 'LOGIN_SUCCESS',
@@ -143,7 +151,11 @@ const Page = () => {
               user: response.data,
               theme: storedTheme === 'light' ? 'light' : 'dark',
             });
-            document.cookie = `accessToken=${token}; path=/; max-age=86400`;
+            const userData = encodeURIComponent(JSON.stringify(response.data));
+            document.cookie =
+              productionServer === 'production'
+                ? `userData=${userData}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`
+                : `accessToken=${token}; path=/; max-age=86400`;
             window.opener?.postMessage(
               {
                 type: 'LOGIN_SUCCESS',
