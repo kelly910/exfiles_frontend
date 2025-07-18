@@ -24,6 +24,8 @@ export const ThemeProviderMode = ({
     document.documentElement.setAttribute('data-theme', initialTheme);
   }, []);
 
+  const productionServer = process.env.NEXT_PUBLIC_ENVIRONMENT_SERVER;
+
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
@@ -34,6 +36,9 @@ export const ThemeProviderMode = ({
       type: 'THEME',
       theme: theme === 'dark' ? 'light' : 'dark',
     });
+    if (productionServer === 'production') {
+      document.cookie = `theme=${theme === 'dark' ? 'light' : 'dark'}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
+    }
     window.opener?.postMessage(
       {
         type: 'THEME',
