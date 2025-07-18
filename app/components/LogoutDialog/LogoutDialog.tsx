@@ -71,6 +71,8 @@ export default function LogoutDialog({
     };
   }, []);
 
+  const productionServer = process.env.NEXT_PUBLIC_ENVIRONMENT_SERVER;
+
   const logoutUser = async () => {
     setLoading(true);
     await dispatch(setLoader(true));
@@ -85,7 +87,13 @@ export default function LogoutDialog({
       setLoading(false);
       dispatch(setLoader(false));
       localStorage.removeItem('loggedInUser');
-      document.cookie = `accessToken=; path=/; max-age=0`;
+      if (productionServer === 'production') {
+        document.cookie = `accessToken=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
+        document.cookie = `isLogin=no; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
+        document.cookie = `userDataId=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
+      } else {
+        document.cookie = `accessToken=; path=/; max-age=0`;
+      }
       router.push('/login');
     }, 1000);
   };
