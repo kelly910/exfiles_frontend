@@ -1007,7 +1007,7 @@ export default function LogIncident() {
                                   >
                                     {tag?.file_data?.file_url ? (
                                       // eslint-disable-next-line @next/next/no-img-element
-                                      <Image
+                                      <img
                                         src={tag?.file_data?.file_url}
                                         alt={tag.name}
                                         width="16"
