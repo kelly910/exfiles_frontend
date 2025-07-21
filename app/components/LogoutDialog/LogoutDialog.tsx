@@ -71,7 +71,7 @@ export default function LogoutDialog({
     };
   }, []);
 
-  // const productionServer = process.env.NEXT_PUBLIC_ENVIRONMENT_SERVER;
+  const productionServer = process.env.NEXT_PUBLIC_ENVIRONMENT_SERVER;
 
   const logoutUser = async () => {
     setLoading(true);
@@ -84,6 +84,9 @@ export default function LogoutDialog({
       );
       const bc = new BroadcastChannel('react-auth-channel');
       bc.postMessage({ type: 'LOGOUT_SUCCESS' });
+      if (productionServer === 'production') {
+        document.cookie = `logout=yes; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
+      }
       setLoading(false);
       dispatch(setLoader(false));
       localStorage.removeItem('loggedInUser');

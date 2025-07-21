@@ -12,6 +12,7 @@ import ClientAuthCheck from './components/ClientAuthCheck';
 import { SearchProvider } from './components/AI-Chat-Module/context/SearchContext';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import { ThemeProviderMode } from '@/app/utils/ThemeContext';
+import LogoutCookieWatcher from './components/LogoutCookieWatcher';
 // import ThemeToggleButton from './components/ThemeToggleButton';
 
 // const fustatFont = localFont({
@@ -56,6 +57,7 @@ export default function RootLayout({
                   <ThemeRegistry>
                     <ToastProvider>
                       <FullPageLoader />
+                      {isProduction && <LogoutCookieWatcher />}
                       {children}
                     </ToastProvider>
                   </ThemeRegistry>
