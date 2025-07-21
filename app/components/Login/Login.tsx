@@ -90,7 +90,6 @@ const Page = () => {
                   document.cookie = `accessToken=${token}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
                   document.cookie = `isLogin=yes; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
                   document.cookie = `userDataId=${response.data.id}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
-                  document.cookie = `theme=${storedTheme === 'light' ? 'dark' : 'light'}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
                 } else {
                   document.cookie = `accessToken=${token}; path=/; max-age=86400`;
                 }
@@ -156,7 +155,6 @@ const Page = () => {
               document.cookie = `accessToken=${token}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
               document.cookie = `isLogin=yes; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
               document.cookie = `userDataId=${response.data.id}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
-              document.cookie = `theme=${storedTheme === 'light' ? 'dark' : 'light'}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
             } else {
               document.cookie = `accessToken=${token}; path=/; max-age=86400`;
             }

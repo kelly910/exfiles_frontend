@@ -87,18 +87,10 @@ export default function LogoutDialog({
       setLoading(false);
       dispatch(setLoader(false));
       localStorage.removeItem('loggedInUser');
-      // if (productionServer === 'production') {
-      //   // document.cookie = `accessToken=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
-      //   // document.cookie = `isLogin=no; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
-      //   // document.cookie = `userDataId=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
-
-      //   document.cookie = `accessToken=; path=/; max-age=0; Secure; SameSite=None`;
-      //   document.cookie = `isLogin=no; path=/; max-age=0; Secure; SameSite=None`;
-      //   document.cookie = `userDataId=; path=/; max-age=0; Secure; SameSite=None`;
-      // } else {
       document.cookie = `accessToken=; path=/; max-age=0`;
-      // }
-      router.push('/login');
+      document.cookie = `isLogin=no; path=/; max-age=0`;
+      document.cookie = `userDataId=; path=/; max-age=0`;
+      router.replace('/login');
     }, 1000);
   };
 
