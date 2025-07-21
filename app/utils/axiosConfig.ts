@@ -48,11 +48,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response, // Return response if successful
   async (error) => {
-    const originalRequest = error.config;
+    // const originalRequest = error.config;
 
-    // Handle 401 (Unauthorized) Errors
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    // Handle 401 (Unauthorized) Error
+    // if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401) {
+      // originalRequest._retry = true;
       localStorage.removeItem('loggedInUser');
       document.cookie = `accessToken=; path=/; max-age=0`;
       if (typeof window !== 'undefined') {
