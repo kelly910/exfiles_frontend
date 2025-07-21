@@ -86,13 +86,15 @@ export default function LogoutDialog({
       bc.postMessage({ type: 'LOGOUT_SUCCESS' });
       if (productionServer === 'production') {
         document.cookie = `logout=yes; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
+        document.cookie = `accessToken=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
+        document.cookie = `isLogin=no; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
+        document.cookie = `userDataId=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
+      } else {
+        document.cookie = `accessToken=; path=/; max-age=0`;
       }
       setLoading(false);
       dispatch(setLoader(false));
       localStorage.removeItem('loggedInUser');
-      document.cookie = `accessToken=; path=/; max-age=0`;
-      document.cookie = `isLogin=no; path=/; max-age=0`;
-      document.cookie = `userDataId=; path=/; max-age=0`;
       router.replace('/login');
     }, 1000);
   };
