@@ -38,7 +38,7 @@ export default function LogoutCookieWatcher() {
         document.cookie = `userDataId=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
         router.replace('/login');
       }
-    }, 60000); // every 1 minute
+    }, 10000); // every 10 seconds
 
     return () => clearInterval(interval);
   }, [router, pathname]);
