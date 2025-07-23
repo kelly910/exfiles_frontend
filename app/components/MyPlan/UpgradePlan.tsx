@@ -292,11 +292,8 @@ const UpgradePlan = () => {
                       </Paper>
                     </Box>
                     <Typography variant="body1" component="p">
-                      You Can Buy{' '}
-                      <Typography component="span">Annual Plans</Typography> In{' '}
-                      <Typography component="span">
-                        Discounted Prices.
-                      </Typography>
+                      Save with a discounted{' '}
+                      <Typography component="span">annual plans</Typography>
                     </Typography>
                   </Box>
                   <Box className={styles['subscription-plan-footer']}>
@@ -349,9 +346,8 @@ const UpgradePlan = () => {
                 </Paper>
               </Box>
               <Typography variant="body1" component="p">
-                You Can Buy{' '}
-                <Typography component="span">Annual Plans</Typography> In{' '}
-                <Typography component="span">Discounted Prices.</Typography>
+                Save with a discounted{' '}
+                <Typography component="span">annual plans</Typography>
               </Typography>
             </Box>
             <Box
@@ -484,6 +480,29 @@ const UpgradePlan = () => {
                                 />
                               )}
                             </Box>
+                          </Box>
+                          <Box className={styles['discounted-text']}>
+                            {plan.name !== 'Free Tier' &&
+                              plan.duration_unit ===
+                                process.env
+                                  .NEXT_PUBLIC_BILLING_CYCLE_ANNUALLY &&
+                              (plan.name === 'Essential' ? (
+                                <Typography variant="body1" component="p">
+                                  $15.83/
+                                  {
+                                    process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH
+                                  }{' '}
+                                  – save 17%
+                                </Typography>
+                              ) : (
+                                <Typography variant="body1" component="p">
+                                  $32.50/
+                                  {
+                                    process.env.NEXT_PUBLIC_BILLING_CYCLE_MONTH
+                                  }{' '}
+                                  – save 17%
+                                </Typography>
+                              ))}
                           </Box>
                           <Typography variant="body1" component="p">
                             {plan.description}
