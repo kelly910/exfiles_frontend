@@ -81,7 +81,7 @@ export default function DevicesLimit({
             document.cookie = `isLogin=yes; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
             document.cookie = `userDataId=${response.data.id}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
             document.cookie =
-              'logout=; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None';
+              'logout=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None';
           } else {
             document.cookie = `accessToken=${token}; path=/; max-age=86400`;
           }
@@ -143,7 +143,7 @@ export default function DevicesLimit({
                   document.cookie = `isLogin=yes; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
                   document.cookie = `userDataId=${response.data.id}; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
                   document.cookie =
-                    'logout=; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None';
+                    'logout=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None';
                 } else {
                   document.cookie = `accessToken=${token}; path=/; max-age=86400`;
                 }

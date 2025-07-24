@@ -157,13 +157,22 @@ export const downloadSelectedDocsReport = createAsyncThunk<
     try {
       const response = await api.post(
         `${urlMapper.downloadDocReport}`,
-        payload,
-        {
-          responseType: 'blob',
-          validateStatus: () => true,
-        }
+        payload
+        // {
+        //   responseType: 'blob',
+        //   validateStatus: () => true,
+        // }
       );
-
+      if (
+        response?.data &&
+        typeof response.data === 'object' &&
+        Array.isArray(response.data.messages) &&
+        response.data.messages[0] ===
+          "PDF is being generated in background. You will get an email once it's ready."
+      ) {
+        showToast('info', response.data.messages[0]);
+        return;
+      }
       if (response.status !== 200 && response.status === 403) {
         const errorText = await response.data.text();
         const fallbackMessage = 'Something went wrong. Please try again.';
