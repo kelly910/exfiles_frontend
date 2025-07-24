@@ -55,7 +55,14 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // originalRequest._retry = true;
       localStorage.removeItem('loggedInUser');
-      document.cookie = `accessToken=; path=/; max-age=0`;
+      if (process.env.NEXT_PUBLIC_ENVIRONMENT_SERVER === 'production') {
+        document.cookie = `logout=yes; path=/; max-age=86400; domain=.ex-files.ai; Secure; SameSite=None`;
+        document.cookie = `accessToken=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
+        document.cookie = `isLogin=no; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
+        document.cookie = `userDataId=; path=/; max-age=0; domain=.ex-files.ai; Secure; SameSite=None`;
+      } else {
+        document.cookie = `accessToken=; path=/; max-age=0`;
+      }
       if (typeof window !== 'undefined') {
         window.location.href = '/login';
       }
