@@ -293,7 +293,7 @@ const UpgradePlan = () => {
                     </Box>
                     <Typography variant="body1" component="p">
                       Save with a discounted{' '}
-                      <Typography component="span">annual plans</Typography>
+                      <Typography component="span">annual plan</Typography>
                     </Typography>
                   </Box>
                   <Box className={styles['subscription-plan-footer']}>
@@ -347,7 +347,7 @@ const UpgradePlan = () => {
               </Box>
               <Typography variant="body1" component="p">
                 Save with a discounted{' '}
-                <Typography component="span">annual plans</Typography>
+                <Typography component="span">annual plan</Typography>
               </Typography>
             </Box>
             <Box
