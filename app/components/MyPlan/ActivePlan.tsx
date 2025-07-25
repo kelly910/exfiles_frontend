@@ -296,12 +296,14 @@ function CircularProgressWithLabel(
 
       <Box className={styles['storage-info']}>
         <Typography variant="subtitle2">Storage</Typography>
-        <Typography variant="h5">{used ? used : '0'} GB</Typography>
+        {!fetchedUser?.staff_user && (
+          <Typography variant="h5">{used ? used : '0'} GB</Typography>
+        )}
         <Typography variant="body2">
           {fetchedUser?.staff_user
             ? 'Unlimited'
             : `Total ${total ? total : '0'}`}{' '}
-          GB
+          {fetchedUser?.staff_user ? '' : 'GB'}
         </Typography>
       </Box>
     </Box>

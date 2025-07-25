@@ -736,7 +736,7 @@ const Sidebar = ({
                     {fetchedUser?.active_subscription?.status === 1 ||
                     fetchedUser?.staff_user ? (
                       <Typography component="span">
-                        {item.used}/
+                        {item?.total !== 'Unlimited' ? `${item.used}/` : ''}
                         {fetchedUser?.staff_user ? 'Unlimited' : item.total}
                       </Typography>
                     ) : (
@@ -756,27 +756,29 @@ const Sidebar = ({
                         </Tooltip>
                       )}
                   </Typography>
-                  <Box className={Style['storage-body-inner']}>
-                    <ColoredLinearProgress
-                      variant="determinate"
-                      value={value}
-                      $barColor={getColor(value)}
-                      sx={{ maxWidth: '100%', width: '100%' }}
-                    />
-                    {item.gracePoint === false &&
-                      value === 100 &&
-                      // !fetchedUser?.staff_user &&
-                      item?.total !== 'Unlimited' && (
-                        <ColoredLinearProgress
-                          variant="determinate"
-                          value={0}
-                          $barColor={
-                            getGracePointColor(item.gracePoint) ?? '#A6152B'
-                          }
-                          sx={{ width: '25px', flex: '1 1 auto' }}
-                        />
-                      )}
-                  </Box>
+                  {item?.total !== 'Unlimited' && (
+                    <Box className={Style['storage-body-inner']}>
+                      <ColoredLinearProgress
+                        variant="determinate"
+                        value={value}
+                        $barColor={getColor(value)}
+                        sx={{ maxWidth: '100%', width: '100%' }}
+                      />
+                      {item.gracePoint === false &&
+                        value === 100 &&
+                        // !fetchedUser?.staff_user &&
+                        item?.total !== 'Unlimited' && (
+                          <ColoredLinearProgress
+                            variant="determinate"
+                            value={0}
+                            $barColor={
+                              getGracePointColor(item.gracePoint) ?? '#A6152B'
+                            }
+                            sx={{ width: '25px', flex: '1 1 auto' }}
+                          />
+                        )}
+                    </Box>
+                  )}
                 </Box>
               );
             })}
@@ -840,7 +842,7 @@ const Sidebar = ({
                       {fetchedUser?.active_subscription?.status === 1 ||
                       fetchedUser?.staff_user ? (
                         <Typography component="span">
-                          {item.used}/
+                          {item?.total !== 'Unlimited' ? `${item.used}/` : ''}
                           {fetchedUser?.staff_user ? 'Unlimited' : item.total}
                         </Typography>
                       ) : (
@@ -861,27 +863,29 @@ const Sidebar = ({
                         )}
                     </Typography>
 
-                    <Box className={Style['storage-body-inner']}>
-                      <ColoredLinearProgress
-                        variant="determinate"
-                        value={value}
-                        $barColor={getColor(value)}
-                        sx={{ maxWidth: '100%', width: '100%' }}
-                      />
-                      {item.gracePoint === false &&
-                        value === 100 &&
-                        // !fetchedUser?.staff_user &&
-                        item?.total !== 'Unlimited' && (
-                          <ColoredLinearProgress
-                            variant="determinate"
-                            value={0}
-                            $barColor={
-                              getGracePointColor(item.gracePoint) ?? '#A6152B'
-                            }
-                            sx={{ width: '25px', flex: '1 1 auto' }}
-                          />
-                        )}
-                    </Box>
+                    {item?.total !== 'Unlimited' && (
+                      <Box className={Style['storage-body-inner']}>
+                        <ColoredLinearProgress
+                          variant="determinate"
+                          value={value}
+                          $barColor={getColor(value)}
+                          sx={{ maxWidth: '100%', width: '100%' }}
+                        />
+                        {item.gracePoint === false &&
+                          value === 100 &&
+                          // !fetchedUser?.staff_user &&
+                          item?.total !== 'Unlimited' && (
+                            <ColoredLinearProgress
+                              variant="determinate"
+                              value={0}
+                              $barColor={
+                                getGracePointColor(item.gracePoint) ?? '#A6152B'
+                              }
+                              sx={{ width: '25px', flex: '1 1 auto' }}
+                            />
+                          )}
+                      </Box>
+                    )}
                   </Box>
                 );
               })}
