@@ -736,7 +736,7 @@ const Sidebar = ({
                     {fetchedUser?.active_subscription?.status === 1 ||
                     fetchedUser?.staff_user ? (
                       <Typography component="span">
-                        {item?.total !== 'Unlimited' ? `${item.used}/` : ''}
+                        {!fetchedUser?.staff_user ? `${item.used}/` : ''}
                         {fetchedUser?.staff_user ? 'Unlimited' : item.total}
                       </Typography>
                     ) : (
@@ -756,7 +756,7 @@ const Sidebar = ({
                         </Tooltip>
                       )}
                   </Typography>
-                  {item?.total !== 'Unlimited' && (
+                  {!fetchedUser?.staff_user && (
                     <Box className={Style['storage-body-inner']}>
                       <ColoredLinearProgress
                         variant="determinate"
@@ -842,7 +842,7 @@ const Sidebar = ({
                       {fetchedUser?.active_subscription?.status === 1 ||
                       fetchedUser?.staff_user ? (
                         <Typography component="span">
-                          {item?.total !== 'Unlimited' ? `${item.used}/` : ''}
+                          {!fetchedUser?.staff_user ? `${item.used}/` : ''}
                           {fetchedUser?.staff_user ? 'Unlimited' : item.total}
                         </Typography>
                       ) : (
@@ -863,7 +863,7 @@ const Sidebar = ({
                         )}
                     </Typography>
 
-                    {item?.total !== 'Unlimited' && (
+                    {!fetchedUser?.staff_user && (
                       <Box className={Style['storage-body-inner']}>
                         <ColoredLinearProgress
                           variant="determinate"
