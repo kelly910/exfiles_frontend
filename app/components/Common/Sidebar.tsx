@@ -336,7 +336,26 @@ const Sidebar = ({
                   className={Style['sidebar-btn']}
                   onClick={handleStartNewChat}
                 >
-                  <span className={Style['btn-text']}>Upload + Chat</span>{' '}
+                  <span className={Style['btn-text']}>AI Chat </span>{' '}
+                  <Image
+                    src="/images/ai-chat-icon.svg"
+                    alt="add"
+                    width={20}
+                    height={20}
+                    style={{ marginLeft: '8px' }}
+                  />
+                </Link>
+              </ListItem>
+              <ListItem>
+                <Link href="/upload-doc" className={Style['sidebar-btn']}>
+                  <span className={Style['btn-text']}>Upload</span>
+                  <Image
+                    src="/images/document-upload.svg"
+                    alt="upload-icon"
+                    width={20}
+                    height={20}
+                    style={{ marginLeft: '8px' }}
+                  />
                 </Link>
               </ListItem>
               {/* <ListItem style={{ display: 'block' }}>
@@ -479,6 +498,28 @@ const Sidebar = ({
                 resetTrigger={resetTrigger}
               />
             </SidebarAccordion> */}
+            <div className={Style['sidebar-title-img-main']}>
+              <Link href="#" className={Style['sidebar-title-img']}>
+                <Tooltip title="AI Chat" placement="right-start" arrow>
+                  <Image
+                    src="/images/ai-chan-btn.svg"
+                    alt="ai-chan-btn"
+                    width={40}
+                    height={40}
+                  />
+                </Tooltip>
+              </Link>
+              <Link href="#" className={Style['sidebar-title-img']}>
+                <Tooltip title="Upload" placement="right-start" arrow>
+                  <Image
+                    src="/images/ai-upload-btn.svg"
+                    alt="upload"
+                    width={40}
+                    height={40}
+                  />
+                </Tooltip>
+              </Link>
+            </div>
 
             <SidebarAccordion
               title={`AI Chat History ${threadList ? `(${threadList.count})` : ''}`}
