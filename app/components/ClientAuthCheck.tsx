@@ -19,7 +19,7 @@ const ClientAuthCheck = ({ children }: { children: React.ReactNode }) => {
     const authRoutes = ['/login', '/signup'];
 
     if (token && authRoutes.includes(pathname)) {
-      router.push('/ai-chats'); // Redirect only if on an auth page
+      router.push('/upload-doc'); // Redirect only if on an auth page
     }
   }, [pathname, router]);
 

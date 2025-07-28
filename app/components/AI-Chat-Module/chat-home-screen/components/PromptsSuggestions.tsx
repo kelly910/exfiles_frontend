@@ -2,6 +2,7 @@ import LogModel from '@/app/components/LogModel/LogModel';
 import { selectFetchedUser } from '@/app/redux/slices/login';
 import AIChatStyles from '@components/AI-Chat-Module/styles/AIChatStyle.module.scss';
 import { Button, Grid, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -13,6 +14,7 @@ export default function PromptsSuggestions({
   handlePromptClick,
 }: PrompsSuggestionsProp) {
   const [openModel, setOpenModel] = useState(false);
+  const router = useRouter();
 
   const CHAT_PROMPS = [
     'Upload a document - AI will summarize and organize it for you.',
@@ -67,7 +69,8 @@ export default function PromptsSuggestions({
               className={`btn btn-primary-arrow ${AIChatStyles.gridBoxButton} ${fetchedUser?.staff_user !== true && expiredStatus === 0 ? 'limitation' : ''}`}
               color="primary"
               fullWidth
-              onClick={() => handlePromptClick(CHAT_PROMPS[0])}
+              // onClick={() => handlePromptClick(CHAT_PROMPS[0])}
+              onClick={() => router.push('/upload-doc')}
             >
               Upload for AI Summary
               <span className="arrow"></span>

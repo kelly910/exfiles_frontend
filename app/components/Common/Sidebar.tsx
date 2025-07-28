@@ -48,6 +48,7 @@ import {
   clearPageHeaderData,
   getUserById,
   selectFetchedUser,
+  setPageHeaderData,
 } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useSearch } from '../AI-Chat-Module/context/SearchContext';
@@ -95,6 +96,7 @@ const Sidebar = ({
 
   const pathname = usePathname();
   const isChatPage = pathname?.includes('/ai-chats');
+  const isUploadDocPage = pathname?.includes('/upload-doc');
   const [expanded, setExpanded] = useState<boolean | string>(
     isChatPage ? '' : ''
   ); // Track which accordion is expanded
@@ -142,9 +144,28 @@ const Sidebar = ({
     router.push('/download-doc-report');
   };
 
+  useEffect(() => {
+    if (isUploadDocPage) {
+      dispatch(
+        setPageHeaderData({
+          title: 'Upload Documents',
+          subTitle: 'Upload your documents to get your answers and reports',
+        })
+      );
+    }
+  }, [dispatch]);
+
   const handleStartNewChat = () => {
     dispatch(setActiveThread(null));
     dispatch(clearPageHeaderData());
+    if (isUploadDocPage) {
+      dispatch(
+        setPageHeaderData({
+          title: 'Upload Documents',
+          subTitle: 'Upload your documents to get your answers and reports',
+        })
+      );
+    }
   };
 
   const handleFilterApply = () => {
@@ -281,14 +302,14 @@ const Sidebar = ({
       >
         <div className={Style['main-logo']}>
           <Link
-            href="/ai-chats"
+            href="/upload-doc"
             className={Style['opensidebar-logo']}
             onClick={handleStartNewChat}
           >
             <Image src="/images/logo.svg" alt="logo" width={200} height={44} />
           </Link>
           <Link
-            href="/ai-chats"
+            href="/upload-doc"
             className={Style['close-sidebar-logo']}
             onClick={handleStartNewChat}
           >
@@ -336,7 +357,26 @@ const Sidebar = ({
                   className={Style['sidebar-btn']}
                   onClick={handleStartNewChat}
                 >
-                  <span className={Style['btn-text']}>Upload + Chat</span>{' '}
+                  <span className={Style['btn-text']}>AI Chat </span>{' '}
+                  <Image
+                    src="/images/ai-chat-icon.svg"
+                    alt="add"
+                    width={20}
+                    height={20}
+                    style={{ marginLeft: '8px' }}
+                  />
+                </Link>
+              </ListItem>
+              <ListItem>
+                <Link href="/upload-doc" className={Style['sidebar-btn']}>
+                  <span className={Style['btn-text']}>Upload</span>
+                  <Image
+                    src="/images/document-upload.svg"
+                    alt="upload-icon"
+                    width={20}
+                    height={20}
+                    style={{ marginLeft: '8px' }}
+                  />
                 </Link>
               </ListItem>
               {/* <ListItem style={{ display: 'block' }}>
@@ -479,6 +519,28 @@ const Sidebar = ({
                 resetTrigger={resetTrigger}
               />
             </SidebarAccordion> */}
+            <div className={Style['sidebar-title-img-main']}>
+              <Link href="/ai-chats" className={Style['sidebar-title-img']}>
+                <Tooltip title="AI Chat" placement="right-start" arrow>
+                  <Image
+                    src="/images/ai-chan-btn.svg"
+                    alt="ai-chan-btn"
+                    width={40}
+                    height={40}
+                  />
+                </Tooltip>
+              </Link>
+              <Link href="/upload-doc" className={Style['sidebar-title-img']}>
+                <Tooltip title="Upload" placement="right-start" arrow>
+                  <Image
+                    src="/images/ai-upload-btn.svg"
+                    alt="upload"
+                    width={40}
+                    height={40}
+                  />
+                </Tooltip>
+              </Link>
+            </div>
 
             <SidebarAccordion
               title={`AI Chat History ${threadList ? `(${threadList.count})` : ''}`}
@@ -736,7 +798,11 @@ const Sidebar = ({
                     {fetchedUser?.active_subscription?.status === 1 ||
                     fetchedUser?.staff_user ? (
                       <Typography component="span">
-                        {!fetchedUser?.staff_user ? `${item.used}/` : ''}
+                        {fetchedUser?.staff_user
+                          ? ''
+                          : item?.total === 'Unlimited'
+                            ? ''
+                            : `${item.used}/`}
                         {fetchedUser?.staff_user ? 'Unlimited' : item.total}
                       </Typography>
                     ) : (
@@ -842,7 +908,11 @@ const Sidebar = ({
                       {fetchedUser?.active_subscription?.status === 1 ||
                       fetchedUser?.staff_user ? (
                         <Typography component="span">
-                          {!fetchedUser?.staff_user ? `${item.used}/` : ''}
+                          {fetchedUser?.staff_user
+                            ? ''
+                            : item?.total === 'Unlimited'
+                              ? ''
+                              : `${item.used}/`}
                           {fetchedUser?.staff_user ? 'Unlimited' : item.total}
                         </Typography>
                       ) : (

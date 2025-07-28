@@ -1,0 +1,634 @@
+.upload-doc-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 90px 50px 50px 50px;
+  width: 100%;
+
+  .upload-doc-container {
+    border: 0.3px solid var(--Border-color-1);
+    background-color: var(--Bg-color-1);
+    border-radius: 18px;
+    padding: 48px 20px;
+    max-width: 90%;
+    width: 100%;
+  }
+
+
+  .upload-doc-head {
+    margin-bottom: 64px;
+
+    h2 {
+      font-weight: 700;
+      font-style: Bold;
+      font-size: 38px;
+      line-height: 140%;
+      letter-spacing: 0%;
+      text-align: center;
+      color: var(--Dark-color);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-weight: 600;
+      font-style: SemiBold;
+      font-size: 24px;
+      line-height: 140%;
+      letter-spacing: 0%;
+      text-align: center;
+      color: var(--Placeholder-Text);
+    }
+  }
+
+  .upload-doc-img {
+    img {
+      height: auto;
+      margin: 0 auto 32px auto;
+      display: block;
+    }
+  }
+
+  .upload-doc-btn {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 24px;
+      line-height: 140%;
+      letter-spacing: 0%;
+      text-align: center;
+      color: var(--Placeholder-Text);
+      margin-bottom: 16px;
+    }
+
+    .btn-upload {
+      min-width: 300px !important;
+      font-weight: 600;
+      font-style: SemiBold;
+      font-size: 20px;
+      line-height: 140%;
+      letter-spacing: 0%;
+      padding: 14px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+
+      img {
+        width: 24px;
+        height: 24px;
+        margin-left: 5px;
+      }
+
+    }
+  }
+
+  .upload-doc-note {
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 16px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #61616E;
+    margin-top: 32px;
+  }
+
+  .upload-file-list {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 16px;
+
+    img {
+      width: 30px;
+      height: 30px;
+      display: block;
+    }
+  }
+
+  .upload-clipboard {
+    background-color: var(--Bg-color-2);
+    padding: 13px 28px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    margin: 60px auto 0 auto;
+
+    p {
+      font-weight: 600;
+      font-style: SemiBold;
+      font-size: 16px;
+      line-height: 140%;
+      letter-spacing: 0%;
+      color: #898B94;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+      gap: 5px;
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}
+
+// file
+
+.upload-files-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 65px);
+
+  .upload-files-list {
+    padding: 20px;
+  }
+
+  .upload-files-card {
+    background-color: var(--Input-Box-Colors);
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--Stroke-Color);
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 16px;
+
+    .upload-files-left {
+      display: flex;
+      gap: 8px;
+      width: 50%;
+
+      .upload-files-span {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--Background-Color);
+        border-radius: 8px;
+
+        img {
+          width: 27px;
+          height: 33px;
+        }
+
+      }
+
+      .upload-files-info {
+        h4 {
+          font-weight: 600;
+          font-style: SemiBold;
+          font-size: 16px;
+          line-height: 140%;
+          letter-spacing: 0%;
+          color: var(--Primary-Text-Color);
+          margin-bottom: 4px;
+        }
+
+        p {
+          font-weight: 400;
+          font-style: Regular;
+          font-size: 12px;
+          line-height: 140%;
+          letter-spacing: 0%;
+          color: var(--Subtext-Color);
+
+        }
+      }
+    }
+
+    .upload-files-right {
+      display: flex;
+      align-items: center;
+      width: 50%;
+      justify-content: space-between;
+
+      .upload-file-input {
+        width: 100%;
+      }
+
+      .upload-file-trash {
+        padding-left: 42px;
+        display: block;
+
+        img {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .chatAlProgress {
+        padding-left: 10px;
+
+        span {
+          border: none;
+          background: var(--Card-Image);
+          border-radius: 500px;
+          height: 12px;
+          overflow: hidden;
+
+          span {
+            background-color: transparent;
+            background: var(--Main-Gradient);
+            border-radius: 500px;
+          }
+        }
+      }
+
+      .upload-file-failed {
+        display: flex;
+        background-color: var(--Card-Color);
+        padding: 5px 16px;
+        border-radius: 12px;
+        align-items: center;
+        gap: 4px;
+
+        img {
+          width: 16px;
+          height: 16px;
+        }
+
+        .upload-fail-text {
+          padding-left: 2px;
+
+          p {
+            font-weight: 600;
+            font-style: SemiBold;
+            font-size: 14px;
+            line-height: 140%;
+            letter-spacing: 0%;
+            color: #E72240;
+            margin-bottom: 0px;
+          }
+
+          span {
+            font-weight: 400;
+            font-style: Regular;
+            font-size: 12px;
+            line-height: 140%;
+            letter-spacing: 0%;
+            color: var(--Subtext-Color);
+          }
+        }
+      }
+    }
+
+
+  }
+
+  .upload-file-add-more {
+    font-weight: 600;
+    font-style: SemiBold;
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    color: var(--Subtext-Color);
+    display: flex;
+    align-items: center;
+    margin-top: 32px;
+    cursor: pointer;
+
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+      display: block;
+    }
+  }
+
+  .upload-list-footer {
+    position: sticky;
+    padding: 16px 20px;
+    bottom: 0;
+    background-color: var(--Card-Color);
+    border-top: 1px solid var(--Stroke-Color);
+    display: flex;
+    justify-content: end;
+  }
+
+  .btn-continue {
+    img {
+      margin-left: 4px;
+    }
+  }
+}
+
+
+
+// Responsive ============================================
+
+@media (max-width: 1399px) {
+  .upload-doc-main {
+    padding: 70px 50px;
+  }
+}
+
+
+
+@media (max-width: 991px) {
+  .upload-doc-main {
+    padding: 70px 50px 50px 50px;
+
+    .upload-doc-container {
+      max-width: 100%;
+      min-width: 100%;
+      padding: 48px 20px;
+    }
+
+    .upload-doc-head {
+      margin-bottom: 40px;
+
+      h2 {
+        font-size: 30px;
+
+      }
+
+      p {
+        font-size: 22px;
+
+      }
+    }
+
+    .upload-clipboard {
+
+      margin: 40px auto 0 auto;
+    }
+
+    .upload-doc-btn {
+      p {
+        font-size: 20px;
+      }
+
+      .btn-upload {
+        min-width: 200px !important;
+
+      }
+    }
+
+  }
+}
+
+@media (max-width:768px) {
+  .upload-files-main {
+    width: 100%;
+
+    .upload-files-list {
+      padding: 20px;
+    }
+
+    .upload-files-card {
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+
+      .upload-files-left {
+        width: 100%;
+
+
+        .upload-files-span {
+          width: 48px;
+          height: 48px;
+
+          img {
+            width: 27px;
+            height: 33px;
+          }
+
+        }
+
+        .upload-files-info {
+          h4 {
+            font-size: 16px;
+
+          }
+
+          p {
+            font-size: 12px;
+
+
+          }
+        }
+      }
+
+      .upload-files-right {
+        width: 100%;
+
+        .upload-file-input {
+          width: 100%;
+        }
+
+        .upload-file-trash {
+          padding-left: 35px;
+
+          img {
+            width: 16px;
+            height: 16px;
+          }
+        }
+
+        .chatAlProgress {
+          span {
+            height: 9px;
+
+          }
+        }
+
+        .upload-file-failed {
+          padding: 5px 16px;
+          align-items: flex-start;
+
+          img {
+            width: 16px;
+            height: 16px;
+            margin-top: 3px;
+          }
+
+          .upload-fail-text {
+            padding-left: 2px;
+
+            p {
+
+              font-size: 14px;
+
+            }
+
+            span {
+              font-size: 12px;
+
+            }
+          }
+        }
+      }
+
+
+    }
+
+    .upload-file-add-more {
+
+      margin-top: 20px;
+
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .upload-list-footer {
+      padding: 16px 20px;
+
+    }
+  }
+
+
+}
+
+
+@media (max-width: 575px) {
+  .upload-doc-main {
+    padding: 50px 20px 20px 20px;
+
+    .upload-doc-container {
+      max-width: 100%;
+      min-width: 100%;
+      padding: 40px 15px;
+    }
+
+    .upload-doc-head {
+      margin-bottom: 40px;
+
+      h2 {
+        font-size: 24px;
+
+      }
+
+      p {
+        font-size: 18px;
+
+      }
+    }
+
+    .upload-doc-img {
+      img {
+        width: 80px;
+      }
+    }
+
+    .upload-clipboard {
+
+      margin: 20px auto 0 auto;
+      padding: 13px 16px;
+
+      p {
+        font-size: 15px;
+      }
+    }
+
+    .upload-doc-btn {
+      p {
+        font-size: 16px;
+      }
+
+      .btn-upload {
+        min-width: 180px !important;
+
+      }
+    }
+
+  }
+
+  .upload-files-main {
+
+    .upload-files-card {
+
+
+      .upload-files-left {
+
+
+
+        .upload-files-span {
+          width: 40px;
+          height: 40px;
+
+          img {
+            width: 24px;
+            height: 30px;
+          }
+
+        }
+
+        .upload-files-info {
+          h4 {
+            font-size: 16px;
+
+          }
+
+          p {
+            font-size: 12px;
+
+          }
+        }
+      }
+
+      .upload-files-right {
+        width: 100%;
+
+        .upload-file-input {
+          width: 100%;
+        }
+
+        .upload-file-trash {
+          padding-left: 20px;
+
+          img {
+            width: 16px;
+            height: 16px;
+          }
+        }
+
+
+
+        .upload-file-failed {
+          padding: 5px 16px;
+          align-items: flex-start;
+
+          img {
+            width: 16px;
+            height: 16px;
+            margin-top: 3px;
+          }
+
+          .upload-fail-text {
+            padding-left: 2px;
+
+            p {
+
+              font-size: 14px;
+
+            }
+
+            span {
+              font-size: 12px;
+
+            }
+          }
+        }
+      }
+
+
+    }
+
+  }
+}

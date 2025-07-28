@@ -46,6 +46,12 @@
   --SubTitle-5: 12px;
   --SubTitle-6: 10px;
 
+  --Dark-color: #FFFFFF;
+  --Bg-color-1: #1B1A25;
+  --Bg-color-2: #3A3948;
+  --Border-color-1: #898b943b;
+  --White-color: #1B1A25;
+
 }
 
 
@@ -69,6 +75,13 @@ html[data-theme='dark'] {
 
   --Icon-Color: rgb(185, 72, 255);
   --Icon-Color-Rgb: rgb(185, 72, 255, 0.2);
+
+  --Dark-color: #000000;
+  --White-color: #FFFFFF;
+  --Bg-color-1: #F9F9F9;
+  --Bg-color-2: #F5F5F5;
+  --Border-color-1: #898b9433;
+
 }
 
 /* WebKit Browsers (Chrome, Safari, Edge) */
