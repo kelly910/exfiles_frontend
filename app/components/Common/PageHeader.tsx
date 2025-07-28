@@ -184,6 +184,14 @@ export default function PageHeader({
 
   useEffect(() => {
     dispatch(fetchCategories({ page: 1 }));
+    if (isUploadDocPage) {
+      dispatch(
+        setPageHeaderData({
+          title: 'Upload Documents',
+          subTitle: 'Upload your documents to get your answers and reports',
+        })
+      );
+    }
   }, [dispatch]);
 
   const handleOpenCountdownDialog = () => {
