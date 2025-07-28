@@ -100,8 +100,10 @@ const UploadDoc = () => {
   };
 
   const handleDrop = async (event: React.DragEvent<HTMLElement>) => {
-    event.preventDefault();
-    handleFileChange(event);
+    if (fetchedUser?.active_subscription?.status !== 0) {
+      event.preventDefault();
+      handleFileChange(event);
+    }
   };
 
   const handleFileDesc = (
@@ -181,30 +183,32 @@ const UploadDoc = () => {
   };
 
   const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
-    const items = event.clipboardData?.items;
-    if (!items) return;
+    if (fetchedUser?.active_subscription?.status !== 0) {
+      const items = event.clipboardData?.items;
+      if (!items) return;
 
-    const files: File[] = [];
+      const files: File[] = [];
 
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
-      if (item.kind === 'file') {
-        const file = item.getAsFile();
-        if (file) {
-          const isAllowed = ALLOWED_FILE_TYPES.some((ext) =>
-            file.name.toLowerCase().endsWith(ext)
-          );
-          if (isAllowed) {
-            files.push(file);
-          } else {
-            showToast('error', `File type not allowed: ${file.name}`);
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
+          if (file) {
+            const isAllowed = ALLOWED_FILE_TYPES.some((ext) =>
+              file.name.toLowerCase().endsWith(ext)
+            );
+            if (isAllowed) {
+              files.push(file);
+            } else {
+              showToast('error', `File type not allowed: ${file.name}`);
+            }
           }
         }
       }
-    }
-    if (files.length > 0) {
-      event.preventDefault();
-      handleFiles(files);
+      if (files.length > 0) {
+        event.preventDefault();
+        handleFiles(files);
+      }
     }
   };
 
@@ -260,6 +264,7 @@ const UploadDoc = () => {
                       multiple
                       ref={fileInputRef}
                       onChange={handleFileChange}
+                      disabled={fetchedUser?.active_subscription?.status === 0}
                     />
                     Upload
                     <Image
