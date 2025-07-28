@@ -48,6 +48,7 @@ import {
   clearPageHeaderData,
   getUserById,
   selectFetchedUser,
+  setPageHeaderData,
 } from '@/app/redux/slices/login';
 import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { useSearch } from '../AI-Chat-Module/context/SearchContext';
@@ -95,6 +96,7 @@ const Sidebar = ({
 
   const pathname = usePathname();
   const isChatPage = pathname?.includes('/ai-chats');
+  const isUploadDocPage = pathname?.includes('/upload-doc');
   const [expanded, setExpanded] = useState<boolean | string>(
     isChatPage ? '' : ''
   ); // Track which accordion is expanded
@@ -142,9 +144,28 @@ const Sidebar = ({
     router.push('/download-doc-report');
   };
 
+  useEffect(() => {
+    if (isUploadDocPage) {
+      dispatch(
+        setPageHeaderData({
+          title: 'Upload Documents',
+          subTitle: 'Upload your documents to get your answers and reports',
+        })
+      );
+    }
+  }, [dispatch]);
+
   const handleStartNewChat = () => {
     dispatch(setActiveThread(null));
     dispatch(clearPageHeaderData());
+    if (isUploadDocPage) {
+      dispatch(
+        setPageHeaderData({
+          title: 'Upload Documents',
+          subTitle: 'Upload your documents to get your answers and reports',
+        })
+      );
+    }
   };
 
   const handleFilterApply = () => {
@@ -777,7 +798,11 @@ const Sidebar = ({
                     {fetchedUser?.active_subscription?.status === 1 ||
                     fetchedUser?.staff_user ? (
                       <Typography component="span">
-                        {!fetchedUser?.staff_user ? `${item.used}/` : ''}
+                        {fetchedUser?.staff_user
+                          ? ''
+                          : item?.total === 'Unlimited'
+                            ? ''
+                            : `${item.used}/`}
                         {fetchedUser?.staff_user ? 'Unlimited' : item.total}
                       </Typography>
                     ) : (
@@ -883,7 +908,11 @@ const Sidebar = ({
                       {fetchedUser?.active_subscription?.status === 1 ||
                       fetchedUser?.staff_user ? (
                         <Typography component="span">
-                          {!fetchedUser?.staff_user ? `${item.used}/` : ''}
+                          {fetchedUser?.staff_user
+                            ? ''
+                            : item?.total === 'Unlimited'
+                              ? ''
+                              : `${item.used}/`}
                           {fetchedUser?.staff_user ? 'Unlimited' : item.total}
                         </Typography>
                       ) : (
