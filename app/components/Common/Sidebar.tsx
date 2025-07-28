@@ -281,14 +281,14 @@ const Sidebar = ({
       >
         <div className={Style['main-logo']}>
           <Link
-            href="/ai-chats"
+            href="/upload-doc"
             className={Style['opensidebar-logo']}
             onClick={handleStartNewChat}
           >
             <Image src="/images/logo.svg" alt="logo" width={200} height={44} />
           </Link>
           <Link
-            href="/ai-chats"
+            href="/upload-doc"
             className={Style['close-sidebar-logo']}
             onClick={handleStartNewChat}
           >
@@ -499,7 +499,7 @@ const Sidebar = ({
               />
             </SidebarAccordion> */}
             <div className={Style['sidebar-title-img-main']}>
-              <Link href="#" className={Style['sidebar-title-img']}>
+              <Link href="/ai-chats" className={Style['sidebar-title-img']}>
                 <Tooltip title="AI Chat" placement="right-start" arrow>
                   <Image
                     src="/images/ai-chan-btn.svg"
@@ -509,7 +509,7 @@ const Sidebar = ({
                   />
                 </Tooltip>
               </Link>
-              <Link href="#" className={Style['sidebar-title-img']}>
+              <Link href="/upload-doc" className={Style['sidebar-title-img']}>
                 <Tooltip title="Upload" placement="right-start" arrow>
                   <Image
                     src="/images/ai-upload-btn.svg"

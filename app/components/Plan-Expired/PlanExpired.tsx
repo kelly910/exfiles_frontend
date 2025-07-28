@@ -43,7 +43,7 @@ export default function PlanExpired({
   const notNow = () => {
     onClose();
     if (type !== 'LogIncident') {
-      router.push('/ai-chats');
+      router.push('/upload-doc');
     }
   };
 

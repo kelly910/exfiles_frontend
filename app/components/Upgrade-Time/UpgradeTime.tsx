@@ -126,7 +126,7 @@ export default function UpgradeTime({
   const notNow = () => {
     onClose();
     if (type === 'login') {
-      router.push('/ai-chats');
+      router.push('/upload-doc');
     }
   };
 

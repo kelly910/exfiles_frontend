@@ -38,5 +38,6 @@ export const config = {
     '/payment-successful',
     '/payment-pending',
     '/payment-failed',
+    '/upload-doc',
   ], // Define which routes should trigger the middleware
 };

@@ -1,30 +1,71 @@
 'use client';
 
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import PageHeader from '../Common/PageHeader';
 import Sidebar from '../Common/Sidebar';
 import styles from './style.module.scss';
 import { useRouter } from 'next/navigation';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import Image from 'next/image';
+import { Button, CircularProgress, styled } from '@mui/material';
+import { useChunkedFileUpload } from '../AI-Chat-Module/hooks/useChunkedFileUpload';
+import { useSelector } from 'react-redux';
+import { selectFetchedUser, setPageHeaderData } from '@/app/redux/slices/login';
+import LimitOver from '../Limit-Over/LimitOver';
+import { ALLOWED_FILE_TYPES } from '@/app/utils/constants';
+import UploadedFiles from './UploadedFiles';
 import {
-  Box,
-  Button,
-  LinearProgress,
-  Link,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { Field } from 'formik';
-import theme from '@/app/theme';
-import { useThemeMode } from '@/app/utils/ThemeContext';
+  removeUploadFile,
+  resetUploadedFiles,
+  selectUserUploadedFiles,
+  updateFileDescription,
+} from '@/app/redux/slices/fileUpload';
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
+import { gtagEvent } from '@/app/utils/functions';
+import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
+import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import { showToast } from '@/app/shared/toast/ShowToast';
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 
 const UploadDoc = () => {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const dispatch = useAppDispatch();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const fetchedUser = useSelector(selectFetchedUser);
+  const [limitDialog, setLimitDialog] = useState(false);
+  const [limitType, setLimitType] = useState('');
+  const uploadedFiles = useAppSelector(selectUserUploadedFiles);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    dispatch(
+      setPageHeaderData({
+        title: 'Upload Documents',
+        subTitle: 'Upload your documents to get your answers and reports',
+      })
+    );
+  }, [dispatch]);
+
+  const handleOpenUserFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current?.click();
+    }
   };
 
   const handleThreadClick = (thread: string) => {
@@ -39,7 +80,133 @@ const UploadDoc = () => {
     }
   };
 
-  const { theme } = useThemeMode();
+  const { handleFiles } = useChunkedFileUpload((limitExceededType: string) => {
+    setLimitType(limitExceededType);
+    if (!fetchedUser?.staff_user) {
+      setLimitDialog(true);
+    }
+  });
+
+  const handleFileChange = (
+    event: React.ChangeEvent<HTMLInputElement> | React.DragEvent<HTMLElement>
+  ) => {
+    if ('dataTransfer' in event) {
+      handleFiles(event.dataTransfer.files);
+    } else {
+      handleFiles((event.target as HTMLInputElement).files);
+    }
+    const target = event.target as HTMLInputElement;
+    target.value = '';
+  };
+
+  const handleDrop = async (event: React.DragEvent<HTMLElement>) => {
+    event.preventDefault();
+    handleFileChange(event);
+  };
+
+  const handleFileDesc = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    fileId: string
+  ) => {
+    dispatch(
+      updateFileDescription({ fileId: fileId, docDesc: e.target.value })
+    );
+  };
+
+  const uploadActualDocuments = async (
+    threadUUID: string,
+    payloadData: {
+      temp_doc: number;
+      description: string;
+    }[]
+  ) => {
+    setIsLoading(true);
+    const resultData = await dispatch(
+      uploadActualDocs({
+        thread_uuid: threadUUID,
+        data: payloadData,
+        // ...(userInputText && { user_message: userInputText }),
+      })
+    );
+    gtagEvent({
+      action: 'upload_document',
+      category: 'File Upload',
+      label: 'Document uploaded',
+    });
+    setIsLoading(false);
+
+    if (uploadActualDocs.fulfilled.match(resultData)) {
+      showToast(
+        'success',
+        resultData.payload?.messages[0] || 'Document uploaded successfully.'
+      );
+      router.push(`/ai-chats/${threadUUID}/`); // Navigate to thread page
+      dispatch(resetUploadedFiles());
+      return;
+    }
+
+    if (uploadActualDocs.rejected.match(resultData)) {
+      handleError(resultData.payload as ErrorResponse);
+      console.error('failed:', resultData.payload);
+      return;
+    }
+  };
+
+  const handleContinue = async () => {
+    const payloadDocs = uploadedFiles
+      .filter(({ uploadedFileId }) => typeof uploadedFileId === 'number')
+      .map(({ uploadedFileId, docDesc }) => ({
+        temp_doc: uploadedFileId as number,
+        description: docDesc,
+      }));
+
+    if (payloadDocs.length === 0) return false;
+
+    const resultData = await dispatch(createNewThread({}));
+
+    if (createNewThread.rejected.match(resultData)) {
+      showToast('error', 'Something went wrong. Please try again!');
+      console.error('createNewThread failed:', resultData.payload);
+      return;
+    }
+    const createdThreadID = resultData.payload?.uuid;
+    if (!createdThreadID) return;
+
+    // Upload documents
+    uploadActualDocuments(createdThreadID, payloadDocs);
+  };
+
+  const removeFile = (fileNum: string) => {
+    dispatch(removeUploadFile({ fileId: fileNum }));
+  };
+
+  const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
+    const items = event.clipboardData?.items;
+    if (!items) return;
+
+    const files: File[] = [];
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.kind === 'file') {
+        const file = item.getAsFile();
+        if (file) {
+          const isAllowed = ALLOWED_FILE_TYPES.some((ext) =>
+            file.name.toLowerCase().endsWith(ext)
+          );
+          if (isAllowed) {
+            files.push(file);
+          } else {
+            showToast('error', `File type not allowed: ${file.name}`);
+          }
+        }
+      }
+    }
+    if (files.length > 0) {
+      event.preventDefault();
+      handleFiles(files);
+    }
+  };
 
   return (
     <>
@@ -58,319 +225,209 @@ const UploadDoc = () => {
             title="Upload Document"
             handleOpenSidebarFromLogIncident={() => setIsSidebarOpen(true)}
           />
-
-          <div className={styles['upload-doc-main']}>
-            <div className={styles['upload-doc-container']}>
-              <div className={styles['upload-doc-head']}>
-                <h2>Upload your documents</h2>
-                <p>
-                  Ex-Files AI will summarize and categorize files automatically.
-                </p>
-              </div>
-              <div className={styles['upload-doc-img']}>
-                <Image
-                  src="/images/upload-doc-ic.svg"
-                  alt="Upload Document"
-                  width={93}
-                  height={100}
-                />
-              </div>
-              <div className={styles['upload-doc-btn']}>
-                <p>Drag your documents here to upload or Click upload. </p>
-                {/* <Button
-                  variant="contained"
-                  className={`${styles['btn-upload']} btn btn-primary`}
-                >
-                  Upload
-                  <Image
-                    src="/images/arrow-right-2.svg"
-                    alt="arrow"
-                    width={24}
-                    height={24}
-                  />
-                </Button> */}
-                <label className={`${styles['btn-upload']} btn btn-primary`}>
-                  <input type="file" style={{ display: 'none' }} />
-                  Upload
-                  <Image
-                    src="/images/arrow-right-2.svg"
-                    alt="arrow"
-                    width={24}
-                    height={24}
-                  />
-                </label>
-              </div>
-
-              <p className={styles['upload-doc-note']}>
-                You can upload upto 10 documents together.
-              </p>
-
-              <div className={styles['upload-file-list']}>
-                <Image
-                  src="/images/doc-file-1.svg"
-                  alt="pdf"
-                  width={28}
-                  height={28}
-                />
-                <Image
-                  src="/images/doc-file-2.svg"
-                  alt="pdf"
-                  width={28}
-                  height={28}
-                />
-                <Image
-                  src="/images/doc-file-3.svg"
-                  alt="pdf"
-                  width={28}
-                  height={28}
-                />
-                <Image
-                  src="/images/doc-file-4.svg"
-                  alt="pdf"
-                  width={28}
-                  height={28}
-                />
-                <Image
-                  src="/images/doc-file-5.svg"
-                  alt="pdf"
-                  width={28}
-                  height={28}
-                />
-              </div>
-              <div className={styles['upload-clipboard']}>
-                <p>
-                  Paste from Clipboard
-                  <Image
-                    src="/images/copy-light.svg"
-                    alt="copy"
-                    width={24}
-                    height={24}
-                  />
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className={styles['upload-files-main']}
-            style={{ display: 'none' }}
-          >
-            <div className={styles['upload-files-list']}>
-              <div className={styles['upload-files-card']}>
-                <div className={styles['upload-files-left']}>
-                  <span className={styles['upload-files-span']}>
-                    <Image
-                      src="/images/pdf.svg"
-                      alt="pdf"
-                      width={27}
-                      height={33}
-                    />
-                  </span>
-                  <div className={styles['upload-files-info']}>
-                    <h4>Notice of Garnishment.doc</h4>
-                    <p>125 kb</p>
-                  </div>
-                </div>
-                <div className={styles['upload-files-right']}>
-                  <div className={styles['upload-file-input']}>
-                    <TextField
-                      fullWidth
-                      placeholder="Add Description of this file"
-                      sx={{
-                        margin: 0,
-                        padding: 0,
-                        '& .MuiOutlinedInput-root': {
-                          borderRadius: '12px',
-                          backgroundColor: 'transparent !important',
-                          '& .MuiOutlinedInput-input': {
-                            fontSize: '16px',
-                            color: 'var(--Primary-Text-Color)',
-                            padding: '12px 8px',
-                            fontWeight: 'var(--Regular)',
-                            borderRadius: '12px',
-                            background: 'var(--White-color)',
-                            '&::placeholder': {
-                              color: 'var(--Primary-Text-Color)',
-                              fontWeight: 'var(--Lighter)',
-                            },
-                          },
-                          '& fieldset': {
-                            border: 'none',
-                          },
-                          '&:hover fieldset': {
-                            border: 'none',
-                          },
-                          '&.Mui-focused fieldset': {
-                            border: 'none',
-                          },
-                        },
-                        '& .MuiFormHelperText-root': {
-                          // optional styling for helper text
-                        },
-                      }}
-                    />
-                  </div>
-                  <Link href="#" className={styles['upload-file-trash']}>
-                    <Image
-                      src="/images/trash.svg"
-                      alt="pdf"
-                      width={24}
-                      height={24}
-                    />
-                  </Link>
-                </div>
-              </div>
-              <div className={styles['upload-files-card']}>
-                <div className={styles['upload-files-left']}>
-                  <span className={styles['upload-files-span']}>
-                    <Image
-                      src="/images/doc.svg"
-                      alt="doc"
-                      width={27}
-                      height={33}
-                    />
-                  </span>
-                  <div className={styles['upload-files-info']}>
-                    <h4>Notice of Garnishment.doc</h4>
-                    <p>125 kb</p>
-                  </div>
-                </div>
-                <div className={styles['upload-files-right']}>
-                  <div className={styles['upload-file-input']}>
-                    <Box component="div" className={styles.chatAlProgress}>
-                      <LinearProgress variant="determinate" value={75} />
-                    </Box>
-                  </div>
-                  <Link href="#" className={styles['upload-file-trash']}>
-                    <Image
-                      src="/images/trash.svg"
-                      alt="pdf"
-                      width={24}
-                      height={24}
-                    />
-                  </Link>
-                </div>
-              </div>
-              <div className={styles['upload-files-card']}>
-                <div className={styles['upload-files-left']}>
-                  <span className={styles['upload-files-span']}>
-                    <Image
-                      src="/images/txt.svg"
-                      alt="txt"
-                      width={27}
-                      height={33}
-                    />
-                  </span>
-                  <div className={styles['upload-files-info']}>
-                    <h4>Notice of Garnishment.doc</h4>
-                    <p>125 kb</p>
-                  </div>
-                </div>
-                <div className={styles['upload-files-right']}>
-                  <div className={styles['upload-file-input']}>
-                    <div className={styles['upload-file-failed']}>
-                      <Image
-                        src="/images/up-fail.svg"
-                        alt="pdf"
-                        width={16}
-                        height={16}
-                      />
-                      <div className={styles['upload-fail-text']}>
-                        <p>Upload Failed</p>
-                        <span>
-                          You have surpassed AI Chat limit. Please upgrade to
-                          continue using Exfiles AI
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <Link href="#" className={styles['upload-file-trash']}>
-                    <Image
-                      src="/images/trash.svg"
-                      alt="pdf"
-                      width={24}
-                      height={24}
-                    />
-                  </Link>
-                </div>
-              </div>
-              <div className={styles['upload-files-card']}>
-                <div className={styles['upload-files-left']}>
-                  <span className={styles['upload-files-span']}>
-                    <Image
-                      src="/images/xls.svg"
-                      alt="xls"
-                      width={27}
-                      height={33}
-                    />
-                  </span>
-                  <div className={styles['upload-files-info']}>
-                    <h4>Notice of Garnishment.doc</h4>
-                    <p>125 kb</p>
-                  </div>
-                </div>
-                <div className={styles['upload-files-right']}>
-                  <div className={styles['upload-file-input']}>
-                    <div className={styles['upload-file-failed']}>
-                      <Image
-                        src="/images/up-fail.svg"
-                        alt="pdf"
-                        width={16}
-                        height={16}
-                      />
-                      <div className={styles['upload-fail-text']}>
-                        <p>Upload Failed</p>
-                        <span>
-                          You have surpassed AI Chat limit. Please upgrade to
-                          continue using Exfiles AI
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <Link href="#" className={styles['upload-file-trash']}>
-                    <Image
-                      src="/images/close-icon.svg"
-                      alt="pdf"
-                      width={24}
-                      height={24}
-                      style={{
-                        filter:
-                          theme === 'dark'
-                            ? 'brightness(0) invert(0)'
-                            : 'invert(1)',
-                      }}
-                    />
-                  </Link>
-                </div>
-              </div>
-              <p className={styles['upload-file-add-more']}>
-                <Image
-                  src="/images/add-plus.svg"
-                  alt="add-file"
-                  width={20}
-                  height={20}
-                />
-                Add More
-              </p>
-            </div>
-
-            <div className={styles['upload-list-footer']}>
-              <Button
-                variant="contained"
-                className={`${styles['btn-continue']} btn btn-primary `}
+          {!uploadedFiles?.length ? (
+            <div className={styles['upload-doc-main']}>
+              <div
+                className={styles['upload-doc-container']}
+                onDrop={(e) => handleDrop(e)}
+                onPaste={handlePaste}
+                tabIndex={0}
+                onDragOver={(event) => event.preventDefault()}
               >
-                Continue
-                <Image
-                  src="/images/arrow-right-2.svg"
-                  alt="arrow"
-                  width={24}
-                  height={24}
-                />
-              </Button>
+                <div className={styles['upload-doc-head']}>
+                  <h2>Upload your documents</h2>
+                  <p>
+                    Ex-Files AI will summarize and categorize files
+                    automatically.
+                  </p>
+                </div>
+                <div className={styles['upload-doc-img']}>
+                  <Image
+                    src="/images/upload-doc-ic.svg"
+                    alt="Upload Document"
+                    width={93}
+                    height={100}
+                  />
+                </div>
+                <div className={styles['upload-doc-btn']}>
+                  <p>Drag your documents here to upload or Click upload. </p>
+                  <label className={`${styles['btn-upload']} btn btn-primary`}>
+                    <VisuallyHiddenInput
+                      id="chat-file-uploads"
+                      type="file"
+                      name="file-uploads"
+                      accept={ALLOWED_FILE_TYPES.join(',')}
+                      multiple
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                    />
+                    Upload
+                    <Image
+                      src="/images/arrow-right-2.svg"
+                      alt="arrow"
+                      width={24}
+                      height={24}
+                    />
+                  </label>
+                </div>
+
+                <p className={styles['upload-doc-note']}>
+                  You can upload upto 10 documents together.
+                </p>
+
+                <div className={styles['upload-file-list']}>
+                  <Image
+                    src="/images/doc-file-1.svg"
+                    alt="pdf"
+                    width={28}
+                    height={28}
+                  />
+                  <Image
+                    src="/images/doc-file-2.svg"
+                    alt="pdf"
+                    width={28}
+                    height={28}
+                  />
+                  <Image
+                    src="/images/doc-file-3.svg"
+                    alt="pdf"
+                    width={28}
+                    height={28}
+                  />
+                  <Image
+                    src="/images/doc-file-4.svg"
+                    alt="pdf"
+                    width={28}
+                    height={28}
+                  />
+                  <Image
+                    src="/images/doc-file-5.svg"
+                    alt="pdf"
+                    width={28}
+                    height={28}
+                  />
+                </div>
+                <div className={styles['upload-clipboard']}>
+                  <p>
+                    Paste from Clipboard
+                    <Image
+                      src="/images/copy-light.svg"
+                      alt="copy"
+                      width={24}
+                      height={24}
+                    />
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
+          ) : (
+            <VisuallyHiddenInput
+              id="chat-file-uploads"
+              type="file"
+              name="file-uploads"
+              accept={ALLOWED_FILE_TYPES.join(',')}
+              multiple
+              ref={fileInputRef}
+              onChange={handleFileChange}
+            />
+          )}
+
+          {uploadedFiles && uploadedFiles?.length > 0 && (
+            <div className={styles['upload-files-main']}>
+              <div className={styles['upload-files-list']}>
+                {uploadedFiles.map((upload, index) => (
+                  <UploadedFiles
+                    isShowDescField={true}
+                    key={index}
+                    fileName={upload.file.name}
+                    fileId={upload.fileId}
+                    fileSize={upload.file.size}
+                    progress={upload.progress}
+                    isUploading={upload.isUploading}
+                    hasUploaded={upload.hasUploaded}
+                    fileErrorMsg={upload.fileErrorMsg}
+                    fileDesc={upload.docDesc}
+                    hasError={upload.hasError}
+                    onRemove={() => removeFile(upload.fileId)}
+                    handleFileDesc={handleFileDesc}
+                  />
+                ))}
+
+                <Button
+                  className={styles['upload-file-add-more']}
+                  onClick={handleOpenUserFileInput}
+                  disabled={isLoading}
+                >
+                  <Image
+                    src="/images/add-plus.svg"
+                    alt="add-file"
+                    width={20}
+                    height={20}
+                  />
+                  Add More
+                </Button>
+              </div>
+
+              <div className={styles['upload-list-footer']}>
+                <Button
+                  variant="contained"
+                  className={`${styles['btn-continue']} btn btn-primary `}
+                  onClick={() => handleContinue()}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <CircularProgress
+                      size={20}
+                      style={{ color: 'var(--Txt-On-Gradient)' }}
+                    />
+                  ) : (
+                    <>
+                      Continue
+                      <Image
+                        src="/images/arrow-right-2.svg"
+                        alt="arrow"
+                        width={24}
+                        height={24}
+                      />
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
         </section>
       </main>
+      <LimitOver
+        open={limitDialog}
+        onClose={() => setLimitDialog(false)}
+        title={
+          limitType === 'ai-summaries'
+            ? 'Your Summary Generation Limit is Over'
+            : limitType === 'storage'
+              ? 'Your Storage Limit is Over'
+              : limitType === 'messages-documents'
+                ? 'Your Document Upload Limit is Over'
+                : 'Your Summary Generation Limit is Over'
+        }
+        subtitle={
+          limitType === 'ai-summaries'
+            ? 'Summary'
+            : limitType === 'storage'
+              ? 'Storage'
+              : limitType === 'messages-documents'
+                ? 'Message-Documents'
+                : 'Summary'
+        }
+        stats={
+          limitType === 'ai-summaries'
+            ? fetchedUser?.summary_used
+            : limitType === 'storage'
+              ? fetchedUser?.storage
+              : limitType === 'messages-documents'
+                ? '-/-'
+                : fetchedUser?.summary_used
+        }
+      />
     </>
   );
 };

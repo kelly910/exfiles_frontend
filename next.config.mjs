@@ -6,7 +6,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/ai-chats',
+        destination: '/upload-doc',
         permanent: true, // Set to false if you want a temporary redirect
       },
     ];

@@ -103,7 +103,7 @@ export default function DevicesLimit({
         ) {
           setOpenCountDownDialog(true);
         } else {
-          router.push('/ai-chats');
+          router.push('/upload-doc');
         }
       } catch (error) {
         handleError(error as ErrorResponse);
@@ -165,7 +165,7 @@ export default function DevicesLimit({
               ) {
                 setOpenCountDownDialog(true);
               } else {
-                router.push('/ai-chats');
+                router.push('/upload-doc');
               }
             }
           } catch (error) {
