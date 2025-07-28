@@ -114,7 +114,7 @@ const Page = () => {
               ) {
                 setOpenCountDownDialog(true);
               } else {
-                router.push('/ai-chats');
+                router.push('/upload-doc');
               }
             }
           }
@@ -181,7 +181,7 @@ const Page = () => {
           ) {
             setOpenCountDownDialog(true);
           } else {
-            router.push('/ai-chats');
+            router.push('/upload-doc');
           }
         }
       } catch (error) {

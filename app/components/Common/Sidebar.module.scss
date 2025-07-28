@@ -205,6 +205,9 @@
   .sidebar-list-details {
     padding: 0;
     margin-bottom: 16px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
 
     .search {
       width: 100%;
@@ -511,6 +514,16 @@
       display: none !important;
     }
   }
+
+  .sidebar-title-img {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+}
+
+.sidebar-title-img {
+  display: none;
 }
 
 .paddingremove {

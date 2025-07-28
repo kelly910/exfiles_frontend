@@ -102,7 +102,7 @@ const Page = () => {
         const token: string | null = response?.data?.token || null;
         if (token) {
           document.cookie = `accessToken=${token}; path=/; max-age=86400`;
-          router.push('/ai-chats');
+          router.push('/upload-doc');
         }
       } catch (error) {
         handleError(error as ErrorResponse);

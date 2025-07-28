@@ -131,6 +131,7 @@ export default function PageHeader({
   const isPaymentSuccessPage = pathname?.includes('/payment-successful');
   const isPaymentFailedPage = pathname?.includes('/payment-failed');
   const isPaymentPendingdPage = pathname?.includes('/payment-pending');
+  const isUploadDocPage = pathname?.includes('/upload-doc');
   const isPaymentStatusPage =
     isPaymentSuccessPage || isPaymentFailedPage || isPaymentPendingdPage;
 
@@ -511,6 +512,14 @@ export default function PageHeader({
                       height={18}
                     />
                   ))}
+                {isUploadDocPage && (
+                  <Image
+                    src="/images/upload-doc-dark.svg"
+                    alt="upload-doc-dark"
+                    width={18}
+                    height={18}
+                  />
+                )}
                 {selectedPageHeaderData && selectedPageHeaderData.title && (
                   <Typography
                     variant="body1"
