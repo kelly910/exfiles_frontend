@@ -25,6 +25,7 @@ import { gtagEvent } from '@/app/utils/functions';
 import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { showToast } from '@/app/shared/toast/ShowToast';
+import { useThemeMode } from '@/app/utils/ThemeContext';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -212,6 +213,8 @@ const UploadDoc = () => {
     }
   };
 
+  const { theme } = useThemeMode();
+
   return (
     <>
       <main className="chat-body">
@@ -246,12 +249,21 @@ const UploadDoc = () => {
                   </p>
                 </div>
                 <div className={styles['upload-doc-img']}>
-                  <Image
-                    src="/images/upload-doc-ic.svg"
-                    alt="Upload Document"
-                    width={93}
-                    height={100}
-                  />
+                  {theme === 'dark' ? (
+                    <Image
+                      src="/images/upload-doc-ic.svg"
+                      alt="Upload Document"
+                      width={93}
+                      height={100}
+                    />
+                  ) : (
+                    <Image
+                      src="/images/upload-doc-ic-dark.svg"
+                      alt="Upload Document"
+                      width={93}
+                      height={100}
+                    />
+                  )}
                 </div>
                 <div className={styles['upload-doc-btn']}>
                   <p>Drag your documents here to upload or Click upload. </p>
