@@ -134,6 +134,7 @@ export default function PageHeader({
   const isUploadDocPage = pathname?.includes('/upload-doc');
   const isPaymentStatusPage =
     isPaymentSuccessPage || isPaymentFailedPage || isPaymentPendingdPage;
+  const isAIChatPage = pathname === '/ai-chats';
 
   useEffect(() => {
     if (selectedActiveChat?.name) {
@@ -189,6 +190,15 @@ export default function PageHeader({
         setPageHeaderData({
           title: 'Upload Documents',
           subTitle: 'Upload your documents to get your answers and reports',
+        })
+      );
+    }
+    if (isAIChatPage) {
+      dispatch(
+        setPageHeaderData({
+          title: 'AI Chat',
+          subTitle:
+            'Use AI Chat to ask questions or explore your uploaded files',
         })
       );
     }
@@ -523,6 +533,14 @@ export default function PageHeader({
                 {isUploadDocPage && (
                   <Image
                     src="/images/upload-doc-dark.svg"
+                    alt="upload-doc-dark"
+                    width={18}
+                    height={18}
+                  />
+                )}
+                {isAIChatPage && (
+                  <Image
+                    src="/images/ai-chan-btn.svg"
                     alt="upload-doc-dark"
                     width={18}
                     height={18}

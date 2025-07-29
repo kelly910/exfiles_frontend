@@ -390,30 +390,24 @@ export default function ChatInputBox({
         onClose={() => setLimitDialog(false)}
         title={
           limitType === 'ai-summaries'
-            ? 'Your Summary Generation Limit is Over'
+            ? 'Your Document Summaries Limit is Over so you cannot upload new document.'
             : limitType === 'storage'
               ? 'Your Storage Limit is Over'
-              : limitType === 'messages-documents'
-                ? 'Your Document Upload Limit is Over'
-                : 'Your Copilot Chats Limit is Over'
+              : 'Your Copilot Chats Limit is Over'
         }
         subtitle={
           limitType === 'ai-summaries'
             ? 'Summary'
             : limitType === 'storage'
               ? 'Storage'
-              : limitType === 'messages-documents'
-                ? 'Message-Documents'
-                : 'Chats'
+              : 'Chats'
         }
         stats={
           limitType === 'ai-summaries'
             ? fetchedUser?.summary_used
             : limitType === 'storage'
               ? fetchedUser?.storage
-              : limitType === 'messages-documents'
-                ? '-/-'
-                : fetchedUser?.chat_used
+              : fetchedUser?.chat_used
         }
       />
       <PlanExpired

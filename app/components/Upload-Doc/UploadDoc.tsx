@@ -25,6 +25,8 @@ import { gtagEvent } from '@/app/utils/functions';
 import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import { showToast } from '@/app/shared/toast/ShowToast';
+import { useThemeMode } from '@/app/utils/ThemeContext';
+import PlanExpiredMG from '../Plan-Expired-MG/PlanExpiredMG';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -48,6 +50,7 @@ const UploadDoc = () => {
   const [limitType, setLimitType] = useState('');
   const uploadedFiles = useAppSelector(selectUserUploadedFiles);
   const [isLoading, setIsLoading] = useState(false);
+  const expiredStatus = fetchedUser?.active_subscription?.status;
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -208,9 +211,12 @@ const UploadDoc = () => {
       if (files.length > 0) {
         event.preventDefault();
         handleFiles(files);
+        showToast('success', `${files.length} file(s) pasted successfully`);
       }
     }
   };
+
+  const { theme } = useThemeMode();
 
   return (
     <>
@@ -230,98 +236,120 @@ const UploadDoc = () => {
             handleOpenSidebarFromLogIncident={() => setIsSidebarOpen(true)}
           />
           {!uploadedFiles?.length ? (
-            <div className={styles['upload-doc-main']}>
-              <div
-                className={styles['upload-doc-container']}
-                onDrop={(e) => handleDrop(e)}
-                onPaste={handlePaste}
-                tabIndex={0}
-                onDragOver={(event) => event.preventDefault()}
-              >
-                <div className={styles['upload-doc-head']}>
-                  <h2>Upload your documents</h2>
-                  <p>
-                    Ex-Files AI will summarize and categorize files
-                    automatically.
-                  </p>
-                </div>
-                <div className={styles['upload-doc-img']}>
-                  <Image
-                    src="/images/upload-doc-ic.svg"
-                    alt="Upload Document"
-                    width={93}
-                    height={100}
-                  />
-                </div>
-                <div className={styles['upload-doc-btn']}>
-                  <p>Drag your documents here to upload or Click upload. </p>
-                  <label className={`${styles['btn-upload']} btn btn-primary`}>
-                    <VisuallyHiddenInput
-                      id="chat-file-uploads"
-                      type="file"
-                      name="file-uploads"
-                      accept={ALLOWED_FILE_TYPES.join(',')}
-                      multiple
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      disabled={fetchedUser?.active_subscription?.status === 0}
-                    />
-                    Upload
-                    <Image
-                      src="/images/arrow-right-2.svg"
-                      alt="arrow"
-                      width={24}
-                      height={24}
-                    />
-                  </label>
-                </div>
+            <div className={styles['upload-main']}>
+              {expiredStatus === 0 && !fetchedUser?.staff_user && (
+                <PlanExpiredMG />
+              )}
+              <div className={styles['upload-doc-child']}>
+                <div
+                  className={styles['upload-doc-container']}
+                  onDrop={(e) => handleDrop(e)}
+                  onPaste={handlePaste}
+                  tabIndex={0}
+                  onDragOver={(event) => event.preventDefault()}
+                >
+                  <div className={styles['upload-doc-head']}>
+                    <h2>Upload your documents</h2>
+                    <p>
+                      Ex-Files AI will summarize and categorize files
+                      automatically.
+                    </p>
+                  </div>
+                  <div className={styles['upload-doc-img']}>
+                    {theme === 'dark' ? (
+                      <Image
+                        src="/images/upload-doc-ic.svg"
+                        alt="Upload Document"
+                        width={93}
+                        height={100}
+                      />
+                    ) : (
+                      <Image
+                        src="/images/upload-doc-ic-dark.svg"
+                        alt="Upload Document"
+                        width={93}
+                        height={100}
+                      />
+                    )}
+                  </div>
+                  <div className={styles['upload-doc-btn']}>
+                    <p>Drag your documents here to upload or Click upload.</p>
+                    <label
+                      className={
+                        expiredStatus === 0 && !fetchedUser?.staff_user
+                          ? `${styles['btn-upload']} btn btn-primary limitation`
+                          : `${styles['btn-upload']} btn btn-primary`
+                      }
+                    >
+                      <VisuallyHiddenInput
+                        id="chat-file-uploads"
+                        type="file"
+                        name="file-uploads"
+                        accept={ALLOWED_FILE_TYPES.join(',')}
+                        multiple
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        disabled={
+                          expiredStatus === 0 && !fetchedUser?.staff_user
+                        }
+                      />
+                      Upload
+                      <Image
+                        src="/images/arrow-right-2.svg"
+                        alt="arrow"
+                        width={24}
+                        height={24}
+                      />
+                    </label>
+                  </div>
 
-                <p className={styles['upload-doc-note']}>
-                  You can upload upto 10 documents together.
-                </p>
-
-                <div className={styles['upload-file-list']}>
-                  <Image
-                    src="/images/doc-file-1.svg"
-                    alt="pdf"
-                    width={28}
-                    height={28}
-                  />
-                  <Image
-                    src="/images/doc-file-2.svg"
-                    alt="pdf"
-                    width={28}
-                    height={28}
-                  />
-                  <Image
-                    src="/images/doc-file-3.svg"
-                    alt="pdf"
-                    width={28}
-                    height={28}
-                  />
-                  <Image
-                    src="/images/doc-file-4.svg"
-                    alt="pdf"
-                    width={28}
-                    height={28}
-                  />
-                  <Image
-                    src="/images/doc-file-5.svg"
-                    alt="pdf"
-                    width={28}
-                    height={28}
-                  />
-                </div>
-                <div className={styles['upload-clipboard']}>
-                  <p>
-                    Paste from Clipboard
-                    <Image
-                      src="/images/copy-light.svg"
-                      alt="copy"
-                      width={24}
-                      height={24}
-                    />
+                  <p className={styles['upload-doc-note']}>
+                    You can upload upto 10 documents together.
                   </p>
+
+                  <div className={styles['upload-file-list']}>
+                    <Image
+                      src="/images/doc-file-1.svg"
+                      alt="pdf"
+                      width={28}
+                      height={28}
+                    />
+                    <Image
+                      src="/images/doc-file-2.svg"
+                      alt="pdf"
+                      width={28}
+                      height={28}
+                    />
+                    <Image
+                      src="/images/doc-file-3.svg"
+                      alt="pdf"
+                      width={28}
+                      height={28}
+                    />
+                    <Image
+                      src="/images/doc-file-4.svg"
+                      alt="pdf"
+                      width={28}
+                      height={28}
+                    />
+                    <Image
+                      src="/images/doc-file-5.svg"
+                      alt="pdf"
+                      width={28}
+                      height={28}
+                    />
+                  </div>
+                  <div className={styles['upload-clipboard']}>
+                    <p>
+                      Paste from Clipboard
+                      <Image
+                        src="/images/copy-light.svg"
+                        alt="copy"
+                        width={24}
+                        height={24}
+                      />
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -336,7 +364,6 @@ const UploadDoc = () => {
               onChange={handleFileChange}
             />
           )}
-
           {uploadedFiles && uploadedFiles?.length > 0 && (
             <div className={styles['upload-files-main']}>
               <div className={styles['upload-files-list']}>
@@ -407,30 +434,24 @@ const UploadDoc = () => {
         onClose={() => setLimitDialog(false)}
         title={
           limitType === 'ai-summaries'
-            ? 'Your Summary Generation Limit is Over'
+            ? 'Your Document Summaries Limit is Over so you cannot upload new document.'
             : limitType === 'storage'
               ? 'Your Storage Limit is Over'
-              : limitType === 'messages-documents'
-                ? 'Your Document Upload Limit is Over'
-                : 'Your Summary Generation Limit is Over'
+              : 'Your Document Summaries Limit is Over so you cannot upload new document.'
         }
         subtitle={
           limitType === 'ai-summaries'
             ? 'Summary'
             : limitType === 'storage'
               ? 'Storage'
-              : limitType === 'messages-documents'
-                ? 'Message-Documents'
-                : 'Summary'
+              : 'Summary'
         }
         stats={
           limitType === 'ai-summaries'
             ? fetchedUser?.summary_used
             : limitType === 'storage'
               ? fetchedUser?.storage
-              : limitType === 'messages-documents'
-                ? '-/-'
-                : fetchedUser?.summary_used
+              : fetchedUser?.summary_used
         }
       />
     </>

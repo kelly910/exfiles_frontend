@@ -1,23 +1,32 @@
-.upload-doc-main {
+.upload-main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  padding: 90px 50px 50px 50px;
+  min-height: 100%;
+  padding: 50px 0;
+  max-width: 1000px;
+  margin: 0 auto;
+  flex: 0 0 auto;
   width: 100%;
+}
+
+.upload-doc-child {
+  width: 100%;
+  padding: 0 30px;
+  margin-top: 40px;
 
   .upload-doc-container {
     border: 0.3px solid var(--Border-color-1);
     background-color: var(--Bg-color-1);
     border-radius: 18px;
     padding: 48px 20px;
-    max-width: 90%;
     width: 100%;
   }
 
 
   .upload-doc-head {
-    margin-bottom: 64px;
+    margin-bottom: 45px;
 
     h2 {
       font-weight: 700;
@@ -121,7 +130,15 @@
     display: flex;
     justify-content: center;
     width: fit-content;
-    margin: 60px auto 0 auto;
+    margin: 45px auto 0 auto;
+    cursor: pointer;
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+        transition: all 0.3s ease-in-out;
+      }
+    }
 
     p {
       font-weight: 600;
@@ -138,6 +155,7 @@
       img {
         width: 24px;
         height: 24px;
+        transition: all 0.3s ease-in-out;
       }
     }
   }
@@ -331,16 +349,38 @@
 // Responsive ============================================
 
 @media (max-width: 1399px) {
-  .upload-doc-main {
-    padding: 70px 50px;
+  .upload-doc-child {
+    .upload-doc-head {
+      margin-bottom: 40px;
+
+      h2 {
+        font-size: 30px;
+
+      }
+
+      p {
+        font-size: 22px;
+
+      }
+    }
+
+    .upload-doc-btn {
+      p {
+        font-size: 18px;
+      }
+
+
+    }
   }
+
 }
 
 
 
 @media (max-width: 991px) {
-  .upload-doc-main {
-    padding: 70px 50px 50px 50px;
+  .upload-doc-child {
+    padding: 0 30px;
+    margin-top: 30px;
 
     .upload-doc-container {
       max-width: 100%;
@@ -496,9 +536,10 @@
 }
 
 
-@media (max-width: 575px) {
-  .upload-doc-main {
-    padding: 50px 20px 20px 20px;
+@media (max-width: 600px) {
+  .upload-doc-child {
+    padding: 0 16px;
+    margin-top: 20px;
 
     .upload-doc-container {
       max-width: 100%;

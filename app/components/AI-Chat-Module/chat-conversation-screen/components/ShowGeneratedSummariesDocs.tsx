@@ -443,7 +443,9 @@ export default function ShowGeneratedSummariesDocs({
       <LimitOver
         open={limitDialog}
         onClose={() => setLimitDialog(false)}
-        title={'Your Summary Generation Limit is Over'}
+        title={
+          'Your Document Summaries Limit is Over so you cannot upload new document.'
+        }
         subtitle={'Summary'}
         stats={fetchedUser?.summary_used || ''}
       />

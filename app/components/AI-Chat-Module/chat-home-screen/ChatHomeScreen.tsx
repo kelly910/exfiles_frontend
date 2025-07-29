@@ -16,10 +16,7 @@ import {
   setIsStreaming,
 } from '@/app/redux/slices/Chat';
 import { useRouter } from 'next/navigation';
-import {
-  clearPageHeaderData,
-  selectFetchedUser,
-} from '@/app/redux/slices/login';
+import { selectFetchedUser, setPageHeaderData } from '@/app/redux/slices/login';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
 import PromptsSuggestions from './components/PromptsSuggestions';
 import DraggingUI from './components/DraggingUI';
@@ -55,6 +52,15 @@ export default function ChatHomeScreen() {
     };
   }, [chatStartTime]);
 
+  useEffect(() => {
+    dispatch(
+      setPageHeaderData({
+        title: 'AI Chat',
+        subTitle: 'Use AI Chat to ask questions or explore your uploaded files',
+      })
+    );
+  }, [dispatch]);
+
   const handleNewSendMessage = async (payloadData: SocketPayload) => {
     setIsLoading(true);
     // Before sending a message we will create a new thread
@@ -87,7 +93,6 @@ export default function ChatHomeScreen() {
   useEffect(() => {
     // Clearing Page data and the thread details
     dispatch(setActiveThread(null));
-    dispatch(clearPageHeaderData());
     dispatch(setIsStreaming(false));
     dispatch(clearChunks([]));
   }, []);
