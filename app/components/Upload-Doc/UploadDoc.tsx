@@ -211,6 +211,7 @@ const UploadDoc = () => {
       if (files.length > 0) {
         event.preventDefault();
         handleFiles(files);
+        showToast('success', `${files.length} file(s) pasted successfully`);
       }
     }
   };
