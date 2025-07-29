@@ -45,7 +45,6 @@ import {
 } from '@/app/redux/slices/Chat';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import {
-  clearPageHeaderData,
   getUserById,
   selectFetchedUser,
   setPageHeaderData,
@@ -97,6 +96,7 @@ const Sidebar = ({
   const pathname = usePathname();
   const isChatPage = pathname?.includes('/ai-chats');
   const isUploadDocPage = pathname?.includes('/upload-doc');
+  const isAIChatPage = pathname === '/ai-chats';
   const [expanded, setExpanded] = useState<boolean | string>(
     isChatPage ? '' : ''
   ); // Track which accordion is expanded
@@ -153,16 +153,33 @@ const Sidebar = ({
         })
       );
     }
+    if (isAIChatPage) {
+      dispatch(
+        setPageHeaderData({
+          title: 'AI Chat',
+          subTitle:
+            'Use AI Chat to ask questions or explore your uploaded files',
+        })
+      );
+    }
   }, [dispatch]);
 
   const handleStartNewChat = () => {
     dispatch(setActiveThread(null));
-    dispatch(clearPageHeaderData());
     if (isUploadDocPage) {
       dispatch(
         setPageHeaderData({
           title: 'Upload Documents',
           subTitle: 'Upload your documents to get your answers and reports',
+        })
+      );
+    }
+    if (isAIChatPage) {
+      dispatch(
+        setPageHeaderData({
+          title: 'AI Chat',
+          subTitle:
+            'Use AI Chat to ask questions or explore your uploaded files',
         })
       );
     }
@@ -304,14 +321,14 @@ const Sidebar = ({
           <Link
             href="/upload-doc"
             className={Style['opensidebar-logo']}
-            onClick={handleStartNewChat}
+            // onClick={handleStartNewChat}
           >
             <Image src="/images/logo.svg" alt="logo" width={200} height={44} />
           </Link>
           <Link
             href="/upload-doc"
             className={Style['close-sidebar-logo']}
-            onClick={handleStartNewChat}
+            // onClick={handleStartNewChat}
           >
             <Image
               src="/images/close-sidebar-logo.svg"
