@@ -39,6 +39,7 @@ const urlMapper = {
   getPaymentDetails: `${BASE_URL}payment-result/`,
   planCancel: `${BASE_URL}cancel-subscription/`,
   upgradeSubscription: `${BASE_URL}upgrade-subscription/`,
+  backgroundDownloadReport: `${BASE_URL}check-background-job-status/`,
 };
 
 export default urlMapper;
