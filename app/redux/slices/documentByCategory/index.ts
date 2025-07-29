@@ -32,6 +32,7 @@ interface DocumentListingState {
   allDocuments: Document[];
   count: number;
   no_of_docs: number;
+  isDownloadingReport: boolean;
 }
 
 const initialState: DocumentListingState = {
@@ -39,6 +40,7 @@ const initialState: DocumentListingState = {
   count: 0,
   allDocuments: [],
   no_of_docs: 0,
+  isDownloadingReport: false,
 };
 
 export const fetchDocumentsByCategory = createAsyncThunk<
@@ -142,7 +144,7 @@ export const fetchAllDocuments = createAsyncThunk<
 );
 
 export const downloadSelectedDocsReport = createAsyncThunk<
-  void,
+  { finished: boolean },
   {
     document_uuid?: string;
     created_before?: string;
@@ -174,7 +176,7 @@ export const downloadSelectedDocsReport = createAsyncThunk<
         showToast('info', response.data.messages[0]);
         const reportJobId = response.data.data?.report_job_id;
         if (reportJobId) {
-          await pollStatus({
+          const pollResult = await pollStatus({
             url: urlMapper.backgroundDownloadReport,
             params: { report_job_id: reportJobId },
             isDone: (status) => status === 'success',
@@ -182,8 +184,9 @@ export const downloadSelectedDocsReport = createAsyncThunk<
             onSuccess: (message) => showToast('success', message),
             onError: (error) => showToast('error', error),
           });
+          return pollResult;
         }
-        return;
+        return { finished: true };
       }
       if (response.status !== 200 && response.status === 403) {
         const errorText = await response.data.text();
@@ -199,6 +202,7 @@ export const downloadSelectedDocsReport = createAsyncThunk<
       a.download = 'DocumentReport.pdf';
       a.click();
       window.URL.revokeObjectURL(url);
+      return { finished: true };
     } catch (error) {
       const errorMessage =
         (error as { response?: { data?: { messages?: string[] } } })?.response
@@ -235,6 +239,15 @@ const documentListSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(downloadSelectedDocsReport.pending, (state) => {
+        state.isDownloadingReport = true;
+      })
+      .addCase(downloadSelectedDocsReport.fulfilled, (state) => {
+        state.isDownloadingReport = false;
+      })
+      .addCase(downloadSelectedDocsReport.rejected, (state) => {
+        state.isDownloadingReport = false;
+      })
       .addCase(fetchDocumentsByCategory.fulfilled, (state, action) => {
         state.documents = action.payload.results;
         state.count = action.payload.count;

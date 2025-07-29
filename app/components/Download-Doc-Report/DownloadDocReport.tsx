@@ -98,7 +98,6 @@ const DownloadDocReport = () => {
   const { categories } = useSelector(
     (state: RootState) => state.categoryListing
   );
-  const [loading, setLoading] = useState(false);
   const [limitDialog, setLimitDialog] = useState(false);
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
@@ -251,16 +250,16 @@ const DownloadDocReport = () => {
     );
   };
 
+  const isDownloadingReport = useSelector(
+    (state: RootState) => state.documentListing.isDownloadingReport
+  );
+
   const downloadSelectedDocReport = async () => {
     if (allDocuments.length) {
-      setLoading(true);
       if (selectedDocsDownload.length) {
         const payload = {
           document_uuid: selectedDocsDownload.join(','),
         };
-        setTimeout(() => {
-          setLoading(false);
-        }, 3000);
         await dispatch(downloadSelectedDocsReport(payload))
           .unwrap()
           .then((res) => {
@@ -289,9 +288,6 @@ const DownloadDocReport = () => {
           search: searchParams.length > 3 ? searchParams : '',
           type: 'all',
         };
-        setTimeout(() => {
-          setLoading(false);
-        }, 3000);
         await dispatch(downloadSelectedDocsReport(payload))
           .unwrap()
           .then((res) => {
@@ -505,11 +501,11 @@ const DownloadDocReport = () => {
                     }
                     onClick={downloadSelectedDocReport}
                     disabled={
-                      loading ||
+                      isDownloadingReport ||
                       (expiredStatus === 0 && !fetchedUser?.staff_user)
                     }
                   >
-                    {loading ? (
+                    {isDownloadingReport ? (
                       <CircularProgress size={24} color="inherit" />
                     ) : (
                       <>
