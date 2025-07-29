@@ -289,6 +289,9 @@ const DownloadDocReport = () => {
           search: searchParams.length > 3 ? searchParams : '',
           type: 'all',
         };
+        setTimeout(() => {
+          setLoading(false);
+        }, 3000);
         await dispatch(downloadSelectedDocsReport(payload))
           .unwrap()
           .then((res) => {
