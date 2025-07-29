@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../../utils/axiosConfig';
 import urlMapper from '@/app/utils/apiEndPoints/urlMapper';
 import { showToast } from '@/app/shared/toast/ShowToast';
+import { pollStatus } from '@/app/utils/pollStatus';
 
 interface Tag {
   id: number;
@@ -167,10 +168,21 @@ export const downloadSelectedDocsReport = createAsyncThunk<
         response?.data &&
         typeof response.data === 'object' &&
         Array.isArray(response.data.messages) &&
-        response.data.messages[0] ===
-          "PDF is being generated in background. You will get an email once it's ready."
+        response.data.messages[0] &&
+        response.data.messages[0].includes('🔄')
       ) {
         showToast('info', response.data.messages[0]);
+        const reportJobId = response.data.data?.report_job_id;
+        if (reportJobId) {
+          await pollStatus({
+            url: urlMapper.backgroundDownloadReport,
+            params: { report_job_id: reportJobId },
+            isDone: (status) => status === 'success',
+            isError: (status) => status === 'failed',
+            onSuccess: (message) => showToast('success', message),
+            onError: (error) => showToast('error', error),
+          });
+        }
         return;
       }
       if (response.status !== 200 && response.status === 403) {

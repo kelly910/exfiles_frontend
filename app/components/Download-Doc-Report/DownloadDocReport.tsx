@@ -258,6 +258,9 @@ const DownloadDocReport = () => {
         const payload = {
           document_uuid: selectedDocsDownload.join(','),
         };
+        setTimeout(() => {
+          setLoading(false);
+        }, 3000);
         await dispatch(downloadSelectedDocsReport(payload))
           .unwrap()
           .then((res) => {
@@ -277,7 +280,6 @@ const DownloadDocReport = () => {
           category: 'Export',
           label: 'Summary report exported',
         });
-        setLoading(false);
       } else {
         const payload = {
           created_before: filters.createdBefore || '',
@@ -306,9 +308,7 @@ const DownloadDocReport = () => {
           category: 'Export',
           label: 'Summary report exported',
         });
-        setLoading(false);
       }
-      setLoading(false);
     }
   };
 
