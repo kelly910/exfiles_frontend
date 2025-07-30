@@ -158,13 +158,17 @@ export const downloadSelectedDocsReport = createAsyncThunk<
   'documents/downloadSelectedDocsReport',
   async (payload, { rejectWithValue }) => {
     try {
+      const isSingleFile =
+        !!payload.document_uuid && !payload.document_uuid.includes(',');
       const response = await api.post(
         `${urlMapper.downloadDocReport}`,
-        payload
-        // {
-        //   responseType: 'blob',
-        //   validateStatus: () => true,
-        // }
+        payload,
+        isSingleFile
+          ? {
+              responseType: 'blob',
+              validateStatus: () => true,
+            }
+          : undefined
       );
       if (
         response?.data &&
