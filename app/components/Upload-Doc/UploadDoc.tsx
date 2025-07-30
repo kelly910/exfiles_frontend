@@ -251,21 +251,21 @@ const UploadDoc = () => {
                   <div className={styles['upload-doc-head']}>
                     <h2>Upload your documents</h2>
                     <p>
-                      Ex-Files AI will summarize and categorize files
-                      automatically.
+                      Upload images, emails, or legal files. AI will tag and
+                      summarize them for you.
                     </p>
                   </div>
                   <div className={styles['upload-doc-img']}>
                     {theme === 'dark' ? (
                       <Image
-                        src="/images/upload-doc-ic.svg"
+                        src="/images/upload-doc-light-1.svg"
                         alt="Upload Document"
                         width={93}
                         height={100}
                       />
                     ) : (
                       <Image
-                        src="/images/upload-doc-ic-dark.svg"
+                        src="/images/upload-doc-dark-1.svg"
                         alt="Upload Document"
                         width={93}
                         height={100}
@@ -273,7 +273,7 @@ const UploadDoc = () => {
                     )}
                   </div>
                   <div className={styles['upload-doc-btn']}>
-                    <p>Drag your documents here to upload or Click upload.</p>
+                    <p>Upload a file or click ,Upload</p>
                     <label
                       className={
                         expiredStatus === 0 && !fetchedUser?.staff_user
@@ -340,15 +340,7 @@ const UploadDoc = () => {
                     />
                   </div>
                   <div className={styles['upload-clipboard']}>
-                    <p>
-                      Paste from Clipboard
-                      <Image
-                        src="/images/copy-light.svg"
-                        alt="copy"
-                        width={24}
-                        height={24}
-                      />
-                    </p>
+                    <p>Paste from Clipboard</p>
                   </div>
                 </div>
               </div>
