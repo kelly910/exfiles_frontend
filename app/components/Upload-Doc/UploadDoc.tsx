@@ -103,7 +103,10 @@ const UploadDoc = () => {
   };
 
   const handleDrop = async (event: React.DragEvent<HTMLElement>) => {
-    if (fetchedUser?.active_subscription?.status !== 0) {
+    if (
+      fetchedUser?.active_subscription?.status !== 0 ||
+      fetchedUser?.staff_user
+    ) {
       event.preventDefault();
       handleFileChange(event);
     }
@@ -186,7 +189,10 @@ const UploadDoc = () => {
   };
 
   const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
-    if (fetchedUser?.active_subscription?.status !== 0) {
+    if (
+      fetchedUser?.active_subscription?.status !== 0 ||
+      fetchedUser?.staff_user
+    ) {
       const items = event.clipboardData?.items;
       if (!items) return;
 
@@ -273,7 +279,7 @@ const UploadDoc = () => {
                     )}
                   </div>
                   <div className={styles['upload-doc-btn']}>
-                    <p>Upload a file or click ,Upload</p>
+                    <p>Drag a file or click Upload.</p>
                     <label
                       className={
                         expiredStatus === 0 && !fetchedUser?.staff_user
