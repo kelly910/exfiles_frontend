@@ -179,6 +179,27 @@ export default function ShowGeneratedSummariesDocs({
 
   const { theme } = useThemeMode();
 
+  const displayMessages = [
+    'Your summary will be available shortly', // for pending status
+    'Your summaries are ready', // for success status and upload one document
+    'Your combined summary is ready! Click below to view them', // for success status and upload more than one documents
+  ];
+
+  const displayMessage =
+    summaryGeneratedDocList && summaryGeneratedDocList.length > 0
+      ? summaryGeneratedDocList.some(
+          (doc) => doc.trained_status.toLowerCase() === 'pending'
+        )
+        ? displayMessages[0]
+        : summaryGeneratedDocList.every(
+              (doc) => doc.trained_status.toLowerCase() === 'success'
+            )
+          ? summaryGeneratedDocList.length === 1
+            ? displayMessages[1]
+            : displayMessages[2]
+          : ''
+      : '';
+
   return (
     <>
       <Box component="div" className={chatMessagesStyles.chatAl}>
@@ -196,22 +217,12 @@ export default function ShowGeneratedSummariesDocs({
           </IconButton>
         </Box>
         <Box component="div" className={chatMessagesStyles.chatAlContent}>
-          {summaryGeneratedDocList && summaryGeneratedDocList?.length !== 1 ? (
-            <Typography
-              variant="body1"
-              className={chatMessagesStyles.chatAlContentText}
-              dangerouslySetInnerHTML={{
-                __html:
-                  processText(messageObj.message) ||
-                  'Your summaries are ready! Click below to view them',
-              }}
-            />
-          ) : (
+          {displayMessage && (
             <Typography
               variant="body1"
               className={chatMessagesStyles.chatAlContentText}
             >
-              Your summaries are ready!
+              {displayMessage}
             </Typography>
           )}
           <Grid
@@ -390,20 +401,22 @@ export default function ShowGeneratedSummariesDocs({
               })}
           </Grid>
 
-          {summaryGeneratedDocList && summaryGeneratedDocList?.length == 1 && (
-            <Typography
-              variant="body1"
-              className={chatMessagesStyles.chatAlContentText}
-            >
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: processText(
-                    highlightText(messageObj.message, searchingChat)
-                  ),
-                }}
-              />
-            </Typography>
-          )}
+          {summaryGeneratedDocList &&
+            summaryGeneratedDocList?.length == 1 &&
+            messageObj.message !== 'Generating summaries for documents' && (
+              <Typography
+                variant="body1"
+                className={chatMessagesStyles.chatAlContentText}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: processText(
+                      highlightText(messageObj.message, searchingChat)
+                    ),
+                  }}
+                />
+              </Typography>
+            )}
 
           {messageObj.all_doc_summarized &&
             summaryGeneratedDocList &&
