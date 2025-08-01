@@ -99,7 +99,11 @@ export default function DevicesLimit({
         if (
           (response.data.remaining_days === 1 ||
             response.data.remaining_days === 2) &&
-          !response?.data?.staff_user
+          !response?.data?.staff_user &&
+          (response?.data?.active_subscription?.plan?.name === 'Free Tier' ||
+            (response?.data?.active_subscription?.subscription_status ===
+              'cancelled' &&
+              response?.data?.active_subscription?.plan?.name !== 'Free Tier'))
         ) {
           setOpenCountDownDialog(true);
         } else {
@@ -161,7 +165,13 @@ export default function DevicesLimit({
               if (
                 (response.data.remaining_days === 1 ||
                   response.data.remaining_days === 2) &&
-                !response?.data?.staff_user
+                !response?.data?.staff_user &&
+                (response?.data?.active_subscription?.plan?.name ===
+                  'Free Tier' ||
+                  (response?.data?.active_subscription?.subscription_status ===
+                    'cancelled' &&
+                    response?.data?.active_subscription?.plan?.name !==
+                      'Free Tier'))
               ) {
                 setOpenCountDownDialog(true);
               } else {

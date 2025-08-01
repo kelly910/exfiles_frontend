@@ -637,7 +637,13 @@ export default function PageHeader({
             </Box>
 
             {(remainingDays === 1 || remainingDays === 2) &&
-              !loggedInUser?.data?.staff_user && (
+              !loggedInUser?.data?.staff_user &&
+              (loggedInUser?.data?.active_subscription?.plan?.name ===
+                'Free Tier' ||
+                (loggedInUser?.data?.active_subscription
+                  ?.subscription_status === 'cancelled' &&
+                  loggedInUser?.data?.active_subscription?.plan?.name !==
+                    'Free Tier')) && (
                 <Button
                   onClick={handleOpenCountdownDialog}
                   className={styles.timeLog}
