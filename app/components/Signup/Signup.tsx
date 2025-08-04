@@ -35,6 +35,7 @@ export interface RegisterFormValues {
   contact_number: string;
   password: string;
   confirm_password: string;
+  about_me: string;
 }
 
 const Page = () => {
@@ -51,6 +52,7 @@ const Page = () => {
     contact_number: '',
     password: '',
     confirm_password: '',
+    about_me: '',
   };
   const dispatch = useAppDispatch();
 
@@ -512,6 +514,85 @@ const Page = () => {
                           />
                           <ErrorMessage
                             name="contact_number"
+                            component="div"
+                            className="error-input-field"
+                          />
+                        </div>
+
+                        <Typography
+                          variant="body2"
+                          component="label"
+                          htmlFor="about_me"
+                          sx={{
+                            display: 'block',
+                            fontSize: 'var(--SubTitle-2)',
+                            color:
+                              errors.about_me && touched.about_me
+                                ? 'var(--Red-Color)'
+                                : 'var(--Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
+                          }}
+                        >
+                          About Me
+                        </Typography>
+                        <div style={{ marginBottom: '32px' }}>
+                          <Field
+                            as={TextField}
+                            fullWidth
+                            rows={3}
+                            multiline
+                            type="text"
+                            id="about_me"
+                            name="about_me"
+                            placeholder="Tell us something about yourself, your role, or how you plan to use Exfiles."
+                            error={Boolean(errors.about_me && touched.about_me)}
+                            sx={{
+                              marginTop: '4px',
+                              padding: '0',
+                              '& .MuiOutlinedInput-root': {
+                                borderRadius: '12px',
+                                borderWidth: '0px',
+                                color: 'var(--Primary-Text-Color)',
+                                backgroundColor:
+                                  theme === 'dark'
+                                    ? 'var(--Background-Color)'
+                                    : 'var(--Input-Box-Colors)',
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                  top: '-10px !important',
+                                },
+                                '& .MuiOutlinedInput-input': {
+                                  fontSize: 'var(--SubTitle-2)',
+                                  color: 'var(--Primary-Text-Color)',
+                                  padding: '0',
+                                  fontWeight: 'var(--Regular)',
+                                  borderRadius: '0',
+                                  '&::placeholder': {
+                                    color: 'var(Placeholder-Text)',
+                                    fontWeight: 'var(--Regular)',
+                                  },
+                                },
+                                '& fieldset': {
+                                  borderColor: 'var(--Stroke-Color)',
+                                },
+                                '&:hover fieldset': {
+                                  borderColor: 'var(--Primary-Text-Color)',
+                                },
+                                '&.Mui-focused fieldset': {
+                                  borderColor: 'var(--Primary-Text-Color)',
+                                  borderWidth: '1px',
+                                  color: 'var(--Txt-On-Gradient)',
+                                },
+                              },
+                              '& .MuiFormHelperText-root': {
+                                color:
+                                  errors.about_me && touched.about_me
+                                    ? 'var(--Red-Color)'
+                                    : 'var(--Placeholder-Text)',
+                              },
+                            }}
+                          />
+                          <ErrorMessage
+                            name="about_me"
                             component="div"
                             className="error-input-field"
                           />
