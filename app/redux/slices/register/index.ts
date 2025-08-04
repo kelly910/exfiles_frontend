@@ -9,6 +9,7 @@ interface RegisterUserPayload {
   password: string;
   confirm_password: string;
   contact_number: string;
+  about_me: string;
 }
 
 interface RegisterUserResponse {
@@ -19,6 +20,7 @@ interface RegisterUserResponse {
   contact_number: string;
   user_type: string;
   is_email_verified: boolean;
+  about_me: string;
 }
 
 interface SendOtpPayload {

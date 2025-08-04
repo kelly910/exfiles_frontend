@@ -29,6 +29,7 @@ export interface UpdateUserFormValues {
   first_name: string;
   last_name: string;
   id: number;
+  about_me: string;
 }
 
 const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
@@ -53,6 +54,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
       ? loggedInUser.data.contact_number.replace('+91', '')
       : '',
     id: Number(loggedInUser?.data?.id) ?? '',
+    about_me: loggedInUser?.data?.about_me ?? '',
   };
 
   const updateUserClick = async (
@@ -466,6 +468,83 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                   />
                   <ErrorMessage
                     name="contact_number"
+                    component="div"
+                    className="error-input-field"
+                  />
+                </div>
+                <div className={styles.dialogFormGroup}>
+                  <Typography
+                    variant="body2"
+                    component="label"
+                    htmlFor="about_me"
+                    sx={{
+                      display: 'block',
+                      fontSize: 'var(--SubTitle-3)',
+                      color:
+                        errors.about_me && touched.about_me
+                          ? 'var(--Red-Color)'
+                          : 'var(--Placeholder-Text)',
+                      fontWeight: 'var(--Regular)',
+                    }}
+                  >
+                    About Me
+                  </Typography>
+                  <Field
+                    as={TextField}
+                    fullWidth
+                    rows={3}
+                    multiline
+                    type="text"
+                    id="about_me"
+                    name="about_me"
+                    error={Boolean(errors.about_me && touched.about_me)}
+                    sx={{
+                      marginTop: '4px',
+                      padding: '0',
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        borderWidth: '0px',
+                        color: 'var(--Primary-Text-Color)',
+                        backgroundColor:
+                          theme === 'dark'
+                            ? 'var(--Background-Color)'
+                            : 'var(--Input-Box-Colors)',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          top: '-10px !important',
+                        },
+                        '& .MuiOutlinedInput-input': {
+                          fontSize: 'var(--SubTitle-3)',
+                          color: 'var(--Primary-Text-Color)',
+                          padding: '0',
+                          fontWeight: 'var(--Regular)',
+                          borderRadius: '0',
+                          '&::placeholder': {
+                            color: 'var(Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
+                          },
+                        },
+                        '& fieldset': {
+                          borderColor: 'var(--Stroke-Color)',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'var(--Primary-Text-Color)',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'var(--Primary-Text-Color)',
+                          borderWidth: '1px',
+                          color: 'var(--Txt-On-Gradient)',
+                        },
+                      },
+                      '& .MuiFormHelperText-root': {
+                        color:
+                          errors.about_me && touched.about_me
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
+                      },
+                    }}
+                  />
+                  <ErrorMessage
+                    name="about_me"
                     component="div"
                     className="error-input-field"
                   />
