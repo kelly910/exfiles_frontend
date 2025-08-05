@@ -472,7 +472,9 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                     className="error-input-field"
                   />
                 </div>
-                <div className={styles.dialogFormGroup}>
+                <div
+                  className={`${styles.dialogFormGroup} ${styles.dialogFormGroupText}`}
+                >
                   <Typography
                     variant="body2"
                     component="label"
