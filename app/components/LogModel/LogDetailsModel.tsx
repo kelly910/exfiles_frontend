@@ -22,7 +22,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
     margin: '0px',
     border: '1px solid var(--Stroke-Color)',
     borderRadius: '16px',
-    minWidth: '606px',
+    minWidth: '650px',
     maxHeight: '95dvh',
     '@media (max-width: 768px)': {
       maxWidth: '80vw',
@@ -82,7 +82,8 @@ export default function LogDetailsModel({
                 Incident Details
               </Typography>
               <Typography variant="body1" className={LogStyle.dialogSemiTitle}>
-                Your thoughts are valuable in helping improve our products.
+                This incident record has been saved as part of your case
+                documentation.
               </Typography>
             </Box>
           </DialogTitle>

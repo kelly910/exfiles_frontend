@@ -14,6 +14,7 @@ import {
   feedbackBodySchema,
   lastNameSchema,
   summarySchema,
+  aboutMeSchema,
 } from './validationSchemas';
 
 // Register Validation Schema
@@ -24,6 +25,7 @@ export const registrationValidationSchema = Yup.object({
   contact_number: contactNumberSchema,
   password: passwordSchema,
   confirm_password: confirmPasswordSchema,
+  about_me: aboutMeSchema,
 });
 
 // OTP Verification Validation Schema
@@ -60,6 +62,7 @@ export const updateUserValidationSchema = Yup.object({
   contact_number: contactNumberSchema,
   first_name: firstNameSchema,
   last_name: lastNameSchema,
+  about_me: aboutMeSchema,
 });
 
 // Feedback Validation Schema

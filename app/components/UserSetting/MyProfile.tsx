@@ -16,12 +16,15 @@ import {
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { updateUserValidationSchema } from '@/app/utils/validationSchema/formValidationSchemas';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/app/redux/store';
 import { useAppDispatch } from '@/app/redux/hooks';
 import { setLoader } from '@/app/redux/slices/loader';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
-import { getUserById, updateProfile } from '@/app/redux/slices/login';
+import {
+  getUserById,
+  selectFetchedUser,
+  updateProfile,
+} from '@/app/redux/slices/login';
 import { useThemeMode } from '@/app/utils/ThemeContext';
 
 export interface UpdateUserFormValues {
@@ -29,30 +32,30 @@ export interface UpdateUserFormValues {
   first_name: string;
   last_name: string;
   id: number;
+  about_me: string;
 }
 
 const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
   const [countryCode, setCountryCode] = useState('+91');
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
-  const loggedInUser = useSelector(
-    (state: RootState) => state.login.loggedInUser
-  );
-  const firstName = loggedInUser?.data?.first_name;
-  const lastName = loggedInUser?.data?.last_name;
+  const fetchedUser = useSelector(selectFetchedUser);
+  const firstName = fetchedUser?.first_name;
+  const lastName = fetchedUser?.last_name;
 
   useEffect(() => {
-    if (!loggedInUser?.data?.id) return;
-    dispatch(getUserById(loggedInUser.data.id));
-  }, [dispatch, loggedInUser?.data?.id]);
+    if (!fetchedUser?.id) return;
+    dispatch(getUserById(fetchedUser?.id));
+  }, [dispatch, fetchedUser?.id]);
 
   const initialValues: UpdateUserFormValues = {
-    first_name: loggedInUser?.data?.first_name ?? '',
-    last_name: loggedInUser?.data?.last_name ?? '',
-    contact_number: loggedInUser?.data?.contact_number
-      ? loggedInUser.data.contact_number.replace('+91', '')
+    first_name: fetchedUser?.first_name ?? '',
+    last_name: fetchedUser?.last_name ?? '',
+    contact_number: fetchedUser?.contact_number
+      ? fetchedUser?.contact_number.replace('+91', '')
       : '',
-    id: Number(loggedInUser?.data?.id) ?? '',
+    id: Number(fetchedUser?.id) ?? '',
+    about_me: fetchedUser?.about_me ?? '',
   };
 
   const updateUserClick = async (
@@ -302,7 +305,7 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                     id="email"
                     name="email"
                     disabled={true}
-                    value={loggedInUser?.data?.email ?? ''}
+                    value={fetchedUser?.email ?? ''}
                     sx={{
                       marginTop: '4px',
                       padding: '0',
@@ -466,6 +469,85 @@ const MyProfile = ({ closeDialog }: { closeDialog: () => void }) => {
                   />
                   <ErrorMessage
                     name="contact_number"
+                    component="div"
+                    className="error-input-field"
+                  />
+                </div>
+                <div
+                  className={`${styles.dialogFormGroup} ${styles.dialogFormGroupText}`}
+                >
+                  <Typography
+                    variant="body2"
+                    component="label"
+                    htmlFor="about_me"
+                    sx={{
+                      display: 'block',
+                      fontSize: 'var(--SubTitle-3)',
+                      color:
+                        errors.about_me && touched.about_me
+                          ? 'var(--Red-Color)'
+                          : 'var(--Placeholder-Text)',
+                      fontWeight: 'var(--Regular)',
+                    }}
+                  >
+                    About Me
+                  </Typography>
+                  <Field
+                    as={TextField}
+                    fullWidth
+                    rows={3}
+                    multiline
+                    type="text"
+                    id="about_me"
+                    name="about_me"
+                    error={Boolean(errors.about_me && touched.about_me)}
+                    sx={{
+                      marginTop: '4px',
+                      padding: '0',
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        borderWidth: '0px',
+                        color: 'var(--Primary-Text-Color)',
+                        backgroundColor:
+                          theme === 'dark'
+                            ? 'var(--Background-Color)'
+                            : 'var(--Input-Box-Colors)',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          top: '-10px !important',
+                        },
+                        '& .MuiOutlinedInput-input': {
+                          fontSize: 'var(--SubTitle-3)',
+                          color: 'var(--Primary-Text-Color)',
+                          padding: '0',
+                          fontWeight: 'var(--Regular)',
+                          borderRadius: '0',
+                          '&::placeholder': {
+                            color: 'var(Placeholder-Text)',
+                            fontWeight: 'var(--Regular)',
+                          },
+                        },
+                        '& fieldset': {
+                          borderColor: 'var(--Stroke-Color)',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'var(--Primary-Text-Color)',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'var(--Primary-Text-Color)',
+                          borderWidth: '1px',
+                          color: 'var(--Txt-On-Gradient)',
+                        },
+                      },
+                      '& .MuiFormHelperText-root': {
+                        color:
+                          errors.about_me && touched.about_me
+                            ? 'var(--Red-Color)'
+                            : 'var(--Placeholder-Text)',
+                      },
+                    }}
+                  />
+                  <ErrorMessage
+                    name="about_me"
                     component="div"
                     className="error-input-field"
                   />

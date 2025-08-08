@@ -143,6 +143,14 @@
         line-height: 1.4;
         color: var(--Subtext-Color);
       }
+
+      .dialogFormGroupText {
+        grid-column: span 2;
+
+        @media (max-width: 600px) {
+          grid-column: span 1;
+        }
+      }
     }
 
     .accountDeletTitle {

@@ -198,7 +198,7 @@ export default function TemporaryDrawer() {
                         height={18}
                       />
                     )}
-                    <Typography>My Profile test</Typography>
+                    <Typography>My Profile</Typography>
                     <Image
                       src="/images/arrow-down-right.svg"
                       alt="user"
