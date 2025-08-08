@@ -7,7 +7,7 @@ import styles from './style.module.scss';
 import { useRouter } from 'next/navigation';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import Image from 'next/image';
-import { Button, CircularProgress, styled } from '@mui/material';
+import { Button, CircularProgress, styled, useMediaQuery } from '@mui/material';
 import { useChunkedFileUpload } from '../AI-Chat-Module/hooks/useChunkedFileUpload';
 import { useSelector } from 'react-redux';
 import { selectFetchedUser, setPageHeaderData } from '@/app/redux/slices/login';
@@ -82,6 +82,24 @@ const UploadDoc = () => {
       );
     }
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      //
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = useMediaQuery('(max-width:768px)');
+  useEffect(() => {
+    if (isMobile) {
+      setIsSidebarOpen(false);
+    }
+  }, []);
 
   const { handleFiles } = useChunkedFileUpload((limitExceededType: string) => {
     setLimitType(limitExceededType);
