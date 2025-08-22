@@ -39,6 +39,7 @@ interface DocumentSummaryProps {
   selectedDocIdNull: () => void;
   catId: number | null;
   searchParams: string;
+  searchParamsCommon?: string;
 }
 
 export interface DocumentEditSummary {
@@ -51,6 +52,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   selectedDocIdNull,
   catId,
   searchParams,
+  searchParamsCommon,
 }) => {
   const mobileView = useMediaQuery('(min-width:800px)');
   const dispatch = useAppDispatch();
@@ -62,6 +64,8 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
   const [downloadingSummaryLoading, setDownloadingSummaryLoading] =
     useState(false);
   const router = useRouter();
+  const finalSearchParams =
+    searchParams && searchParams.length > 0 ? searchParams : searchParamsCommon;
 
   const editSummary = () => {
     setEditMode(true);
@@ -179,7 +183,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         __html: processText(
                           highlightText(
                             documentSummary?.file_name,
-                            searchParams
+                            String(finalSearchParams)
                           )
                         ),
                       }}
@@ -215,7 +219,10 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                     <span
                       key={tag?.id}
                       dangerouslySetInnerHTML={{
-                        __html: highlightText(tag?.name, searchParams),
+                        __html: highlightText(
+                          tag?.name,
+                          String(finalSearchParams)
+                        ),
                       }}
                       style={{
                         background:
@@ -242,7 +249,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                           __html: processText(
                             highlightText(
                               documentSummary?.ai_description,
-                              searchParams
+                              String(finalSearchParams)
                             )
                           ),
                         }}
@@ -372,7 +379,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                             __html: processText(
                               highlightText(
                                 documentSummary?.summary,
-                                searchParams
+                                String(finalSearchParams)
                               )
                             ),
                           }}
@@ -500,7 +507,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                           __html: processText(
                             highlightText(
                               documentSummary?.file_name,
-                              searchParams
+                              String(finalSearchParams)
                             )
                           ),
                         }}
@@ -536,7 +543,10 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                       <span
                         key={tag?.id}
                         dangerouslySetInnerHTML={{
-                          __html: highlightText(tag?.name, searchParams),
+                          __html: highlightText(
+                            tag?.name,
+                            String(finalSearchParams)
+                          ),
                         }}
                         style={{
                           background:
@@ -563,7 +573,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                             __html: processText(
                               highlightText(
                                 documentSummary?.ai_description,
-                                searchParams
+                                String(finalSearchParams)
                               )
                             ),
                           }}
@@ -694,7 +704,7 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                               __html: processText(
                                 highlightText(
                                   documentSummary?.summary,
-                                  searchParams
+                                  String(finalSearchParams)
                                 )
                               ),
                             }}

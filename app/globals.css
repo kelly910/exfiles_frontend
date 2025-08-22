@@ -131,6 +131,7 @@ body .MuiInputBase-input:-webkit-autofill:focus {
 main.chat-body {
   -ms-overflow-style: none;
   /* Hide default scrollbar */
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: start;

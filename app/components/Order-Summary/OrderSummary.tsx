@@ -46,6 +46,7 @@ export default function OrderSummary() {
               subTitle: '',
             })
           );
+
           dispatch(setLoader(false));
         }, 1000);
       }
