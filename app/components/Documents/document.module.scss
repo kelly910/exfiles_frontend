@@ -467,9 +467,9 @@
         font-size: var(--SubTitle-2);
         line-height: 1.4;
         color: var(--Primary-Text-Color);
-        word-wrap: break-word;
-        -webkit-line-clamp: 1;
-        line-clamp: 1;
+        // word-wrap: break-word;
+        // -webkit-line-clamp: 1;
+        // line-clamp: 1;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
