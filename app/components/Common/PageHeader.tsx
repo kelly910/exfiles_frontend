@@ -7,6 +7,8 @@ import {
   Button,
   Container,
   IconButton,
+  Input,
+  InputAdornment,
   Menu,
   MenuItem,
   Toolbar,
@@ -40,16 +42,22 @@ interface PageHeaderProps {
   title?: string;
   isSidebarOpen: boolean;
   handleOpenSidebarFromLogIncident?: () => void;
+  searchParamsCommon?: string;
+  onSearchInput?: (inputValue: string) => void;
+  onSearch?: () => void;
 }
 
 export default function PageHeader({
   toggleSidebar,
   isSidebarOpen,
   handleOpenSidebarFromLogIncident,
+  searchParamsCommon,
+  onSearchInput,
+  onSearch,
 }: PageHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
-
+  console.log(searchParamsCommon, 'searchParamsCommon');
   const selectedActiveChat = useAppSelector(selectActiveThread);
 
   const selectedPageHeaderData = useAppSelector(selectPageHeaderData);
@@ -588,6 +596,56 @@ export default function PageHeader({
                 )}
               </Box>
             </Box>
+
+            {isDocumentsPage && (
+              <Box component="div" className={styles.searchBoard}>
+                <Box component="div" className={styles.docBoard}>
+                  <Input
+                    id="input-with-icon-adornment"
+                    className={styles.searchInput}
+                    placeholder="Search your documents"
+                    onChange={(e) => onSearchInput?.(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        onSearch?.();
+                      }
+                    }}
+                    // value={searchParamsCommon}
+                    endAdornment={
+                      <InputAdornment
+                        position="end"
+                        className={styles.searchIcon}
+                      >
+                        <span className={styles.search} onClick={onSearch}>
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M6.53492 11.3413C9.30241 11.3413 11.5459 9.09782 11.5459 6.33033C11.5459 3.56283 9.30241 1.31934 6.53492 1.31934C3.76742 1.31934 1.52393 3.56283 1.52393 6.33033C1.52393 9.09782 3.76742 11.3413 6.53492 11.3413Z"
+                              stroke="var(--Icon-Color)"
+                              stroke-width="1.67033"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                            <path
+                              d="M14.8866 14.6815L11.5459 11.3408"
+                              stroke="var(--Icon-Color)"
+                              stroke-width="1.67033"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </InputAdornment>
+                    }
+                  />
+                </Box>
+              </Box>
+            )}
 
             <Box
               sx={{

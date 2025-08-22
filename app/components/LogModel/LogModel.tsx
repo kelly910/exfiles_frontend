@@ -549,7 +549,7 @@ export default function LogModel({
 
   const logIncidentValidationSchema = Yup.object().shape({
     description: Yup.string()
-      .max(200, 'Description must be at most 200 characters')
+      .max(700, 'Description must be at most 700 characters')
       .required('Description is required'),
     incident_time: Yup.string()
       .required('Incident time is required')
