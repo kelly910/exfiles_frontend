@@ -14,6 +14,12 @@ import { fetchCategories } from '@/app/redux/slices/categoryListing';
 import { PinnedAnswerMessage } from '@/app/redux/slices/Chat/chatTypes';
 import { useMediaQuery } from '@mui/material';
 import { setPageHeaderData } from '@/app/redux/slices/login';
+import { setLoader } from '@/app/redux/slices/loader';
+import { fetchAllDocuments } from '@/app/redux/slices/documentByCategory';
+import { ErrorResponse, handleError } from '@/app/utils/handleError';
+import CommonSearchDocList from '../CommonSearchDocuments/CommonSearchDocList';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/redux/store';
 
 export default function DocumentListComponent({ catId }: { catId: number }) {
   const mobileView = useMediaQuery('(min-width:800px)');
@@ -24,6 +30,7 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
   const [showEmptyCategoryComponent, setShowEmptyCategoryComponent] =
     useState(false);
   const [searchParams, setSearchParams] = useState('');
+  const { count } = useSelector((state: RootState) => state.documentListing);
 
   useEffect(() => {
     const urlDocId = searchingParams.get('docId');
@@ -129,6 +136,64 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
     setIsSidebarOpen(value);
   };
 
+  const [searchParamsCommon, setSearchParamsCommon] = useState('');
+
+  const handleSearchInput = (inputValue: string) => {
+    setSearchParamsCommon(inputValue.length > 3 ? inputValue : '');
+  };
+
+  const handleSearch = () => {
+    if (searchParamsCommon.length > 3 || searchParamsCommon.length === 0) {
+      dispatch(setLoader(true));
+      setTimeout(async () => {
+        try {
+          await dispatch(
+            fetchAllDocuments({
+              search: searchParamsCommon.length > 3 ? searchParamsCommon : '',
+              page: 1,
+            })
+          ).unwrap();
+        } catch (error) {
+          handleError(error as ErrorResponse);
+          dispatch(setLoader(false));
+        } finally {
+          dispatch(setLoader(false));
+        }
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    if (searchParamsCommon) {
+      closeSummaryDrawer();
+    }
+  }, [searchParamsCommon]);
+
+  useEffect(() => {
+    if (searchParamsCommon.length > 3) {
+      dispatch(
+        setPageHeaderData({
+          title: 'View Documents',
+          subTitle: `No. of Documents : ${count}`,
+        })
+      );
+    } else {
+      dispatch(fetchCategories({ page: 1 }))
+        .unwrap()
+        .then((res) => {
+          if (res?.count > 0) {
+            setShowEmptyCategoryComponent(true);
+            dispatch(
+              setPageHeaderData({
+                title: 'View Documents',
+                subTitle: `No. of Documents : ${res?.no_of_docs}`,
+              })
+            );
+          }
+        });
+    }
+  }, [searchParamsCommon, dispatch]);
+
   return (
     <main className={`chat-body ${styles.docsPageMain}`}>
       <Sidebar
@@ -144,9 +209,21 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
           isSidebarOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
           title="View Documents"
+          searchParamsCommon={searchParamsCommon}
+          onSearchInput={handleSearchInput}
+          onSearch={handleSearch}
         />
-        <div className={styles.docsMain}>
-          {showEmptyCategoryComponent ? (
+        <div
+          className={styles.docsMain}
+          style={{ display: searchParamsCommon ? '' : 'flex' }}
+        >
+          {searchParamsCommon && (
+            <CommonSearchDocList
+              searchParamsCommon={searchParamsCommon}
+              handleOpenDocClick={handleSelectedDocSummary}
+            />
+          )}
+          {!searchParamsCommon && showEmptyCategoryComponent && (
             <>
               <CategoryList
                 catId={catId}
@@ -162,18 +239,19 @@ export default function DocumentListComponent({ catId }: { catId: number }) {
                 searchParams={searchParams}
                 setSearchParams={setSearchParams}
               />
-              {selectedDocId && (
-                <DocumentSummary
-                  catId={catId}
-                  docId={selectedDocId}
-                  selectedDocIdNull={closeSummaryDrawer}
-                  searchParams={searchParams}
-                />
-              )}
             </>
-          ) : (
-            <DocumentsEmpty />
           )}
+          {selectedDocId && (
+            <DocumentSummary
+              catId={catId}
+              docId={selectedDocId}
+              selectedDocIdNull={closeSummaryDrawer}
+              searchParams={searchParams}
+              searchParamsCommon={searchParamsCommon}
+            />
+          )}
+          {(!searchParamsCommon || !selectedDocId) &&
+            !showEmptyCategoryComponent && <DocumentsEmpty />}
         </div>
       </section>
     </main>
