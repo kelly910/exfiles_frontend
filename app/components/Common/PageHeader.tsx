@@ -442,10 +442,7 @@ export default function PageHeader({
                 }}
               />
             </Box>
-            <Box
-              sx={{ width: '100%', minWidth: '270px', flex: '1' }}
-              className={styles.docsHeader}
-            >
+            <Box sx={{ width: '100%' }} className={styles.docsHeader}>
               {isPaymentStatusPage && (
                 <Box>
                   <Image
@@ -605,7 +602,15 @@ export default function PageHeader({
             {mobileView && (
               <>
                 {isDocumentsPage && (
-                  <Box component="div" className={styles.searchBoard}>
+                  <Box
+                    component="div"
+                    className={styles.searchBoard}
+                    sx={{
+                      minWidth: '300px',
+                      maxWidth: '40%',
+                      flex: '0 0 auto',
+                    }}
+                  >
                     <Box component="div" className={styles.docBoard}>
                       <Input
                         id="input-with-icon-adornment"
