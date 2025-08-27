@@ -63,7 +63,7 @@ export default function PageHeader({
   const selectedActiveChat = useAppSelector(selectActiveThread);
 
   const selectedPageHeaderData = useAppSelector(selectPageHeaderData);
-  const pages = ['Products', 'Pricing', 'Blog'];
+  // const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
@@ -126,9 +126,9 @@ export default function PageHeader({
     { title: 'My Plan', img: <MyPlanIcon /> },
     { title: 'Log out', img: <LogoutIcon /> },
   ];
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
+  // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+  //   null
+  // );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -160,16 +160,16 @@ export default function PageHeader({
     // console.log(".")
   }, [isPlanPage]);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorElNav(event.currentTarget);
+  // };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+  // const handleCloseNavMenu = () => {
+  //   setAnchorElNav(null);
+  // };
 
   const handleCloseUserMenu = (settingTitle: string) => {
     setAnchorElUser(null);
