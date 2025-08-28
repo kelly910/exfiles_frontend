@@ -14,6 +14,7 @@ import {
   Toolbar,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import Image from 'next/image';
 import styles from './Header.module.scss';
@@ -55,13 +56,14 @@ export default function PageHeader({
   onSearchInput,
   onSearch,
 }: PageHeaderProps) {
+  const mobileView = useMediaQuery('(min-width:800px)');
   const router = useRouter();
   const pathname = usePathname();
   console.log(searchParamsCommon, 'searchParamsCommon');
   const selectedActiveChat = useAppSelector(selectActiveThread);
 
   const selectedPageHeaderData = useAppSelector(selectPageHeaderData);
-  const pages = ['Products', 'Pricing', 'Blog'];
+  // const pages = ['Products', 'Pricing', 'Blog'];
   const [openSettingDialog, setOpenSettingDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
@@ -124,9 +126,9 @@ export default function PageHeader({
     { title: 'My Plan', img: <MyPlanIcon /> },
     { title: 'Log out', img: <LogoutIcon /> },
   ];
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
+  // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+  //   null
+  // );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -158,16 +160,16 @@ export default function PageHeader({
     // console.log(".")
   }, [isPlanPage]);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorElNav(event.currentTarget);
+  // };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+  // const handleCloseNavMenu = () => {
+  //   setAnchorElNav(null);
+  // };
 
   const handleCloseUserMenu = (settingTitle: string) => {
     setAnchorElUser(null);
@@ -427,7 +429,7 @@ export default function PageHeader({
               </Button>
             )}
 
-            <Box className={styles.mobileLogo}>
+            <Box className={styles.mobileLogo} sx={{ flex: '1 !important' }}>
               <Image
                 src="/images/close-sidebar-logo.svg"
                 alt="logo"
@@ -597,102 +599,67 @@ export default function PageHeader({
               </Box>
             </Box>
 
-            {isDocumentsPage && (
-              <Box component="div" className={styles.searchBoard}>
-                <Box component="div" className={styles.docBoard}>
-                  <Input
-                    id="input-with-icon-adornment"
-                    className={styles.searchInput}
-                    placeholder="Search your documents"
-                    onChange={(e) => onSearchInput?.(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        onSearch?.();
-                      }
+            {mobileView && (
+              <>
+                {isDocumentsPage && (
+                  <Box
+                    component="div"
+                    className={styles.searchBoard}
+                    sx={{
+                      minWidth: '300px',
+                      maxWidth: '40%',
+                      flex: '0 0 auto',
                     }}
-                    // value={searchParamsCommon}
-                    endAdornment={
-                      <InputAdornment
-                        position="end"
-                        className={styles.searchIcon}
-                      >
-                        <span className={styles.search} onClick={onSearch}>
-                          <svg
-                            width="14"
-                            height="14"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <Box component="div" className={styles.docBoard}>
+                      <Input
+                        id="input-with-icon-adornment"
+                        className={styles.searchInput}
+                        placeholder="Search all documents..."
+                        onChange={(e) => onSearchInput?.(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            onSearch?.();
+                          }
+                        }}
+                        // value={searchParamsCommon}
+                        endAdornment={
+                          <InputAdornment
+                            position="end"
+                            className={styles.searchIcon}
                           >
-                            <path
-                              d="M6.53492 11.3413C9.30241 11.3413 11.5459 9.09782 11.5459 6.33033C11.5459 3.56283 9.30241 1.31934 6.53492 1.31934C3.76742 1.31934 1.52393 3.56283 1.52393 6.33033C1.52393 9.09782 3.76742 11.3413 6.53492 11.3413Z"
-                              stroke="var(--Icon-Color)"
-                              stroke-width="1.67033"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M14.8866 14.6815L11.5459 11.3408"
-                              stroke="var(--Icon-Color)"
-                              stroke-width="1.67033"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </span>
-                      </InputAdornment>
-                    }
-                  />
-                </Box>
-              </Box>
+                            <span className={styles.search} onClick={onSearch}>
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M6.53492 11.3413C9.30241 11.3413 11.5459 9.09782 11.5459 6.33033C11.5459 3.56283 9.30241 1.31934 6.53492 1.31934C3.76742 1.31934 1.52393 3.56283 1.52393 6.33033C1.52393 9.09782 3.76742 11.3413 6.53492 11.3413Z"
+                                  stroke="var(--Icon-Color)"
+                                  stroke-width="1.67033"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M14.8866 14.6815L11.5459 11.3408"
+                                  stroke="var(--Icon-Color)"
+                                  stroke-width="1.67033"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </InputAdornment>
+                        }
+                      />
+                    </Box>
+                  </Box>
+                )}
+              </>
             )}
-
-            <Box
-              sx={{
-                flexGrow: 1,
-                width: '100%',
-                display: {
-                  xs: 'none',
-                  '@media (max-width:800px)': {
-                    display: 'flex',
-                  },
-                },
-              }}
-            >
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-                sx={{ padding: '0' }}
-              >
-                {/* <MenuIcon /> */}
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{ display: { xs: 'block', md: 'none' } }}
-              >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
 
             {(remainingDays === 1 || remainingDays === 2) &&
               !loggedInUser?.data?.staff_user &&
@@ -905,6 +872,63 @@ export default function PageHeader({
           </Toolbar>
         </Container>
       </AppBar>
+      {!mobileView && (
+        <>
+          {isDocumentsPage && (
+            <Box
+              component="div"
+              className={styles.searchBoard}
+              sx={{ padding: '12px 16px 12px 16px;' }}
+            >
+              <Box component="div" className={styles.docBoard}>
+                <Input
+                  id="input-with-icon-adornment"
+                  className={styles.searchInput}
+                  placeholder="Search all documents..."
+                  onChange={(e) => onSearchInput?.(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      onSearch?.();
+                    }
+                  }}
+                  // value={searchParamsCommon}
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      className={styles.searchIcon}
+                    >
+                      <span className={styles.search} onClick={onSearch}>
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M6.53492 11.3413C9.30241 11.3413 11.5459 9.09782 11.5459 6.33033C11.5459 3.56283 9.30241 1.31934 6.53492 1.31934C3.76742 1.31934 1.52393 3.56283 1.52393 6.33033C1.52393 9.09782 3.76742 11.3413 6.53492 11.3413Z"
+                            stroke="var(--Icon-Color)"
+                            stroke-width="1.67033"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M14.8866 14.6815L11.5459 11.3408"
+                            stroke="var(--Icon-Color)"
+                            stroke-width="1.67033"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    </InputAdornment>
+                  }
+                />
+              </Box>
+            </Box>
+          )}
+        </>
+      )}
       <SettingDialog
         openSettingDialogProps={openSettingDialog}
         onClose={() => setOpenSettingDialog(false)}
