@@ -52,14 +52,13 @@ export default function PageHeader({
   toggleSidebar,
   isSidebarOpen,
   handleOpenSidebarFromLogIncident,
-  searchParamsCommon,
+  // searchParamsCommon,
   onSearchInput,
   onSearch,
 }: PageHeaderProps) {
   const mobileView = useMediaQuery('(min-width:800px)');
   const router = useRouter();
   const pathname = usePathname();
-  console.log(searchParamsCommon, 'searchParamsCommon');
   const selectedActiveChat = useAppSelector(selectActiveThread);
 
   const selectedPageHeaderData = useAppSelector(selectPageHeaderData);
