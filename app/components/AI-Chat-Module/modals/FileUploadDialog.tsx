@@ -15,18 +15,17 @@ import {
 import { ALLOWED_FILE_TYPES } from '@/app/utils/constants';
 import UploadFileItem from '@/app/components/AI-Chat-Module/common/file-upload/UploadFileItem';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
-import { showToast } from '@/app/shared/toast/ShowToast';
-import { ErrorResponse, handleError } from '@/app/utils/handleError';
-import { useRouter } from 'next/navigation';
+// import { uploadActualDocs } from '@/app/redux/slices/Chat';
+// import { showToast } from '@/app/shared/toast/ShowToast';
+// import { ErrorResponse, handleError } from '@/app/utils/handleError';
+// import { useRouter } from 'next/navigation';
 import {
   removeUploadFile,
-  resetUploadedFiles,
+  // resetUploadedFiles,
   selectUserUploadedFiles,
   updateFileDescription,
 } from '@/app/redux/slices/fileUpload';
 import { useChunkedFileUpload } from '../hooks/useChunkedFileUpload';
-import { gtagEvent } from '@/app/utils/functions';
 import { useThemeMode } from '@/app/utils/ThemeContext';
 import LimitOver from '../../Limit-Over/LimitOver';
 import { selectFetchedUser } from '@/app/redux/slices/login';
@@ -41,14 +40,14 @@ interface DocumentUploadModalProps {
 }
 
 export default function FileUploadDialog({
-  userInputText,
+  // userInputText,
   open,
   handleClose,
-  threadId,
-  handleFileUploadSubmit,
+  // threadId,
+  // handleFileUploadSubmit,
 }: DocumentUploadModalProps) {
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  // const router = useRouter();
   const fetchedUser = useSelector(selectFetchedUser);
   const [limitDialog, setLimitDialog] = useState(false);
   const [limitType, setLimitType] = useState('');
@@ -63,6 +62,7 @@ export default function FileUploadDialog({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const uploadedFiles = useAppSelector(selectUserUploadedFiles);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOpenUserFileInput = () => {
@@ -103,56 +103,59 @@ export default function FileUploadDialog({
     dispatch(removeUploadFile({ fileId: fileNum }));
   };
 
-  const uploadActualDocuments = async (
-    threadUUID: string,
-    payloadData: {
-      temp_doc: number;
-      description: string;
-    }[]
-  ) => {
-    setIsLoading(true);
-    const resultData = await dispatch(
-      uploadActualDocs({
-        thread_uuid: threadUUID,
-        data: payloadData,
-        ...(userInputText && { user_message: userInputText }),
-      })
-    );
-    gtagEvent({
-      action: 'upload_document',
-      category: 'File Upload',
-      label: 'Document uploaded',
-    });
-    setIsLoading(false);
+  // const uploadActualDocuments = async (
+  //   threadUUID: string,
+  //   payloadData: {
+  //     temp_doc: number;
+  //     description: string;
+  //   }[]
+  // ) => {
+  //   setIsLoading(true);
+  //   const resultData = await dispatch(
+  //     uploadActualDocs({
+  //       thread_uuid: threadUUID,
+  //       data: payloadData,
+  //       ...(userInputText && { user_message: userInputText }),
+  //     })
+  //   );
+  //   gtagEvent({
+  //     action: 'upload_document',
+  //     category: 'File Upload',
+  //     label: 'Document uploaded',
+  //   });
+  //   setIsLoading(false);
 
-    if (uploadActualDocs.fulfilled.match(resultData)) {
-      showToast(
-        'success',
-        resultData.payload?.messages[0] || 'Document uploaded successfully.'
-      );
+  //   if (uploadActualDocs.fulfilled.match(resultData)) {
+  //     showToast(
+  //       'success',
+  //       resultData.payload?.messages[0] || 'Document uploaded successfully.'
+  //     );
 
-      if (threadId) {
-        if (handleFileUploadSubmit) {
-          handleFileUploadSubmit();
-        }
-      } else {
-        // Need to redirect user to that Thread page
-        router.push(`/ai-chats/${threadUUID}/`); // Navigate to thread page
-      }
-      dispatch(resetUploadedFiles());
+  //     if (threadId) {
+  //       if (handleFileUploadSubmit) {
+  //         handleFileUploadSubmit();
+  //       }
+  //     } else {
+  //       // Need to redirect user to that Thread page
+  //       router.push(`/ai-chats/${threadUUID}/`); // Navigate to thread page
+  //     }
+  //     dispatch(resetUploadedFiles());
 
-      handleClose();
-      return;
-    }
+  //     handleClose();
+  //     return;
+  //   }
 
-    if (uploadActualDocs.rejected.match(resultData)) {
-      handleError(resultData.payload as ErrorResponse);
-      console.error('failed:', resultData.payload);
-      return;
-    }
-  };
+  //   if (uploadActualDocs.rejected.match(resultData)) {
+  //     handleError(resultData.payload as ErrorResponse);
+  //     console.error('failed:', resultData.payload);
+  //     return;
+  //   }
+  // };
 
   const handleContinue = async () => {
+    handleClose();
+    // This is the previous requirment's logic
+    /* 
     const payloadDocs = uploadedFiles
       .filter(({ uploadedFileId }) => typeof uploadedFileId === 'number')
       .map(({ uploadedFileId, docDesc }) => ({
@@ -183,6 +186,7 @@ export default function FileUploadDialog({
 
     // Upload documents
     uploadActualDocuments(createdThreadID, payloadDocs);
+    */
   };
 
   const { theme } = useThemeMode();

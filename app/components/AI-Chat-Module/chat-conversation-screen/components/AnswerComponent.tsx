@@ -1,10 +1,28 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  Skeleton,
+  Typography,
+} from '@mui/material';
 import chatMessagesStyles from '@components/AI-Chat-Module/styles/ChatMessagesStyle.module.scss';
-import { ChatMessage, ThumbReaction } from '@store/slices/Chat/chatTypes';
-import { formatTo12HourTimeManually } from '@/app/utils/functions';
-import { highlightText, processText } from '@/app/utils/constants';
+import {
+  ChatMessage,
+  ThumbReaction,
+  UploadedDocument,
+} from '@store/slices/Chat/chatTypes';
+import {
+  formatTo12HourTimeManually,
+  getDocumentImage,
+} from '@/app/utils/functions';
+import {
+  highlightText,
+  processText,
+  QUESTION_TYPES,
+} from '@/app/utils/constants';
 import { showToast } from '@/app/shared/toast/ShowToast';
 // import striptags from 'striptags';
 import {
@@ -20,6 +38,8 @@ import { useSearch } from '../../context/SearchContext';
 import { selectFetchedUser } from '@/app/redux/slices/login';
 import { useSelector } from 'react-redux';
 import { useThemeMode } from '@/app/utils/ThemeContext';
+import LimitOver from '@/app/components/Limit-Over/LimitOver';
+import { SocketPayload } from '@components/AI-Chat-Module/types/aiChat.types';
 
 const DynamicEditCombineSummaryModal = dynamic(
   () => import('@/app/components/AI-Chat-Module/modals/EditCombinedSummaryAns')
@@ -27,15 +47,24 @@ const DynamicEditCombineSummaryModal = dynamic(
 
 export default function AnswerComponent({
   messageObj,
+  handleGenerateCombinedSummary,
 }: {
   messageObj: ChatMessage;
+  handleGenerateCombinedSummary: (questionPayload: SocketPayload) => void;
 }) {
   const dispatch = useAppDispatch();
+  const [limitDialog, setLimitDialog] = useState(false);
+
   const [isOpenEditSummary, setIsOpenEditSummary] = useState(false);
   const { searchingChat } = useSearch();
 
   const fetchedUser = useSelector(selectFetchedUser);
   const expiredStatus = fetchedUser?.active_subscription?.status;
+
+  const summaryUsedCheck =
+    fetchedUser?.summary_used?.split('/')[0] ===
+      fetchedUser?.summary_used?.split('/')[1] &&
+    fetchedUser?.summary_grace_point_used === true;
   // Copy Message
   const handleCopyThread = async (messageObj: ChatMessage) => {
     let targetData;
@@ -236,31 +265,172 @@ export default function AnswerComponent({
               </Box>
             </>
           ) : (
-            <Typography
-              variant="body1"
-              className={chatMessagesStyles.chatAlContentText}
-            >
-              {messageObj.combined_summary_data ? (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: processText(
-                      highlightText(
-                        messageObj.combined_summary_data.summary,
-                        searchingChat
-                      )
-                    ),
-                  }}
-                />
-              ) : (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: processText(
-                      highlightText(messageObj.message, searchingChat)
-                    ),
-                  }}
-                />
-              )}
-            </Typography>
+            <>
+              <Typography
+                variant="body1"
+                className={chatMessagesStyles.chatAlContentText}
+              >
+                {messageObj.combined_summary_data ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: processText(
+                        highlightText(
+                          messageObj.combined_summary_data.summary,
+                          searchingChat
+                        )
+                      ),
+                    }}
+                  />
+                ) : (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: processText(
+                        highlightText(messageObj.message, searchingChat)
+                      ),
+                    }}
+                  />
+                )}
+              </Typography>
+
+              {messageObj.uploaded_documents &&
+                messageObj.uploaded_documents.length > 1 && (
+                  <Grid
+                    container
+                    spacing={1.5}
+                    justifyContent="start"
+                    alignItems="stretch"
+                    // max-width="100%"
+                    padding="2px 12px 8px 12px"
+                    sx={{ background: 'var(--Card-Color)' }}
+                  >
+                    {messageObj.uploaded_documents &&
+                      messageObj.uploaded_documents?.length > 0 &&
+                      messageObj.uploaded_documents.map(
+                        (documentItem: UploadedDocument) => {
+                          const {
+                            file_data,
+                            uuid,
+                            // summary,
+                          } = documentItem;
+                          return (
+                            <Grid
+                              item
+                              xs={12}
+                              sm={12}
+                              md={6}
+                              xl={4}
+                              className={chatMessagesStyles.chatAlFile}
+                              key={uuid}
+                            >
+                              <Box
+                                component="div"
+                                className={chatMessagesStyles.chatAlFileInner}
+                              >
+                                <Box
+                                  component="div"
+                                  className={
+                                    chatMessagesStyles.chatAlFileHeader
+                                  }
+                                >
+                                  <Box
+                                    component="div"
+                                    className={
+                                      chatMessagesStyles.chatAlFileIcon
+                                    }
+                                  >
+                                    <Image
+                                      src={getDocumentImage(
+                                        file_data?.file_extension
+                                      )}
+                                      alt="pdf"
+                                      width={13}
+                                      height={16}
+                                      className={chatMessagesStyles.pdfImg}
+                                    />
+                                  </Box>
+                                  <Typography
+                                    variant="body1"
+                                    className={chatMessagesStyles.chatAlText}
+                                    dangerouslySetInnerHTML={{
+                                      __html: highlightText(
+                                        file_data.file_name,
+                                        searchingChat
+                                      ),
+                                    }}
+                                  />
+                                </Box>
+                              </Box>
+                            </Grid>
+                          );
+                        }
+                      )}
+                  </Grid>
+                )}
+
+              {messageObj.uploaded_documents &&
+                messageObj.uploaded_documents?.length > 1 && (
+                  <Box className={chatMessagesStyles.chatAlSummaryButtonMain}>
+                    {messageObj.all_doc_summarized ? (
+                      <Button
+                        disabled={
+                          expiredStatus === 0 && !fetchedUser?.staff_user
+                        }
+                        className={`${chatMessagesStyles.chatAlSummaryButton} ${expiredStatus === 0 && !fetchedUser?.staff_user ? 'limitation' : ''}`}
+                        onClick={() => {
+                          if (summaryUsedCheck && !fetchedUser?.staff_user) {
+                            setLimitDialog(true);
+                          } else {
+                            handleGenerateCombinedSummary({
+                              thread_uuid: '',
+                              message_type: QUESTION_TYPES.COMBINED_SUMMARY,
+                              chat_msg_uuid: messageObj.uuid,
+                              message: 'Generating combined summary',
+                            });
+                          }
+                        }}
+                      >
+                        <Image
+                          src="/images/combined.svg"
+                          alt="combined"
+                          width={18}
+                          height={18}
+                        />
+                        Generate Combined Summary
+                      </Button>
+                    ) : (
+                      <Button
+                        disabled
+                        className={`${chatMessagesStyles.chatAlSummaryButton} limitation`}
+                        style={{
+                          minWidth: 200,
+                          minHeight: 40,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                        }}
+                      >
+                        <Skeleton variant="circular" width={18} height={18} />
+                        <Box
+                          component="div"
+                          className={chatMessagesStyles.chatAlFileSummary}
+                        >
+                          <Skeleton
+                            variant="text"
+                            width={200}
+                            height={20}
+                            sx={{
+                              bgcolor:
+                                theme !== 'dark'
+                                  ? 'rgb(255, 255, 255)'
+                                  : 'rgba(0, 0, 0, 0.05)',
+                            }}
+                          />
+                        </Box>
+                      </Button>
+                    )}
+                  </Box>
+                )}
+            </>
           )}
           <span className={chatMessagesStyles.chatTime}>
             {formatTo12HourTimeManually(messageObj.created)}
@@ -392,6 +562,15 @@ export default function AnswerComponent({
           </Box>
         </Box>
       </Box>
+      <LimitOver
+        open={limitDialog}
+        onClose={() => setLimitDialog(false)}
+        title={
+          'Your Document Summaries Limit is Over so you cannot upload new document.'
+        }
+        subtitle={'Summary'}
+        stats={fetchedUser?.summary_used || ''}
+      />
       {isOpenEditSummary && (
         <DynamicEditCombineSummaryModal
           open={isOpenEditSummary}

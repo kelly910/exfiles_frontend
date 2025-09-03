@@ -30,7 +30,11 @@ import UploadFileItem from '@/app/components/AI-Chat-Module/common/file-upload/U
 // Custom Types
 import { SocketPayload } from '@components/AI-Chat-Module/types/aiChat.types';
 import { useChunkedFileUpload } from '@/app/components/AI-Chat-Module/hooks/useChunkedFileUpload';
-import { createNewThread, uploadActualDocs } from '@/app/redux/slices/Chat';
+import {
+  createNewThread,
+  setIsStreaming,
+  uploadActualDocs,
+} from '@/app/redux/slices/Chat';
 import { showToast } from '@/app/shared/toast/ShowToast';
 import { useRouter } from 'next/navigation';
 import { ErrorResponse, handleError } from '@/app/utils/handleError';
@@ -38,6 +42,7 @@ import { useSelector } from 'react-redux';
 import { selectFetchedUser } from '@/app/redux/slices/login';
 import LimitOver from '@/app/components/Limit-Over/LimitOver';
 import PlanExpired from '@/app/components/Plan-Expired/PlanExpired';
+import { gtagEvent } from '@/app/utils/functions';
 
 const DynamicDocUploadModal = dynamic(
   () => import('@components/AI-Chat-Module/modals/FileUploadDialog')
@@ -165,9 +170,18 @@ export default function ChatInputBox({
         resultData.payload?.messages[0] || 'Document uploaded successfully.'
       );
 
+      gtagEvent({
+        action: 'upload_document',
+        category: 'File Upload',
+        label: 'Document uploaded',
+      });
+
       if (threadId) {
         if (handleFileUploadSubmit) {
           setText('');
+          if (text?.trim()) {
+            dispatch(setIsStreaming(true));
+          }
           handleFileUploadSubmit();
         }
       } else {
