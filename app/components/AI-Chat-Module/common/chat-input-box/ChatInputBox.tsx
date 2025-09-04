@@ -185,7 +185,9 @@ export default function ChatInputBox({
           handleFileUploadSubmit();
         }
       } else {
-        dispatch(setIsStreaming(true));
+        if (text?.trim()) {
+          dispatch(setIsStreaming(true));
+        }
         // Need to redirect user to that Thread page
         router.push(`/ai-chats/${threadUUID}/`); // Navigate to thread page
       }
