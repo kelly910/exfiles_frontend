@@ -409,7 +409,17 @@ export default function AnswerComponent({
                           gap: 8,
                         }}
                       >
-                        <Skeleton variant="circular" width={18} height={18} />
+                        <Skeleton
+                          variant="circular"
+                          width={18}
+                          height={18}
+                          sx={{
+                            bgcolor:
+                              theme !== 'dark'
+                                ? 'rgb(255, 255, 255, 0.5)'
+                                : 'rgba(0, 0, 0, 0.05)',
+                          }}
+                        />
                         <Box
                           component="div"
                           className={chatMessagesStyles.chatAlFileSummary}
@@ -421,7 +431,7 @@ export default function AnswerComponent({
                             sx={{
                               bgcolor:
                                 theme !== 'dark'
-                                  ? 'rgb(255, 255, 255)'
+                                  ? 'rgb(255, 255, 255, 0.5)'
                                   : 'rgba(0, 0, 0, 0.05)',
                             }}
                           />
