@@ -402,7 +402,12 @@ export default function Conversation({ threadId }: { threadId: string }) {
                                 messageObj={record}
                               />
                             ) : (
-                              <AnswerComponent messageObj={record} />
+                              <AnswerComponent
+                                messageObj={record}
+                                handleGenerateCombinedSummary={(payloadData) =>
+                                  handleSendMessage(payloadData)
+                                }
+                              />
                             )}
                           </>
                         )}
