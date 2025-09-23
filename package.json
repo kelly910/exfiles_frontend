@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--max-old-space-size=4096' next dev -H 0.0.0.0 -p 5000",
     "build": "next build",
-    "start": "next start -p 4678",
+    "start": "next start -H 0.0.0.0 -p 5000",
     "lint": "next lint",
     "format": "prettier --write ."
   },
