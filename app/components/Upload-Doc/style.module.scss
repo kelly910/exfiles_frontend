@@ -29,8 +29,7 @@
     margin-bottom: 45px;
 
     h2 {
-      font-weight: 700;
-      font-style: Bold;
+      font-weight: var(--Bold);
       font-size: 38px;
       line-height: 140%;
       letter-spacing: 0%;
@@ -41,8 +40,7 @@
     }
 
     p {
-      font-weight: 600;
-      font-style: SemiBold;
+      font-weight: var(--Medium);
       font-size: 24px;
       line-height: 140%;
       letter-spacing: 0%;
@@ -66,8 +64,7 @@
     align-items: center;
 
     p {
-      font-weight: 400;
-      font-style: Regular;
+      font-weight: var(--Regular);
       font-size: 24px;
       line-height: 140%;
       letter-spacing: 0%;
@@ -78,8 +75,7 @@
 
     .btn-upload {
       min-width: 300px !important;
-      font-weight: 600;
-      font-style: SemiBold;
+      font-weight: var(--Medium);
       font-size: 20px;
       line-height: 140%;
       letter-spacing: 0%;
@@ -100,8 +96,7 @@
   }
 
   .upload-doc-note {
-    font-weight: 400;
-    font-style: Regular;
+    font-weight: var(--Regular);
     font-size: 16px;
     line-height: 140%;
     letter-spacing: 0%;
@@ -141,8 +136,7 @@
     }
 
     p {
-      font-weight: 600;
-      font-style: SemiBold;
+      font-weight: var(--Medium);
       font-size: 16px;
       line-height: 140%;
       letter-spacing: 0%;
@@ -207,8 +201,7 @@
 
       .upload-files-info {
         h4 {
-          font-weight: 600;
-          font-style: SemiBold;
+          font-weight: var(--Medium);
           font-size: 16px;
           line-height: 140%;
           letter-spacing: 0%;
@@ -217,8 +210,7 @@
         }
 
         p {
-          font-weight: 400;
-          font-style: Regular;
+          font-weight: var(--Regular);
           font-size: 12px;
           line-height: 140%;
           letter-spacing: 0%;
@@ -283,8 +275,7 @@
           padding-left: 2px;
 
           p {
-            font-weight: 600;
-            font-style: SemiBold;
+            font-weight: var(--Medium);
             font-size: 14px;
             line-height: 140%;
             letter-spacing: 0%;
@@ -293,8 +284,7 @@
           }
 
           span {
-            font-weight: 400;
-            font-style: Regular;
+            font-weight: var(--Regular);
             font-size: 12px;
             line-height: 140%;
             letter-spacing: 0%;
@@ -308,8 +298,7 @@
   }
 
   .upload-file-add-more {
-    font-weight: 600;
-    font-style: SemiBold;
+    font-weight: var(--Medium);
     font-size: 14px;
     line-height: 140%;
     letter-spacing: 0%;

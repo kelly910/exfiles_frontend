@@ -581,16 +581,16 @@ export default function LogIncident() {
                               <path
                                 d="M6.53492 11.3413C9.30241 11.3413 11.5459 9.09782 11.5459 6.33033C11.5459 3.56283 9.30241 1.31934 6.53492 1.31934C3.76742 1.31934 1.52393 3.56283 1.52393 6.33033C1.52393 9.09782 3.76742 11.3413 6.53492 11.3413Z"
                                 stroke="var(--Icon-Color)"
-                                stroke-width="1.67033"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.67033"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                               <path
                                 d="M14.8866 14.6815L11.5459 11.3408"
                                 stroke="var(--Icon-Color)"
-                                stroke-width="1.67033"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.67033"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                             </svg>
                           </span>
@@ -863,9 +863,9 @@ export default function LogIncident() {
                                                 <path
                                                   d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
                                                   stroke="white"
-                                                  stroke-width="1.8"
-                                                  stroke-linecap="round"
-                                                  stroke-linejoin="round"
+                                                  strokeWidth="1.8"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
                                                 />
                                               </svg>
                                             </Box>
@@ -900,17 +900,17 @@ export default function LogIncident() {
                                           <path
                                             d="M2.55539 4.44434C2.0665 4.44434 1.6665 4.84434 1.6665 5.33322C1.6665 5.82211 2.0665 6.22211 2.55539 6.22211C3.04428 6.22211 3.44428 5.82211 3.44428 5.33322C3.44428 4.84434 3.04428 4.44434 2.55539 4.44434Z"
                                             stroke="var(--Subtext-Color)"
-                                            stroke-width="0.8"
+                                            strokeWidth="0.8"
                                           />
                                           <path
                                             d="M8.77756 4.44434C8.28867 4.44434 7.88867 4.84434 7.88867 5.33322C7.88867 5.82211 8.28867 6.22211 8.77756 6.22211C9.26645 6.22211 9.66645 5.82211 9.66645 5.33322C9.66645 4.84434 9.26645 4.44434 8.77756 4.44434Z"
                                             stroke="var(--Subtext-Color)"
-                                            stroke-width="0.8"
+                                            strokeWidth="0.8"
                                           />
                                           <path
                                             d="M5.66672 4.44434C5.17783 4.44434 4.77783 4.84434 4.77783 5.33322C4.77783 5.82211 5.17783 6.22211 5.66672 6.22211C6.15561 6.22211 6.55561 5.82211 6.55561 5.33322C6.55561 4.84434 6.15561 4.44434 5.66672 4.44434Z"
                                             stroke="var(--Subtext-Color)"
-                                            stroke-width="0.8"
+                                            strokeWidth="0.8"
                                           />
                                         </svg>
                                       )}

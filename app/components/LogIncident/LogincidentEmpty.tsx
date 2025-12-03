@@ -37,7 +37,7 @@ export default function LogincidentEmpty() {
           height={150}
           className={styles.emptyImage}
         />
-        <Typography className={styles.emptyTitle} variant="body1">
+        <Typography className={styles.emptyTitle} variant="body1" component="div">
           No Incidents are logged yet.
           <div>Click the button below to log an incident.</div>
         </Typography>

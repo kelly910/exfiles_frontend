@@ -400,9 +400,9 @@ const DeleteAccount = ({ closeDialog }: { closeDialog: () => void }) => {
                               ? 'var(--Subtext-Color)'
                               : '#DADAE1'
                           }
-                          stroke-miterlimit="10"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                       </svg>{' '}
                       Back

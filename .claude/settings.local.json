@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(cat:*)",
+      "Bash(node --version:*)",
+      "Bash(npm:*)",
+      "Bash(yarn --version)",
+      "Bash(pnpm --version:*)",
+      "Bash(bun --version:*)",
+      "WebSearch",
+      "Bash(npx eslint:*)",
+      "Bash(ls:*)",
+      "Bash(pkill:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)",
+      "Bash(fuser:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

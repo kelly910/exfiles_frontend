@@ -55,6 +55,7 @@ export default function DevicesLimit({
   const storedTheme = localStorage.getItem('theme');
 
   const productionServer = process.env.NEXT_PUBLIC_ENVIRONMENT_SERVER;
+  console.log('DEBUG: productionServer =', productionServer);
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse: { access_token: string }) => {
@@ -93,7 +94,9 @@ export default function DevicesLimit({
             },
             process.env.NEXT_PUBLIC_REDIRECT_URL
           );
-          await sendDataToWordPressForLogin(response.data);
+          if (productionServer === 'production') {
+            await sendDataToWordPressForLogin(response.data);
+          }
         }
         showToast('success', 'Google Login is successfully.');
         if (
@@ -159,7 +162,9 @@ export default function DevicesLimit({
                   },
                   process.env.NEXT_PUBLIC_REDIRECT_URL
                 );
-                await sendDataToWordPressForLogin(response.data);
+                if (productionServer === 'production') {
+                  await sendDataToWordPressForLogin(response.data);
+                }
               }
               showToast('success', 'Login is successfully.');
               if (

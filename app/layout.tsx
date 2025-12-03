@@ -6,7 +6,7 @@ import './globals.css';
 import ToastProvider from './shared/toast/ToastProvider';
 import { ReduxProvider } from './provider';
 import ThemeRegistry from './providers/ThemeRegistry';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import GoogleOAuthWrapper from './providers/GoogleOAuthWrapper';
 import FullPageLoader from './components/Full-Page-Loader/FullPageLoader';
 import ClientAuthCheck from './components/ClientAuthCheck';
 import { SearchProvider } from './components/AI-Chat-Module/context/SearchContext';
@@ -43,16 +43,14 @@ export default function RootLayout({
     process.env.NEXT_PUBLIC_ENVIRONMENT_SERVER === 'production';
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <ThemeProviderMode>
         <body>
           {/* <ThemeToggleButton /> */}
           {isProduction && <GoogleAnalytics />}
           <SearchProvider>
             <ClientAuthCheck>
-              <GoogleOAuthProvider
-                clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}
-              >
+              <GoogleOAuthWrapper>
                 <ReduxProvider>
                   <ThemeRegistry>
                     <ToastProvider>
@@ -62,7 +60,7 @@ export default function RootLayout({
                     </ToastProvider>
                   </ThemeRegistry>
                 </ReduxProvider>
-              </GoogleOAuthProvider>
+              </GoogleOAuthWrapper>
             </ClientAuthCheck>
           </SearchProvider>
         </body>

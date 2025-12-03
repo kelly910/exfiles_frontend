@@ -135,7 +135,9 @@ export default function DynamicThreadsList({
       seIsFetching(true);
 
       try {
-        const { scrollTop, scrollHeight } = containerRef.current;
+        const current = containerRef.current;
+        if (!current) return;
+        const { scrollTop, scrollHeight } = current;
 
         // Save the current scroll position before making the API call
         previousScrollTopRef.current = scrollTop;
@@ -321,7 +323,7 @@ export default function DynamicThreadsList({
                             ? 'var(--Primary-Text-Color)'
                             : 'var(--Subtext-Color)'
                         }
-                        stroke-width="0.8"
+                        strokeWidth="0.8"
                       />
                       <path
                         d="M8.77756 4.44434C8.28867 4.44434 7.88867 4.84434 7.88867 5.33322C7.88867 5.82211 8.28867 6.22211 8.77756 6.22211C9.26645 6.22211 9.66645 5.82211 9.66645 5.33322C9.66645 4.84434 9.26645 4.44434 8.77756 4.44434Z"
@@ -330,7 +332,7 @@ export default function DynamicThreadsList({
                             ? 'var(--Primary-Text-Color)'
                             : 'var(--Subtext-Color)'
                         }
-                        stroke-width="0.8"
+                        strokeWidth="0.8"
                       />
                       <path
                         d="M5.66672 4.44434C5.17783 4.44434 4.77783 4.84434 4.77783 5.33322C4.77783 5.82211 5.17783 6.22211 5.66672 6.22211C6.15561 6.22211 6.55561 5.82211 6.55561 5.33322C6.55561 4.84434 6.15561 4.44434 5.66672 4.44434Z"
@@ -339,7 +341,7 @@ export default function DynamicThreadsList({
                             ? 'var(--Primary-Text-Color)'
                             : 'var(--Subtext-Color)'
                         }
-                        stroke-width="0.8"
+                        strokeWidth="0.8"
                       />
                     </svg>
                   </Button>

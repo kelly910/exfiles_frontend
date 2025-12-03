@@ -2,6 +2,8 @@ import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  // Allow Replit dev origins for cross-origin requests
+  allowedDevOrigins: ['*.replit.dev', '*.picard.replit.dev'],
   async redirects() {
     return [
       {

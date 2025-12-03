@@ -497,9 +497,9 @@ export default function FilterModal({
                             <path
                               d="M1.75 4.00004L4.58 6.83004L10.25 1.17004"
                               stroke="white"
-                              stroke-width="1.8"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeWidth="1.8"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             />
                           </svg>
                         </Box>

@@ -37,6 +37,7 @@ export default function StreamingAnswer(props: StreamingResponseProps) {
       <Box component="div" className={chatMessagesStyles.chatAlContent}>
         <Typography
           variant="body1"
+          component="div"
           className={chatMessagesStyles.chatAlContentText}
         >
           <div

@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 const PUBLIC_ROUTES = ['/login', '/signup'];
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const token = req.cookies.get('accessToken')?.value || null;
   const pathname = req.nextUrl.pathname;
 
@@ -39,5 +39,5 @@ export const config = {
     '/payment-pending',
     '/payment-failed',
     '/upload-doc',
-  ], // Define which routes should trigger the middleware
+  ], // Define which routes should trigger the proxy
 };

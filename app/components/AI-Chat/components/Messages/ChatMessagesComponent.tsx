@@ -52,7 +52,7 @@ export default function ChatMessagesComponent({
   const messagesList = useSelector(selectMessageList);
   const isStreamingMessages = useSelector(selectIsStreaming);
   const messagesChunks = useSelector(selectMessagesChunks);
-  const chatElementRef = useRef<HTMLInputElement>(null);
+  const chatElementRef = useRef<HTMLDivElement>(null);
 
   const [page, setPage] = useState(1);
 
@@ -196,7 +196,9 @@ export default function ChatMessagesComponent({
       setIsFetchingPreviousMessages(true);
 
       try {
-        const { scrollTop, scrollHeight } = chatElementRef.current;
+        const current = chatElementRef.current;
+        if (!current) return;
+        const { scrollTop, scrollHeight } = current;
         // Save the current scroll position before making the API call
         previousScrollTopRef.current = scrollTop;
         previousScrollHeightRef.current = scrollHeight;

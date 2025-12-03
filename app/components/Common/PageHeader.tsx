@@ -638,16 +638,16 @@ export default function PageHeader({
                                 <path
                                   d="M6.53492 11.3413C9.30241 11.3413 11.5459 9.09782 11.5459 6.33033C11.5459 3.56283 9.30241 1.31934 6.53492 1.31934C3.76742 1.31934 1.52393 3.56283 1.52393 6.33033C1.52393 9.09782 3.76742 11.3413 6.53492 11.3413Z"
                                   stroke="var(--Icon-Color)"
-                                  stroke-width="1.67033"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
+                                  strokeWidth="1.67033"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
                                 />
                                 <path
                                   d="M14.8866 14.6815L11.5459 11.3408"
                                   stroke="var(--Icon-Color)"
-                                  stroke-width="1.67033"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
+                                  strokeWidth="1.67033"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
                                 />
                               </svg>
                             </span>
@@ -907,16 +907,16 @@ export default function PageHeader({
                           <path
                             d="M6.53492 11.3413C9.30241 11.3413 11.5459 9.09782 11.5459 6.33033C11.5459 3.56283 9.30241 1.31934 6.53492 1.31934C3.76742 1.31934 1.52393 3.56283 1.52393 6.33033C1.52393 9.09782 3.76742 11.3413 6.53492 11.3413Z"
                             stroke="var(--Icon-Color)"
-                            stroke-width="1.67033"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="1.67033"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
                           <path
                             d="M14.8866 14.6815L11.5459 11.3408"
                             stroke="var(--Icon-Color)"
-                            stroke-width="1.67033"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="1.67033"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
                         </svg>
                       </span>
@@ -970,9 +970,9 @@ export default function PageHeader({
               <path
                 d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
                 stroke="var(--Primary-Text-Color)"
-                stroke-miterlimit="10"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </Button>

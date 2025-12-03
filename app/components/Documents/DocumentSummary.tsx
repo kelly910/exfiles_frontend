@@ -493,9 +493,9 @@ const DocumentSummary: React.FC<DocumentSummaryProps> = ({
                         <path
                           d="M10.0333 2.72027L5.68666 7.06694C5.17332 7.58027 5.17332 8.42027 5.68666 8.93361L10.0333 13.2803"
                           stroke="var(--Primary-Text-Color)"
-                          stroke-miterlimit="10"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                       </svg>
                     </Button>

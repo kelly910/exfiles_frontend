@@ -113,7 +113,9 @@ export default function DynamicPinnedMessagesList({
       seIsFetching(true);
 
       try {
-        const { scrollTop, scrollHeight } = containerRef.current;
+        const current = containerRef.current;
+        if (!current) return;
+        const { scrollTop, scrollHeight } = current;
 
         // Save the current scroll position before making the API call
         previousScrollTopRef.current = scrollTop;
@@ -257,9 +259,9 @@ export default function DynamicPinnedMessagesList({
                       stroke={
                         theme !== 'dark' ? '#DADAE1' : 'var(--Icon-Color)'
                       }
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </div>
